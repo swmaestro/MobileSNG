@@ -261,10 +261,10 @@ bool Map::init()
     m_arrTile = _create(m_width);
     _addTile();
     
-    m_pBackGround = CCSprite::create("Background.png");
-    m_pBackGround->setAnchorPoint(ccp(0.5, 0.5));
-    m_pBackGround->setPosition(ccp(0, 0));
-    addChild(m_pBackGround, 0);
+    m_pBG = CCSprite::create("Background.png");
+    m_pBG->setAnchorPoint(ccp(0.5, 0.5));
+    m_pBG->setPosition(ccp(0, 0));
+    addChild(m_pBG, 0);
     
     return true;
 }

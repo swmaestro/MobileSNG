@@ -19,7 +19,7 @@ class MapTile;
 class Map : public cocos2d::CCLayer
 {
 private:
-    cocos2d::CCSprite * m_pBackGround;
+    cocos2d::CCSprite * m_pBG;
     
     cocos2d::CCPoint    m_touch[2];
     

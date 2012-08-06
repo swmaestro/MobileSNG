@@ -74,8 +74,8 @@ bool SceneGame::_initUIMgr()
     m_pUIMgr->AppendUI(UI_MAP, "Shop.png", "Shop.png", 
                        ccp(200, -120), this, menu_selector(SceneGame::_shopFunc));
     
-    m_pUIMgr->AppendUI(UI_SHOP, "Icon-Small.png", "Icon-Small.png",
-                       ccp(200, 150), this, menu_selector(SceneGame::_shopCloseFunc));
+    m_pUIMgr->AppendUI(UI_SHOP, "Shop-Close.png", "Shop-Close.png",
+                       ccp(210, 130), this, menu_selector(SceneGame::_shopCloseFunc));
     
     addChild(m_pUIMgr, 1);
     
