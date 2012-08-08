@@ -12,6 +12,8 @@
 #include <memory.h>
 #include "curl.h"
 
+#define NETWORK_RESPONSE_TIME 3
+
 struct CURL_DATA {
     char    *pContent;
     int      size;
@@ -38,10 +40,16 @@ private:
 public:
     NetWork(const char *url, CURL_DATA *pData);
     ~NetWork();
+
+private:
+    static int _WriteCurlDataCallback(void *ptr, int size, int nmemb, void *pData);
     
 public:
     CURLcode    connectHttp();
-    
+
 public:
-    static int WriteCurlDataCallback(void *ptr, int size, int nmemb, void *pData);
+    int         GetResponseCode();
+    bool        GetContentType(char *pOutStr);
+    double      GetSize();
+    double      GetSpeed();
 };

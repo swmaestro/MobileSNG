@@ -17,7 +17,7 @@ NetWork::NetWork(const char *url, CURL_DATA *pData)
     curl_easy_setopt(m_pCTX, CURLOPT_URL, url);
     curl_easy_setopt(m_pCTX, CURLOPT_WRITEDATA, pData);
     curl_easy_setopt(m_pCTX, CURLOPT_WRITEFUNCTION, 
-                     NetWork::WriteCurlDataCallback);
+                     NetWork::_WriteCurlDataCallback);
 }
 
 NetWork::~NetWork()
@@ -33,7 +33,7 @@ CURLcode NetWork::connectHttp()
     return curl_easy_perform(m_pCTX);
 }
 
-int NetWork::WriteCurlDataCallback(void *ptr, int size, 
+int NetWork::_WriteCurlDataCallback(void *ptr, int size, 
                                          int nmemb, void *pData)
 {
     int realSize = size *nmemb;
@@ -50,4 +50,42 @@ int NetWork::WriteCurlDataCallback(void *ptr, int size,
     pCurlData->pContent[pCurlData->size] = 0;
     
     return realSize;
+}
+
+int NetWork::GetResponseCode()
+{
+    int code;
+    
+    if( curl_easy_getinfo(m_pCTX, CURLINFO_HTTP_CODE, &code) == CURLE_OK)
+        return code;
+    
+    return -1;
+}
+
+bool NetWork::GetContentType(char *pOutStr)
+{
+    if(curl_easy_getinfo(m_pCTX, CURLINFO_CONTENT_TYPE, pOutStr) == CURLE_OK)
+        return true;
+    
+    return false;
+}
+
+double NetWork::GetSize()
+{
+    double code;
+    
+    if(curl_easy_getinfo(m_pCTX, CURLINFO_SIZE_DOWNLOAD, &code) == CURLE_OK)
+        return code;
+    
+    return -1.f;
+}
+
+double NetWork::GetSpeed()
+{
+    double code;
+    
+    if( curl_easy_getinfo(m_pCTX, CURLINFO_SPEED_DOWNLOAD, &code) == CURLE_OK)
+        return code;
+    
+    return -1.f;
 }
