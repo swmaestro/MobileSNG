@@ -10,6 +10,30 @@
 
 #include <string>
 
+template<typename TYPE>
+struct POINT
+{
+    TYPE x, y;
+    
+    POINT(TYPE _x = 0, TYPE _y = 0)
+    {
+        x = _x;
+        y = _y;
+    }
+};
+
+template<typename TYPE>
+struct SIZE
+{
+    TYPE width, height;
+    
+    SIZE(TYPE _w = 0, TYPE _h = 0)
+    {
+        width   = _w;
+        height  = _h;
+    }
+};
+
 struct OBJECT_INFO
 {
     int time;
@@ -33,6 +57,7 @@ struct COMMON_INFO
     int             objectID;
     int             price;
     std::string     name;
+    int             level;
     
     COMMON_INFO()
     {
@@ -40,12 +65,14 @@ struct COMMON_INFO
         price = 0;
     }
     
-    COMMON_INFO(int _objectID, const char *_name, int _price)
+    COMMON_INFO(int _objectID, const char *_name, int _price, int _level)
     {
         objectID    = _objectID;
         price       = _price;
         
         name = _name;
+        
+        level = _level;
     }
     
     ~COMMON_INFO()
@@ -54,36 +81,37 @@ struct COMMON_INFO
     }
 };
 
-struct BUILDING_INFO : public COMMON_INFO, public OBJECT_INFO
+struct BUILDING_INFO : public COMMON_INFO
 {
-    BUILDING_INFO() : OBJECT_INFO(), COMMON_INFO() { }
-    BUILDING_INFO(OBJECT_INFO objectInfo, COMMON_INFO commonInfo) : OBJECT_INFO(objectInfo), COMMON_INFO(commonInfo)
+    SIZE<int>       size;
+    OBJECT_INFO     object;
+    int             buildTime;
+    
+    BUILDING_INFO() : COMMON_INFO() { }
+    BUILDING_INFO(OBJECT_INFO objectInfo, COMMON_INFO commonInfo, SIZE<int> buildingSize, int buildTime) :  COMMON_INFO(commonInfo)
     {
+        size            = buildingSize;
+        object          = objectInfo;
+        this->buildTime = buildTime;
     }
 };
 
-struct CROP_INFO : public COMMON_INFO, public OBJECT_INFO
+struct CROP_INFO : public COMMON_INFO
 {
-    CROP_INFO() : OBJECT_INFO(), COMMON_INFO() { }
+    OBJECT_INFO object;
     
-    CROP_INFO(OBJECT_INFO objectInfo, COMMON_INFO commonInfo) :
-    OBJECT_INFO(objectInfo), COMMON_INFO(commonInfo)
+    CROP_INFO() : COMMON_INFO() { }
+    CROP_INFO(OBJECT_INFO objectInfo, COMMON_INFO commonInfo) : COMMON_INFO(commonInfo)
     {
-    
+        object = objectInfo;
     }
 };
 
 struct ORNAMENT_INFO : public COMMON_INFO
 {
-    ORNAMENT_INFO() : COMMON_INFO()
-    {
-        
-    }
-    ORNAMENT_INFO(int _objectID, int _price, const char *_name) :
-    COMMON_INFO(_objectID, _name, _price)
-    {
-        
-    }
+    ORNAMENT_INFO() : COMMON_INFO(){}
+    ORNAMENT_INFO(int _objectID, int _price, const char *_name, int _level) 
+                         :COMMON_INFO(_objectID, _name, _price, _level){}
 };
 
 struct USER_INFO
@@ -100,16 +128,4 @@ struct USER_INFO
         cash    = _cash;
         exp     = _exp;
     }
-};
-
-template<typename TYPE>
-struct POINT
-{
-    TYPE x, y;
-};
-
-template<typename TYPE>
-struct SIZE
-{
-    TYPE width, height;
 };
