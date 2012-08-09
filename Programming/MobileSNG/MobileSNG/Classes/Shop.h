@@ -20,6 +20,7 @@ class Shop : public cocos2d::CCLayer
 private:
     cocos2d::CCSprite * m_pTab[OBJ_MAX];
     cocos2d::CCLayer * m_pItem[OBJ_MAX];
+    int m_count[OBJ_MAX];
     
     cocos2d::CCTexture2D * m_pTabTex, * m_pTabSelTex;
     
@@ -35,7 +36,8 @@ public:
     
     bool init();
     
-
+//  void addItem(int tabNum, int objNum);
+    void addItem(int tabNum, const char * name, const char * imgPath, int price, int time);
     
     virtual void ccTouchesBegan(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
     virtual void ccTouchesMoved(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);

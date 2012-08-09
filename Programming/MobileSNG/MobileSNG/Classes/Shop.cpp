@@ -55,6 +55,7 @@ bool Shop::init()
         
         m_pItem[i] = new CCLayer();
         m_pItem[i]->init();
+        m_count[i] = 0;
         m_pTab[i]->addChild(m_pItem[i]);
     }
     
@@ -121,4 +122,8 @@ void Shop::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
     }
 
     m_isDragging = false;
+}
+
+void Shop::addItem(int tabNum, int objNum)
+{
 }
