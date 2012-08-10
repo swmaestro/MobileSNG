@@ -147,38 +147,6 @@ bool MapMgr::moveObject(POINT<int> &pos, ObjectInMap *obj2)
     return true;
 }
 
-bool MapMgr::Harvest(POINT<int> &pos, ObjectInMap *pOut)
-{
-    ObjectInMap *pObject = FindObject(pos);
-    
-    if(pObject == NULL) 
-        return false;
-
-    OBJECT_TYPE type = pObject->m_type;
-    
-    if(type == OBJECT_TYPE_BUILDING)
-    {
-        if(pObject->m_state == BUILDING_STATE_NONE)
-        {
-            dynamic_cast<Building*>(pObject)->StartTimer();
-            return true;
-        }
-    }
-
-    else if(type == OBJECT_TYPE_FIELD)
-    {
-        if(pObject->m_state == CROP_STATE_DONE)
-        {
-            dynamic_cast<Field*>(pObject)->removeCrop();
-            return true;
-        }
-    }
-    
-    pOut = pObject;
-    
-    return false;
-}
-
 #pragma mark Remove
 
 void MapMgr::removeObject(int index)
