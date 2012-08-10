@@ -14,7 +14,7 @@ class SceneGame;
 
 enum
 {
-    OBJ_CROP, OBJ_BUILDING, OBJ_MAX
+    OBJ_CROP, OBJ_BUILDING, OBJ_MAX, OBJ_FARM = OBJ_MAX
 };
 
 class Shop : public cocos2d::CCLayer

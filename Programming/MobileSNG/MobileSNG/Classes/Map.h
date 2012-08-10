@@ -13,6 +13,7 @@
 #include "DataType.h"
 
 class MapTile;
+class MapMgr;
 class Editor;
 
 //CA Edit 120728 Move Touch to Game Scene
@@ -54,8 +55,8 @@ public:
     float filtScale(float scale);
     cocos2d::CCPoint filtPosition(cocos2d::CCPoint pos);
     
-    void beginEdit();
-    void beginEdit(int type, int id);
+    void beginEdit(MapMgr * mapMgr);
+    void beginEdit(MapMgr * mapMgr, int type, int id);
     void endEdit(bool apply);
     
     //void expand();

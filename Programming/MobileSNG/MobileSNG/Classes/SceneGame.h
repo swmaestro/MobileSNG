@@ -36,9 +36,13 @@ private:
     
     void _shopFunc(CCObject *pSender);
     void _friendsFunc(CCObject *pSender);
-    void _shopCloseFunc(CCObject *pSender);
     void _editFunc(CCObject *pSender);
     void _flatFunc(CCObject *pSender);
+    
+    void _editApplyFunc(CCObject *pSender);
+    void _editCancelFunc(CCObject *pSender);
+    
+    void _shopCloseFunc(CCObject *pSender);
     
     void _changeUI(cocos2d::CCLayer * ui);
     

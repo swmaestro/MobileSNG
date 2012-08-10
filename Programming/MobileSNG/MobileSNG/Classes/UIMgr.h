@@ -15,7 +15,7 @@
 
 enum
 {
-    UI_MAP, UI_SHOP, UI_MAX
+    UI_MAP, UI_EDIT, UI_SHOP, UI_MAX
 };
 
 class UIMgr : public cocos2d::CCNode

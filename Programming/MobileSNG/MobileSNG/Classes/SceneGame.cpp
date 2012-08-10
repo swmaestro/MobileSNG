@@ -87,6 +87,11 @@ bool SceneGame::_initUIMgr()
     m_pUIMgr->AppendUI(UI_MAP, "Shop.png", "Shop.png", 
                        ccp(200, -120), this, menu_selector(SceneGame::_shopFunc));
     
+    m_pUIMgr->AppendUI(UI_EDIT, "Icon-72.png", "Icon-72.png",
+                       ccp(200, -120), this, menu_selector(SceneGame::_editApplyFunc));
+    m_pUIMgr->AppendUI(UI_EDIT, "Icon-Small-50.png", "Icon-Small-50.png",
+                       ccp(145, -130), this, menu_selector(SceneGame::_editCancelFunc));
+    
     m_pUIMgr->AppendUI(UI_SHOP, "Shop-Close.png", "Shop-Close.png",
                        ccp(210, 130), this, menu_selector(SceneGame::_shopCloseFunc));
     
@@ -127,14 +132,6 @@ void SceneGame::_shopFunc(CCObject *pSender)
     CCLog(__FUNCTION__);
 }
 
-void SceneGame::_shopCloseFunc(CCObject *pSender)
-{
-    m_pUIMgr->ChangeUI(UI_MAP);
-    _changeUI(m_pMap);
-    
-    CCLog(__FUNCTION__);
-}
-
 void SceneGame::_friendsFunc(CCObject *pSender)
 {
     CCLog(__FUNCTION__);
@@ -150,6 +147,28 @@ void SceneGame::_flatFunc(CCObject *pSender)
     CCLog(__FUNCTION__);
 }
 
+void SceneGame::_editApplyFunc(CCObject *pSender)
+{
+    m_pMap->endEdit(m_pSystem->GetMapMgr());
+    m_pUIMgr->ChangeUI(UI_MAP);
+    _changeUI(m_pMap);
+}
+
+void SceneGame::_editCancelFunc(CCObject *pSender)
+{
+    m_pMap->endEdit(false);
+    m_pUIMgr->ChangeUI(UI_MAP);
+    _changeUI(m_pMap);
+}
+
+void SceneGame::_shopCloseFunc(CCObject *pSender)
+{
+    m_pUIMgr->ChangeUI(UI_MAP);
+    _changeUI(m_pMap);
+    
+    CCLog(__FUNCTION__);
+}
+
 void SceneGame::_changeUI(cocos2d::CCLayer * ui)
 {
     if (m_pCurrentUI)
@@ -162,8 +181,7 @@ void SceneGame::_changeUI(cocos2d::CCLayer * ui)
 
 void SceneGame::alloc(int type, int id)
 {
-//    m_pSystem->GetMapMgr()->addObject();
-    m_pMap->beginEdit(type, id);
-    m_pUIMgr->ChangeUI(UI_MAP);
+    m_pMap->beginEdit(m_pSystem->GetMapMgr(), type, id);
+    m_pUIMgr->ChangeUI(UI_EDIT);
     _changeUI(m_pMap);
 }

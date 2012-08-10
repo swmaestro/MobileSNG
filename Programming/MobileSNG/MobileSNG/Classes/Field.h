@@ -26,6 +26,7 @@ public:
 public:
     bool addCrop(int id, int time = 0);
     void removeCrop();
+    bool hasCrop();
 
 public:
     int  GetCropID();

@@ -55,6 +55,13 @@ void Field::removeCrop()
     }
 }
 
+bool Field::hasCrop()
+{
+    if (m_pCrop)
+        return true;
+    return false;
+}
+
 int  Field::GetCropID()
 {
     return m_pCrop->GetID();

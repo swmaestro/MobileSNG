@@ -339,19 +339,19 @@ CCPoint Map::filtPosition(CCPoint pos)
     return pos;
 }
 
-void Map::beginEdit()
+void Map::beginEdit(MapMgr * mapMgr)
 {
     m_isEditing = true;
     
-    m_pEditor->init(m_width);
+    m_pEditor->init(mapMgr, m_width);
     m_pEditor->setVisible(true);
 }
 
-void Map::beginEdit(int type, int id)
+void Map::beginEdit(MapMgr * mapMgr, int type, int id)
 {
     m_isEditing = true;
 
-    m_pEditor->init(m_width, type, id);
+    m_pEditor->init(mapMgr, m_width, type, id);
     m_pEditor->setVisible(true);
 }
 

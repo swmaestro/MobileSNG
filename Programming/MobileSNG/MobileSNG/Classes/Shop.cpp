@@ -65,6 +65,8 @@ bool Shop::init(SceneGame * scene)
 //120809 CA : Must be removed
     
     addItem(OBJ_CROP, "", "CandyCane/CandyCane.png", 0, 0, 0, 0, 0);
+    
+    addItem(OBJ_BUILDING, "", "Farm.png", 0, 0, 0, 0, 0);
     addItem(OBJ_BUILDING, "", "HauntedHouse/HauntedHouse.png", 0, 0, 0, 0, 0);
     
 /////////////////////////////
@@ -131,7 +133,15 @@ void Shop::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
         else if (m_touch.y < 275)
         {
             int i = m_touch.x / 200;
-            m_pScene->alloc(m_selected, i);
+            
+            if (m_selected == OBJ_BUILDING && i == 0)
+                m_pScene->alloc(OBJ_FARM, 0);
+            else
+            {
+                if (m_selected == OBJ_BUILDING)
+                    --i;
+                m_pScene->alloc(m_selected, i);
+            }
         }
     }
 
