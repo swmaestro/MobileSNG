@@ -11,20 +11,15 @@
 #include <sqlite3.h>
 #include "DataType.h"
 #include <vector>
+#include "Sqlite3Base.h"
 
-class ObjectInfoMgr
+class ObjectInfoMgr : private Sqlite3Base
 {
-private:
-    sqlite3     *m_pDataBase;
-    
 public:
     ObjectInfoMgr(const char *DBFileName);
     ~ObjectInfoMgr();
 
 private:
-    bool        _errorCheck(const char *table, char *type, char *bind, sqlite3_stmt **ppStatement);
-    bool        _errorCheck(const char *table, sqlite3_stmt **ppStatement);
-    
     bool        _searchInfo(const char *type, char *bind, BUILDING_INFO *pInfo); 
     bool        _searchInfo(const char *type, char *bind, CROP_INFO *pInfo); 
     bool        _searchInfo(const char *type, char *bind, ORNAMENT_INFO *pInfo); 
