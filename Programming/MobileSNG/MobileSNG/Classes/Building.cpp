@@ -32,16 +32,17 @@ void Building::UpdateSystem(ObjectInfoMgr *pInfoMgr)
         return;
     }
 
-    if( m_state == BUILDING_STATE_UNDER_CONSTRUCTION )
+    if( m_state < BUILDING_STATE_COMPLETE_CONSTRUCTION )
         time = info.buildTime;
-    else if( m_state == BUILDING_STATE_WORKING )
+    else if( m_state == BUILDING_STATE_COMPLETE_CONSTRUCTION )
         time = info.object.time;
 
     if(Timer::_CheckTimer(time))
-    {
-        if( m_state == BUILDING_STATE_UNDER_CONSTRUCTION )
-            StartTimer();
+    if(m_state == BUILDING_STATE_COMPLETE_CONSTRUCTION)
+        StartTimer();
 
-        m_state = m_state % 2 + 1;
-    }
+    if( m_state < BUILDING_STATE_COMPLETE_CONSTRUCTION )
+        m_state = m_nowTime / (time/4.f);
+    else
+        m_state = m_nowTime / time + 4;
 }
