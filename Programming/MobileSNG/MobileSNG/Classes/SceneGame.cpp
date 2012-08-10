@@ -1,9 +1,18 @@
 #include "SceneGame.h"
 #include "Map.h"
+#include "Shop.h"
+#include "GameSystem.h"
+#include "MapMgr.h"
 
 using namespace cocos2d;
 
-SceneGame::SceneGame() : m_pMap(NULL), m_pShop(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL)
+char * tempString[2][5] =
+{
+  "CandyCane",    "MushMallow", "JellyBean", " ", " ",
+  "HauntedHouse", " ",          " ",         " ", " ",
+};
+
+SceneGame::SceneGame() : m_pSystem(NULL), m_pMap(NULL), m_pShop(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL)
 {
     
 }
@@ -12,6 +21,7 @@ SceneGame::~SceneGame()
 {
     removeAllChildrenWithCleanup(true);
     
+    SAFE_DELETE(m_pSystem);
     SAFE_DELETE(m_pMap);
     SAFE_DELETE(m_pShop);
     SAFE_DELETE(m_pUIMgr);
@@ -39,6 +49,10 @@ bool SceneGame::init()
     if (!_initUIMgr())
         return false;
     
+    m_pSystem = new GameSystem();
+    if (!m_pSystem->initialize(""))
+        return false;
+    
     CCSize wsize = CCDirector::sharedDirector()->getWinSize();
     
     m_pMap = new Map();
@@ -50,7 +64,7 @@ bool SceneGame::init()
     addChild(m_pMap, 0);
     
     m_pShop = new Shop();
-    m_pShop->init();
+    m_pShop->init(this);
     m_pShop->setVisible(false);
     addChild(m_pShop, 0);
     
@@ -144,4 +158,12 @@ void SceneGame::_changeUI(cocos2d::CCLayer * ui)
         ui->setVisible(true);
     
     m_pCurrentUI = ui;
+}
+
+void SceneGame::alloc(int type, int id)
+{
+//    m_pSystem->GetMapMgr()->addObject();
+    m_pMap->beginEdit(type, id);
+    m_pUIMgr->ChangeUI(UI_MAP);
+    _changeUI(m_pMap);
 }

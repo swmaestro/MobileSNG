@@ -30,7 +30,7 @@ void Crop::UpdateSystem(ObjectInfoMgr *pInfoMgr)
     }
     
     if(Timer::_CheckTimer(info.object.time) == false)
-            m_state = m_nowTime / (info.object.time / 3);
+            m_state = m_nowTime / (info.object.time / 4);
     else    m_state = CROP_STATE_DONE;
 
 }

@@ -34,7 +34,7 @@ CCObject* CCCopying::copyWithZone(CCZone *pZone)
 {
     CC_UNUSED_PARAM(pZone);
     CCAssert(0, "not implement");
-    return 0;
+return 0;
 }
 
 CCObject::CCObject(void)

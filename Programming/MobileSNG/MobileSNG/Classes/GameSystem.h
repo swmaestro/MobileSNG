@@ -66,5 +66,6 @@ public:
     void        Update(float fDelta);
     
 public:
-    MapMgr*     GetMapMgr();
+    MapMgr*         GetMapMgr();
+    ObjectInfoMgr*   GetInfoMgr() { return m_pInfoMgr; }
 };

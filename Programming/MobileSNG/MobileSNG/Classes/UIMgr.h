@@ -9,7 +9,6 @@
 #pragma once
 
 #include "cocos2d.h"
-#include "Shop.h"
 
 //CA Edit 120728 Move Shop to Game Scene and Change UI System
 //CA Edit 120729 Change UI System

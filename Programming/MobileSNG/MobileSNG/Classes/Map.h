@@ -13,6 +13,7 @@
 #include "DataType.h"
 
 class MapTile;
+class Editor;
 
 //CA Edit 120728 Move Touch to Game Scene
 
@@ -21,11 +22,14 @@ class Map : public cocos2d::CCLayer
 private:
     cocos2d::CCPoint    m_touch[2];
     
+    Editor            * m_pEditor;
+    
     MapTile         *** m_arrTile;
     int                 m_width;
     
     bool                m_isDragging;
     bool                m_isScaling;
+    bool                m_isEditing;
     
     static MapTile ***  _create(int width);
     static void         _release(MapTile *** tile, int width);
@@ -49,6 +53,10 @@ public:
     
     float filtScale(float scale);
     cocos2d::CCPoint filtPosition(cocos2d::CCPoint pos);
+    
+    void beginEdit();
+    void beginEdit(int type, int id);
+    void endEdit(bool apply);
     
     //void expand();
 };

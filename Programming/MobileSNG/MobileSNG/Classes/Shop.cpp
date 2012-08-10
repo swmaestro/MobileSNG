@@ -7,6 +7,7 @@
 //
 
 #include "Shop.h"
+#include "SceneGame.h"
 
 using namespace cocos2d;
 
@@ -27,10 +28,12 @@ Shop::~Shop()
     }
 }
 
-bool Shop::init()
+bool Shop::init(SceneGame * scene)
 {  
     if (!CCLayer::init())
         return false;
+
+    m_pScene = scene;
     
     CCSprite * pBG = CCSprite::create("Shop-Background.png");
     pBG->setAnchorPoint(ccp(0, 0));
@@ -124,6 +127,11 @@ void Shop::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
         {
             int i = (m_touch.x - 10) / 100;
             _select(i);
+        }
+        else if (m_touch.y < 275)
+        {
+            int i = m_touch.x / 200;
+            m_pScene->alloc(m_selected, i);
         }
     }
 
