@@ -28,7 +28,7 @@ private:
     cocos2d::CCPoint m_touch;
     
     int m_selected;
-    void _select(int i);
+void _select(int i);
     
 public:
     Shop();
@@ -37,7 +37,7 @@ public:
     bool init();
     
 //  void addItem(int tabNum, int objNum);
-    void addItem(int tabNum, const char * name, const char * imgPath, int price, int time);
+    void addItem(int tabNum, const char * name, const char * imgPath, int costSweet, int costFear, int time, int rewardSweet, int rewardFear);
     
     virtual void ccTouchesBegan(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
     virtual void ccTouchesMoved(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);

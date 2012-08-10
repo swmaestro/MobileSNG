@@ -3,7 +3,6 @@
 
 using namespace cocos2d;
 
-
 SceneGame::SceneGame() : m_pMap(NULL), m_pShop(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL)
 {
     
@@ -139,7 +138,7 @@ void SceneGame::_flatFunc(CCObject *pSender)
 
 void SceneGame::_changeUI(cocos2d::CCLayer * ui)
 {
-    if(m_pCurrentUI)
+    if (m_pCurrentUI)
         m_pCurrentUI->setVisible(false);
     if (ui)
         ui->setVisible(true);

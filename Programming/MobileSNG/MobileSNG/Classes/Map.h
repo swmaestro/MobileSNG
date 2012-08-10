@@ -19,8 +19,6 @@ class MapTile;
 class Map : public cocos2d::CCLayer
 {
 private:
-    cocos2d::CCSprite * m_pBG;
-    
     cocos2d::CCPoint    m_touch[2];
     
     MapTile         *** m_arrTile;
@@ -38,6 +36,8 @@ private:
     void _removeTile();
     
 public:
+    static int width, height;
+    
     Map();
     ~Map();
     
