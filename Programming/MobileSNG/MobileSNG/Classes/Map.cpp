@@ -11,6 +11,9 @@
 
 using namespace cocos2d;
 
+int Map::width = 480 * 4;
+int Map::height = 320 * 4;
+
 Map::Map() : m_arrTile(NULL), m_width(0), m_isDragging(false), m_isScaling(false)
 {
     
@@ -93,12 +96,9 @@ void Map::_removeTile()
 
 int Map::_cursorXY(CCPoint cur)
 {
-    CCPoint o = getPosition();
-    CCRect rc = boundingBox();
     float scale = getScale();
     
-    o.x -= (scale - 1) * rc.size.width / scale / 2 + m_width / 2 * scale * MapTile::width;
-    o.y -= (scale - 1) * rc.size.height / scale / 2;
+    CCPoint o = ccpSub(getPosition(), ccp((scale - 1) * 240 + m_width / 2 * scale * MapTile::width, (scale - 1) * 160));
     
     /*
     for (int i = 0; i < m_width; ++i)
@@ -117,8 +117,10 @@ int Map::_cursorXY(CCPoint cur)
      */
     
     cur = ccpSub(cur, o);
-    cur.x /= MapTile::width / 2 * scale;
-    cur.y /= MapTile::height / 2 * scale;
+    cur = ccpMult(cur, 1 / scale);
+    
+    cur.x /= MapTile::width / 2;
+    cur.y /= MapTile::height / 2;
     CCPoint t = ccp((cur.x - cur.y) / 2, (cur.x + cur.y) / 2);
     
     int x = round(t.x);
@@ -186,15 +188,11 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
             float s = getScale();
             float a = dis2 / dis1;
             
-            if (a > 1.1) a = 1.1;
-            if (a < 0.9) a = 0.9;
-        
             float scale = filtScale(s * a);
             
             setScale(scale);
             
             CCPoint p = getPosition();
-            CCRect rc = boundingBox();
             CCSize ws = CCDirector::sharedDirector()->getWinSize();
                     
             CCPoint t = ccpMidpoint(m_touch[0], m_touch[1]);
@@ -205,8 +203,8 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
             p = ccpMult(p, scale / s);
             p = ccpAdd(p, t);
             
-            //p.x -= (scale - 1) * rc.size.width / scale / 2;
-            //p.y -= (scale - 1) * rc.size.height / scale / 2;
+            //p.x -= (scale - 1) * Map::width / scale / 2;
+            //p.y -= (scale - 1) * Map::height / scale / 2;
             
             setPosition(filtPosition(p));
         }
@@ -261,42 +259,52 @@ bool Map::init()
     m_arrTile = _create(m_width);
     _addTile();
     
-    m_pBG = CCSprite::create("Background.png");
-    m_pBG->setAnchorPoint(ccp(0.5, 0.5));
-    m_pBG->setPosition(ccp(0, 0));
-    addChild(m_pBG, 0);
+    CCSprite * bg = CCSprite::create("Background.png");
+    bg->setAnchorPoint(ccp(0.5, 0.5));
+    bg->setPosition(ccp(0, 0));
+    bg->setScale(4);
+    addChild(bg, 0);
     
+    /*
+    for (int i = 0; i < Map::width / 480; ++i)
+        for (int j = 0; j < Map::height / 320; ++j)
+        {
+            CCSprite * sp = CCSprite::create("Background.png");
+            sp->setAnchorPoint(ccp(0.5, 0.5));
+            sp->setPosition(ccp((i - (Map::width / 480 - 1) / 2.f) * 480, (j - (Map::height / 320 - 1) / 2.f) * 320));
+            addChild(sp, 0);
+        }
+     */
     return true;
 }
 
 float Map::filtScale(float scale)
 {
-    if (scale < 0.75) scale = 0.75;
-    if (scale > 1.75) scale = 1.75;
+    if (scale < 0.5) scale = 0.5;
+    if (scale > 1) scale = 1;
     
     return scale;
 }
 
 CCPoint Map::filtPosition(CCPoint pos)
 {
-    CCRect rc = boundingBox();
     float scale = getScale();
     
-    if (pos.x > rc.size.width + (scale - 1) / scale * rc.size.width / 2)
-        pos.x = rc.size.width + (scale - 1) / scale * rc.size.width / 2;
-    if (pos.y > rc.size.height + (scale - 1) / scale * rc.size.height / 2)
-        pos.y = rc.size.height + (scale - 1) / scale * rc.size.height / 2;
+    if (pos.x > -240 + (Map::width / 2 + 240) * scale)
+        pos.x = -240 + (Map::width / 2 + 240) * scale;
+    if (pos.y > -160 + (Map::height / 2 + 160) * scale)
+        pos.y = -160 + (Map::height / 2 + 160) * scale;
     
-    if (pos.x < (1 - scale) / scale * rc.size.width / 2)
-        pos.x = (1 - scale) / scale * rc.size.width / 2;
-    if (pos.y < (1 - scale) / scale * rc.size.height / 2)
-        pos.y = (1 - scale) / scale * rc.size.height / 2;
+    if (pos.x < 240 - (Map::width / 2 - 240) * scale)
+        pos.x = 240 - (Map::width / 2 - 240) * scale;
+    if (pos.y < 160 - (Map::height / 2 - 160) * scale)
+        pos.y = 160 - (Map::height / 2 - 160) * scale;
     
     /*
-    if (pos.x > rc.size.width + (scale - 1) * wsize.width / 2)
-        pos.x = rc.size.width + (scale - 1) * wsize.width / 2;
-    if (pos.y > rc.size.height + (scale - 1) * wsize.height / 2)
-        pos.y = rc.size.height + (scale - 1) * wsize.height / 2;
+    if (pos.x > Map::width + (scale - 1) * wsize.width / 2)
+        pos.x = Map::width + (scale - 1) * wsize.width / 2;
+    if (pos.y > Map::height + (scale - 1) * wsize.height / 2)
+        pos.y = Map::height + (scale - 1) * wsize.height / 2;
     
     if (pos.x < (1 - scale) * wsize.width / 2)
         pos.x = (1 - scale) * wsize.width / 2;

@@ -10,8 +10,8 @@
 
 using namespace cocos2d;
 
-int MapTile::width = 50;
-int MapTile::height = 30;
+int MapTile::width = 100;
+int MapTile::height = 60;
 
 MapTile::MapTile() : m_pSpr(NULL)
 {

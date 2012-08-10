@@ -35,6 +35,7 @@ bool Shop::init()
     CCSprite * pBG = CCSprite::create("Shop-Background.png");
     pBG->setAnchorPoint(ccp(0, 0));
     pBG->setPosition(ccp(0, 0));
+    pBG->setOpacity(200);
     addChild(pBG, 0);
     
     CCSprite * pLine = CCSprite::create("Shop-Line.png");
@@ -55,10 +56,17 @@ bool Shop::init()
         
         m_pItem[i] = new CCLayer();
         m_pItem[i]->init();
-        m_pTab[i]->addChild(m_pItem[i]);
+        m_count[i] = 0;
     }
+
+//120809 CA : Must be removed
     
-    _select(0);
+    addItem(OBJ_CROP, "", "CandyCane/CandyCane.png", 0, 0, 0, 0, 0);
+    addItem(OBJ_BUILDING, "", "HauntedHouse/HauntedHouse.png", 0, 0, 0, 0, 0);
+    
+/////////////////////////////
+    
+    _select(OBJ_CROP);
     
     return true;
 }
@@ -91,7 +99,6 @@ void Shop::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
     else if (m_isDragging)
     {
         CCLog("DRAG");
-        
     }
 }
 
@@ -103,8 +110,8 @@ void Shop::_select(int i)
     m_pTab[m_selected]->setPositionY(295);
     m_pTab[i]->setPositionY(288);
     
-//    reorderChild(m_pTab[m_selected], 1);
-//    reorderChild(m_pTab[i], 3);
+    removeChild(m_pItem[m_selected], false);
+    addChild(m_pItem[i], 1);
 
     m_selected = i;
 }
@@ -121,4 +128,14 @@ void Shop::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
     }
 
     m_isDragging = false;
+}
+
+void Shop::addItem(int tabNum, const char *name, const char *imgPath,
+                   int costSweet, int costFear, int time, int rewardSweet, int rewardFear)
+{
+    CCSprite * spr = CCSprite::create(imgPath);
+    spr->setAnchorPoint(ccp(0.5, 0.5));
+    spr->setPosition(ccp((m_count[tabNum]++ + 0.5) * 200, 160));
+    
+    m_pItem[tabNum]->addChild(spr);
 }
