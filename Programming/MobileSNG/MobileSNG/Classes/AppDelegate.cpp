@@ -10,6 +10,8 @@
 #include "SceneGame.h"
 #include "cocos2d.h"
 
+#include <queue>
+
 USING_NS_CC;
 
 AppDelegate::AppDelegate()
@@ -39,7 +41,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     SceneGame *pScene = new SceneGame;
     pScene->init();
     pDirector->runWithScene((CCScene*)pScene);
-    
+        
     return true;
 }
 

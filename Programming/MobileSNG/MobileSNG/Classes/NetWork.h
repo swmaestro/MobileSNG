@@ -12,6 +12,8 @@
 #include <memory.h>
 #include "curl.h"
 
+#define NETWORK_RESPONSE_TIME 10
+
 struct CURL_DATA {
     char    *pContent;
     int      size;
@@ -19,7 +21,6 @@ struct CURL_DATA {
     CURL_DATA()
     {
         pContent    = (char*)malloc(1); //어짜피 realloc함 임시적
-        pContent[0] = NULL;
         size        = 0;
     }
     
@@ -36,12 +37,18 @@ private:
     CURL        *m_pCTX;
     
 public:
-    NetWork(const char *url, CURL_DATA *pData);
+    NetWork();
     ~NetWork();
+
+private:
+    static int _WriteCurlDataCallback(void *ptr, int size, int nmemb, void *pData);
     
 public:
-    CURLcode    connectHttp();
-    
+    CURLcode    connectHttp(const char *url, CURL_DATA *pData);
+
 public:
-    static int WriteCurlDataCallback(void *ptr, int size, int nmemb, void *pData);
+    int         GetResponseCode();
+    bool        GetContentType(char *pOutStr);
+    double      GetSize();
+    double      GetSpeed();
 };

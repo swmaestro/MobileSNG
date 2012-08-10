@@ -16,7 +16,7 @@
 		3C5C1B4715D2478E006E7C0B /* ObjectInfoMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3915D2478E006E7C0B /* ObjectInfoMgr.cpp */; };
 		3C5C1B4815D2478E006E7C0B /* ObjectInMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3B15D2478E006E7C0B /* ObjectInMap.cpp */; };
 		3C5C1B4915D2478E006E7C0B /* Ornament.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3E15D2478E006E7C0B /* Ornament.cpp */; };
-		3C5C1B4A15D2478E006E7C0B /* Tiemr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B4015D2478E006E7C0B /* Tiemr.cpp */; };
+		3C5C1B4A15D2478E006E7C0B /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B4015D2478E006E7C0B /* Timer.cpp */; };
 		3C9364B515B0FF6300860E6A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C9364B415B0FF6300860E6A /* QuartzCore.framework */; };
 		3C9364B715B0FF6300860E6A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C9364B615B0FF6300860E6A /* OpenGLES.framework */; };
 		3C9364B915B0FF6300860E6A /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C9364B815B0FF6300860E6A /* OpenAL.framework */; };
@@ -213,6 +213,7 @@
 		3CAB288215BD0E3D0003DDE2 /* Friends.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CAB287E15BD0E3D0003DDE2 /* Friends.png */; };
 		3CAB288315BD0E3D0003DDE2 /* Shop.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CAB287F15BD0E3D0003DDE2 /* Shop.png */; };
 		3CAB28A615BDC40E0003DDE2 /* box.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3CAB28A515BDC40E0003DDE2 /* box.xml */; };
+		3CC7890215D393D000C19F95 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC7890015D393D000C19F95 /* GameSystem.cpp */; };
 		C51B140315BED2C6008491C2 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C51B140215BED2C6008491C2 /* Map.cpp */; };
 		C51B140715BEF478008491C2 /* MapTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C51B140615BEF478008491C2 /* MapTile.cpp */; };
 		C5241CB815D3E3D5003820EE /* CandyCane in Resources */ = {isa = PBXBuildFile; fileRef = C5241CB715D3E3D5003820EE /* CandyCane */; };
@@ -265,7 +266,7 @@
 		3C5C1B3D15D2478E006E7C0B /* ObjectInMapType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectInMapType.h; path = Classes/ObjectInMapType.h; sourceTree = "<group>"; };
 		3C5C1B3E15D2478E006E7C0B /* Ornament.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Ornament.cpp; path = Classes/Ornament.cpp; sourceTree = "<group>"; };
 		3C5C1B3F15D2478E006E7C0B /* Ornament.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Ornament.h; path = Classes/Ornament.h; sourceTree = "<group>"; };
-		3C5C1B4015D2478E006E7C0B /* Tiemr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tiemr.cpp; path = Classes/Tiemr.cpp; sourceTree = "<group>"; };
+		3C5C1B4015D2478E006E7C0B /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Timer.cpp; path = Classes/Timer.cpp; sourceTree = "<group>"; };
 		3C5C1B4115D2478E006E7C0B /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timer.h; path = Classes/Timer.h; sourceTree = "<group>"; };
 		3C9364B015B0FF6300860E6A /* MobileSNG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileSNG.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C9364B415B0FF6300860E6A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -681,6 +682,8 @@
 		3CAB287E15BD0E3D0003DDE2 /* Friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Friends.png; path = Resources/Friends.png; sourceTree = "<group>"; };
 		3CAB287F15BD0E3D0003DDE2 /* Shop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Shop.png; path = Resources/Shop.png; sourceTree = "<group>"; };
 		3CAB28A515BDC40E0003DDE2 /* box.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = box.xml; path = Resources/box.xml; sourceTree = "<group>"; };
+		3CC7890015D393D000C19F95 /* GameSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameSystem.cpp; path = Classes/GameSystem.cpp; sourceTree = "<group>"; };
+		3CC7890115D393D000C19F95 /* GameSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameSystem.h; path = Classes/GameSystem.h; sourceTree = "<group>"; };
 		C51B13FF15BED292008491C2 /* Map.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Map.h; path = Classes/Map.h; sourceTree = "<group>"; };
 		C51B140215BED2C6008491C2 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Map.cpp; path = Classes/Map.cpp; sourceTree = "<group>"; };
 		C51B140515BEF46A008491C2 /* MapTile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MapTile.h; path = Classes/MapTile.h; sourceTree = "<group>"; };
@@ -850,7 +853,7 @@
 		3C5C1B4D15D249D0006E7C0B /* ObjectTimer */ = {
 			isa = PBXGroup;
 			children = (
-				3C5C1B4015D2478E006E7C0B /* Tiemr.cpp */,
+				3C5C1B4015D2478E006E7C0B /* Timer.cpp */,
 				3C5C1B4115D2478E006E7C0B /* Timer.h */,
 			);
 			name = ObjectTimer;
@@ -898,6 +901,8 @@
 		3C9364C415B0FF6300860E6A /* MobileSNG */ = {
 			isa = PBXGroup;
 			children = (
+				3CC7890015D393D000C19F95 /* GameSystem.cpp */,
+				3CC7890115D393D000C19F95 /* GameSystem.h */,
 				3C5C1B4B15D247BF006E7C0B /* ObjectInMap */,
 				3C5C1B2E15D24731006E7C0B /* NetWork */,
 				3C5C1B2815D24718006E7C0B /* MapMgr */,
@@ -2066,7 +2071,8 @@
 				3C5C1B4715D2478E006E7C0B /* ObjectInfoMgr.cpp in Sources */,
 				3C5C1B4815D2478E006E7C0B /* ObjectInMap.cpp in Sources */,
 				3C5C1B4915D2478E006E7C0B /* Ornament.cpp in Sources */,
-				3C5C1B4A15D2478E006E7C0B /* Tiemr.cpp in Sources */,
+				3C5C1B4A15D2478E006E7C0B /* Timer.cpp in Sources */,
+				3CC7890215D393D000C19F95 /* GameSystem.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
