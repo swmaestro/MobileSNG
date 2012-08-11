@@ -53,10 +53,5 @@ public:
     bool isIn(ObjectInMap *pObject);
     
 public:
-<<<<<<< HEAD
     virtual void UpdateSystem(ObjectInfoMgr *pInfoMgr);
-=======
-    //120811 CA Modified = 0; -> {} (abstract to virtual)
-    virtual void UpdateSystem(ObjectInfoMgr *pInfoMgr) {}
->>>>>>> 53fcfa2f95c1fa394a4dc543eb860ff657da3958
 };

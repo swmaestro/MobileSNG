@@ -42,11 +42,7 @@ ObjectInMap* MapMgr::_CreateObject(ObjectInMap *pObject, int time)
     else if( type == OBJECT_TYPE_ORNAMENT )
         object = dynamic_cast<ObjectInMap*>(new Ornament(pObject));
     
-<<<<<<< HEAD
-    else if( type == OBJECT_TYPE_FIELD)
-=======
     else if( type == OBJECT_TYPE_FIELD )
->>>>>>> 53fcfa2f95c1fa394a4dc543eb860ff657da3958
         object = dynamic_cast<ObjectInMap*>(new Field(pObject));
     
     return object;

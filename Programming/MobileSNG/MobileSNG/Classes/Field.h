@@ -26,13 +26,10 @@ public:
 public:
     bool addCrop(int id, int time = 0);
     void removeCrop();
-    
-    //120811 CA Appended
-    bool hasCrop();
 
 public:
     Crop*   GetCrop();
     
 public:
-    bool isEmpty();
+    bool hasCrop();
 };
