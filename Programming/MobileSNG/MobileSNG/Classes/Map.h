@@ -14,7 +14,7 @@
 
 class MapTile;
 class MapMgr;
-class Editor;
+class Allocator;
 
 //CA Edit 120728 Move Touch to Game Scene
 
@@ -24,13 +24,13 @@ private:
     cocos2d::CCPoint    m_touch[2];
     
     cocos2d::CCLayer  * m_pTile;
-    Editor            * m_pEditor;
+    Allocator         * m_pAllocator;
     
     int                 m_width;
     
     bool                m_isDragging;
     bool                m_isScaling;
-    bool                m_isEditing;
+    bool                m_isAllocating;
     
     int _cursorXY(cocos2d::CCPoint cur);
     

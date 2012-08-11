@@ -14,7 +14,7 @@
 
 class MapMgr;
 
-class Editor : public cocos2d::CCLayer
+class Allocator : public cocos2d::CCLayer
 {
 private:
     int m_width;
@@ -24,13 +24,11 @@ private:
     cocos2d::CCSprite * m_touch;
     
 public:
-    bool m_isSetter;
-    int m_setType, m_setID;
-    std::vector<int> m_setVec;
+    int m_type, m_id;
+    std::vector<int> m_vec;
     
-    ~Editor();
+    ~Allocator();
     
-    void init(MapMgr * mapMgr, int width);
     void init(MapMgr * mapMgr, int width, int type, int id);
     
     void Apply();

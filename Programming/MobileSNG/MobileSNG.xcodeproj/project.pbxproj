@@ -225,7 +225,7 @@
 		C56D3BF215C10809003ABDB3 /* Farm.png in Resources */ = {isa = PBXBuildFile; fileRef = C56D3BF115C10809003ABDB3 /* Farm.png */; };
 		C57F18F115BF8FFE0055C208 /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = C57F18F015BF8FFE0055C208 /* Background.png */; };
 		C57F18FC15BF92530055C208 /* Tile.png in Resources */ = {isa = PBXBuildFile; fileRef = C57F18FB15BF92530055C208 /* Tile.png */; };
-		C583633415D52560006F4F2A /* Editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C583633315D52560006F4F2A /* Editor.cpp */; };
+		C583633415D52560006F4F2A /* Allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C583633315D52560006F4F2A /* Allocator.cpp */; };
 		C583633615D5273C006F4F2A /* EditTile.png in Resources */ = {isa = PBXBuildFile; fileRef = C583633515D5273C006F4F2A /* EditTile.png */; };
 		C5D57AD115CAB0AF003B8D80 /* Edit-Big.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D57AC915CAB0AF003B8D80 /* Edit-Big.png */; };
 		C5D57AD215CAB0AF003B8D80 /* Friends-Big.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D57ACA15CAB0AF003B8D80 /* Friends-Big.png */; };
@@ -701,8 +701,8 @@
 		C56D3BF115C10809003ABDB3 /* Farm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Farm.png; path = Resources/Farm.png; sourceTree = "<group>"; };
 		C57F18F015BF8FFE0055C208 /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background.png; path = Resources/Background.png; sourceTree = "<group>"; };
 		C57F18FB15BF92530055C208 /* Tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Tile.png; path = Resources/Tile.png; sourceTree = "<group>"; };
-		C583633215D52552006F4F2A /* Editor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Editor.h; path = Classes/Editor.h; sourceTree = "<group>"; };
-		C583633315D52560006F4F2A /* Editor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Editor.cpp; path = Classes/Editor.cpp; sourceTree = "<group>"; };
+		C583633215D52552006F4F2A /* Allocator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Allocator.h; path = Classes/Allocator.h; sourceTree = "<group>"; };
+		C583633315D52560006F4F2A /* Allocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Allocator.cpp; path = Classes/Allocator.cpp; sourceTree = "<group>"; };
 		C583633515D5273C006F4F2A /* EditTile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EditTile.png; path = Resources/EditTile.png; sourceTree = "<group>"; };
 		C5D57AC915CAB0AF003B8D80 /* Edit-Big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Edit-Big.png"; path = "Resources/Edit-Big.png"; sourceTree = "<group>"; };
 		C5D57ACA15CAB0AF003B8D80 /* Friends-Big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Friends-Big.png"; path = "Resources/Friends-Big.png"; sourceTree = "<group>"; };
@@ -1788,7 +1788,7 @@
 		C51B140115BED2B4008491C2 /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				C583633115D52490006F4F2A /* Editor */,
+				C583633115D52490006F4F2A /* Allocator */,
 				C51B140215BED2C6008491C2 /* Map.cpp */,
 				C51B13FF15BED292008491C2 /* Map.h */,
 			);
@@ -1804,13 +1804,13 @@
 			name = Sqlite3Base;
 			sourceTree = "<group>";
 		};
-		C583633115D52490006F4F2A /* Editor */ = {
+		C583633115D52490006F4F2A /* Allocator */ = {
 			isa = PBXGroup;
 			children = (
-				C583633315D52560006F4F2A /* Editor.cpp */,
-				C583633215D52552006F4F2A /* Editor.h */,
+				C583633315D52560006F4F2A /* Allocator.cpp */,
+				C583633215D52552006F4F2A /* Allocator.h */,
 			);
-			name = Editor;
+			name = Allocator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2089,7 +2089,7 @@
 				3C5C1B4915D2478E006E7C0B /* Ornament.cpp in Sources */,
 				3C5C1B4A15D2478E006E7C0B /* Timer.cpp in Sources */,
 				3CC7890215D393D000C19F95 /* GameSystem.cpp in Sources */,
-				C583633415D52560006F4F2A /* Editor.cpp in Sources */,
+				C583633415D52560006F4F2A /* Allocator.cpp in Sources */,
 				C56307B615D53F2C00E2BEF7 /* Sqlite3Base.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
