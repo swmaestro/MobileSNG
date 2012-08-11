@@ -7,11 +7,11 @@
 //
 
 #include "Editor.h"
-#include "MapTile.h"
 #include "MapMgr.h"
 #include "SceneGame.h"
 #include "Shop.h"
 
+#include "Map.h"
 #include "Building.h"
 #include "Field.h"
 
@@ -38,8 +38,8 @@ void Editor::init(MapMgr * mapMgr, int width)
         {
             CCSprite * spr = CCSprite::create("EditTile.png");
             spr->setAnchorPoint(ccp(0.5, 0.5));
-            spr->setPosition(ccp((i + j - m_width + 1) * MapTile::width / 2, (j - i) * MapTile::height / 2));
-            addChild(spr, 1);
+            spr->setPosition(ccp((i + j - m_width + 1) * Map::tileWidth / 2, (j - i) * Map::tileHeight / 2));
+            addChild(spr, i - j + m_width);
         }
 }
 
@@ -135,7 +135,7 @@ void Editor::TouchesBegin(int i, int j)
         else
             m_touch->setAnchorPoint(ccp(0.5, 0.3));
         
-        m_touch->setPosition(ccp((i + j - m_width + 1) * MapTile::width / 2, (j - i) * MapTile::height / 2));
+        m_touch->setPosition(ccp((i + j - m_width + 1) * Map::tileWidth / 2, (j - i) * Map::tileHeight / 2));
         m_touch->setOpacity(180);
         addChild(m_touch, 0);
     }
