@@ -11,6 +11,9 @@
 Field::Field(ObjectInMap *pObject)
             : ObjectInMap(pObject)
 {
+//120811 CA Appended : Set Type
+    m_type    = OBJECT_TYPE_FIELD;
+    
     m_pCrop   = NULL;
 }
 
@@ -55,7 +58,19 @@ void Field::removeCrop()
     }
 }
 
+<<<<<<< HEAD
 Crop* Field::GetCrop()
+=======
+bool Field::hasCrop()
+{
+    if (m_pCrop != NULL)
+        return true;
+    
+    return false;
+}
+
+int  Field::GetCropID()
+>>>>>>> 53fcfa2f95c1fa394a4dc543eb860ff657da3958
 {
     return m_pCrop;
 }

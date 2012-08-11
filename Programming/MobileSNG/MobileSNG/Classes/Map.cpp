@@ -8,13 +8,17 @@
 
 #include "Map.h"
 #include "MapTile.h"
+#include "Editor.h"
+
+#include "Shop.h"
+#include "SceneGame.h"
 
 using namespace cocos2d;
 
 int Map::width = 480 * 4;
 int Map::height = 320 * 4;
 
-Map::Map() : m_arrTile(NULL), m_width(0), m_isDragging(false), m_isScaling(false)
+Map::Map() : m_pEditor(NULL), m_arrTile(NULL), m_width(0), m_isDragging(false), m_isScaling(false)
 {
     
 }
@@ -23,6 +27,8 @@ Map::~Map()
 {
     removeAllChildrenWithCleanup(true);
     _release(m_arrTile, m_width);
+    
+    SAFE_DELETE(m_pEditor);
 }
 
 MapTile *** Map::_create(int width)
@@ -134,7 +140,20 @@ int Map::_cursorXY(CCPoint cur)
 
 void Map::ccTouchesBegan(CCSet * pTouches, CCEvent * pEvent)
 {
-    //
+    if (m_isEditing)
+    {
+        CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
+        
+        CCPoint p = pTouch->locationInView();
+        p = CCDirector::sharedDirector()->convertToGL(p);
+    
+        int t = _cursorXY(p);
+        
+        if (t < 0)
+            return;
+        
+        m_pEditor->TouchesBegin(t / m_width, t % m_width);
+    }
 }
 
 void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
@@ -154,6 +173,9 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
             m_isDragging = true;
             m_isScaling = false;
             m_touch[0] = p;
+            
+            if (m_isEditing)
+                m_pEditor->TouchesMove();
         }
         else if (m_isDragging)
         {
@@ -165,6 +187,9 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
     }
     else 
     {
+        if (m_isEditing)
+            m_pEditor->TouchesMove();
+        
         CCSetIterator i = pTouches->begin();
         
         CCTouch * t1 = static_cast<CCTouch *>(*i++);
@@ -221,23 +246,20 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
 {
     if (!m_isDragging && !m_isScaling)
     {
-        CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
+        if (m_isEditing)
+        {
+            CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
         
-        CCPoint p = pTouch->locationInView();
-        p = CCDirector::sharedDirector()->convertToGL(p);
+            CCPoint p = pTouch->locationInView();
+            p = CCDirector::sharedDirector()->convertToGL(p);
         
-        int t = _cursorXY(p);
+            int t = _cursorXY(p);
         
-        if (t < 0)
-            return;
+            if (t < 0)
+                return;
         
-        int x = t / m_width;
-        int y = t % m_width;
-        
-        CCSprite * spr = CCSprite::create("Farm.png");
-        spr->setAnchorPoint(ccp(0.5, 0.5));
-        spr->setPosition(ccp(0, 0));
-        m_arrTile[x][y]->addChild(spr);
+            m_pEditor->TouchesEnd(t / m_width, t % m_width);
+        }
     }
     
     m_isDragging = false;
@@ -264,6 +286,12 @@ bool Map::init()
     bg->setPosition(ccp(0, 0));
     bg->setScale(4);
     addChild(bg, 0);
+    
+    m_pEditor = new Editor();
+    m_pEditor->setAnchorPoint(ccp(0.5, 0.5));
+    m_pEditor->setPosition(ccp(0, 0));
+    m_pEditor->setVisible(false);
+    addChild(m_pEditor, 2);
     
     /*
     for (int i = 0; i < Map::width / 480; ++i)
@@ -312,4 +340,52 @@ CCPoint Map::filtPosition(CCPoint pos)
         pos.y = (1 - scale) * wsize.height / 2;
     */
     return pos;
+}
+
+void Map::beginEdit(MapMgr * mapMgr)
+{
+    m_isEditing = true;
+    
+    m_pEditor->init(mapMgr, m_width);
+    m_pEditor->setVisible(true);
+}
+
+void Map::beginEdit(MapMgr * mapMgr, int type, int id)
+{
+    m_isEditing = true;
+
+    m_pEditor->init(mapMgr, m_width, type, id);
+    m_pEditor->setVisible(true);
+}
+
+void Map::endEdit(bool apply)
+{
+    m_isEditing = false;
+    
+    if (apply)
+    {
+        m_pEditor->Apply();
+        
+        if (m_pEditor->m_isSetter)
+            for (int i = 0; i < m_pEditor->m_setVec.size(); ++i)
+            {
+                char temp[30];
+                if (m_pEditor->m_setType == OBJ_FARM)
+                    sprintf(temp, "Farm.png");
+                else
+                    sprintf(temp, "%s/01.png", tempString[m_pEditor->m_setType][m_pEditor->m_setID]);
+                
+                CCSprite * spr = CCSprite::create(temp);
+                
+                if (m_pEditor->m_setType == OBJ_FARM)
+                    spr->setAnchorPoint(ccp(0.5, 0.5));
+                else
+                    spr->setAnchorPoint(ccp(0.5, 0.3));
+                
+                m_arrTile[m_pEditor->m_setVec[i] / m_width][m_pEditor->m_setVec[i] % m_width]->addChild(spr, 1);
+            }
+    }
+    
+    m_pEditor->removeAllChildrenWithCleanup(true);
+    m_pEditor->setVisible(false);
 }

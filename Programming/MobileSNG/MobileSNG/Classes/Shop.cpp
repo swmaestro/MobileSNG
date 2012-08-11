@@ -7,6 +7,7 @@
 //
 
 #include "Shop.h"
+#include "SceneGame.h"
 
 using namespace cocos2d;
 
@@ -27,15 +28,17 @@ Shop::~Shop()
     }
 }
 
-bool Shop::init()
+bool Shop::init(SceneGame * scene)
 {  
     if (!CCLayer::init())
         return false;
+
+    m_pScene = scene;
     
     CCSprite * pBG = CCSprite::create("Shop-Background.png");
     pBG->setAnchorPoint(ccp(0, 0));
     pBG->setPosition(ccp(0, 0));
-    pBG->setOpacity(200);
+    pBG->setOpacity(150);
     addChild(pBG, 0);
     
     CCSprite * pLine = CCSprite::create("Shop-Line.png");
@@ -62,6 +65,10 @@ bool Shop::init()
 //120809 CA : Must be removed
     
     addItem(OBJ_CROP, "", "CandyCane/CandyCane.png", 0, 0, 0, 0, 0);
+    addItem(OBJ_CROP, "", "MushMallow/MushMallow.png", 0, 0, 0, 0, 0);
+    addItem(OBJ_CROP, "", "JellyBean/JellyBean.png", 0, 0, 0, 0, 0);
+    
+    addItem(OBJ_BUILDING, "", "Farm.png", 0, 0, 0, 0, 0);
     addItem(OBJ_BUILDING, "", "HauntedHouse/HauntedHouse.png", 0, 0, 0, 0, 0);
     
 /////////////////////////////
@@ -124,6 +131,19 @@ void Shop::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
         {
             int i = (m_touch.x - 10) / 100;
             _select(i);
+        }
+        else if (m_touch.y < 275)
+        {
+            int i = m_touch.x / 200;
+            
+            if (m_selected == OBJ_BUILDING && i == 0)
+                m_pScene->alloc(OBJ_FARM, 0);
+            else
+            {
+                if (m_selected == OBJ_BUILDING)
+                    --i;
+                m_pScene->alloc(m_selected, i);
+            }
         }
     }
 

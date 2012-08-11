@@ -9,14 +9,13 @@
 #pragma once
 
 #include "cocos2d.h"
-#include "Shop.h"
 
 //CA Edit 120728 Move Shop to Game Scene and Change UI System
 //CA Edit 120729 Change UI System
 
 enum
 {
-    UI_MAP, UI_SHOP, UI_MAX
+    UI_MAP, UI_EDIT, UI_SHOP, UI_MAX
 };
 
 class UIMgr : public cocos2d::CCNode
