@@ -10,6 +10,9 @@
 #include "MapTile.h"
 #include "Editor.h"
 
+#include "Shop.h"
+#include "SceneGame.h"
+
 using namespace cocos2d;
 
 int Map::width = 480 * 4;
@@ -358,6 +361,30 @@ void Map::beginEdit(MapMgr * mapMgr, int type, int id)
 void Map::endEdit(bool apply)
 {
     m_isEditing = false;
+    
+    if (apply)
+    {
+        m_pEditor->Apply();
+        
+        if (m_pEditor->m_isSetter)
+            for (int i = 0; i < m_pEditor->m_setVec.size(); ++i)
+            {
+                char temp[30];
+                if (m_pEditor->m_setType == OBJ_FARM)
+                    sprintf(temp, "Farm.png");
+                else
+                    sprintf(temp, "%s/01.png", tempString[m_pEditor->m_setType][m_pEditor->m_setID]);
+                
+                CCSprite * spr = CCSprite::create(temp);
+                
+                if (m_pEditor->m_setType == OBJ_FARM)
+                    spr->setAnchorPoint(ccp(0.5, 0.5));
+                else
+                    spr->setAnchorPoint(ccp(0.5, 0.3));
+                
+                m_arrTile[m_pEditor->m_setVec[i] / m_width][m_pEditor->m_setVec[i] % m_width]->addChild(spr, 1);
+            }
+    }
     
     m_pEditor->removeAllChildrenWithCleanup(true);
     m_pEditor->setVisible(false);

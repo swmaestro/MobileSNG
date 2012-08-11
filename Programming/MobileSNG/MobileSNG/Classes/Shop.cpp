@@ -38,7 +38,7 @@ bool Shop::init(SceneGame * scene)
     CCSprite * pBG = CCSprite::create("Shop-Background.png");
     pBG->setAnchorPoint(ccp(0, 0));
     pBG->setPosition(ccp(0, 0));
-    pBG->setOpacity(200);
+    pBG->setOpacity(150);
     addChild(pBG, 0);
     
     CCSprite * pLine = CCSprite::create("Shop-Line.png");
@@ -65,6 +65,8 @@ bool Shop::init(SceneGame * scene)
 //120809 CA : Must be removed
     
     addItem(OBJ_CROP, "", "CandyCane/CandyCane.png", 0, 0, 0, 0, 0);
+    addItem(OBJ_CROP, "", "MushMallow/MushMallow.png", 0, 0, 0, 0, 0);
+    addItem(OBJ_CROP, "", "JellyBean/JellyBean.png", 0, 0, 0, 0, 0);
     
     addItem(OBJ_BUILDING, "", "Farm.png", 0, 0, 0, 0, 0);
     addItem(OBJ_BUILDING, "", "HauntedHouse/HauntedHouse.png", 0, 0, 0, 0, 0);

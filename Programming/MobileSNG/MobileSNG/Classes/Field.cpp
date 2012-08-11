@@ -11,6 +11,9 @@
 Field::Field(ObjectInMap *pObject)
             : ObjectInMap(pObject)
 {
+//120811 CA Appended : Set Type
+    m_type    = OBJECT_TYPE_FIELD;
+    
     m_pCrop   = NULL;
 }
 
@@ -57,8 +60,9 @@ void Field::removeCrop()
 
 bool Field::hasCrop()
 {
-    if (m_pCrop)
+    if (m_pCrop != NULL)
         return true;
+    
     return false;
 }
 

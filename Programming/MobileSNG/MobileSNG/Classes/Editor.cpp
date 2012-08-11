@@ -12,6 +12,9 @@
 #include "SceneGame.h"
 #include "Shop.h"
 
+#include "Building.h"
+#include "Field.h"
+
 using namespace cocos2d;
 
 Editor::~Editor()
@@ -36,7 +39,7 @@ void Editor::init(MapMgr * mapMgr, int width)
             CCSprite * spr = CCSprite::create("EditTile.png");
             spr->setAnchorPoint(ccp(0.5, 0.5));
             spr->setPosition(ccp((i + j - m_width + 1) * MapTile::width / 2, (j - i) * MapTile::height / 2));
-            addChild(spr, 0);
+            addChild(spr, 1);
         }
 }
 
@@ -54,15 +57,39 @@ void Editor::Apply()
     if (m_isSetter)
         for (int i = 0; i < m_setVec.size(); ++i)
         {
+            ObjectInMap oim;
+            
             switch (m_setType)
             {
                 case OBJ_CROP:
+                    dynamic_cast<Field *>(m_pMapMgr->FindObject(POINT<int>(m_setVec[i] / m_width, m_setVec[i] % m_width)))->addCrop(m_setID);
                     break;
                     
                 case OBJ_BUILDING:
+                    oim.m_id = m_setID;
+                    oim.m_direction = OBJECT_DIRECTION_LEFT;
+                    oim.m_position = POINT<int>(m_setVec[i] / m_width, m_setVec[i] % m_width);
+                    oim.m_size = SIZE<int>(1, 1);
+                    oim.m_state = 0;
+                    
+                    {
+                        Building b(&oim, 0);
+                        m_pMapMgr->addObject(b, 0);
+                    }
+                    
                     break;
                     
                 case OBJ_FARM:
+                    oim.m_id = m_setID;
+                    oim.m_direction = OBJECT_DIRECTION_LEFT;
+                    oim.m_position = POINT<int>(m_setVec[i] / m_width, m_setVec[i] % m_width);
+                    oim.m_size = SIZE<int>(1, 1);
+                    oim.m_state = 0;
+                
+                    {
+                        Field f(&oim);
+                        m_pMapMgr->addObject(f, 0);
+                    }
                     break;
             }
         }

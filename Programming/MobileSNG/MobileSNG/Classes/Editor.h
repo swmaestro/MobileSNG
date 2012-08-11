@@ -20,14 +20,14 @@ private:
     int m_width;
     
     MapMgr * m_pMapMgr;
+
+    cocos2d::CCSprite * m_touch;
     
+public:
     bool m_isSetter;
     int m_setType, m_setID;
     std::vector<int> m_setVec;
     
-    cocos2d::CCSprite * m_touch;
-    
-public:
     ~Editor();
     
     void init(MapMgr * mapMgr, int width);

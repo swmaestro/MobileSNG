@@ -43,11 +43,7 @@ ObjectInMap* MapMgr::_CreateObject(ObjectInMap *pObject, int time)
         object = dynamic_cast<ObjectInMap*>(new Ornament(pObject));
     
     else if( type == OBJECT_TYPE_FIELD )
-    {
-        Field *field = new Field(pObject);
-        field->addCrop(pObject->m_id, time);
-        object = dynamic_cast<ObjectInMap*>(field);
-    }
+        object = dynamic_cast<ObjectInMap*>(new Field(pObject));
     
     return object;
 }

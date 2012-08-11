@@ -32,8 +32,8 @@ inline bool intersectBoxWithBox(POINT<TYPE> pos1, SIZE<TYPE> size1,
 template <typename TYPE>
 inline bool intersectBoxWithPoint(POINT<TYPE> boxPos, SIZE<TYPE> boxSize, POINT<TYPE> pos)
 {
-    if( (boxPos.x < pos.x && pos.x < boxPos.x + boxSize.width) &&
-       (boxPos.y < pos.y && pos.y < boxPos.y + boxSize.height) )
+    if( (boxPos.x <= pos.x && pos.x < boxPos.x + boxSize.width) &&
+       (boxPos.y <= pos.y && pos.y < boxPos.y + boxSize.height) )
         return true;
     
     return false;
