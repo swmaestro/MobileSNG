@@ -28,6 +28,8 @@ public:
     void removeCrop();
 
 public:
-    int  GetCropID();
-    int  GetCropTime();
+    Crop*   GetCrop();
+    
+public:
+    bool isEmpty();
 };

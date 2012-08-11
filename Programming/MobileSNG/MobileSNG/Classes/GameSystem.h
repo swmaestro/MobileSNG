@@ -59,6 +59,9 @@ public:
     bool        initialize(const char* strDBFile);
     
 public:
+    
+    
+public:
     bool        Harvest(POINT<int> &pos, ObjectInMap *pOut);
     bool        Harvest(ObjectInMap *pObject);
     

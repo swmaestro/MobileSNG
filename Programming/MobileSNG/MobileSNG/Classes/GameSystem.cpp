@@ -92,7 +92,8 @@ bool GameSystem::Harvest(ObjectInMap *pObject)
     
     else if(type == OBJECT_TYPE_FIELD)
     {
-        if(pObject->m_state == CROP_STATE_DONE)
+        Field *pField = static_cast<Field*>(pObject);
+        if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
         {
             dynamic_cast<Field*>(pObject)->removeCrop();
             return true;

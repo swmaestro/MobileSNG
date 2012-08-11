@@ -55,12 +55,12 @@ void Field::removeCrop()
     }
 }
 
-int  Field::GetCropID()
+Crop* Field::GetCrop()
 {
-    return m_pCrop->GetID();
+    return m_pCrop;
 }
 
-int  Field::GetCropTime()
+bool Field::isEmpty()
 {
-    return m_pCrop->GetTime();
+    return m_pCrop == NULL;
 }

@@ -24,6 +24,7 @@ enum OBJECT_TYPE
     OBJECT_TYPE_NONE,
     OBJECT_TYPE_BUILDING,
     OBJECT_TYPE_FIELD,
+    OBJECT_TYPE_CROP = OBJECT_TYPE_FIELD,
     OBJECT_TYPE_ORNAMENT
 };
 
@@ -52,5 +53,5 @@ public:
     bool isIn(ObjectInMap *pObject);
     
 public:
-    virtual void UpdateSystem(ObjectInfoMgr *pInfoMgr) = 0;
+    virtual void UpdateSystem(ObjectInfoMgr *pInfoMgr);
 };

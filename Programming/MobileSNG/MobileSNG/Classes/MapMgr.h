@@ -61,6 +61,10 @@ public:
     bool        moveObject(POINT<int> &pos, ObjectInMap *obj2);
     
 public:
+//    bool        addCrop(Field *pField, int id, int time);
+//    void        removeCrop(Field *pField);
+    
+public:
     void        removeObject(int index);
     void        removeObject(ObjectInMap *pOut);
     void        removeObject(POINT<int> &pos);

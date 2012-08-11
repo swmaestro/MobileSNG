@@ -42,15 +42,26 @@ ObjectInMap* MapMgr::_CreateObject(ObjectInMap *pObject, int time)
     else if( type == OBJECT_TYPE_ORNAMENT )
         object = dynamic_cast<ObjectInMap*>(new Ornament(pObject));
     
-    else if( type == OBJECT_TYPE_FIELD )
-    {
-        Field *field = new Field(pObject);
-        field->addCrop(pObject->m_id, time);
-        object = dynamic_cast<ObjectInMap*>(field);
-    }
+    else if( type == OBJECT_TYPE_FIELD)
+        object = dynamic_cast<ObjectInMap*>(new Field(pObject));
     
     return object;
 }
+
+//bool MapMgr::addCrop(Field *pField, int id, int time)
+//{
+//    if( pField->isEmpty() )
+//        return false;
+//    
+//    pField->addCrop(id, time);
+//    
+//    return true;
+//}
+//
+//void MapMgr::removeCrop(Field *pField)
+//{
+//    pField->removeCrop();
+//}
 
 void MapMgr::UpdateObjects(ObjectInfoMgr *pInfoMgr)
 {

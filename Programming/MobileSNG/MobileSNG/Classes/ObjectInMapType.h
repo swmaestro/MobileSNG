@@ -25,13 +25,3 @@ typedef enum OBJECT_TYPE
     OBJECT_TYPE_CROP,
     OBJECT_TYPE_ORNAMENT
 }OBJECT_TYPE;
-
-struct OBJECT_IN_MAP
-{
-    objectState             m_state;
-    POINT<int>              m_point;
-    SIZE<int>               m_size;
-    OBJECT_DIRECTION        m_direction;
-    OBJECT_TYPE             m_type;
-    int                     m_id;
-};
