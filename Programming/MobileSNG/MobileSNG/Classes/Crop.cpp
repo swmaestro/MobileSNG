@@ -8,15 +8,16 @@
 
 #include "Crop.h"
 
-Crop::Crop(int id, int time) : Timer(time)
+Crop::Crop(int id, int time)
 {
-    m_id    = id;
-    m_state = CROP_STATE_GROW_1;
+    m_id        = id;
+    m_state     = CROP_STATE_GROW_1;
+    m_pTimer    = new Timer(time);
 }
 
 Crop::~Crop()
 {
-    
+    delete m_pTimer;
 }
 
 void Crop::UpdateSystem(ObjectInfoMgr *pInfoMgr)
@@ -29,8 +30,8 @@ void Crop::UpdateSystem(ObjectInfoMgr *pInfoMgr)
         return;
     }
     
-    if(Timer::_CheckTimer(info.object.time) == false)
-            m_state = m_nowTime / (info.object.time / 4);
+    if(m_pTimer->CheckTimer(info.object.time) == false)
+            m_state = static_cast<float>(m_pTimer->GetTime()) / (static_cast<float>(info.object.time) / 4.f);
     else    m_state = CROP_STATE_DONE;
 
 }
@@ -43,4 +44,9 @@ objectState Crop::GetState()
 int Crop::GetID()
 {
     return m_id;
+}
+
+Timer* Crop::GetTimer()
+{
+    return m_pTimer;
 }

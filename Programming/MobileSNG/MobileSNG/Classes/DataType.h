@@ -37,7 +37,7 @@ struct SIZE
 struct OBJECT_INFO
 {
     int time;
-    int reward;
+    int   reward;
     
     OBJECT_INFO()
     {

@@ -17,16 +17,14 @@ private:
     int                     m_innerTimer;
     int                     m_saveTime;
     bool                    m_isUse;
-    
-protected:
     int                     m_nowTime;
     
 public:
     Timer(int nowTime);
     virtual ~Timer();
 
-protected:
-    bool _CheckTimer(int completeTime);
+public:
+    bool CheckTimer(int completeTime);
     
 public:
     int     GetTime();

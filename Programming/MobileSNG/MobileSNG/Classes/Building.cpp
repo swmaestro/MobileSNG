@@ -9,20 +9,21 @@
 #include "Building.h"
 #include <ctime>
 
-Building::Building(ObjectInMap *pObject, int nowTime)
-               : Timer(nowTime), ObjectInMap(pObject)
+Building::Building(ObjectInMap *pObject, int nowTime) : ObjectInMap(pObject)
 {
     m_type = OBJECT_TYPE_BUILDING;
+    m_pTimer = new Timer(nowTime);
+    m_beforeState = pObject->m_state;
 }
 
 Building::~Building()
 {
-    
+    delete m_pTimer;
 }
 
 void Building::UpdateSystem(ObjectInfoMgr *pInfoMgr)
 {
-    int             time = -1;
+    float           time = -1;
     BUILDING_INFO   info;
     
     if(pInfoMgr->searchInfo(m_id, &info) == false)
@@ -33,16 +34,26 @@ void Building::UpdateSystem(ObjectInfoMgr *pInfoMgr)
     }
 
     if( m_state < BUILDING_STATE_COMPLETE_CONSTRUCTION )
-        time = info.buildTime;
+        time = static_cast<float>(info.buildTime);
     else if( m_state == BUILDING_STATE_COMPLETE_CONSTRUCTION )
-        time = info.object.time;
+        time = static_cast<float>(info.object.time);
 
-    if(Timer::_CheckTimer(time))
+    if(m_pTimer->CheckTimer(time))
     if(m_state == BUILDING_STATE_COMPLETE_CONSTRUCTION)
-        StartTimer();
+        m_pTimer->StartTimer();
 
     if( m_state < BUILDING_STATE_COMPLETE_CONSTRUCTION )
-        m_state = m_nowTime / (time/4.f);
+        m_state = static_cast<float>(m_pTimer->GetTime()) / (time/4.f);
     else
-        m_state = m_nowTime / time + 4;
+        m_state = static_cast<float>(m_pTimer->GetTime()) / time + 4.f;
+    
+    if( m_beforeState != m_state )
+        STATE_CHANGE_CALLBACK(this, m_state);
+    
+    m_beforeState = m_state;
+}
+
+Timer* Building::GetTimer()
+{
+    return m_pTimer;
 }

@@ -85,7 +85,7 @@ bool GameSystem::Harvest(ObjectInMap *pObject)
     {
         if(pObject->m_state == BUILDING_STATE_NONE)
         {
-            dynamic_cast<Building*>(pObject)->StartTimer();
+            dynamic_cast<Building*>(pObject)->GetTimer()->StartTimer();
             return true;
         }
     }

@@ -20,12 +20,13 @@ enum CROP_STATE
     CROP_STATE_INVAILD = -1
 };
 
-class Crop : public Timer
+class Crop
 {
 private:
     int                     m_id;
     objectState             m_state;
-        
+    Timer                   *m_pTimer;
+    
 public:
     Crop(int id, int time);
     ~Crop();
@@ -36,4 +37,5 @@ public:
 public:
     objectState GetState();
     int         GetID();
+    Timer*      GetTimer();
 };

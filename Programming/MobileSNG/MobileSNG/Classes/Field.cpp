@@ -44,7 +44,9 @@ void Field::UpdateSystem(ObjectInfoMgr *pInfoMgr)
     if(m_pCrop == NULL) return;
     
     m_pCrop->UpdateSystem(pInfoMgr);
-    m_state = m_pCrop->GetState();
+
+    if(m_pCrop->GetState() == CROP_STATE_DONE)
+        STATE_CHANGE_CALLBACK(this, m_pCrop->GetState());
 }
 
 void Field::removeCrop()
