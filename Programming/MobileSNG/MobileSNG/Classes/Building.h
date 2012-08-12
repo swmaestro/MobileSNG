@@ -21,12 +21,17 @@ enum BUILDING_STATE
     BUILDING_STATE_NONE
 };
 
-class Building : public Timer, public ObjectInMap
-{    
+class Building : public ObjectInMap
+{
+private:
+    Timer           *m_pTimer;
+    objectState      m_beforeState;
+    
 public:
     Building(ObjectInMap *pObject, int nowTime);
     ~Building();
     
 public:
     void UpdateSystem(ObjectInfoMgr *pInfoMgr);
+    Timer* GetTimer();
 };

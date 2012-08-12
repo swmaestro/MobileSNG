@@ -22,7 +22,7 @@ Timer::~Timer()
     
 }
 
-bool Timer::_CheckTimer(int completeTime)
+bool Timer::CheckTimer(int completeTime)
 {
     if( m_isUse == false )      
         return false;
