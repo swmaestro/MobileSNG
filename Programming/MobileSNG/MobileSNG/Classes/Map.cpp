@@ -19,7 +19,7 @@ int Map::height = 320 * 4;
 int Map::tileWidth = 100;
 int Map::tileHeight = 60;
 
-Map::Map() : m_pTile(NULL), m_pAllocator(NULL), m_width(0),
+Map::Map() : m_pTile(NULL), m_pAllocator(NULL), m_width(0), m_touchCnt(-1),
                 m_isDragging(false), m_isScaling(false),
                 m_isAllocating(false), m_isEditing(false)
 {
@@ -39,18 +39,18 @@ void Map::_initTile()
  
     m_pTile = CCLayer::create();
     
-    for (int i = 0; i < m_width; ++i)
-        for (int j = 0; j < m_width; ++j)
+    for (int i = -m_width / 2; i <= m_width / 2; ++i)
+        for (int j = -m_width / 2; j <= m_width / 2; ++j)
         {
             CCLayer * tile = CCLayer::create();
             tile->setAnchorPoint(ccp(0.5, 0.5));
-            tile->setPosition(ccp((i + j - m_width + 1) * tileWidth / 2, (j - i) * tileHeight / 2));
+            tile->setPosition(ccp((i + j) * tileWidth / 2, (j - i) * tileHeight / 2));
             
             CCSprite * spr = CCSprite::create("Tile.png");
             spr->setAnchorPoint(ccp(0.5, 0.5));
             
             tile->addChild(spr, TILE_NONE, TILE_NONE);
-            m_pTile->addChild(tile, i - j + m_width, i * m_width + j);
+            m_pTile->addChild(tile, i - j + m_width, MAKEWORD(i, j));
         }
     
     addChild(m_pTile, 1);
@@ -60,7 +60,7 @@ int Map::_cursorXY(CCPoint cur)
 {
     float scale = getScale();
     
-    CCPoint o = ccpSub(getPosition(), ccp((scale - 1) * 240 + m_width / 2 * scale * tileWidth, (scale - 1) * 160));
+    CCPoint o = ccpSub(getPosition(), ccp((scale - 1) * 240, (scale - 1) * 160));
     
     cur = ccpSub(cur, o);
     cur = ccpMult(cur, 1 / scale);
@@ -72,35 +72,44 @@ int Map::_cursorXY(CCPoint cur)
     int x = round(t.x);
     int y = round(t.y);
     
-    if (x < 0 || y < 0 || x >= m_width || y >= m_width)
-        return -1;
-    
-    return x * m_width + y;
+    int result = MAKEWORD(x, y);
+    return result;
 }
 
 void Map::ccTouchesBegan(CCSet * pTouches, CCEvent * pEvent)
 {
+    CCSetIterator i = pTouches->begin();
+    
+    while (m_touchCnt < 1 && i != pTouches->end())
+        m_touchID[++m_touchCnt] = static_cast<CCTouch *>(*i++)->getID();
+    
     if (m_isAllocating)
     {
-        CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
+        if (m_touchCnt == 0 && pTouches->count() == 1)
+        {
+            CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
+            
+            CCPoint p = pTouch->locationInView();
+            p = CCDirector::sharedDirector()->convertToGL(p);
         
-        CCPoint p = pTouch->locationInView();
-        p = CCDirector::sharedDirector()->convertToGL(p);
-    
-        int t = _cursorXY(p);
-        
-        if (t < 0)
-            return;
-        
-        m_pAllocator->TouchesBegin(t / m_width, t % m_width);
+            int t = _cursorXY(p);
+            int x = LOWORD(t), y = HIWORD(t);
+            
+            if (x < -m_width / 2 || x > m_width / 2 || y < -m_width / 2 || y > m_width / 2)
+                return;
+            
+            m_pAllocator->TouchesBegin(x, y);
+        }
+        else
+            m_pAllocator->TouchesMove();
     }
 }
 
 void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
 {
-    if (pTouches->count() == 1)
+    if (m_touchCnt == 0 && pTouches->count() == 1 && !m_isScaling)
     {
-        CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
+        CCTouch * pTouch = static_cast<CCTouch *>(*pTouches->begin());
     
         CCPoint p = pTouch->locationInView();
         p = CCDirector::sharedDirector()->convertToGL(p);
@@ -125,7 +134,7 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
             m_touch[0] = p;
         }
     }
-    else 
+    else if (m_touchCnt == 1 && pTouches->count() == 2)
     {
         if (m_isAllocating)
             m_pAllocator->TouchesMove();
@@ -177,30 +186,37 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
         m_touch[0] = p1;
         m_touch[1] = p2;
     }
+    else
+    {
+        m_isDragging = false;
+        m_isScaling = false;
+    }
 }
 
 void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
 {
+    m_isDragging = false;
+    m_isScaling = false;
+    
+    CCSetIterator i = pTouches->begin();
+    
+    while (i != pTouches->end())
+    {
+        if (m_touchCnt >= 1 && m_touchID[1] == static_cast<CCTouch *>(*i)->getID())
+        {
+            m_touch[0] = m_touch[1];
+            m_touchID[0] = m_touchID[1];
+        }
+        
+        --m_touchCnt;
+        ++i;
+    }
+    
     if (!m_isDragging && !m_isScaling)
     {
         if (m_isAllocating)
-        {
-            CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
-        
-            CCPoint p = pTouch->locationInView();
-            p = CCDirector::sharedDirector()->convertToGL(p);
-        
-            int t = _cursorXY(p);
-        
-            if (t < 0)
-                return;
-        
-            m_pAllocator->TouchesEnd(t / m_width, t % m_width);
-        }
+            m_pAllocator->TouchesEnd();
     }
-    
-    m_isDragging = false;
-    m_isScaling = false;
 }
 
 bool Map::init()

@@ -27,6 +27,8 @@ class Map : public cocos2d::CCLayer
 {
 private:
     cocos2d::CCPoint    m_touch[2];
+    int                 m_touchID[2];
+    int                 m_touchCnt;
     
     cocos2d::CCLayer  * m_pTile;
     Allocator         * m_pAllocator;
