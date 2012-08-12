@@ -14,7 +14,7 @@
 
 class MapTile;
 class MapMgr;
-class Editor;
+class Allocator;
 
 //CA Edit 120728 Move Touch to Game Scene
 
@@ -23,25 +23,21 @@ class Map : public cocos2d::CCLayer
 private:
     cocos2d::CCPoint    m_touch[2];
     
-    Editor            * m_pEditor;
+    cocos2d::CCLayer  * m_pTile;
+    Allocator         * m_pAllocator;
     
-    MapTile         *** m_arrTile;
     int                 m_width;
     
     bool                m_isDragging;
     bool                m_isScaling;
-    bool                m_isEditing;
-    
-    static MapTile ***  _create(int width);
-    static void         _release(MapTile *** tile, int width);
+    bool                m_isAllocating;
     
     int _cursorXY(cocos2d::CCPoint cur);
     
-    void _addTile();
-    void _removeTile();
+    void _initTile();
     
 public:
-    static int width, height;
+    static int width, height, tileWidth, tileHeight;
     
     Map();
     ~Map();

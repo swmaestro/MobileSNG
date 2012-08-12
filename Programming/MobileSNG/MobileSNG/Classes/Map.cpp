@@ -7,8 +7,7 @@
 //
 
 #include "Map.h"
-#include "MapTile.h"
-#include "Editor.h"
+#include "Allocator.h"
 
 #include "Shop.h"
 #include "SceneGame.h"
@@ -17,8 +16,10 @@ using namespace cocos2d;
 
 int Map::width = 480 * 4;
 int Map::height = 320 * 4;
+int Map::tileWidth = 100;
+int Map::tileHeight = 60;
 
-Map::Map() : m_pEditor(NULL), m_arrTile(NULL), m_width(0), m_isDragging(false), m_isScaling(false)
+Map::Map() : m_pTile(NULL), m_pAllocator(NULL), m_width(0), m_isDragging(false), m_isScaling(false)
 {
     
 }
@@ -26,107 +27,44 @@ Map::Map() : m_pEditor(NULL), m_arrTile(NULL), m_width(0), m_isDragging(false), 
 Map::~Map()
 {
     removeAllChildrenWithCleanup(true);
-    _release(m_arrTile, m_width);
-    
-    SAFE_DELETE(m_pEditor);
+    SAFE_DELETE(m_pAllocator);
 }
 
-MapTile *** Map::_create(int width)
+void Map::_initTile()
 {
-    MapTile *** t = NULL;
+    if (m_pTile)
+        removeChild(m_pTile, true);
+ 
+    m_pTile = CCLayer::create();
     
-    t = new MapTile ** [width];
-    for (int i = 0; i < width; ++i)
-    {
-        t[i] = new MapTile * [width];
-        
-        for (int j = 0; j < width; ++j)
+    for (int i = 0; i < m_width; ++i)
+        for (int j = 0; j < m_width; ++j)
         {
-            t[i][j] = new MapTile();
-            t[i][j]->init();
-        }
-    }
-    
-    return t;
-}
-
-void Map::_release(MapTile *** tile, int width)
-{
-    if (tile)
-    {
-        for (int i = 0; i < width; ++i)
-            if (tile[i])
-            {
-                for (int j = 0; j < width; ++j)
-                    if (tile[i][j])
-                    {
-                        delete tile[i][j];
-                        tile[i][j] = NULL;
-                    }
+            CCLayer * tile = CCLayer::create();
+            tile->setAnchorPoint(ccp(0.5, 0.5));
+            tile->setPosition(ccp((i + j - m_width + 1) * tileWidth / 2, (j - i) * tileHeight / 2));
             
-                delete [] tile[i];
-                tile[i] = NULL;
-            }
-        
-        delete [] tile;
-        tile = NULL;
-    }
+            CCSprite * spr = CCSprite::create("Tile.png");
+            spr->setAnchorPoint(ccp(0.5, 0.5));
+            
+            tile->addChild(spr, 0, 0);
+            m_pTile->addChild(tile, i - j + m_width, i * m_width + j);
+        }
+    
+    addChild(m_pTile, 1);
 }
-
-void Map::_addTile()
-{
-    if (m_arrTile)
-        for (int i = 0; i < m_width; ++i)
-            if (m_arrTile[i])
-                for (int j = 0; j < m_width; ++j)
-                    if (m_arrTile[i][j])
-                    {
-                        m_arrTile[i][j]->setAnchorPoint(ccp(0, 0));
-                        m_arrTile[i][j]->setPosition(
-                            ccp((i + j - m_width + 1) * MapTile::width / 2, (j - i) * MapTile::height / 2));
-                        addChild(m_arrTile[i][j], 1);
-                    }
-}
-
-void Map::_removeTile()
-{
-    if (m_arrTile)
-        for (int i = 0; i < m_width; ++i)
-            if (m_arrTile[i])
-                for (int j = 0; j < m_width; ++j)
-                    if (m_arrTile[i][j])
-                        removeChild(m_arrTile[i][j], true);
-}
-
-#define ABS(x) ((x) < 0 ? -(x) : (x)) 
 
 int Map::_cursorXY(CCPoint cur)
 {
     float scale = getScale();
     
-    CCPoint o = ccpSub(getPosition(), ccp((scale - 1) * 240 + m_width / 2 * scale * MapTile::width, (scale - 1) * 160));
-    
-    /*
-    for (int i = 0; i < m_width; ++i)
-        for (int j = 0; j < m_width; ++j)
-        {
-            CCPoint t = m_arrTile[i][j]->getPosition();
-            
-            t.x = cur.x - o.x - t.x * scale;
-            t.y = cur.y - o.y - t.y * scale;
-            
-            if (ABS(t.x / (MapTile::width * scale / 2)) + ABS(t.y / (MapTile::height * scale / 2)) < 1)
-                return i * m_width + j;
-        }
-    
-    return -1;
-     */
+    CCPoint o = ccpSub(getPosition(), ccp((scale - 1) * 240 + m_width / 2 * scale * tileWidth, (scale - 1) * 160));
     
     cur = ccpSub(cur, o);
     cur = ccpMult(cur, 1 / scale);
     
-    cur.x /= MapTile::width / 2;
-    cur.y /= MapTile::height / 2;
+    cur.x /= tileWidth / 2;
+    cur.y /= tileHeight / 2;
     CCPoint t = ccp((cur.x - cur.y) / 2, (cur.x + cur.y) / 2);
     
     int x = round(t.x);
@@ -140,7 +78,7 @@ int Map::_cursorXY(CCPoint cur)
 
 void Map::ccTouchesBegan(CCSet * pTouches, CCEvent * pEvent)
 {
-    if (m_isEditing)
+    if (m_isAllocating)
     {
         CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
         
@@ -152,7 +90,7 @@ void Map::ccTouchesBegan(CCSet * pTouches, CCEvent * pEvent)
         if (t < 0)
             return;
         
-        m_pEditor->TouchesBegin(t / m_width, t % m_width);
+        m_pAllocator->TouchesBegin(t / m_width, t % m_width);
     }
 }
 
@@ -174,8 +112,8 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
             m_isScaling = false;
             m_touch[0] = p;
             
-            if (m_isEditing)
-                m_pEditor->TouchesMove();
+            if (m_isAllocating)
+                m_pAllocator->TouchesMove();
         }
         else if (m_isDragging)
         {
@@ -187,8 +125,8 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
     }
     else 
     {
-        if (m_isEditing)
-            m_pEditor->TouchesMove();
+        if (m_isAllocating)
+            m_pAllocator->TouchesMove();
         
         CCSetIterator i = pTouches->begin();
         
@@ -228,9 +166,6 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
             p = ccpMult(p, scale / s);
             p = ccpAdd(p, t);
             
-            //p.x -= (scale - 1) * Map::width / scale / 2;
-            //p.y -= (scale - 1) * Map::height / scale / 2;
-            
             setPosition(filtPosition(p));
         }
         
@@ -246,7 +181,7 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
 {
     if (!m_isDragging && !m_isScaling)
     {
-        if (m_isEditing)
+        if (m_isAllocating)
         {
             CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
         
@@ -258,7 +193,7 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             if (t < 0)
                 return;
         
-            m_pEditor->TouchesEnd(t / m_width, t % m_width);
+            m_pAllocator->TouchesEnd(t / m_width, t % m_width);
         }
     }
     
@@ -271,15 +206,8 @@ bool Map::init()
     if (!CCLayer::init())
         return false;
     
-    if (m_arrTile)
-    {
-        _removeTile();
-        _release(m_arrTile, m_width);
-    }
-    
     m_width = 5;
-    m_arrTile = _create(m_width);
-    _addTile();
+    _initTile();
     
     CCSprite * bg = CCSprite::create("Background.png");
     bg->setAnchorPoint(ccp(0.5, 0.5));
@@ -287,22 +215,12 @@ bool Map::init()
     bg->setScale(4);
     addChild(bg, 0);
     
-    m_pEditor = new Editor();
-    m_pEditor->setAnchorPoint(ccp(0.5, 0.5));
-    m_pEditor->setPosition(ccp(0, 0));
-    m_pEditor->setVisible(false);
-    addChild(m_pEditor, 2);
+    m_pAllocator = new Allocator();
+    m_pAllocator->setAnchorPoint(ccp(0.5, 0.5));
+    m_pAllocator->setPosition(ccp(0, 0));
+    m_pAllocator->setVisible(false);
+    addChild(m_pAllocator, 2);
     
-    /*
-    for (int i = 0; i < Map::width / 480; ++i)
-        for (int j = 0; j < Map::height / 320; ++j)
-        {
-            CCSprite * sp = CCSprite::create("Background.png");
-            sp->setAnchorPoint(ccp(0.5, 0.5));
-            sp->setPosition(ccp((i - (Map::width / 480 - 1) / 2.f) * 480, (j - (Map::height / 320 - 1) / 2.f) * 320));
-            addChild(sp, 0);
-        }
-     */
     return true;
 }
 
@@ -328,64 +246,67 @@ CCPoint Map::filtPosition(CCPoint pos)
     if (pos.y < 160 - (Map::height / 2 - 160) * scale)
         pos.y = 160 - (Map::height / 2 - 160) * scale;
     
-    /*
-    if (pos.x > Map::width + (scale - 1) * wsize.width / 2)
-        pos.x = Map::width + (scale - 1) * wsize.width / 2;
-    if (pos.y > Map::height + (scale - 1) * wsize.height / 2)
-        pos.y = Map::height + (scale - 1) * wsize.height / 2;
-    
-    if (pos.x < (1 - scale) * wsize.width / 2)
-        pos.x = (1 - scale) * wsize.width / 2;
-    if (pos.y < (1 - scale) * wsize.height / 2)
-        pos.y = (1 - scale) * wsize.height / 2;
-    */
     return pos;
 }
 
 void Map::beginEdit(MapMgr * mapMgr)
 {
-    m_isEditing = true;
     
-    m_pEditor->init(mapMgr, m_width);
-    m_pEditor->setVisible(true);
 }
 
 void Map::beginEdit(MapMgr * mapMgr, int type, int id)
 {
-    m_isEditing = true;
-
-    m_pEditor->init(mapMgr, m_width, type, id);
-    m_pEditor->setVisible(true);
+    m_isAllocating = true;
+    
+    m_pAllocator->init(mapMgr, m_width, type, id);
+    m_pAllocator->setVisible(true);
 }
 
 void Map::endEdit(bool apply)
 {
-    m_isEditing = false;
-    
     if (apply)
     {
-        m_pEditor->Apply();
-        
-        if (m_pEditor->m_isSetter)
-            for (int i = 0; i < m_pEditor->m_setVec.size(); ++i)
+        if (m_isAllocating)
+        {
+            m_pAllocator->Apply();
+
+            for (int i = 0; i < m_pAllocator->m_vec.size(); ++i)
             {
+                CCNode * tile = m_pTile->getChildByTag(m_pAllocator->m_vec[i]);
+                
+                if (tile == NULL)
+                    continue;
+                
                 char temp[30];
-                if (m_pEditor->m_setType == OBJ_FARM)
+                if (m_pAllocator->m_type == OBJ_FARM)
                     sprintf(temp, "Farm.png");
                 else
-                    sprintf(temp, "%s/01.png", tempString[m_pEditor->m_setType][m_pEditor->m_setID]);
+                    sprintf(temp, "%s/01.png", tempString[m_pAllocator->m_type][m_pAllocator->m_id]);
                 
                 CCSprite * spr = CCSprite::create(temp);
                 
-                if (m_pEditor->m_setType == OBJ_FARM)
-                    spr->setAnchorPoint(ccp(0.5, 0.5));
-                else
-                    spr->setAnchorPoint(ccp(0.5, 0.3));
-                
-                m_arrTile[m_pEditor->m_setVec[i] / m_width][m_pEditor->m_setVec[i] % m_width]->addChild(spr, 1);
+                switch (m_pAllocator->m_type)
+                {
+                    case OBJ_FARM:
+                        spr->setAnchorPoint(ccp(0.5, 0.5));
+                        tile->addChild(spr, 1, 1);
+                        break;
+                        
+                    case OBJ_BUILDING:
+                        spr->setAnchorPoint(ccp(0.5, 0.3));
+                        tile->addChild(spr, 1, 1);
+                        break;
+                        
+                    case OBJ_CROP:
+                        spr->setAnchorPoint(ccp(0.5, 0.3));
+                        tile->addChild(spr, 2, 2);
+                }
             }
+        }
     }
     
-    m_pEditor->removeAllChildrenWithCleanup(true);
-    m_pEditor->setVisible(false);
+    m_pAllocator->removeAllChildrenWithCleanup(true);
+    m_pAllocator->setVisible(false);
+    
+    m_isAllocating = false;
 }

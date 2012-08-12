@@ -94,9 +94,8 @@ void Shop::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
     p = CCDirector::sharedDirector()->convertToGL(p);
     
     int x = p.x - m_touch.x;
-    int y = p.y - m_touch.y;
     
-    if (!m_isDragging && x * x + y * y > 10)
+    if (!m_isDragging && x * x > 10)
     {
         if (m_touch.y >= 275)
             return;
@@ -105,7 +104,16 @@ void Shop::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
     }
     else if (m_isDragging)
     {
-        CCLog("DRAG");
+        float t = m_pItem[m_selected]->getPositionX() + x;
+   
+        if (t < -m_count[m_selected] * 200 + 480)
+            t = -m_count[m_selected] * 200 + 480;
+        if (t > 0)
+            t = 0;
+        
+        m_pItem[m_selected]->setPositionX(t);
+        
+        m_touch = p;
     }
 }
 
@@ -134,7 +142,10 @@ void Shop::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
         }
         else if (m_touch.y < 275)
         {
-            int i = m_touch.x / 200;
+            int i = (m_touch.x - m_pItem[m_selected]->getPositionX()) / 200;
+            
+            if (i >= m_count[m_selected])
+                return;
             
             if (m_selected == OBJ_BUILDING && i == 0)
                 m_pScene->alloc(OBJ_FARM, 0);
