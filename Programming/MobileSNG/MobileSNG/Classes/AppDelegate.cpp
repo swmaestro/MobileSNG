@@ -7,7 +7,7 @@
 //
 
 #include "AppDelegate.h"
-#include "SceneGame.h"
+#include "GameScene.h"
 #include "cocos2d.h"
 
 #include <queue>
@@ -38,7 +38,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     // set FPS. the default value is 1.0/60 if you don't call this
     pDirector->setAnimationInterval(1.0 / 60);
 
-    SceneGame *pScene = new SceneGame;
+    GameScene *pScene = new GameScene;
     pScene->init();
     pDirector->runWithScene((CCScene*)pScene);
         

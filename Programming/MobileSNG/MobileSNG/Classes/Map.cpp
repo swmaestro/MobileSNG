@@ -10,7 +10,7 @@
 #include "Allocator.h"
 
 #include "Shop.h"
-#include "SceneGame.h"
+#include "GameScene.h"
 
 using namespace cocos2d;
 
@@ -19,7 +19,9 @@ int Map::height = 320 * 4;
 int Map::tileWidth = 100;
 int Map::tileHeight = 60;
 
-Map::Map() : m_pTile(NULL), m_pAllocator(NULL), m_width(0), m_isDragging(false), m_isScaling(false)
+Map::Map() : m_pTile(NULL), m_pAllocator(NULL), m_width(0),
+                m_isDragging(false), m_isScaling(false),
+                m_isAllocating(false), m_isEditing(false)
 {
     
 }
@@ -47,7 +49,7 @@ void Map::_initTile()
             CCSprite * spr = CCSprite::create("Tile.png");
             spr->setAnchorPoint(ccp(0.5, 0.5));
             
-            tile->addChild(spr, 0, 0);
+            tile->addChild(spr, TILE_NONE, TILE_NONE);
             m_pTile->addChild(tile, i - j + m_width, i * m_width + j);
         }
     
@@ -215,11 +217,7 @@ bool Map::init()
     bg->setScale(4);
     addChild(bg, 0);
     
-    m_pAllocator = new Allocator();
-    m_pAllocator->setAnchorPoint(ccp(0.5, 0.5));
-    m_pAllocator->setPosition(ccp(0, 0));
-    m_pAllocator->setVisible(false);
-    addChild(m_pAllocator, 2);
+    m_pAllocator = new Allocator(m_pTile);
     
     return true;
 }
@@ -259,54 +257,23 @@ void Map::beginEdit(MapMgr * mapMgr, int type, int id)
     m_isAllocating = true;
     
     m_pAllocator->init(mapMgr, m_width, type, id);
-    m_pAllocator->setVisible(true);
 }
 
 void Map::endEdit(bool apply)
 {
-    if (apply)
+    if (m_isAllocating)
     {
-        if (m_isAllocating)
-        {
+        if (apply)
             m_pAllocator->Apply();
-
-            for (int i = 0; i < m_pAllocator->m_vec.size(); ++i)
-            {
-                CCNode * tile = m_pTile->getChildByTag(m_pAllocator->m_vec[i]);
-                
-                if (tile == NULL)
-                    continue;
-                
-                char temp[30];
-                if (m_pAllocator->m_type == OBJ_FARM)
-                    sprintf(temp, "Farm.png");
-                else
-                    sprintf(temp, "%s/01.png", tempString[m_pAllocator->m_type][m_pAllocator->m_id]);
-                
-                CCSprite * spr = CCSprite::create(temp);
-                
-                switch (m_pAllocator->m_type)
-                {
-                    case OBJ_FARM:
-                        spr->setAnchorPoint(ccp(0.5, 0.5));
-                        tile->addChild(spr, 1, 1);
-                        break;
-                        
-                    case OBJ_BUILDING:
-                        spr->setAnchorPoint(ccp(0.5, 0.3));
-                        tile->addChild(spr, 1, 1);
-                        break;
-                        
-                    case OBJ_CROP:
-                        spr->setAnchorPoint(ccp(0.5, 0.3));
-                        tile->addChild(spr, 2, 2);
-                }
-            }
+        
+        m_isAllocating = false;
+        m_pAllocator->Clear();
+    }
+    else if (m_isEditing)
+    {
+        if (apply)
+        {
+            
         }
     }
-    
-    m_pAllocator->removeAllChildrenWithCleanup(true);
-    m_pAllocator->setVisible(false);
-    
-    m_isAllocating = false;
 }

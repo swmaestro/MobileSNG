@@ -7,9 +7,9 @@ class Shop;
 class Map;
 class GameSystem;
 
-extern char * tempString[2][5];
+extern const char * tempString[3][5];
 
-class SceneGame : public cocos2d::CCLayer
+class GameScene : public cocos2d::CCLayer
 {
 private:
     GameSystem          * m_pSystem;
@@ -21,8 +21,8 @@ private:
     UIMgr               * m_pUIMgr;
     
 public:
-    SceneGame();
-    ~SceneGame();
+    GameScene();
+    ~GameScene();
     
 public:
     bool init();
@@ -33,6 +33,7 @@ public:
 
 private:
     bool _initUIMgr();
+    void _changeUI(cocos2d::CCLayer * ui);
     
     void _shopFunc(CCObject *pSender);
     void _friendsFunc(CCObject *pSender);
@@ -43,8 +44,6 @@ private:
     void _editCancelFunc(CCObject *pSender);
     
     void _shopCloseFunc(CCObject *pSender);
-    
-    void _changeUI(cocos2d::CCLayer * ui);
     
 public:
     void alloc(int type, int id);

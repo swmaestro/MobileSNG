@@ -22,16 +22,18 @@ private:
     MapMgr * m_pMapMgr;
 
     cocos2d::CCSprite * m_touch;
+    cocos2d::CCLayer *& m_tile;
     
 public:
     int m_type, m_id;
     std::vector<int> m_vec;
     
-    ~Allocator();
+    Allocator(cocos2d::CCLayer *& tile);
     
     void init(MapMgr * mapMgr, int width, int type, int id);
     
     void Apply();
+    void Clear();
     
     void TouchesBegin(int i, int j);
     void TouchesMove();

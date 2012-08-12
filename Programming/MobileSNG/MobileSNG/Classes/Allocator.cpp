@@ -8,7 +8,7 @@
 
 #include "Allocator.h"
 #include "MapMgr.h"
-#include "SceneGame.h"
+#include "GameScene.h"
 #include "Shop.h"
 
 #include "Map.h"
@@ -17,10 +17,9 @@
 
 using namespace cocos2d;
 
-Allocator::~Allocator()
+Allocator::Allocator(CCLayer *& tile) : m_tile(tile)
 {
-    m_vec.clear();
-    removeAllChildrenWithCleanup(true);
+    
 }
 
 void Allocator::init(MapMgr * mapMgr, int width, int type, int id)
@@ -30,15 +29,15 @@ void Allocator::init(MapMgr * mapMgr, int width, int type, int id)
     m_touch = NULL;
     
     m_vec.clear();
-    removeAllChildrenWithCleanup(true);
     
     for (int i = 0; i < m_width; ++i)
         for (int j = 0; j < m_width; ++j)
         {
+            CCNode * tile = m_tile->getChildByTag(i * m_width + j);
+            
             CCSprite * spr = CCSprite::create("EditTile.png");
             spr->setAnchorPoint(ccp(0.5, 0.5));
-            spr->setPosition(ccp((i + j - m_width + 1) * Map::tileWidth / 2, (j - i) * Map::tileHeight / 2));
-            addChild(spr, i - j + m_width);
+            tile->addChild(spr, TILE_EDIT, TILE_EDIT);
         }
     
     m_type = type;
@@ -49,12 +48,24 @@ void Allocator::Apply()
 {
     for (int i = 0; i < m_vec.size(); ++i)
     {
+        CCNode * tile = m_tile->getChildByTag(m_vec[i]);
+        
+        if (tile == NULL)
+            continue;
+        
+        char temp[30];
+        sprintf(temp, "%s/01.png", tempString[m_type][m_id]);
+        
+        CCSprite * spr = CCSprite::create(temp);
+        spr->setAnchorPoint(ccp(0.5, 0.3));
+        
         ObjectInMap oim;
         
         switch (m_type)
         {
             case OBJ_CROP:
                 dynamic_cast<Field *>(m_pMapMgr->FindObject(POINT<int>(m_vec[i] / m_width, m_vec[i] % m_width)))->addCrop(m_id);
+                tile->addChild(spr, TILE_CROP, TILE_CROP);
                 break;
                 
             case OBJ_BUILDING:
@@ -69,6 +80,7 @@ void Allocator::Apply()
                     m_pMapMgr->addObject(b, 0);
                 }
                 
+                tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);
                 break;
                 
             case OBJ_FARM:
@@ -82,8 +94,27 @@ void Allocator::Apply()
                     Field f(&oim);
                     m_pMapMgr->addObject(f, 0);
                 }
+                
+                tile->addChild(spr, TILE_FARM, TILE_FARM);
                 break;
         }
+    }
+}
+
+void Allocator::Clear()
+{
+    for (int i = 0; i < m_width; ++i)
+        for (int j = 0; j < m_width; ++j)
+        {
+            CCNode * tile = m_tile->getChildByTag(i * m_width + j);
+            tile->removeChildByTag(TILE_EDIT, true);
+        }
+            
+    
+    for (int i = 0; i < m_vec.size(); ++i)
+    {
+        CCNode * tile = m_tile->getChildByTag(m_vec[i]);
+        tile->removeChildByTag(TILE_PREVIEW, true);
     }
 }
 
@@ -112,29 +143,25 @@ void Allocator::TouchesBegin(int i, int j)
         if (m_vec[t] == i * m_width + j)
             return;
     
+    CCNode * tile = m_tile->getChildByTag(i * m_width + j);
+    if (!tile)
+        return;
+    
     char temp[30];
-    if (m_type == OBJ_FARM)
-        sprintf(temp, "Farm.png");
-    else
-        sprintf(temp, "%s/04.png", tempString[m_type][m_id]);
+    sprintf(temp, "%s/Complete.png", tempString[m_type][m_id]);
     
     m_touch = CCSprite::create(temp);
-    
-    if (m_type == OBJ_FARM)
-        m_touch->setAnchorPoint(ccp(0.5, 0.5));
-    else
-        m_touch->setAnchorPoint(ccp(0.5, 0.3));
-    
-    m_touch->setPosition(ccp((i + j - m_width + 1) * Map::tileWidth / 2, (j - i) * Map::tileHeight / 2));
     m_touch->setOpacity(180);
-    addChild(m_touch, 0);
+    m_touch->setAnchorPoint(ccp(0.5, 0.3));
+    
+    tile->addChild(m_touch, TILE_PREVIEW, TILE_PREVIEW);
 }
 
 void Allocator::TouchesMove()
 {
     if (m_touch)
     {
-        removeChild(m_touch, true);
+        m_touch->removeFromParentAndCleanup(true);
         m_touch = NULL;
     }
 }
