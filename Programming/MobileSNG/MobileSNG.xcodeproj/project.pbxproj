@@ -946,7 +946,7 @@
 				3C5C1B2E15D24731006E7C0B /* NetWork */,
 				3C5C1B2815D24718006E7C0B /* MapMgr */,
 				3CAB259815B7AB6F0003DDE2 /* Type */,
-				3CAB259A15B7AB7A0003DDE2 /* ObjectMgr */,
+				3CAB259A15B7AB7A0003DDE2 /* ObjectInfoMgr */,
 				3CAB259215B7A9730003DDE2 /* Scene */,
 				3CAB258F15B7A9420003DDE2 /* AppDelegate */,
 			);
@@ -1787,13 +1787,13 @@
 			name = Type;
 			sourceTree = "<group>";
 		};
-		3CAB259A15B7AB7A0003DDE2 /* ObjectMgr */ = {
+		3CAB259A15B7AB7A0003DDE2 /* ObjectInfoMgr */ = {
 			isa = PBXGroup;
 			children = (
 				3C5C1B3915D2478E006E7C0B /* ObjectInfoMgr.cpp */,
 				3C5C1B3A15D2478E006E7C0B /* ObjectInfoMgr.h */,
 			);
-			name = ObjectMgr;
+			name = ObjectInfoMgr;
 			sourceTree = "<group>";
 		};
 		3CAB285815BCEF7B0003DDE2 /* UIMgr */ = {
