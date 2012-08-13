@@ -8,12 +8,11 @@
 
 #include "Field.h"
 
-Field::Field(ObjectInMap *pObject)
-            : ObjectInMap(pObject)
+Field::Field(ObjectInMap *pObject, void (*stateChangeCAllBack)(ObjectInMap* pObj, objectState state)) : ObjectInMap(pObject)
 {
 //120811 CA Appended : Set Type
     m_type    = OBJECT_TYPE_FIELD;
-    
+    m_pStateChangeCallBack = stateChangeCAllBack;
     m_pCrop   = NULL;
 }
 

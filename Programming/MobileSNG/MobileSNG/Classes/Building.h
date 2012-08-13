@@ -25,9 +25,10 @@ class Building : public ObjectInMap
 private:
     Timer           *m_pTimer;
     objectState      m_beforeState;
+    void           (*m_pStateChangeCallBack)(ObjectInMap*, objectState);
     
 public:
-    Building(ObjectInMap *pObject, int nowTime);
+    Building(ObjectInMap *pObject, int nowTime, void (*stateChangeCAllBack)(ObjectInMap* pObj, objectState state) = NULL);
     ~Building();
     
 public:

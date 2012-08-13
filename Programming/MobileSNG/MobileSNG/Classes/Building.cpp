@@ -9,11 +9,12 @@
 #include "Building.h"
 #include <ctime>
 
-Building::Building(ObjectInMap *pObject, int nowTime) : ObjectInMap(pObject)
+Building::Building(ObjectInMap *pObject, int nowTime, void (*stateChangeCAllBack)(ObjectInMap* pObj, objectState state)) : ObjectInMap(pObject)
 {
     m_type = OBJECT_TYPE_BUILDING;
     m_pTimer = new Timer(nowTime);
     m_beforeState = pObject->m_state;
+    m_pStateChangeCallBack = stateChangeCAllBack;
 }
 
 Building::~Building()

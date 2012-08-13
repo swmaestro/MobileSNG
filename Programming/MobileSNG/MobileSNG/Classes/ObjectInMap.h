@@ -40,16 +40,12 @@ public:
     OBJECT_TYPE             m_type;
     int                     m_id;
     
-protected:
-    void                   (*m_pStateChangeCallBack)(ObjectInMap*, objectState);
-    
 public:
     ObjectInMap(objectState      state      = -1, 
                 POINT<int>       position   = POINT<int>(0,0),
                 SIZE<int>        size       = SIZE<int>(0,0),
                 OBJECT_DIRECTION dir        = OBJECT_DIRECTION_LEFT,
-                int              id         = -1,
-                void (*stateChangeCAllBack)(ObjectInMap* pObj, objectState state) = NULL);
+                int              id         = -1);
     ObjectInMap(const ObjectInMap *pObject);
     
     virtual ~ObjectInMap();
