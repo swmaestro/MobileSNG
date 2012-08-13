@@ -9,6 +9,7 @@
 #include "ObjectInMap.h"
 
 ObjectInMap::ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id, void (*stateChangeCallBack)(ObjectInMap* pObj, objectState state))
+ObjectInMap::ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id)
 {
     m_state         = state;
     m_position      = position;

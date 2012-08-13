@@ -113,19 +113,3 @@ struct ORNAMENT_INFO : public COMMON_INFO
     ORNAMENT_INFO(int _objectID, int _price, const char *_name, int _level) 
                          :COMMON_INFO(_objectID, _name, _price, _level){}
 };
-
-struct USER_INFO
-{
-    int level;
-    int money;
-    int cash;
-    int exp;
-    
-    USER_INFO(int _level = 0, int _money = 0, int _cash = 0, int _exp = 0)
-    {
-        level   = _level;
-        money   = _money;
-        cash    = _cash;
-        exp     = _exp;
-    }
-};

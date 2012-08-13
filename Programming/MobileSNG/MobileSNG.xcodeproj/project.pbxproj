@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C12F6CD15D823E900295503 /* User.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C12F6CB15D823E900295503 /* User.cpp */; };
 		3C5C1AFD15D23932006E7C0B /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C5C1AFC15D23932006E7C0B /* libcurl.a */; };
 		3C5C1B4215D2478E006E7C0B /* Building.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B2F15D2478E006E7C0B /* Building.cpp */; };
 		3C5C1B4315D2478E006E7C0B /* Crop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3115D2478E006E7C0B /* Crop.cpp */; };
@@ -242,6 +243,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3C12F6CB15D823E900295503 /* User.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = User.cpp; path = Classes/User.cpp; sourceTree = "<group>"; };
+		3C12F6CC15D823E900295503 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = Classes/User.h; sourceTree = "<group>"; };
 		3C5C1AF115D23932006E7C0B /* curl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curl.h; sourceTree = "<group>"; };
 		3C5C1AF215D23932006E7C0B /* curlbuild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlbuild.h; sourceTree = "<group>"; };
 		3C5C1AF315D23932006E7C0B /* curlrules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlrules.h; sourceTree = "<group>"; };
@@ -743,6 +746,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3C12F6C715D7EA7200295503 /* GameSystem */ = {
+			isa = PBXGroup;
+			children = (
+				3CC7890015D393D000C19F95 /* GameSystem.cpp */,
+				3CC7890115D393D000C19F95 /* GameSystem.h */,
+			);
+			name = GameSystem;
+			sourceTree = "<group>";
+		};
+		3C12F6C915D7EA7A00295503 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Account;
+			sourceTree = "<group>";
+		};
+		3C12F6CA15D7EA8100295503 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				3C12F6CB15D823E900295503 /* User.cpp */,
+				3C12F6CC15D823E900295503 /* User.h */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
 		3C5C1AEF15D23932006E7C0B /* curl */ = {
 			isa = PBXGroup;
 			children = (
@@ -918,14 +946,15 @@
 		3C9364C415B0FF6300860E6A /* MobileSNG */ = {
 			isa = PBXGroup;
 			children = (
+				3C12F6CA15D7EA8100295503 /* User */,
+				3C12F6C915D7EA7A00295503 /* Account */,
+				3C12F6C715D7EA7200295503 /* GameSystem */,
 				C56307B815D53F3600E2BEF7 /* Sqlite3Base */,
-				3CC7890015D393D000C19F95 /* GameSystem.cpp */,
-				3CC7890115D393D000C19F95 /* GameSystem.h */,
 				3C5C1B4B15D247BF006E7C0B /* ObjectInMap */,
 				3C5C1B2E15D24731006E7C0B /* NetWork */,
 				3C5C1B2815D24718006E7C0B /* MapMgr */,
 				3CAB259815B7AB6F0003DDE2 /* Type */,
-				3CAB259A15B7AB7A0003DDE2 /* ObjectMgr */,
+				3CAB259A15B7AB7A0003DDE2 /* ObjectInfoMgr */,
 				3CAB259215B7A9730003DDE2 /* Scene */,
 				3CAB258F15B7A9420003DDE2 /* AppDelegate */,
 			);
@@ -1769,13 +1798,13 @@
 			name = Type;
 			sourceTree = "<group>";
 		};
-		3CAB259A15B7AB7A0003DDE2 /* ObjectMgr */ = {
+		3CAB259A15B7AB7A0003DDE2 /* ObjectInfoMgr */ = {
 			isa = PBXGroup;
 			children = (
 				3C5C1B3915D2478E006E7C0B /* ObjectInfoMgr.cpp */,
 				3C5C1B3A15D2478E006E7C0B /* ObjectInfoMgr.h */,
 			);
-			name = ObjectMgr;
+			name = ObjectInfoMgr;
 			sourceTree = "<group>";
 		};
 		3CAB285815BCEF7B0003DDE2 /* UIMgr */ = {
@@ -2107,6 +2136,7 @@
 				3CC7890215D393D000C19F95 /* GameSystem.cpp in Sources */,
 				C583633415D52560006F4F2A /* Allocator.cpp in Sources */,
 				C56307B615D53F2C00E2BEF7 /* Sqlite3Base.cpp in Sources */,
+				3C12F6CD15D823E900295503 /* User.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,9 +15,10 @@ class Field : public ObjectInMap
 {
 private:
     Crop              *m_pCrop;
-  
+    void             (*m_pStateChangeCallBack)(ObjectInMap*, objectState);
+    
 public:
-    Field(ObjectInMap *pObject);
+    Field(ObjectInMap *pObject, void (*stateChangeCAllBack)(ObjectInMap* pObj, objectState state) = NULL);
     ~Field();
     
 public:

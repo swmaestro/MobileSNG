@@ -20,6 +20,9 @@ public:
     ~ObjectInfoMgr();
 
 private:
+    int         _getTime(sqlite3_stmt *pStatement, int col);
+    
+private:
     bool        _searchInfo(const char *type, char *bind, BUILDING_INFO *pInfo); 
     bool        _searchInfo(const char *type, char *bind, CROP_INFO *pInfo); 
     bool        _searchInfo(const char *type, char *bind, ORNAMENT_INFO *pInfo); 

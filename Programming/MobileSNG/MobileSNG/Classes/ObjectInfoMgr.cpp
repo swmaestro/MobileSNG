@@ -21,6 +21,17 @@ ObjectInfoMgr::~ObjectInfoMgr()
 {
 }
 
+int ObjectInfoMgr::_getTime(sqlite3_stmt *pStatement, int col)
+{
+    int dbTimeValue = sqlite3_column_int(pStatement, col);
+    
+    int hour = dbTimeValue/10000;
+    int min = (dbTimeValue - hour*10000)/100;
+    int sec = dbTimeValue%100;
+
+    return sec + (min * 60) + (hour * 3600);
+}
+
 bool ObjectInfoMgr::_searchInfo(const char *type, char *bind, BUILDING_INFO *pInfo)
 {
     sqlite3_stmt *statement;
@@ -32,21 +43,21 @@ bool ObjectInfoMgr::_searchInfo(const char *type, char *bind, BUILDING_INFO *pIn
         printf("%s <- Error \n", __FUNCTION__);
         return false;
     }
-    
+        
     info.objectID           = sqlite3_column_int(statement, 0);
     info.price              = sqlite3_column_int(statement, 1);
-    info.object.time        = sqlite3_column_int(statement, 2);
+    info.object.time        = _getTime(statement, 2);
     info.object.reward      = sqlite3_column_int(statement, 3);
-
-    int size;
     
-    size                    = sqlite3_column_int(statement, 4);    
-    info.level              = sqlite3_column_int(statement, 5);
-    info.name               = (char*)sqlite3_column_text(statement, 6);
+    int size                = sqlite3_column_int(statement, 4);
 
     info.size.width         = size/100;
     info.size.height        = size%100;
-
+    
+    info.level              = sqlite3_column_int(statement, 5);
+    info.name               = (char*)sqlite3_column_text(statement, 6);
+    info.buildTime          = _getTime(statement, 7);
+    
     *pInfo = info;
     
     sqlite3_finalize(statement);
@@ -65,10 +76,12 @@ bool ObjectInfoMgr::_searchInfo(const char *type, char *bind, CROP_INFO *pInfo)
         printf("%s <- Error \n", __FUNCTION__);
         return false;
     }
-    
+        
     info.objectID           = sqlite3_column_int(statement, 0);
     info.price              = sqlite3_column_int(statement, 1);
-    info.object.time        = sqlite3_column_int(statement, 2);
+    
+    info.object.time        = _getTime(statement, 2);
+
     info.object.reward      = sqlite3_column_int(statement, 3);
     
     info.level       = sqlite3_column_int(statement, 4);
@@ -158,7 +171,8 @@ vector<BUILDING_INFO> ObjectInfoMgr::GetAllBuildingInfo()
     {
         info.objectID           = sqlite3_column_int(pStatement, 0);
         info.price              = sqlite3_column_int(pStatement, 1);
-        info.object.time        = sqlite3_column_int(pStatement, 2);
+        
+        info.object.time        = _getTime(pStatement, 2);
         info.object.reward      = sqlite3_column_int(pStatement, 3);
         
         int size;
@@ -197,7 +211,7 @@ vector<CROP_INFO> ObjectInfoMgr::GetAllCropInfo()
     {
         info.objectID           = sqlite3_column_int(pStatement, 0);
         info.price              = sqlite3_column_int(pStatement, 1);
-        info.object.time        = sqlite3_column_int(pStatement, 2);
+        info.object.time        = _getTime(pStatement, 2);
         info.object.reward      = sqlite3_column_int(pStatement, 3);
         
         info.level              = sqlite3_column_int(pStatement, 4);
