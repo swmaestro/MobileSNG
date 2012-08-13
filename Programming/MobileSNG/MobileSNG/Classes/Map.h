@@ -18,19 +18,25 @@ class Allocator;
 
 //CA Edit 120728 Move Touch to Game Scene
 
+enum
+{
+    TILE_NONE, TILE_FARM, TILE_BUILDING = TILE_FARM, TILE_CROP, TILE_PREVIEW, TILE_EDIT
+};
+
 class Map : public cocos2d::CCLayer
 {
 private:
     cocos2d::CCPoint    m_touch[2];
+    int                 m_touchID[2];
+    int                 m_touchCnt;
     
     cocos2d::CCLayer  * m_pTile;
     Allocator         * m_pAllocator;
     
     int                 m_width;
     
-    bool                m_isDragging;
-    bool                m_isScaling;
-    bool                m_isAllocating;
+    bool                m_isDragging, m_isScaling;
+    bool                m_isAllocating, m_isEditing;
     
     int _cursorXY(cocos2d::CCPoint cur);
     

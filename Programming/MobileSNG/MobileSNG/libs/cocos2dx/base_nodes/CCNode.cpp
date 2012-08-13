@@ -473,7 +473,7 @@ void CCNode::childrenAlloc(void)
 
 CCNode* CCNode::getChildByTag(int aTag)
 {
-    CCAssert( aTag != kCCNodeTagInvalid, "Invalid tag");
+//    CCAssert( aTag != kCCNodeTagInvalid, "Invalid tag");
 
     if(m_pChildren && m_pChildren->count() > 0)
     {

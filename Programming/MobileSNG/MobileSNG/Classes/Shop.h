@@ -10,7 +10,7 @@
 
 #include "cocos2d.h"
 
-class SceneGame;
+class GameScene;
 
 enum
 {
@@ -20,7 +20,7 @@ enum
 class Shop : public cocos2d::CCLayer
 {
 private:
-    SceneGame * m_pScene;
+    GameScene * m_pScene;
     
     cocos2d::CCSprite * m_pTab[OBJ_MAX];
     cocos2d::CCLayer * m_pItem[OBJ_MAX];
@@ -39,7 +39,7 @@ public:
     Shop();
     ~Shop();
     
-    bool init(SceneGame * scene);
+    bool init(GameScene * scene);
     
 //  void addItem(int tabNum, int objNum);
     void addItem(int tabNum, const char * name, const char * imgPath, int costSweet, int costFear, int time, int rewardSweet, int rewardFear);

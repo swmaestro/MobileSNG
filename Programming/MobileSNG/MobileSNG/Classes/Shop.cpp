@@ -7,7 +7,7 @@
 //
 
 #include "Shop.h"
-#include "SceneGame.h"
+#include "GameScene.h"
 
 using namespace cocos2d;
 
@@ -28,7 +28,7 @@ Shop::~Shop()
     }
 }
 
-bool Shop::init(SceneGame * scene)
+bool Shop::init(GameScene * scene)
 {  
     if (!CCLayer::init())
         return false;
@@ -68,7 +68,7 @@ bool Shop::init(SceneGame * scene)
     addItem(OBJ_CROP, "", "MushMallow/MushMallow.png", 0, 0, 0, 0, 0);
     addItem(OBJ_CROP, "", "JellyBean/JellyBean.png", 0, 0, 0, 0, 0);
     
-    addItem(OBJ_BUILDING, "", "Farm.png", 0, 0, 0, 0, 0);
+    addItem(OBJ_BUILDING, "", "Farm/Farm.png", 0, 0, 0, 0, 0);
     addItem(OBJ_BUILDING, "", "HauntedHouse/HauntedHouse.png", 0, 0, 0, 0, 0);
     
 /////////////////////////////

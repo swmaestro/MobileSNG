@@ -13,10 +13,14 @@
 //CA Edit 120728 Move Shop to Game Scene and Change UI System
 //CA Edit 120729 Change UI System
 
+#define UI_FUNC(x) menu_selector(GameScene::x)
+
 enum
 {
     UI_MAP, UI_EDIT, UI_SHOP, UI_MAX
 };
+
+class GameScene;
 
 class UIMgr : public cocos2d::CCNode
 {
@@ -24,27 +28,15 @@ private:
     cocos2d::CCArray           * m_pUI[UI_MAX];
     cocos2d::CCMenu            * m_pMenu;
     
-public:
-    UIMgr();
-    ~UIMgr();
-/*
-private:
-    void _buttonFriend(cocos2d::CCObject *pSender);
-
-public:
-    bool CreateUI(cocos2d::CCScene *pScene,
-                  cocos2d::SEL_MenuHandler shopFunc,
-                  cocos2d::SEL_MenuHandler editFunc, 
-                  cocos2d::SEL_MenuHandler flatFunc, 
-                  cocos2d::SEL_MenuHandler shopCloseFunc);
- 
-    void MapUI();
-    void ShopUI();
-*/    
+    GameScene                  * m_pScene;
     
-    bool AppendUI(int uiNum, 
-                  const char * normalImage, const char * selectedImage, cocos2d::CCPoint pos,
-                  cocos2d::CCLayer * pScene, cocos2d::SEL_MenuHandler handler);
+public:
+    UIMgr(GameScene * scene);
+    ~UIMgr();
+    
+    bool AppendUI(int uiNum, cocos2d::CCPoint pos,
+                  const char * normalImage, const char * selectedImage,
+                  cocos2d::SEL_MenuHandler handler);
     
     bool ChangeUI(int uiNum);
 };

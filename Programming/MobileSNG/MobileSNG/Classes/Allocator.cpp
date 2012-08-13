@@ -8,7 +8,7 @@
 
 #include "Allocator.h"
 #include "MapMgr.h"
-#include "SceneGame.h"
+#include "GameScene.h"
 #include "Shop.h"
 
 #include "Map.h"
@@ -17,10 +17,9 @@
 
 using namespace cocos2d;
 
-Allocator::~Allocator()
+Allocator::Allocator(CCLayer *& tile) : m_tile(tile)
 {
-    m_vec.clear();
-    removeAllChildrenWithCleanup(true);
+    
 }
 
 void Allocator::init(MapMgr * mapMgr, int width, int type, int id)
@@ -30,15 +29,15 @@ void Allocator::init(MapMgr * mapMgr, int width, int type, int id)
     m_touch = NULL;
     
     m_vec.clear();
-    removeAllChildrenWithCleanup(true);
     
-    for (int i = 0; i < m_width; ++i)
-        for (int j = 0; j < m_width; ++j)
+    for (int i = -m_width / 2; i <= m_width / 2; ++i)
+        for (int j = -m_width / 2; j <= m_width / 2; ++j)
         {
+            CCNode * tile = m_tile->getChildByTag(MAKEWORD(i, j));
+            
             CCSprite * spr = CCSprite::create("EditTile.png");
             spr->setAnchorPoint(ccp(0.5, 0.5));
-            spr->setPosition(ccp((i + j - m_width + 1) * Map::tileWidth / 2, (j - i) * Map::tileHeight / 2));
-            addChild(spr, i - j + m_width);
+            tile->addChild(spr, TILE_EDIT, TILE_EDIT);
         }
     
     m_type = type;
@@ -49,18 +48,30 @@ void Allocator::Apply()
 {
     for (int i = 0; i < m_vec.size(); ++i)
     {
+        CCNode * tile = m_tile->getChildByTag(m_vec[i]);
+        
+        if (tile == NULL)
+            continue;
+        
+        char temp[30];
+        sprintf(temp, "%s/01.png", tempString[m_type][m_id]);
+        
+        CCSprite * spr = CCSprite::create(temp);
+        spr->setAnchorPoint(ccp(0.5, 0.3));
+        
         ObjectInMap oim;
         
         switch (m_type)
         {
             case OBJ_CROP:
-                dynamic_cast<Field *>(m_pMapMgr->FindObject(POINT<int>(m_vec[i] / m_width, m_vec[i] % m_width)))->addCrop(m_id);
+                dynamic_cast<Field *>(m_pMapMgr->FindObject(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]))))->addCrop(m_id);
+                tile->addChild(spr, TILE_CROP, TILE_CROP);
                 break;
                 
             case OBJ_BUILDING:
                 oim.m_id = m_id;
                 oim.m_direction = OBJECT_DIRECTION_LEFT;
-                oim.m_position = POINT<int>(m_vec[i] / m_width, m_vec[i] % m_width);
+                oim.m_position = POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]));
                 oim.m_size = SIZE<int>(1, 1);
                 oim.m_state = 0;
                 
@@ -69,12 +80,13 @@ void Allocator::Apply()
                     m_pMapMgr->addObject(b, 0);
                 }
                 
+                tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);
                 break;
                 
             case OBJ_FARM:
                 oim.m_id = m_id;
                 oim.m_direction = OBJECT_DIRECTION_LEFT;
-                oim.m_position = POINT<int>(m_vec[i] / m_width, m_vec[i] % m_width);
+                oim.m_position = POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]));
                 oim.m_size = SIZE<int>(1, 1);
                 oim.m_state = 0;
             
@@ -82,8 +94,27 @@ void Allocator::Apply()
                     Field f(&oim);
                     m_pMapMgr->addObject(f, 0);
                 }
+                
+                tile->addChild(spr, TILE_FARM, TILE_FARM);
                 break;
         }
+    }
+}
+
+void Allocator::Clear()
+{
+    for (int i = -m_width / 2; i <= m_width / 2; ++i)
+        for (int j = -m_width / 2; j <= m_width / 2; ++j)
+        {
+            CCNode * tile = m_tile->getChildByTag(MAKEWORD(i, j));
+            tile->removeChildByTag(TILE_EDIT, true);
+        }
+            
+    
+    for (int i = 0; i < m_vec.size(); ++i)
+    {
+        CCNode * tile = m_tile->getChildByTag(m_vec[i]);
+        tile->removeChildByTag(TILE_PREVIEW, true);
     }
 }
 
@@ -109,41 +140,43 @@ void Allocator::TouchesBegin(int i, int j)
     }
     
     for (int t = 0; t < m_vec.size(); ++t)
-        if (m_vec[t] == i * m_width + j)
+        if (m_vec[t] == MAKEWORD(i, j))
             return;
     
+    CCNode * tile = m_tile->getChildByTag(MAKEWORD(i, j));
+    if (!tile)
+        return;
+    
+    if (m_touch)
+    {
+        m_touch->removeFromParentAndCleanup(true);
+        m_touch = NULL;
+    }
+    
     char temp[30];
-    if (m_type == OBJ_FARM)
-        sprintf(temp, "Farm.png");
-    else
-        sprintf(temp, "%s/04.png", tempString[m_type][m_id]);
+    sprintf(temp, "%s/Complete.png", tempString[m_type][m_id]);
     
     m_touch = CCSprite::create(temp);
-    
-    if (m_type == OBJ_FARM)
-        m_touch->setAnchorPoint(ccp(0.5, 0.5));
-    else
-        m_touch->setAnchorPoint(ccp(0.5, 0.3));
-    
-    m_touch->setPosition(ccp((i + j - m_width + 1) * Map::tileWidth / 2, (j - i) * Map::tileHeight / 2));
     m_touch->setOpacity(180);
-    addChild(m_touch, 0);
+    m_touch->setAnchorPoint(ccp(0.5, 0.3));
+    
+    tile->addChild(m_touch, TILE_PREVIEW, TILE_PREVIEW);
 }
 
 void Allocator::TouchesMove()
 {
     if (m_touch)
     {
-        removeChild(m_touch, true);
+        m_touch->removeFromParentAndCleanup(true);
         m_touch = NULL;
     }
 }
 
-void Allocator::TouchesEnd(int i, int j)
+void Allocator::TouchesEnd()
 {
     if (m_touch)
     {
-        m_vec.push_back(i * m_width + j);
+        m_vec.push_back(m_touch->getParent()->getTag());
         m_touch = NULL;
     }
 }

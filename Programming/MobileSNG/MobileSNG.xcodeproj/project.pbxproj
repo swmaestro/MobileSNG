@@ -206,7 +206,7 @@
 		3C93672B15B0FF6600860E6A /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C93672A15B0FF6600860E6A /* RootViewController.mm */; };
 		3CAB25A915B7D2070003DDE2 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAB25A815B7D2070003DDE2 /* libsqlite3.0.dylib */; };
 		3CAB25C215B815230003DDE2 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CAB25C115B815230003DDE2 /* AppDelegate.cpp */; };
-		3CAB286D15BCF7590003DDE2 /* SceneGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CAB286615BCF7580003DDE2 /* SceneGame.cpp */; };
+		3CAB286D15BCF7590003DDE2 /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CAB286615BCF7580003DDE2 /* GameScene.cpp */; };
 		3CAB286E15BCF7590003DDE2 /* UIMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CAB286815BCF7580003DDE2 /* UIMgr.cpp */; };
 		3CAB287115BCFB150003DDE2 /* Shop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CAB287015BCFB150003DDE2 /* Shop.cpp */; };
 		3CAB288015BD0E3D0003DDE2 /* Edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CAB287C15BD0E3D0003DDE2 /* Edit.png */; };
@@ -220,10 +220,10 @@
 		C5241CBA15D3E3E4003820EE /* HauntedHouse in Resources */ = {isa = PBXBuildFile; fileRef = C5241CB915D3E3E4003820EE /* HauntedHouse */; };
 		C546BD9815C8000300277186 /* Friends-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = C546BD9715C8000300277186 /* Friends-Small.png */; };
 		C546BD9D15C8001400277186 /* Shop-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = C546BD9B15C8001400277186 /* Shop-Small.png */; };
+		C5517A7B15D728A300643697 /* Farm in Resources */ = {isa = PBXBuildFile; fileRef = C5517A7715D728A300643697 /* Farm */; };
 		C56307B615D53F2C00E2BEF7 /* Sqlite3Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C56307B415D53F2C00E2BEF7 /* Sqlite3Base.cpp */; };
 		C56307BB15D60F2E00E2BEF7 /* JellyBean in Resources */ = {isa = PBXBuildFile; fileRef = C56307B915D60F2E00E2BEF7 /* JellyBean */; };
 		C56307BC15D60F2E00E2BEF7 /* MushMallow in Resources */ = {isa = PBXBuildFile; fileRef = C56307BA15D60F2E00E2BEF7 /* MushMallow */; };
-		C56D3BF215C10809003ABDB3 /* Farm.png in Resources */ = {isa = PBXBuildFile; fileRef = C56D3BF115C10809003ABDB3 /* Farm.png */; };
 		C57F18F115BF8FFE0055C208 /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = C57F18F015BF8FFE0055C208 /* Background.png */; };
 		C57F18FC15BF92530055C208 /* Tile.png in Resources */ = {isa = PBXBuildFile; fileRef = C57F18FB15BF92530055C208 /* Tile.png */; };
 		C583633415D52560006F4F2A /* Allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C583633315D52560006F4F2A /* Allocator.cpp */; };
@@ -678,8 +678,8 @@
 		3CAB25A815B7D2070003DDE2 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		3CAB25C115B815230003DDE2 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AppDelegate.cpp; path = Classes/AppDelegate.cpp; sourceTree = "<group>"; };
 		3CAB286115BCF7580003DDE2 /* DataType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataType.h; path = Classes/DataType.h; sourceTree = "<group>"; };
-		3CAB286615BCF7580003DDE2 /* SceneGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SceneGame.cpp; path = Classes/SceneGame.cpp; sourceTree = "<group>"; };
-		3CAB286715BCF7580003DDE2 /* SceneGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SceneGame.h; path = Classes/SceneGame.h; sourceTree = "<group>"; };
+		3CAB286615BCF7580003DDE2 /* GameScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameScene.cpp; path = Classes/GameScene.cpp; sourceTree = "<group>"; };
+		3CAB286715BCF7580003DDE2 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameScene.h; path = Classes/GameScene.h; sourceTree = "<group>"; };
 		3CAB286815BCF7580003DDE2 /* UIMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIMgr.cpp; path = Classes/UIMgr.cpp; sourceTree = "<group>"; };
 		3CAB286915BCF7580003DDE2 /* UIMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIMgr.h; path = Classes/UIMgr.h; sourceTree = "<group>"; };
 		3CAB286F15BCFAF60003DDE2 /* Shop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Shop.h; path = Classes/Shop.h; sourceTree = "<group>"; };
@@ -697,11 +697,11 @@
 		C5241CB915D3E3E4003820EE /* HauntedHouse */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HauntedHouse; path = Resources/HauntedHouse; sourceTree = "<group>"; };
 		C546BD9715C8000300277186 /* Friends-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Friends-Small.png"; path = "Resources/Friends-Small.png"; sourceTree = "<group>"; };
 		C546BD9B15C8001400277186 /* Shop-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Shop-Small.png"; path = "Resources/Shop-Small.png"; sourceTree = "<group>"; };
+		C5517A7715D728A300643697 /* Farm */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Farm; path = Resources/Farm; sourceTree = "<group>"; };
 		C56307B415D53F2C00E2BEF7 /* Sqlite3Base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sqlite3Base.cpp; path = Classes/Sqlite3Base.cpp; sourceTree = "<group>"; };
 		C56307B515D53F2C00E2BEF7 /* Sqlite3Base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sqlite3Base.h; path = Classes/Sqlite3Base.h; sourceTree = "<group>"; };
 		C56307B915D60F2E00E2BEF7 /* JellyBean */ = {isa = PBXFileReference; lastKnownFileType = folder; name = JellyBean; path = Resources/JellyBean; sourceTree = "<group>"; };
 		C56307BA15D60F2E00E2BEF7 /* MushMallow */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MushMallow; path = Resources/MushMallow; sourceTree = "<group>"; };
-		C56D3BF115C10809003ABDB3 /* Farm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Farm.png; path = Resources/Farm.png; sourceTree = "<group>"; };
 		C57F18F015BF8FFE0055C208 /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background.png; path = Resources/Background.png; sourceTree = "<group>"; };
 		C57F18FB15BF92530055C208 /* Tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Tile.png; path = Resources/Tile.png; sourceTree = "<group>"; };
 		C583633215D52552006F4F2A /* Allocator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Allocator.h; path = Classes/Allocator.h; sourceTree = "<group>"; };
@@ -956,6 +956,7 @@
 		3C9364C515B0FF6300860E6A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C5517A7715D728A300643697 /* Farm */,
 				C56307B915D60F2E00E2BEF7 /* JellyBean */,
 				C56307BA15D60F2E00E2BEF7 /* MushMallow */,
 				C5241CB915D3E3E4003820EE /* HauntedHouse */,
@@ -971,7 +972,6 @@
 				C5D57AD015CAB0AF003B8D80 /* Shop-TabSelected.png */,
 				C546BD9B15C8001400277186 /* Shop-Small.png */,
 				C546BD9715C8000300277186 /* Friends-Small.png */,
-				C56D3BF115C10809003ABDB3 /* Farm.png */,
 				C57F18FB15BF92530055C208 /* Tile.png */,
 				C57F18F015BF8FFE0055C208 /* Background.png */,
 				3CAB28A515BDC40E0003DDE2 /* box.xml */,
@@ -1765,8 +1765,8 @@
 			children = (
 				3CAB287215BCFB350003DDE2 /* Shop */,
 				C51B140115BED2B4008491C2 /* Map */,
-				3CAB286615BCF7580003DDE2 /* SceneGame.cpp */,
-				3CAB286715BCF7580003DDE2 /* SceneGame.h */,
+				3CAB286615BCF7580003DDE2 /* GameScene.cpp */,
+				3CAB286715BCF7580003DDE2 /* GameScene.h */,
 				3CAB285815BCEF7B0003DDE2 /* UIMgr */,
 			);
 			name = Game;
@@ -1912,7 +1912,6 @@
 				3CAB28A615BDC40E0003DDE2 /* box.xml in Resources */,
 				C57F18F115BF8FFE0055C208 /* Background.png in Resources */,
 				C57F18FC15BF92530055C208 /* Tile.png in Resources */,
-				C56D3BF215C10809003ABDB3 /* Farm.png in Resources */,
 				C546BD9815C8000300277186 /* Friends-Small.png in Resources */,
 				C546BD9D15C8001400277186 /* Shop-Small.png in Resources */,
 				C5D57AD115CAB0AF003B8D80 /* Edit-Big.png in Resources */,
@@ -1928,6 +1927,7 @@
 				C583633615D5273C006F4F2A /* EditTile.png in Resources */,
 				C56307BB15D60F2E00E2BEF7 /* JellyBean in Resources */,
 				C56307BC15D60F2E00E2BEF7 /* MushMallow in Resources */,
+				C5517A7B15D728A300643697 /* Farm in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2104,7 +2104,7 @@
 				3C93672815B0FF6600860E6A /* AppController.mm in Sources */,
 				3C93672B15B0FF6600860E6A /* RootViewController.mm in Sources */,
 				3CAB25C215B815230003DDE2 /* AppDelegate.cpp in Sources */,
-				3CAB286D15BCF7590003DDE2 /* SceneGame.cpp in Sources */,
+				3CAB286D15BCF7590003DDE2 /* GameScene.cpp in Sources */,
 				3CAB286E15BCF7590003DDE2 /* UIMgr.cpp in Sources */,
 				3CAB287115BCFB150003DDE2 /* Shop.cpp in Sources */,
 				C51B140315BED2C6008491C2 /* Map.cpp in Sources */,
@@ -2131,6 +2131,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2150,6 +2151,8 @@
 					"\"$(SDKROOT)/usr/include/libxml2\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -2158,6 +2161,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2175,6 +2179,8 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
@@ -2198,6 +2204,8 @@
 					"-lz",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2220,6 +2228,7 @@
 					"-lz",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
