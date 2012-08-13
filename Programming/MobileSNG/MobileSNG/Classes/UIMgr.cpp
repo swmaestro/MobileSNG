@@ -28,7 +28,7 @@ UIMgr::~UIMgr()
     removeAllChildrenWithCleanup(true);
     
     for (int i = 0; i < UI_MAX; ++i)
-        SAFE_DELETE(m_pUI[i]);
+        delete m_pUI[i];
 }
 
 bool UIMgr::AppendUI(int uiNum, CCPoint pos, const char *normalImage, const char *selectedImage, SEL_MenuHandler handler)

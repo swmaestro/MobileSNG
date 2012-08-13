@@ -15,6 +15,7 @@
 class MapTile;
 class MapMgr;
 class Allocator;
+class GameSystem;
 
 //CA Edit 120728 Move Touch to Game Scene
 
@@ -42,13 +43,15 @@ private:
     
     void _initTile();
     
+    GameSystem * m_pSystem;
+    
 public:
     static int width, height, tileWidth, tileHeight;
     
     Map();
     ~Map();
     
-    virtual bool init();
+    virtual bool init(GameSystem * system);
     
     virtual void ccTouchesBegan(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
     virtual void ccTouchesMoved(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
@@ -57,8 +60,8 @@ public:
     float filtScale(float scale);
     cocos2d::CCPoint filtPosition(cocos2d::CCPoint pos);
     
-    void beginEdit(MapMgr * mapMgr);
-    void beginEdit(MapMgr * mapMgr, int type, int id);
+    void beginEdit();
+    void beginEdit(int type, int id);
     void endEdit(bool apply);
     
     //void expand();

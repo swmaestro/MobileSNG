@@ -23,8 +23,8 @@ Shop::~Shop()
     
     for (int i = 0; i < OBJ_MAX; ++i)
     {
-        SAFE_DELETE(m_pTab[i]);
-        SAFE_DELETE(m_pItem[i]);
+        delete m_pTab[i];
+        delete m_pItem[i];
     }
 }
 
@@ -62,16 +62,18 @@ bool Shop::init(GameScene * scene)
         m_count[i] = 0;
     }
 
-//120809 CA : Must be removed
+/*/120809 CA : Must be removed
     
     addItem(OBJ_CROP, "", "CandyCane/CandyCane.png", 0, 0, 0, 0, 0);
     addItem(OBJ_CROP, "", "MushMallow/MushMallow.png", 0, 0, 0, 0, 0);
     addItem(OBJ_CROP, "", "JellyBean/JellyBean.png", 0, 0, 0, 0, 0);
     
     addItem(OBJ_BUILDING, "", "Farm/Farm.png", 0, 0, 0, 0, 0);
+    addItem(OBJ_BUILDING, "", "JackInTheBox/JackInTheBox.png", 0, 0, 0, 0, 0);
     addItem(OBJ_BUILDING, "", "HauntedHouse/HauntedHouse.png", 0, 0, 0, 0, 0);
+    addItem(OBJ_BUILDING, "", "CookieHouse/CookieHouse.png", 0, 0, 0, 0, 0);
     
-/////////////////////////////
+////////////////////////////*/
     
     _select(OBJ_CROP);
     
@@ -148,7 +150,7 @@ void Shop::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                 return;
             
             if (m_selected == OBJ_BUILDING && i == 0)
-                m_pScene->alloc(OBJ_FARM, 0);
+                m_pScene->alloc(OBJ_FARM, -1);
             else
             {
                 if (m_selected == OBJ_BUILDING)

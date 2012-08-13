@@ -11,6 +11,7 @@
 
 #include "Shop.h"
 #include "GameScene.h"
+#include "GameSystem.h"
 
 using namespace cocos2d;
 
@@ -29,7 +30,8 @@ Map::Map() : m_pTile(NULL), m_pAllocator(NULL), m_width(0), m_touchCnt(-1),
 Map::~Map()
 {
     removeAllChildrenWithCleanup(true);
-    SAFE_DELETE(m_pAllocator);
+    
+    delete m_pAllocator;
 }
 
 void Map::_initTile()
@@ -200,7 +202,7 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
     
     CCSetIterator i = pTouches->begin();
     
-    while (i != pTouches->end())
+    while (i != pTouches->end() && m_touchCnt >= 0)
     {
         if (m_touchCnt >= 1 && m_touchID[1] == static_cast<CCTouch *>(*i)->getID())
         {
@@ -219,10 +221,12 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
     }
 }
 
-bool Map::init()
+bool Map::init(GameSystem * system)
 {
     if (!CCLayer::init())
         return false;
+    
+    m_pSystem = system;
     
     m_width = 5;
     _initTile();
@@ -263,16 +267,16 @@ CCPoint Map::filtPosition(CCPoint pos)
     return pos;
 }
 
-void Map::beginEdit(MapMgr * mapMgr)
+void Map::beginEdit()
 {
     
 }
 
-void Map::beginEdit(MapMgr * mapMgr, int type, int id)
+void Map::beginEdit(int type, int id)
 {
     m_isAllocating = true;
     
-    m_pAllocator->init(mapMgr, m_width, type, id);
+    m_pAllocator->init(m_pSystem->GetMapMgr(), m_pSystem->GetInfoMgr(), m_width, type, id);
 }
 
 void Map::endEdit(bool apply)

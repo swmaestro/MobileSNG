@@ -8,10 +8,12 @@
 
 #include "Allocator.h"
 #include "MapMgr.h"
+#include "ObjectInfoMgr.h"
+
 #include "GameScene.h"
 #include "Shop.h"
-
 #include "Map.h"
+
 #include "Building.h"
 #include "Field.h"
 
@@ -22,9 +24,11 @@ Allocator::Allocator(CCLayer *& tile) : m_tile(tile)
     
 }
 
-void Allocator::init(MapMgr * mapMgr, int width, int type, int id)
+void Allocator::init(MapMgr * mapMgr, ObjectInfoMgr * infoMgr, int width, int type, int id)
 {
     m_pMapMgr = mapMgr;
+    m_pInfoMgr = infoMgr;
+    
     m_width = width;
     m_touch = NULL;
     
@@ -42,6 +46,26 @@ void Allocator::init(MapMgr * mapMgr, int width, int type, int id)
     
     m_type = type;
     m_id = id;
+    
+    switch (m_type)
+    {
+        case OBJ_FARM:
+        case OBJ_BUILDING:
+        {
+            BUILDING_INFO info;
+            infoMgr->searchInfo(m_id, &info);
+            m_name = info.name;
+            break;
+        }
+            
+        case OBJ_CROP:
+        {
+            CROP_INFO info;
+            infoMgr->searchInfo(m_id, &info);
+            m_name = info.name;
+            break;
+        }
+    }
 }
 
 void Allocator::Apply()
@@ -54,7 +78,7 @@ void Allocator::Apply()
             continue;
         
         char temp[30];
-        sprintf(temp, "%s/01.png", tempString[m_type][m_id]);
+        sprintf(temp, "%s/01.png", m_name.c_str());
         
         CCSprite * spr = CCSprite::create(temp);
         spr->setAnchorPoint(ccp(0.5, 0.3));
@@ -154,7 +178,7 @@ void Allocator::TouchesBegin(int i, int j)
     }
     
     char temp[30];
-    sprintf(temp, "%s/Complete.png", tempString[m_type][m_id]);
+    sprintf(temp, "%s/Complete.png", m_name.c_str());
     
     m_touch = CCSprite::create(temp);
     m_touch->setOpacity(180);

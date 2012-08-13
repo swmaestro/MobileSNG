@@ -8,14 +8,15 @@
 
 #include "ObjectInMap.h"
 
-ObjectInMap::ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id, void (*stateChangeCAllBack)(ObjectInMap* pObj, objectState state))
+ObjectInMap::ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id, void (*stateChangeCallBack)(ObjectInMap* pObj, objectState state))
 {
     m_state         = state;
     m_position      = position;
     m_size          = size;
     m_direction     = dir;
     m_id            = id;
-    m_pStateChangeCallBack = stateChangeCAllBack;
+    
+    m_pStateChangeCallBack = stateChangeCallBack;
 }
 
 ObjectInMap::ObjectInMap(const ObjectInMap *pObject)
@@ -25,6 +26,8 @@ ObjectInMap::ObjectInMap(const ObjectInMap *pObject)
     m_size          = pObject->m_size;
     m_direction     = pObject->m_direction;
     m_id            = pObject->m_id;
+    
+    m_pStateChangeCallBack = pObject->m_pStateChangeCallBack;
 }
 
 ObjectInMap::~ObjectInMap()

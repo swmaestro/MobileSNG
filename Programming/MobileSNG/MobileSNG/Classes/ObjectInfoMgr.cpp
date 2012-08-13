@@ -147,13 +147,14 @@ vector<BUILDING_INFO> ObjectInfoMgr::GetAllBuildingInfo()
     vector<BUILDING_INFO> vBuilding;
     BUILDING_INFO info;
     
-    if( _errorCheck("Building", &pStatement) == false )
+    if( _errorCheck("Building Order by id", &pStatement) == false )
     {
         printf("%s <- Error \n", __FUNCTION__);
         return vBuilding;
     }
     
-    while (sqlite3_step(pStatement) == SQLITE_ROW) 
+    //120812 CA Edited While to Do~While
+    do
     {
         info.objectID           = sqlite3_column_int(pStatement, 0);
         info.price              = sqlite3_column_int(pStatement, 1);
@@ -162,7 +163,7 @@ vector<BUILDING_INFO> ObjectInfoMgr::GetAllBuildingInfo()
         
         int size;
         
-        size                    = sqlite3_column_int(pStatement, 4);    
+        size                    = sqlite3_column_int(pStatement, 4);
         info.level              = sqlite3_column_int(pStatement, 5);
         info.name               = (char*)sqlite3_column_text(pStatement, 6);
         
@@ -171,6 +172,7 @@ vector<BUILDING_INFO> ObjectInfoMgr::GetAllBuildingInfo()
         
         vBuilding.push_back(info);
     }
+    while (sqlite3_step(pStatement) == SQLITE_ROW);
     
     sqlite3_finalize(pStatement);
     
@@ -184,13 +186,14 @@ vector<CROP_INFO> ObjectInfoMgr::GetAllCropInfo()
     vector<CROP_INFO>   vCrop;
     CROP_INFO           info;
     
-    if( _errorCheck("Crop", &pStatement) == false )
+    if( _errorCheck("Crop Order by id", &pStatement) == false )
     {
         printf("%s <- Error \n", __FUNCTION__);
         return vCrop;
     }
     
-    while (sqlite3_step(pStatement) == SQLITE_ROW) 
+    //120812 CA Edited While to Do~While
+    do
     {
         info.objectID           = sqlite3_column_int(pStatement, 0);
         info.price              = sqlite3_column_int(pStatement, 1);
@@ -202,6 +205,7 @@ vector<CROP_INFO> ObjectInfoMgr::GetAllCropInfo()
         
         vCrop.push_back(info);
     }
+    while (sqlite3_step(pStatement) == SQLITE_ROW);
     
     sqlite3_finalize(pStatement);
     
@@ -215,13 +219,14 @@ vector<ORNAMENT_INFO> ObjectInfoMgr::GetAllOrnamentInfo()
     vector<ORNAMENT_INFO>   vOrnament;
     ORNAMENT_INFO           info;
     
-    if( _errorCheck("Ornament", &pStatement) == false )
+    if( _errorCheck("Ornament Order by id", &pStatement) == false )
     {
         printf("%s <- Error \n", __FUNCTION__);
         return vOrnament;
     }
     
-    while (sqlite3_step(pStatement) == SQLITE_ROW) 
+    //120812 CA Edited While to Do~While
+    do
     {
         info.objectID    = sqlite3_column_int(pStatement, 0);
         info.price       = sqlite3_column_int(pStatement, 1);
@@ -231,6 +236,7 @@ vector<ORNAMENT_INFO> ObjectInfoMgr::GetAllOrnamentInfo()
         
         vOrnament.push_back(info);
     }
+    while (sqlite3_step(pStatement) == SQLITE_ROW);
     
     sqlite3_finalize(pStatement);
     

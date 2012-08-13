@@ -11,8 +11,6 @@ class Shop;
 class Map;
 class GameSystem;
 
-extern const char * tempString[3][5];
-
 class GameScene : public cocos2d::CCLayer
 {
 private:
@@ -31,12 +29,17 @@ public:
 public:
     bool init();
     
+    static cocos2d::CCScene * scene();
+    LAYER_CREATE_FUNC(GameScene);
+    
     virtual void ccTouchesBegan(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
     virtual void ccTouchesMoved(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
     virtual void ccTouchesEnded(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
 
 private:
     bool _initUIMgr();
+    bool _initShop();
+    
     void _changeUI(cocos2d::CCLayer * ui);
     
     void _shopFunc(CCObject *pSender);
