@@ -51,5 +51,9 @@ public:
     bool                        isObjectInMap(POINT<int> pos, SIZE<int> size);
     
 public:
+    bool Harvest(POINT<int> &pos, ObjectInMap *pOut);
+    bool Harvest(ObjectInMap *pObject);
+    
+public:
     int         GetMapLevel();
 };
