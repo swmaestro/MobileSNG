@@ -20,7 +20,7 @@ int Map::height = 320 * 4;
 int Map::tileWidth = 100;
 int Map::tileHeight = 60;
 
-Map::Map() : m_pTile(NULL), m_pAllocator(NULL), m_width(0), m_touchCnt(-1),
+Map::Map() : m_pTile(NULL), m_pAllocator(NULL), m_width(0), m_touchCnt(-1), m_counter(0),
                 m_isDragging(false), m_isScaling(false),
                 m_isAllocating(false), m_isEditing(false)
 {
@@ -32,6 +32,115 @@ Map::~Map()
     removeAllChildrenWithCleanup(true);
     
     delete m_pAllocator;
+}
+
+
+bool Map::init(GameSystem * system)
+{
+    if (!CCLayer::init())
+        return false;
+    
+    m_pSystem = system;
+    
+    m_width = 5;
+    _initTile();
+    
+    CCSprite * bg = CCSprite::create("Background.png");
+    bg->setAnchorPoint(ccp(0.5, 0.5));
+    bg->setPosition(ccp(0, 0));
+    bg->setScale(4);
+    addChild(bg, 0);
+    
+    m_pAllocator = new Allocator(m_pTile);
+    
+    scheduleUpdate();
+    
+    return true;
+}
+
+void Map::update(float dt)
+{
+    if (++m_counter < 10)
+        return;
+    m_counter = 0;
+    
+    MapMgr * mapMgr = m_pSystem->GetMapMgr();
+    ObjectInfoMgr * infoMgr = m_pSystem->GetInfoMgr();
+
+    std::vector<ObjectInMap *> object = mapMgr->GetAllObject();
+    
+    std::vector<ObjectInMap *>::iterator i;
+    
+    for (i = object.begin(); i != object.end(); ++i)
+        if ((*i)->UpdateSystem(infoMgr))
+        {
+            CCNode * tile = m_pTile->getChildByTag(MAKEWORD((*i)->m_position.x, (*i)->m_position.y));
+            std::string filename;
+            
+            if ((*i)->m_type == OBJECT_TYPE_BUILDING)
+            {
+                Building * b = dynamic_cast<Building *>(*i);
+                BUILDING_INFO info;
+                CCSprite * spr = dynamic_cast<CCSprite *>(tile->getChildByTag(TILE_BUILDING));
+                
+                infoMgr->searchInfo(b->m_id, &info);
+                filename = info.name;
+                
+                switch (b->m_state)
+                {
+                    case BUILDING_STATE_UNDER_CONSTRUCTION_1:
+                        filename += "/01.png";
+                        break;
+                        
+                    case BUILDING_STATE_UNDER_CONSTRUCTION_2:
+                        filename += "/02.png";
+                        break;
+                        
+                    case BUILDING_STATE_COMPLETE_CONSTRUCTION:
+                        filename += "/03.png";
+                        break;
+                        
+                    case BUILDING_STATE_WORKING:
+                        filename += "/Complete.png";
+                        break;
+                }
+                 
+                CCTexture2D * tex = CCTextureCache::sharedTextureCache()->addImage(filename.c_str());
+                spr->setTexture(tex);
+            }
+            else if ((*i)->m_type == OBJECT_TYPE_FIELD)
+            {
+                Field * f = dynamic_cast<Field *>(*i);
+                Crop * c = f->GetCrop();
+                CROP_INFO info;
+                CCSprite * spr = dynamic_cast<CCSprite *>(tile->getChildByTag(TILE_CROP));
+                
+                infoMgr->searchInfo(c->GetID(), &info);
+                filename = info.name;
+                
+                switch (c->GetState())
+                {
+                    case CROP_STATE_GROW_1:
+                        filename += "/01.png";
+                        break;
+                        
+                    case CROP_STATE_GROW_2:
+                        filename += "/02.png";
+                        break;
+                        
+                    case CROP_STATE_GROW_3:
+                        filename += "/03.png";
+                        break;
+                        
+                    case CROP_STATE_DONE:
+                        filename += "/Complete.png";
+                        break;
+                }
+                
+                CCTexture2D * tex = CCTextureCache::sharedTextureCache()->addImage(filename.c_str());
+                spr->setTexture(tex);
+            }
+        }
 }
 
 void Map::_initTile()
@@ -219,27 +328,6 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
         if (m_isAllocating)
             m_pAllocator->TouchesEnd();
     }
-}
-
-bool Map::init(GameSystem * system)
-{
-    if (!CCLayer::init())
-        return false;
-    
-    m_pSystem = system;
-    
-    m_width = 5;
-    _initTile();
-    
-    CCSprite * bg = CCSprite::create("Background.png");
-    bg->setAnchorPoint(ccp(0.5, 0.5));
-    bg->setPosition(ccp(0, 0));
-    bg->setScale(4);
-    addChild(bg, 0);
-    
-    m_pAllocator = new Allocator(m_pTile);
-    
-    return true;
 }
 
 float Map::filtScale(float scale)

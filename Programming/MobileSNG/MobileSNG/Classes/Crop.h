@@ -32,7 +32,7 @@ public:
     ~Crop();
     
 public:
-    void UpdateSystem(ObjectInfoMgr *pInfoMgr);
+    bool UpdateSystem(ObjectInfoMgr *pInfoMgr);
     
 public:
     objectState GetState();

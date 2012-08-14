@@ -39,6 +39,8 @@ private:
     bool                m_isDragging, m_isScaling;
     bool                m_isAllocating, m_isEditing;
     
+    int                 m_counter;
+    
     int _cursorXY(cocos2d::CCPoint cur);
     
     void _initTile();
@@ -63,6 +65,8 @@ public:
     void beginEdit();
     void beginEdit(int type, int id);
     void endEdit(bool apply);
+    
+    void update(float dt);
     
     //void expand();
 };

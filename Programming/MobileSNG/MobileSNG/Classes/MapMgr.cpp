@@ -63,6 +63,12 @@ ObjectInMap* MapMgr::_CreateObject(ObjectInMap *pObject, int time)
 //    pField->removeCrop();
 //}
 
+vector<ObjectInMap *> MapMgr::GetAllObject()
+{
+    return m_vObjects;
+}
+
+/*
 void MapMgr::UpdateObjects(ObjectInfoMgr *pInfoMgr)
 {
     vector<ObjectInMap*>::iterator iter;
@@ -70,7 +76,7 @@ void MapMgr::UpdateObjects(ObjectInfoMgr *pInfoMgr)
     for( iter = m_vObjects.begin(); iter != m_vObjects.end(); ++iter )
         (*iter)->UpdateSystem(pInfoMgr);
 }
-
+*/
 bool MapMgr::addObject(ObjectInMap &info, int time)
 {
     ObjectInMap *object;

@@ -24,14 +24,14 @@ class Building : public ObjectInMap
 {
 private:
     Timer           *m_pTimer;
-    objectState      m_beforeState;
-    void           (*m_pStateChangeCallBack)(ObjectInMap*, objectState);
+    
+    bool            m_isWorking;
     
 public:
-    Building(ObjectInMap *pObject, int nowTime, void (*stateChangeCAllBack)(ObjectInMap* pObj, objectState state) = NULL);
+    Building(ObjectInMap *pObject, int nowTime);
     ~Building();
     
 public:
-    void UpdateSystem(ObjectInfoMgr *pInfoMgr);
+    bool UpdateSystem(ObjectInfoMgr *pInfoMgr);
     Timer* GetTimer();
 };

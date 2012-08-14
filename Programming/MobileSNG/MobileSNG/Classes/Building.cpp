@@ -9,12 +9,12 @@
 #include "Building.h"
 #include <ctime>
 
-Building::Building(ObjectInMap *pObject, int nowTime, void (*stateChangeCAllBack)(ObjectInMap* pObj, objectState state)) : ObjectInMap(pObject)
+Building::Building(ObjectInMap *pObject, int nowTime) : ObjectInMap(pObject)
 {
     m_type = OBJECT_TYPE_BUILDING;
     m_pTimer = new Timer(nowTime);
-    m_beforeState = pObject->m_state;
-    m_pStateChangeCallBack = stateChangeCAllBack;
+    m_pTimer->StartTimer();
+    m_isWorking = false;
 }
 
 Building::~Building()
@@ -22,16 +22,18 @@ Building::~Building()
     delete m_pTimer;
 }
 
-void Building::UpdateSystem(ObjectInfoMgr *pInfoMgr)
+bool Building::UpdateSystem(ObjectInfoMgr *pInfoMgr)
 {
     float           time = -1;
     BUILDING_INFO   info;
+    
+    objectState beforeState = m_state;
     
     if(pInfoMgr->searchInfo(m_id, &info) == false)
     {
         printf("%s <- Building Error. Can't search Building info", __FUNCTION__);
         
-        return;
+        return false;
     }
 
     if( m_state < BUILDING_STATE_COMPLETE_CONSTRUCTION )
@@ -40,18 +42,29 @@ void Building::UpdateSystem(ObjectInfoMgr *pInfoMgr)
         time = static_cast<float>(info.object.time);
 
     if(m_pTimer->CheckTimer(time))
-    if(m_state == BUILDING_STATE_COMPLETE_CONSTRUCTION)
-        m_pTimer->StartTimer();
+    {
+        if (m_state < BUILDING_STATE_COMPLETE_CONSTRUCTION)
+            m_state = BUILDING_STATE_COMPLETE_CONSTRUCTION;
+        
+        if(m_state == BUILDING_STATE_COMPLETE_CONSTRUCTION)
+        {
+            if (!m_isWorking)
+            {
+                m_pTimer->StartTimer();
+                m_isWorking = true;
+            }
+            else
+                m_state = BUILDING_STATE_WORKING;
+        }
+    }
 
     if( m_state < BUILDING_STATE_COMPLETE_CONSTRUCTION )
-        m_state = static_cast<float>(m_pTimer->GetTime()) / (time/4.f);
-    else
-        m_state = static_cast<float>(m_pTimer->GetTime()) / time + 4.f;
+        m_state = static_cast<float>(m_pTimer->GetTime()) / time * BUILDING_STATE_COMPLETE_CONSTRUCTION;
     
-    if( m_beforeState != m_state )
-        STATE_CHANGE_CALLBACK(this, m_state);
+    if( beforeState != m_state )
+        return true;
     
-    m_beforeState = m_state;
+    return false;
 }
 
 Timer* Building::GetTimer()

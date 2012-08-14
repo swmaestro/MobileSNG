@@ -43,8 +43,8 @@ bool GameSystem::initialize(const char* strDBFile)
 
 void GameSystem::Update(float fDelta)
 {
-    m_pMap->UpdateObjects(m_pInfoMgr);
-  
+//    m_pMap->UpdateObjects(m_pInfoMgr);
+//
 //    if(m_qHarvest.empty()) return;
 //    
 //    CURLcode code;

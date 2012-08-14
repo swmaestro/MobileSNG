@@ -102,16 +102,18 @@ bool GameScene::_initShop()
     
     for (int i = 0; i < infoCrop.size(); ++i)
     {
-        char temp[30];
-        sprintf(temp, "%s/%s.png", infoCrop[i].name.c_str(), infoCrop[i].name.c_str());
-        m_pShop->addItem(OBJ_CROP, infoCrop[i].name.c_str(), temp, infoCrop[i].price, 0, infoCrop[i].object.time, 0, infoCrop[i].object.reward);
+        std::string filename = infoCrop[i].name + "/" + infoCrop[i].name + ".png";
+        
+        m_pShop->addItem(OBJ_CROP, infoCrop[i].name.c_str(), filename.c_str(),
+                         infoCrop[i].price, 0, infoCrop[i].object.time, 0, infoCrop[i].object.reward);
     }
     
     for (int i = 0; i < infoBuilding.size(); ++i)
     {
-        char temp[30];
-        sprintf(temp, "%s/%s.png", infoBuilding[i].name.c_str(), infoBuilding[i].name.c_str());
-        m_pShop->addItem(OBJ_BUILDING, infoBuilding[i].name.c_str(), temp, infoBuilding[i].price, 0, infoBuilding[i].object.time, 0, infoBuilding[i].object.reward);
+        std::string filename = infoBuilding[i].name + "/" + infoBuilding[i].name + ".png";
+        
+        m_pShop->addItem(OBJ_BUILDING, infoBuilding[i].name.c_str(), filename.c_str(),
+                         infoBuilding[i].price, 0, infoBuilding[i].object.time, 0, infoBuilding[i].object.reward);
     }
     
     addChild(m_pShop, 0);

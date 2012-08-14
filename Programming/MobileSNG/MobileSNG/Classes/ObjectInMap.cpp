@@ -8,7 +8,6 @@
 
 #include "ObjectInMap.h"
 
-ObjectInMap::ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id, void (*stateChangeCallBack)(ObjectInMap* pObj, objectState state))
 ObjectInMap::ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id)
 {
     m_state         = state;
@@ -16,8 +15,6 @@ ObjectInMap::ObjectInMap(objectState state, POINT<int> position, SIZE<int> size,
     m_size          = size;
     m_direction     = dir;
     m_id            = id;
-    
-    m_pStateChangeCallBack = stateChangeCallBack;
 }
 
 ObjectInMap::ObjectInMap(const ObjectInMap *pObject)
@@ -27,8 +24,6 @@ ObjectInMap::ObjectInMap(const ObjectInMap *pObject)
     m_size          = pObject->m_size;
     m_direction     = pObject->m_direction;
     m_id            = pObject->m_id;
-    
-    m_pStateChangeCallBack = pObject->m_pStateChangeCallBack;
 }
 
 ObjectInMap::~ObjectInMap()
@@ -60,7 +55,7 @@ bool ObjectInMap::isIn(ObjectInMap *pObject)
     return true;
 }
 
-void ObjectInMap::UpdateSystem(ObjectInfoMgr *pInfoMgr)
+bool ObjectInMap::UpdateSystem(ObjectInfoMgr *pInfoMgr)
 {
-    //null
+    return false;
 }

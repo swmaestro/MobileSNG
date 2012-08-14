@@ -181,6 +181,8 @@ vector<BUILDING_INFO> ObjectInfoMgr::GetAllBuildingInfo()
         info.level              = sqlite3_column_int(pStatement, 5);
         info.name               = (char*)sqlite3_column_text(pStatement, 6);
         
+        info.buildTime          = _getTime(pStatement, 7);
+        
         info.size.width         = size/100;
         info.size.height        = size%100;
         

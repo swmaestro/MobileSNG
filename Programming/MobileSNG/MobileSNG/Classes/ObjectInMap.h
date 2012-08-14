@@ -55,5 +55,5 @@ public:
     bool isIn(ObjectInMap *pObject);
     
 public:
-    virtual void UpdateSystem(ObjectInfoMgr *pInfoMgr);
+    virtual bool UpdateSystem(ObjectInfoMgr *pInfoMgr);
 };
