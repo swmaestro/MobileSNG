@@ -204,6 +204,7 @@
 		3C93672515B0FF6600860E6A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C93672415B0FF6600860E6A /* main.m */; };
 		3C93672815B0FF6600860E6A /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C93672715B0FF6600860E6A /* AppController.mm */; };
 		3C93672B15B0FF6600860E6A /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C93672A15B0FF6600860E6A /* RootViewController.mm */; };
+		3C9CF8C015DA355400890B36 /* SystemInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C9CF8BE15DA355400890B36 /* SystemInfo.cpp */; };
 		3CAB25A915B7D2070003DDE2 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAB25A815B7D2070003DDE2 /* libsqlite3.0.dylib */; };
 		3CAB25C215B815230003DDE2 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CAB25C115B815230003DDE2 /* AppDelegate.cpp */; };
 		3CAB286D15BCF7590003DDE2 /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CAB286615BCF7580003DDE2 /* GameScene.cpp */; };
@@ -215,6 +216,7 @@
 		3CAB288315BD0E3D0003DDE2 /* Shop.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CAB287F15BD0E3D0003DDE2 /* Shop.png */; };
 		3CAB28A615BDC40E0003DDE2 /* box.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3CAB28A515BDC40E0003DDE2 /* box.xml */; };
 		3CC7890215D393D000C19F95 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC7890015D393D000C19F95 /* GameSystem.cpp */; };
+		3CDA257E15D8EFE100193717 /* JoinUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CDA257C15D8EFE100193717 /* JoinUI.cpp */; };
 		C51B140315BED2C6008491C2 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C51B140215BED2C6008491C2 /* Map.cpp */; };
 		C5241CB815D3E3D5003820EE /* CandyCane in Resources */ = {isa = PBXBuildFile; fileRef = C5241CB715D3E3D5003820EE /* CandyCane */; };
 		C5241CBA15D3E3E4003820EE /* HauntedHouse in Resources */ = {isa = PBXBuildFile; fileRef = C5241CB915D3E3E4003820EE /* HauntedHouse */; };
@@ -675,6 +677,8 @@
 		3C93672915B0FF6600860E6A /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = ios/RootViewController.h; sourceTree = "<group>"; };
 		3C93672A15B0FF6600860E6A /* RootViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RootViewController.mm; path = ios/RootViewController.mm; sourceTree = "<group>"; };
 		3C93672D15B0FF6600860E6A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
+		3C9CF8BE15DA355400890B36 /* SystemInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SystemInfo.cpp; path = Classes/SystemInfo.cpp; sourceTree = "<group>"; };
+		3C9CF8BF15DA355400890B36 /* SystemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SystemInfo.h; path = Classes/SystemInfo.h; sourceTree = "<group>"; };
 		3CAB25A815B7D2070003DDE2 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		3CAB25C115B815230003DDE2 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AppDelegate.cpp; path = Classes/AppDelegate.cpp; sourceTree = "<group>"; };
 		3CAB286115BCF7580003DDE2 /* DataType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataType.h; path = Classes/DataType.h; sourceTree = "<group>"; };
@@ -691,6 +695,8 @@
 		3CAB28A515BDC40E0003DDE2 /* box.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = box.xml; path = Resources/box.xml; sourceTree = "<group>"; };
 		3CC7890015D393D000C19F95 /* GameSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameSystem.cpp; path = Classes/GameSystem.cpp; sourceTree = "<group>"; };
 		3CC7890115D393D000C19F95 /* GameSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameSystem.h; path = Classes/GameSystem.h; sourceTree = "<group>"; };
+		3CDA257C15D8EFE100193717 /* JoinUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JoinUI.cpp; path = Classes/JoinUI.cpp; sourceTree = "<group>"; };
+		3CDA257D15D8EFE100193717 /* JoinUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JoinUI.h; path = Classes/JoinUI.h; sourceTree = "<group>"; };
 		C51B13FF15BED292008491C2 /* Map.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Map.h; path = Classes/Map.h; sourceTree = "<group>"; };
 		C51B140215BED2C6008491C2 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Map.cpp; path = Classes/Map.cpp; sourceTree = "<group>"; };
 		C5241CB715D3E3D5003820EE /* CandyCane */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CandyCane; path = Resources/CandyCane; sourceTree = "<group>"; };
@@ -938,6 +944,8 @@
 		3C9364C415B0FF6300860E6A /* MobileSNG */ = {
 			isa = PBXGroup;
 			children = (
+				3C9CF8C115DA359000890B36 /* JoinUI */,
+				3C9CF8B915DA34DE00890B36 /* System */,
 				3C12F6CA15D7EA8100295503 /* User */,
 				3C12F6C915D7EA7A00295503 /* Account */,
 				3C12F6C715D7EA7200295503 /* GameSystem */,
@@ -1742,6 +1750,24 @@
 			path = MobileSNG;
 			sourceTree = "<group>";
 		};
+		3C9CF8B915DA34DE00890B36 /* System */ = {
+			isa = PBXGroup;
+			children = (
+				3C9CF8BE15DA355400890B36 /* SystemInfo.cpp */,
+				3C9CF8BF15DA355400890B36 /* SystemInfo.h */,
+			);
+			name = System;
+			sourceTree = "<group>";
+		};
+		3C9CF8C115DA359000890B36 /* JoinUI */ = {
+			isa = PBXGroup;
+			children = (
+				3CDA257C15D8EFE100193717 /* JoinUI.cpp */,
+				3CDA257D15D8EFE100193717 /* JoinUI.h */,
+			);
+			name = JoinUI;
+			sourceTree = "<group>";
+		};
 		3CAB258F15B7A9420003DDE2 /* AppDelegate */ = {
 			isa = PBXGroup;
 			children = (
@@ -2121,6 +2147,8 @@
 				C583633415D52560006F4F2A /* Allocator.cpp in Sources */,
 				C56307B615D53F2C00E2BEF7 /* Sqlite3Base.cpp in Sources */,
 				3C12F6CD15D823E900295503 /* User.cpp in Sources */,
+				3CDA257E15D8EFE100193717 /* JoinUI.cpp in Sources */,
+				3C9CF8C015DA355400890B36 /* SystemInfo.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

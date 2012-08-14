@@ -20,6 +20,14 @@ UIMgr::UIMgr(GameScene * scene) : m_pScene(scene)
     }
     
     m_pMenu = NULL;
+    
+//    JoinUI *pJoint = new JoinUI("HelloWorld.png", this,
+//    JoinUI *pJoin = new JoinUI("HelloWorld.png", this,
+//                               menu_selector(UIMgr::join),
+//                               menu_selector(UIMgr::Cancel));
+//    pJoin->setPosition(ccp(100,100));
+//    
+//    addChild(pJoin);
 }
 
 UIMgr::~UIMgr()
@@ -67,3 +75,15 @@ bool UIMgr::ChangeUI(int uiNum)
     
     return true;
 }
+
+//void UIMgr::join(cocos2d::CCObject *pSender)
+//{
+//    int a = 5;
+//    a = 3;
+//}
+//
+//void UIMgr::Cancel(cocos2d::CCObject *pSender)
+//{
+//    int a = 5;
+//    a = 3;
+//}

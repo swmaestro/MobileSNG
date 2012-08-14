@@ -44,19 +44,20 @@ bool ObjectInfoMgr::_searchInfo(const char *type, char *bind, BUILDING_INFO *pIn
         return false;
     }
         
-    info.objectID           = sqlite3_column_int(statement, 0);
-    info.price              = sqlite3_column_int(statement, 1);
-    info.object.time        = _getTime(statement, 2);
-    info.object.reward      = sqlite3_column_int(statement, 3);
+    info.systemVersion      = sqlite3_column_int(statement, 0);
+    info.objectID           = sqlite3_column_int(statement, 1);
+    info.name               = (char*)sqlite3_column_text(statement, 2);
+    info.price              = sqlite3_column_int(statement, 3);
+    info.object.reward      = sqlite3_column_int(statement, 4);
+    info.buildTime          = _getTime(statement, 5);
+    info.object.time        = _getTime(statement, 6);
     
-    int size                = sqlite3_column_int(statement, 4);
+    int size                = sqlite3_column_int(statement, 7);
 
     info.size.width         = size/100;
     info.size.height        = size%100;
     
-    info.level              = sqlite3_column_int(statement, 5);
-    info.name               = (char*)sqlite3_column_text(statement, 6);
-    info.buildTime          = _getTime(statement, 7);
+    info.level              = sqlite3_column_int(statement, 8);
     
     *pInfo = info;
     
@@ -77,15 +78,13 @@ bool ObjectInfoMgr::_searchInfo(const char *type, char *bind, CROP_INFO *pInfo)
         return false;
     }
         
-    info.objectID           = sqlite3_column_int(statement, 0);
-    info.price              = sqlite3_column_int(statement, 1);
-    
-    info.object.time        = _getTime(statement, 2);
-
-    info.object.reward      = sqlite3_column_int(statement, 3);
-    
-    info.level       = sqlite3_column_int(statement, 4);
-    info.name        = (char*)sqlite3_column_text(statement, 5);
+    info.systemVersion      = sqlite3_column_int(statement, 0);
+    info.objectID           = sqlite3_column_int(statement, 1);
+    info.name        = (char*)sqlite3_column_text(statement, 2);
+    info.price              = sqlite3_column_int(statement, 3);
+    info.object.reward      = sqlite3_column_int(statement, 4);
+    info.object.time        = _getTime(statement, 5);
+    info.level       = sqlite3_column_int(statement, 6);
         
     sqlite3_finalize(statement);
     
@@ -105,12 +104,12 @@ bool ObjectInfoMgr::_searchInfo(const char *type, char *bind, ORNAMENT_INFO *pIn
         return false;
     }
     
-    info.objectID    = sqlite3_column_int(statement, 0);
-    info.price       = sqlite3_column_int(statement, 1);
-    
-    info.level       = sqlite3_column_int(statement, 2);
-    info.name        = (char*)sqlite3_column_text(statement, 3);
-    
+    info.systemVersion      = sqlite3_column_int(statement, 0);
+    info.objectID    = sqlite3_column_int(statement, 1);
+    info.name        = (char*)sqlite3_column_text(statement, 2);
+    info.price       = sqlite3_column_int(statement, 3);
+    info.level       = sqlite3_column_int(statement, 4);
+
     sqlite3_finalize(statement);
     
     *pInfo = info;
@@ -168,20 +167,20 @@ vector<BUILDING_INFO> ObjectInfoMgr::GetAllBuildingInfo()
     
     while (sqlite3_step(pStatement) == SQLITE_ROW) 
     {
-        info.objectID           = sqlite3_column_int(pStatement, 0);
-        info.price              = sqlite3_column_int(pStatement, 1);
+        info.systemVersion      = sqlite3_column_int(pStatement, 0);
+        info.objectID           = sqlite3_column_int(pStatement, 1);
+        info.name               = (char*)sqlite3_column_text(pStatement, 2);
+        info.price              = sqlite3_column_int(pStatement, 3);
+        info.object.reward      = sqlite3_column_int(pStatement, 4);
+        info.buildTime          = _getTime(pStatement, 5);
+        info.object.time        = _getTime(pStatement, 6);
         
-        info.object.time        = _getTime(pStatement, 2);
-        info.object.reward      = sqlite3_column_int(pStatement, 3);
-        
-        int size;
-        
-        size                    = sqlite3_column_int(pStatement, 4);    
-        info.level              = sqlite3_column_int(pStatement, 5);
-        info.name               = (char*)sqlite3_column_text(pStatement, 6);
+        int size                = sqlite3_column_int(pStatement, 7);
         
         info.size.width         = size/100;
         info.size.height        = size%100;
+        
+        info.level              = sqlite3_column_int(pStatement, 8);
         
         vBuilding.push_back(info);
     }
@@ -206,13 +205,13 @@ vector<CROP_INFO> ObjectInfoMgr::GetAllCropInfo()
     
     while (sqlite3_step(pStatement) == SQLITE_ROW) 
     {
-        info.objectID           = sqlite3_column_int(pStatement, 0);
-        info.price              = sqlite3_column_int(pStatement, 1);
-        info.object.time        = _getTime(pStatement, 2);
-        info.object.reward      = sqlite3_column_int(pStatement, 3);
-        
-        info.level              = sqlite3_column_int(pStatement, 4);
-        info.name               = (char*)sqlite3_column_text(pStatement, 5);
+        info.systemVersion      = sqlite3_column_int(pStatement, 0);
+        info.objectID           = sqlite3_column_int(pStatement, 1);
+        info.name        = (char*)sqlite3_column_text(pStatement, 2);
+        info.price              = sqlite3_column_int(pStatement, 3);
+        info.object.reward      = sqlite3_column_int(pStatement, 4);
+        info.object.time        = _getTime(pStatement, 5);
+        info.level       = sqlite3_column_int(pStatement, 6);
         
         vCrop.push_back(info);
     }
@@ -237,11 +236,11 @@ vector<ORNAMENT_INFO> ObjectInfoMgr::GetAllOrnamentInfo()
     
     while (sqlite3_step(pStatement) == SQLITE_ROW) 
     {
-        info.objectID    = sqlite3_column_int(pStatement, 0);
-        info.price       = sqlite3_column_int(pStatement, 1);
-        
-        info.level       = sqlite3_column_int(pStatement, 2);
-        info.name        = (char*)sqlite3_column_text(pStatement, 3);
+        info.systemVersion      = sqlite3_column_int(pStatement, 0);
+        info.objectID    = sqlite3_column_int(pStatement, 1);
+        info.name        = (char*)sqlite3_column_text(pStatement, 2);
+        info.price       = sqlite3_column_int(pStatement, 3);
+        info.level       = sqlite3_column_int(pStatement, 4);
         
         vOrnament.push_back(info);
     }

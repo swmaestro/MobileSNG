@@ -45,7 +45,7 @@ public:
     @brief    If the sender doesn't want to attach with IME, return true;
     */
     virtual bool onTextFieldAttachWithIME(CCTextFieldTTF * sender)
-    { 
+    {
         CC_UNUSED_PARAM(sender);
         return false;
     }
