@@ -72,6 +72,7 @@ void Map::update(float dt)
     std::vector<ObjectInMap *>::iterator i;
     
     for (i = object.begin(); i != object.end(); ++i)
+    {
         if ((*i)->UpdateSystem(infoMgr))
         {
             CCNode * tile = m_pTile->getChildByTag(MAKEWORD((*i)->m_position.x, (*i)->m_position.y));
@@ -96,11 +97,11 @@ void Map::update(float dt)
                         filename += "/02.png";
                         break;
                         
-                    case BUILDING_STATE_COMPLETE_CONSTRUCTION:
+                    case BUILDING_STATE_WORKING:
                         filename += "/03.png";
                         break;
                         
-                    case BUILDING_STATE_WORKING:
+                    case BUILDING_STATE_DONE:
                         filename += "/Complete.png";
                         break;
                 }
@@ -141,6 +142,17 @@ void Map::update(float dt)
                 spr->setTexture(tex);
             }
         }
+        else if ((*i)->m_type == OBJECT_TYPE_FIELD)
+        {
+            CCNode * tile = m_pTile->getChildByTag(MAKEWORD((*i)->m_position.x, (*i)->m_position.y));
+            
+            Field * f = dynamic_cast<Field *>(*i);
+            Crop * c = f->GetCrop();
+            
+            if (!c)
+                tile->removeChildByTag(TILE_CROP, true);
+        }
+    }
 }
 
 void Map::_initTile()
@@ -327,6 +339,22 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
     {
         if (m_isAllocating)
             m_pAllocator->TouchesEnd();
+        else
+        {
+            CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
+            
+            CCPoint p = pTouch->locationInView();
+            p = CCDirector::sharedDirector()->convertToGL(p);
+            
+            int t = _cursorXY(p);
+            int x = LOWORD(t), y = HIWORD(t);
+            
+            if (x < -m_width / 2 || x > m_width / 2 || y < -m_width / 2 || y > m_width / 2)
+                return;
+            
+            POINT<int> pos(x, y);
+            m_pSystem->GetMapMgr()->Harvest(pos, NULL);
+        }
     }
 }
 

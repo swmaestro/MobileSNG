@@ -36,17 +36,17 @@ bool Building::UpdateSystem(ObjectInfoMgr *pInfoMgr)
         return false;
     }
 
-    if( m_state < BUILDING_STATE_COMPLETE_CONSTRUCTION )
+    if( m_state < BUILDING_STATE_WORKING )
         time = static_cast<float>(info.buildTime);
-    else if( m_state == BUILDING_STATE_COMPLETE_CONSTRUCTION )
+    else if( m_state == BUILDING_STATE_WORKING )
         time = static_cast<float>(info.object.time);
 
     if(m_pTimer->CheckTimer(time))
     {
-        if (m_state < BUILDING_STATE_COMPLETE_CONSTRUCTION)
-            m_state = BUILDING_STATE_COMPLETE_CONSTRUCTION;
+        if (m_state < BUILDING_STATE_WORKING)
+            m_state = BUILDING_STATE_WORKING;
         
-        if(m_state == BUILDING_STATE_COMPLETE_CONSTRUCTION)
+        if(m_state == BUILDING_STATE_WORKING)
         {
             if (!m_isWorking)
             {
@@ -54,12 +54,12 @@ bool Building::UpdateSystem(ObjectInfoMgr *pInfoMgr)
                 m_isWorking = true;
             }
             else
-                m_state = BUILDING_STATE_WORKING;
+                m_state = BUILDING_STATE_DONE;
         }
     }
 
-    if( m_state < BUILDING_STATE_COMPLETE_CONSTRUCTION )
-        m_state = static_cast<float>(m_pTimer->GetTime()) / time * BUILDING_STATE_COMPLETE_CONSTRUCTION;
+    if( m_state < BUILDING_STATE_WORKING )
+        m_state = static_cast<float>(m_pTimer->GetTime()) / time * BUILDING_STATE_WORKING;
     
     if( beforeState != m_state )
         return true;

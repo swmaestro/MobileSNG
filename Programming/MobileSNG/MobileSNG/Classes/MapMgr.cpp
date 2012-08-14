@@ -217,7 +217,7 @@ bool MapMgr::Harvest(POINT<int> &pos, ObjectInMap *pOut)
     
     if(pObject == NULL)
         return false;
-    
+
     pOut = pObject;
     
     return this->Harvest(pObject);
@@ -232,9 +232,11 @@ bool MapMgr::Harvest(ObjectInMap *pObject)
     
     if(type == OBJECT_TYPE_BUILDING)
     {
-        if(pObject->m_state == BUILDING_STATE_NONE)
+        if(pObject->m_state == BUILDING_STATE_DONE)
         {
-            dynamic_cast<Building*>(pObject)->GetTimer()->StartTimer();
+            Building * b = dynamic_cast<Building*>(pObject);
+            b->m_state = BUILDING_STATE_WORKING;
+            b->GetTimer()->StartTimer();
             return true;
         }
     }
