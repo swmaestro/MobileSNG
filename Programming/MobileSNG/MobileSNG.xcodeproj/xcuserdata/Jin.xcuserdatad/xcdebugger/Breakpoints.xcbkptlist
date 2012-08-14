@@ -68,5 +68,18 @@
          landmarkName = "Libxml2Parser::run()"
          landmarkType = "5">
       </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/libs/cocos2dx/text_input_node/CCTextFieldTTF.h"
+         timestampString = "366551288.990564"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "57"
+         endingLineNumber = "57"
+         landmarkName = "onTextFieldDetachWithIME(CCTextFieldTTF * sender)"
+         landmarkType = "7">
+      </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

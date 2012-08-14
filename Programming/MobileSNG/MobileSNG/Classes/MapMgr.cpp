@@ -210,6 +210,54 @@ void MapMgr::removeObjects(POINT<int> &pos, SIZE<int> &size)
     }
 }
 
+#pragma mark harvest
+bool MapMgr::Harvest(POINT<int> &pos, ObjectInMap *pOut)
+{
+    ObjectInMap *pObject = FindObject(pos);
+    
+    if(pObject == NULL)
+        return false;
+    
+    pOut = pObject;
+    
+    return this->Harvest(pObject);
+}
+
+bool MapMgr::Harvest(ObjectInMap *pObject)
+{
+    if( pObject == NULL )
+        return false;
+    
+    OBJECT_TYPE type = pObject->m_type;
+    
+    if(type == OBJECT_TYPE_BUILDING)
+    {
+        if(pObject->m_state == BUILDING_STATE_NONE)
+        {
+            dynamic_cast<Building*>(pObject)->GetTimer()->StartTimer();
+            return true;
+        }
+    }
+    
+    else if(type == OBJECT_TYPE_FIELD)
+    {
+        Field *pField = static_cast<Field*>(pObject);
+        if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
+        {
+            dynamic_cast<Field*>(pObject)->removeCrop();
+            return true;
+        }
+    }
+    
+    //임시
+    //    HARVEST_QUEUE object(const_cast<char*>("http://"), pObject);
+    //
+    //    m_qHarvest.push(object);
+    
+    return false;
+}
+
+
 #pragma mark -
 #pragma mark Get
 

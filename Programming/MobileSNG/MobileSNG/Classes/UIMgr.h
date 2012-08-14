@@ -9,6 +9,7 @@
 #pragma once
 
 #include "cocos2d.h"
+#include "JoinUI.h"
 
 //CA Edit 120728 Move Shop to Game Scene and Change UI System
 //CA Edit 120729 Change UI System
@@ -39,4 +40,8 @@ public:
                   cocos2d::SEL_MenuHandler handler);
     
     bool ChangeUI(int uiNum);
+
+public:
+//void join(cocos2d::CCObject *pSender);
+//void Cancel(cocos2d::CCObject *pSender);
 };

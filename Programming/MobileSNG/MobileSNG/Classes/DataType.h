@@ -10,6 +10,8 @@
 
 #include <string>
 
+#pragma mark POSITION
+
 template<typename TYPE>
 struct POINT
 {
@@ -34,6 +36,35 @@ struct SIZE
     }
 };
 
+template <typename TYPE>
+inline bool intersectBoxWithBox(POINT<TYPE> pos1, SIZE<TYPE> size1,
+                                POINT<TYPE> pos2, SIZE<TYPE> size2)
+{
+    if( pos2.x > pos1.x + size1.width )
+        return false;
+    if( pos2.x + size2.width < pos1.x )
+        return false;
+    if( pos2.y > pos1.y + size1.height )
+        return false;
+    if( pos2.y + size2.height < pos2.y )
+        return false;
+    
+    return true;
+}
+
+template <typename TYPE>
+inline bool intersectBoxWithPoint(POINT<TYPE> boxPos, SIZE<TYPE> boxSize, POINT<TYPE> pos)
+{
+    if( (boxPos.x <= pos.x && pos.x < boxPos.x + boxSize.width) &&
+       (boxPos.y <= pos.y && pos.y < boxPos.y + boxSize.height) )
+        return true;
+    
+    return false;
+}
+
+#pragma mark -
+#pragma INFORMATION
+
 struct OBJECT_INFO
 {
     int time;
@@ -54,6 +85,7 @@ struct OBJECT_INFO
 
 struct COMMON_INFO
 {
+    int             systemVersion;
     int             objectID;
     int             price;
     std::string     name;
@@ -65,14 +97,15 @@ struct COMMON_INFO
         price = 0;
     }
     
-    COMMON_INFO(int _objectID, const char *_name, int _price, int _level)
+    COMMON_INFO(int _objectID, const char *_name, int _price, int _level, int _systemVersion)
     {
         objectID    = _objectID;
         price       = _price;
-        
+
         name = _name;
-        
         level = _level;
+
+        systemVersion = _systemVersion;
     }
     
     ~COMMON_INFO()
@@ -110,6 +143,5 @@ struct CROP_INFO : public COMMON_INFO
 struct ORNAMENT_INFO : public COMMON_INFO
 {
     ORNAMENT_INFO() : COMMON_INFO(){}
-    ORNAMENT_INFO(int _objectID, int _price, const char *_name, int _level) 
-                         :COMMON_INFO(_objectID, _name, _price, _level){}
+    ORNAMENT_INFO(COMMON_INFO commonInfo) : COMMON_INFO(commonInfo){}
 };

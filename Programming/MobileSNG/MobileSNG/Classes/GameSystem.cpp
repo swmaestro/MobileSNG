@@ -62,52 +62,6 @@ void GameSystem::Update(float fDelta)
 //    }
 }
 
-bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap *pOut)
-{
-    ObjectInMap *pObject = m_pMap->FindObject(pos);
-    
-    if(pObject == NULL)
-        return false;
-    
-    pOut = pObject;
-    
-    return this->Harvest(pObject);
-}
-
-bool GameSystem::Harvest(ObjectInMap *pObject)
-{
-    if( pObject == NULL )
-        return false;
-    
-    OBJECT_TYPE type = pObject->m_type;
-
-    if(type == OBJECT_TYPE_BUILDING)
-    {
-        if(pObject->m_state == BUILDING_STATE_NONE)
-        {
-            dynamic_cast<Building*>(pObject)->GetTimer()->StartTimer();
-            return true;
-        }
-    }
-    
-    else if(type == OBJECT_TYPE_FIELD)
-    {
-        Field *pField = static_cast<Field*>(pObject);
-        if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
-        {
-            dynamic_cast<Field*>(pObject)->removeCrop();
-            return true;
-        }
-    }
-
-    //임시
-//    HARVEST_QUEUE object(const_cast<char*>("http://"), pObject);
-//    
-//    m_qHarvest.push(object);
-    
-    return false;
-}
-
 MapMgr* GameSystem::GetMapMgr()
 {
     return m_pMap;
