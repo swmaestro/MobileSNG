@@ -13,7 +13,6 @@
 		3C5C1B4315D2478E006E7C0B /* Crop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3115D2478E006E7C0B /* Crop.cpp */; };
 		3C5C1B4415D2478E006E7C0B /* Field.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3315D2478E006E7C0B /* Field.cpp */; };
 		3C5C1B4515D2478E006E7C0B /* MapMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3515D2478E006E7C0B /* MapMgr.cpp */; };
-		3C5C1B4615D2478E006E7C0B /* NetWork.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3715D2478E006E7C0B /* NetWork.cpp */; };
 		3C5C1B4715D2478E006E7C0B /* ObjectInfoMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3915D2478E006E7C0B /* ObjectInfoMgr.cpp */; };
 		3C5C1B4815D2478E006E7C0B /* ObjectInMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3B15D2478E006E7C0B /* ObjectInMap.cpp */; };
 		3C5C1B4915D2478E006E7C0B /* Ornament.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3E15D2478E006E7C0B /* Ornament.cpp */; };
@@ -205,6 +204,9 @@
 		3C93672815B0FF6600860E6A /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C93672715B0FF6600860E6A /* AppController.mm */; };
 		3C93672B15B0FF6600860E6A /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C93672A15B0FF6600860E6A /* RootViewController.mm */; };
 		3C9CF8C015DA355400890B36 /* SystemInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C9CF8BE15DA355400890B36 /* SystemInfo.cpp */; };
+		3C9CF8C515DA91E100890B36 /* FirstScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C9CF8C315DA91E100890B36 /* FirstScene.cpp */; };
+		3C9CF8C915DAB49300890B36 /* Join.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C9CF8C715DAB49300890B36 /* Join.cpp */; };
+		3C9CF8D615DC1AAF00890B36 /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C9CF8D415DC1AAF00890B36 /* Network.cpp */; };
 		3CAB25A915B7D2070003DDE2 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAB25A815B7D2070003DDE2 /* libsqlite3.0.dylib */; };
 		3CAB25C215B815230003DDE2 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CAB25C115B815230003DDE2 /* AppDelegate.cpp */; };
 		3CAB286D15BCF7590003DDE2 /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CAB286615BCF7580003DDE2 /* GameScene.cpp */; };
@@ -266,8 +268,6 @@
 		3C5C1B3415D2478E006E7C0B /* Field.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Field.h; path = Classes/Field.h; sourceTree = "<group>"; };
 		3C5C1B3515D2478E006E7C0B /* MapMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MapMgr.cpp; path = Classes/MapMgr.cpp; sourceTree = "<group>"; };
 		3C5C1B3615D2478E006E7C0B /* MapMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapMgr.h; path = Classes/MapMgr.h; sourceTree = "<group>"; };
-		3C5C1B3715D2478E006E7C0B /* NetWork.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NetWork.cpp; path = Classes/NetWork.cpp; sourceTree = "<group>"; };
-		3C5C1B3815D2478E006E7C0B /* NetWork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetWork.h; path = Classes/NetWork.h; sourceTree = "<group>"; };
 		3C5C1B3915D2478E006E7C0B /* ObjectInfoMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ObjectInfoMgr.cpp; path = Classes/ObjectInfoMgr.cpp; sourceTree = "<group>"; };
 		3C5C1B3A15D2478E006E7C0B /* ObjectInfoMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectInfoMgr.h; path = Classes/ObjectInfoMgr.h; sourceTree = "<group>"; };
 		3C5C1B3B15D2478E006E7C0B /* ObjectInMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ObjectInMap.cpp; path = Classes/ObjectInMap.cpp; sourceTree = "<group>"; };
@@ -679,6 +679,12 @@
 		3C93672D15B0FF6600860E6A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
 		3C9CF8BE15DA355400890B36 /* SystemInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SystemInfo.cpp; path = Classes/SystemInfo.cpp; sourceTree = "<group>"; };
 		3C9CF8BF15DA355400890B36 /* SystemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SystemInfo.h; path = Classes/SystemInfo.h; sourceTree = "<group>"; };
+		3C9CF8C315DA91E100890B36 /* FirstScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FirstScene.cpp; path = Classes/FirstScene.cpp; sourceTree = "<group>"; };
+		3C9CF8C415DA91E100890B36 /* FirstScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FirstScene.h; path = Classes/FirstScene.h; sourceTree = "<group>"; };
+		3C9CF8C715DAB49300890B36 /* Join.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Join.cpp; path = Classes/Join.cpp; sourceTree = "<group>"; };
+		3C9CF8C815DAB49300890B36 /* Join.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Join.h; path = Classes/Join.h; sourceTree = "<group>"; };
+		3C9CF8D415DC1AAF00890B36 /* Network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Network.cpp; path = Classes/Network.cpp; sourceTree = "<group>"; };
+		3C9CF8D515DC1AAF00890B36 /* Network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Network.h; path = Classes/Network.h; sourceTree = "<group>"; };
 		3CAB25A815B7D2070003DDE2 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		3CAB25C115B815230003DDE2 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AppDelegate.cpp; path = Classes/AppDelegate.cpp; sourceTree = "<group>"; };
 		3CAB286115BCF7580003DDE2 /* DataType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataType.h; path = Classes/DataType.h; sourceTree = "<group>"; };
@@ -862,13 +868,13 @@
 			name = Crop;
 			sourceTree = "<group>";
 		};
-		3C5C1B2E15D24731006E7C0B /* NetWork */ = {
+		3C5C1B2E15D24731006E7C0B /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				3C5C1B3715D2478E006E7C0B /* NetWork.cpp */,
-				3C5C1B3815D2478E006E7C0B /* NetWork.h */,
+				3C9CF8D415DC1AAF00890B36 /* Network.cpp */,
+				3C9CF8D515DC1AAF00890B36 /* Network.h */,
 			);
-			name = NetWork;
+			name = Network;
 			sourceTree = "<group>";
 		};
 		3C5C1B4B15D247BF006E7C0B /* ObjectInMap */ = {
@@ -944,14 +950,14 @@
 		3C9364C415B0FF6300860E6A /* MobileSNG */ = {
 			isa = PBXGroup;
 			children = (
-				3C9CF8C115DA359000890B36 /* JoinUI */,
+				3C9CF8C615DAB48700890B36 /* Join */,
 				3C9CF8B915DA34DE00890B36 /* System */,
 				3C12F6CA15D7EA8100295503 /* User */,
 				3C12F6C915D7EA7A00295503 /* Account */,
 				3C12F6C715D7EA7200295503 /* GameSystem */,
 				C56307B815D53F3600E2BEF7 /* Sqlite3Base */,
 				3C5C1B4B15D247BF006E7C0B /* ObjectInMap */,
-				3C5C1B2E15D24731006E7C0B /* NetWork */,
+				3C5C1B2E15D24731006E7C0B /* Network */,
 				3C5C1B2815D24718006E7C0B /* MapMgr */,
 				3CAB259815B7AB6F0003DDE2 /* Type */,
 				3CAB259A15B7AB7A0003DDE2 /* ObjectInfoMgr */,
@@ -1759,13 +1765,32 @@
 			name = System;
 			sourceTree = "<group>";
 		};
-		3C9CF8C115DA359000890B36 /* JoinUI */ = {
+		3C9CF8C115DA359000890B36 /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				3CDA257C15D8EFE100193717 /* JoinUI.cpp */,
 				3CDA257D15D8EFE100193717 /* JoinUI.h */,
 			);
-			name = JoinUI;
+			name = UI;
+			sourceTree = "<group>";
+		};
+		3C9CF8C215DA91CC00890B36 /* FirstScene */ = {
+			isa = PBXGroup;
+			children = (
+				3C9CF8C315DA91E100890B36 /* FirstScene.cpp */,
+				3C9CF8C415DA91E100890B36 /* FirstScene.h */,
+			);
+			name = FirstScene;
+			sourceTree = "<group>";
+		};
+		3C9CF8C615DAB48700890B36 /* Join */ = {
+			isa = PBXGroup;
+			children = (
+				3C9CF8C115DA359000890B36 /* UI */,
+				3C9CF8C715DAB49300890B36 /* Join.cpp */,
+				3C9CF8C815DAB49300890B36 /* Join.h */,
+			);
+			name = Join;
 			sourceTree = "<group>";
 		};
 		3CAB258F15B7A9420003DDE2 /* AppDelegate */ = {
@@ -1780,6 +1805,7 @@
 		3CAB259215B7A9730003DDE2 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				3C9CF8C215DA91CC00890B36 /* FirstScene */,
 				3CAB259415B7A9860003DDE2 /* Menu */,
 				3CAB259315B7A9780003DDE2 /* Game */,
 			);
@@ -2138,7 +2164,6 @@
 				3C5C1B4315D2478E006E7C0B /* Crop.cpp in Sources */,
 				3C5C1B4415D2478E006E7C0B /* Field.cpp in Sources */,
 				3C5C1B4515D2478E006E7C0B /* MapMgr.cpp in Sources */,
-				3C5C1B4615D2478E006E7C0B /* NetWork.cpp in Sources */,
 				3C5C1B4715D2478E006E7C0B /* ObjectInfoMgr.cpp in Sources */,
 				3C5C1B4815D2478E006E7C0B /* ObjectInMap.cpp in Sources */,
 				3C5C1B4915D2478E006E7C0B /* Ornament.cpp in Sources */,
@@ -2149,6 +2174,9 @@
 				3C12F6CD15D823E900295503 /* User.cpp in Sources */,
 				3CDA257E15D8EFE100193717 /* JoinUI.cpp in Sources */,
 				3C9CF8C015DA355400890B36 /* SystemInfo.cpp in Sources */,
+				3C9CF8C515DA91E100890B36 /* FirstScene.cpp in Sources */,
+				3C9CF8C915DAB49300890B36 /* Join.cpp in Sources */,
+				3C9CF8D615DC1AAF00890B36 /* Network.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

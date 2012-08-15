@@ -10,7 +10,7 @@
 
 #include "ObjectInfoMgr.h"
 #include "MapMgr.h"
-#include "NetWork.h"
+#include "Network.h"
 #include <queue>
 #include <string>
 
@@ -48,7 +48,7 @@ class GameSystem
 private:
     ObjectInfoMgr                   *m_pInfoMgr;
     MapMgr                          *m_pMap;
-    NetWork                         *m_pNetWork;
+    Network                         *m_pNetwork;
 //    std::queue<HARVEST_QUEUE>       m_qHarvest;
     
 public:
@@ -71,4 +71,5 @@ public:
 public:
     MapMgr*          GetMapMgr();
     ObjectInfoMgr*   GetInfoMgr() { return m_pInfoMgr; }
+    Network*        GetNetwork() { return m_pNetwork; }
 };

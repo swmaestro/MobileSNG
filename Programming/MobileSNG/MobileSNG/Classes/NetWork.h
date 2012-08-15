@@ -1,5 +1,5 @@
 //
-//  NetWork.h
+//  Network.h
 //  MobileSNG
 //
 //  Created by 박 진 on 12. 8. 6..
@@ -31,14 +31,14 @@ struct CURL_DATA {
     }
 };
 
-class NetWork
+class Network
 {
 private:
     CURL        *m_pCTX;
     
 public:
-    NetWork();
-    ~NetWork();
+    Network();
+    ~Network();
 
 private:
     static int _WriteCurlDataCallback(void *ptr, int size, int nmemb, void *pData);

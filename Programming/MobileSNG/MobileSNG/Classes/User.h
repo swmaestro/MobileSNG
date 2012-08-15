@@ -10,15 +10,15 @@
 
 #include <string>
 #include "Sqlite3Base.h"
-#include "NetWork.h"
+#include "Network.h"
 
 #define USER_FILE_NAME "User.info"
 
 class User
 {
 private:
-    std::string     m_strUserFilePath;
-    std::string     m_strUserID;
+    std::string     m_strFilePath;
+    std::string     m_strID;
     std::string     m_strPassWord;
 
     int             m_level;
@@ -34,8 +34,8 @@ public:
     void SetData(char *xmlData);
     
 public:
-    bool Login(NetWork *pNetWork);
-    bool LogOut(NetWork *pNetWork);
+    bool Login(Network *pNetwork);
+    bool LogOut(Network *pNetwork);
     
 public:
     void AddMoney(int n);

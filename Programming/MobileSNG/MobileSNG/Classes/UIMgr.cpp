@@ -78,8 +78,7 @@ bool UIMgr::ChangeUI(int uiNum)
 
 //void UIMgr::join(cocos2d::CCObject *pSender)
 //{
-//    int a = 5;
-//    a = 3;
+//    
 //}
 //
 //void UIMgr::Cancel(cocos2d::CCObject *pSender)

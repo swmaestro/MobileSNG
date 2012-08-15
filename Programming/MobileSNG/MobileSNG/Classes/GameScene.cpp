@@ -4,6 +4,8 @@
 #include "GameSystem.h"
 #include "MapMgr.h"
 
+#include "Join.h"
+
 using namespace cocos2d;
 
 const char * tempString[3][5] =

@@ -145,3 +145,36 @@ struct ORNAMENT_INFO : public COMMON_INFO
     ORNAMENT_INFO() : COMMON_INFO(){}
     ORNAMENT_INFO(COMMON_INFO commonInfo) : COMMON_INFO(commonInfo){}
 };
+
+struct DATE {
+    int year;
+    int month;
+    int day;
+    int hour;
+    int min;
+    int sec;
+    
+    DATE(int year = 0, int month = 0, int day = 0, int hour = 0, int min = 0, int sec = 0)
+    {
+        this->year      = year;
+        this->month     = month;
+        this->day       = day;
+        this->hour      = hour;
+        this->min       = min;
+        this->sec       = sec;
+    }
+};
+
+struct USER_INFO {
+    std::string strName;
+    std::string strPhoneNumber;
+    DATE        date;
+    
+    USER_INFO(){}
+    USER_INFO(char *strName, char *strPhoneNumber, DATE date)
+    {
+        this->strName = strName;
+        this->strPhoneNumber = strPhoneNumber;
+        this->date = date;
+    }
+};

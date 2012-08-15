@@ -15,18 +15,18 @@ using namespace std;
 
 User::User(const char *FileName)
 {
-    m_strUserFilePath = CCFileUtils::sharedFileUtils()->getWriteablePath().append(FileName);
+    m_strFilePath = CCFileUtils::sharedFileUtils()->getWriteablePath().append(FileName);
     
-    FILE *pFile = fopen(m_strUserFilePath.data(), "rb");
+    FILE *pFile = fopen(m_strFilePath.data(), "rb");
     
     if(pFile != NULL)
     {
         char txt[32];
         
-        fscanf(pFile, "%s\n", txt);
-        m_strUserID = txt;
+        fscanf(pFile, "%s", txt);
+        m_strID = txt;
         
-        fscanf(pFile, "%s\n", txt);
+        fscanf(pFile, "%s", txt);
         m_strPassWord = txt;
     }
     
@@ -35,17 +35,17 @@ User::User(const char *FileName)
 
 User::~User()
 {
-    FILE *pFile = fopen(m_strUserFilePath.data(), "wb");
+    FILE *pFile = fopen(m_strFilePath.data(), "wb");
     
-    fprintf(pFile, "%s\n",m_strUserID.data());
-    fprintf(pFile, "%s\n",m_strUserID.data());
+    fprintf(pFile, "%s\n",m_strID.data());
+    fprintf(pFile, "%s\n",m_strID.data());
     
     fclose(pFile);
 }
 
 void User::SetData(char *xmlData)
 {
-    if( m_strUserID.empty() == false )
+    if( m_strID.empty() == false )
     {
         //이미 있었으니까 파싱할필요 없이 스킵하면 될거같아
     }
@@ -53,14 +53,14 @@ void User::SetData(char *xmlData)
     //파싱
 }
 
-bool User::Login(NetWork *pNetWork)
+bool User::Login(Network *pNetwork)
 {
     
     
     return true;
 }
 
-bool User::LogOut(NetWork *pNetWork)
+bool User::LogOut(Network *pNetwork)
 {
     
     
@@ -92,7 +92,7 @@ void User::AddExp(int n)
 bool User::isEmpty()
 {
     //id가 없다는건 생성이 안된것이기 때문에 이런식으로 ㅇㅇ.
-    return m_strUserID.empty();
+    return m_strID.empty();
 }
 
 int User::GetLevel()

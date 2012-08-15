@@ -14,7 +14,7 @@ GameSystem::GameSystem()
 {
     m_pInfoMgr  = NULL;
     m_pMap      = NULL;
-    m_pNetWork  = NULL;
+    m_pNetwork  = NULL;
 }
 
 GameSystem::~GameSystem()
@@ -34,7 +34,7 @@ bool GameSystem::initialize(const char* strDBFile)
     
     m_pInfoMgr  = new ObjectInfoMgr(strDBFile);
     m_pMap      = new MapMgr(mapLevel);
-    m_pNetWork  = new NetWork;
+    m_pNetwork  = new Network;
     
     //일단 대충. 임시적
 
@@ -50,7 +50,7 @@ void GameSystem::Update(float fDelta)
 //    CURLcode code;
 //    HARVEST_QUEUE *object = &(m_qHarvest.front());
 //        
-//    code = m_pNetWork->connectHttp(object->url.data(), &(object->data));
+//    code = m_pNetwork->connectHttp(object->url.data(), &(object->data));
 //    
 //    if( code == CURLE_OK )
 //        m_qHarvest.pop();
