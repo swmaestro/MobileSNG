@@ -63,6 +63,12 @@ ObjectInMap* MapMgr::_CreateObject(ObjectInMap *pObject, int time)
 //    pField->removeCrop();
 //}
 
+vector<ObjectInMap *> MapMgr::GetAllObject()
+{
+    return m_vObjects;
+}
+
+/*
 void MapMgr::UpdateObjects(ObjectInfoMgr *pInfoMgr)
 {
     vector<ObjectInMap*>::iterator iter;
@@ -70,7 +76,7 @@ void MapMgr::UpdateObjects(ObjectInfoMgr *pInfoMgr)
     for( iter = m_vObjects.begin(); iter != m_vObjects.end(); ++iter )
         (*iter)->UpdateSystem(pInfoMgr);
 }
-
+*/
 bool MapMgr::addObject(ObjectInMap &info, int time)
 {
     ObjectInMap *object;
@@ -211,7 +217,7 @@ bool MapMgr::Harvest(POINT<int> &pos, ObjectInMap *pOut)
     
     if(pObject == NULL)
         return false;
-    
+
     pOut = pObject;
     
     return this->Harvest(pObject);
@@ -226,9 +232,11 @@ bool MapMgr::Harvest(ObjectInMap *pObject)
     
     if(type == OBJECT_TYPE_BUILDING)
     {
-        if(pObject->m_state == BUILDING_STATE_NONE)
+        if(pObject->m_state == BUILDING_STATE_DONE)
         {
-            dynamic_cast<Building*>(pObject)->GetTimer()->StartTimer();
+            Building * b = dynamic_cast<Building*>(pObject);
+            b->m_state = BUILDING_STATE_WORKING;
+            b->GetTimer()->StartTimer();
             return true;
         }
     }

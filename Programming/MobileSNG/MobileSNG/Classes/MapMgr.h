@@ -28,7 +28,8 @@ private:
     static ObjectInMap*    _CreateObject(ObjectInMap *obj, int time = 0);
     
 public:
-    void        UpdateObjects(ObjectInfoMgr *pInfoMgr);
+//    void        UpdateObjects(ObjectInfoMgr *pInfoMgr);
+    std::vector<ObjectInMap *> GetAllObject();
     
 public:
     bool        addObject(ObjectInMap &info, int time);

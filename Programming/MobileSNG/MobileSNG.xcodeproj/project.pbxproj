@@ -224,10 +224,13 @@
 		C5241CBA15D3E3E4003820EE /* HauntedHouse in Resources */ = {isa = PBXBuildFile; fileRef = C5241CB915D3E3E4003820EE /* HauntedHouse */; };
 		C546BD9815C8000300277186 /* Friends-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = C546BD9715C8000300277186 /* Friends-Small.png */; };
 		C546BD9D15C8001400277186 /* Shop-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = C546BD9B15C8001400277186 /* Shop-Small.png */; };
+		C550315815D8DAD5008CD033 /* sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C550315715D8DAD5008CD033 /* sqlite */; };
 		C5517A7B15D728A300643697 /* Farm in Resources */ = {isa = PBXBuildFile; fileRef = C5517A7715D728A300643697 /* Farm */; };
 		C56307B615D53F2C00E2BEF7 /* Sqlite3Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C56307B415D53F2C00E2BEF7 /* Sqlite3Base.cpp */; };
 		C56307BB15D60F2E00E2BEF7 /* JellyBean in Resources */ = {isa = PBXBuildFile; fileRef = C56307B915D60F2E00E2BEF7 /* JellyBean */; };
 		C56307BC15D60F2E00E2BEF7 /* MushMallow in Resources */ = {isa = PBXBuildFile; fileRef = C56307BA15D60F2E00E2BEF7 /* MushMallow */; };
+		C5652BDF15D7B14C002348F2 /* CookieHouse in Resources */ = {isa = PBXBuildFile; fileRef = C5652BDD15D7B14C002348F2 /* CookieHouse */; };
+		C5652BE015D7B14C002348F2 /* JackInTheBox in Resources */ = {isa = PBXBuildFile; fileRef = C5652BDE15D7B14C002348F2 /* JackInTheBox */; };
 		C57F18F115BF8FFE0055C208 /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = C57F18F015BF8FFE0055C208 /* Background.png */; };
 		C57F18FC15BF92530055C208 /* Tile.png in Resources */ = {isa = PBXBuildFile; fileRef = C57F18FB15BF92530055C208 /* Tile.png */; };
 		C583633415D52560006F4F2A /* Allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C583633315D52560006F4F2A /* Allocator.cpp */; };
@@ -240,6 +243,7 @@
 		C5D57AD615CAB0AF003B8D80 /* Shop-Line.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D57ACE15CAB0AF003B8D80 /* Shop-Line.png */; };
 		C5D57AD715CAB0AF003B8D80 /* Shop-Tab.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D57ACF15CAB0AF003B8D80 /* Shop-Tab.png */; };
 		C5D57AD815CAB0AF003B8D80 /* Shop-TabSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D57AD015CAB0AF003B8D80 /* Shop-TabSelected.png */; };
+		C5F67F9F15D7B80E00F83D58 /* ObjectDB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C5F67F9E15D7B80E00F83D58 /* ObjectDB.sqlite */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -709,11 +713,14 @@
 		C5241CB915D3E3E4003820EE /* HauntedHouse */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HauntedHouse; path = Resources/HauntedHouse; sourceTree = "<group>"; };
 		C546BD9715C8000300277186 /* Friends-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Friends-Small.png"; path = "Resources/Friends-Small.png"; sourceTree = "<group>"; };
 		C546BD9B15C8001400277186 /* Shop-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Shop-Small.png"; path = "Resources/Shop-Small.png"; sourceTree = "<group>"; };
+		C550315715D8DAD5008CD033 /* sqlite */ = {isa = PBXFileReference; lastKnownFileType = folder; name = sqlite; path = Classes/sqlite; sourceTree = "<group>"; };
 		C5517A7715D728A300643697 /* Farm */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Farm; path = Resources/Farm; sourceTree = "<group>"; };
 		C56307B415D53F2C00E2BEF7 /* Sqlite3Base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sqlite3Base.cpp; path = Classes/Sqlite3Base.cpp; sourceTree = "<group>"; };
 		C56307B515D53F2C00E2BEF7 /* Sqlite3Base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sqlite3Base.h; path = Classes/Sqlite3Base.h; sourceTree = "<group>"; };
 		C56307B915D60F2E00E2BEF7 /* JellyBean */ = {isa = PBXFileReference; lastKnownFileType = folder; name = JellyBean; path = Resources/JellyBean; sourceTree = "<group>"; };
 		C56307BA15D60F2E00E2BEF7 /* MushMallow */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MushMallow; path = Resources/MushMallow; sourceTree = "<group>"; };
+		C5652BDD15D7B14C002348F2 /* CookieHouse */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CookieHouse; path = Resources/CookieHouse; sourceTree = "<group>"; };
+		C5652BDE15D7B14C002348F2 /* JackInTheBox */ = {isa = PBXFileReference; lastKnownFileType = folder; name = JackInTheBox; path = Resources/JackInTheBox; sourceTree = "<group>"; };
 		C57F18F015BF8FFE0055C208 /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background.png; path = Resources/Background.png; sourceTree = "<group>"; };
 		C57F18FB15BF92530055C208 /* Tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Tile.png; path = Resources/Tile.png; sourceTree = "<group>"; };
 		C583633215D52552006F4F2A /* Allocator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Allocator.h; path = Classes/Allocator.h; sourceTree = "<group>"; };
@@ -727,6 +734,7 @@
 		C5D57ACE15CAB0AF003B8D80 /* Shop-Line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Shop-Line.png"; path = "Resources/Shop-Line.png"; sourceTree = "<group>"; };
 		C5D57ACF15CAB0AF003B8D80 /* Shop-Tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Shop-Tab.png"; path = "Resources/Shop-Tab.png"; sourceTree = "<group>"; };
 		C5D57AD015CAB0AF003B8D80 /* Shop-TabSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Shop-TabSelected.png"; path = "Resources/Shop-TabSelected.png"; sourceTree = "<group>"; };
+		C5F67F9E15D7B80E00F83D58 /* ObjectDB.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = ObjectDB.sqlite; path = Resources/ObjectDB.sqlite; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -970,6 +978,9 @@
 		3C9364C515B0FF6300860E6A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C5F67F9E15D7B80E00F83D58 /* ObjectDB.sqlite */,
+				C5652BDD15D7B14C002348F2 /* CookieHouse */,
+				C5652BDE15D7B14C002348F2 /* JackInTheBox */,
 				C5517A7715D728A300643697 /* Farm */,
 				C56307B915D60F2E00E2BEF7 /* JellyBean */,
 				C56307BA15D60F2E00E2BEF7 /* MushMallow */,
@@ -1879,6 +1890,7 @@
 		C56307B815D53F3600E2BEF7 /* Sqlite3Base */ = {
 			isa = PBXGroup;
 			children = (
+				C550315715D8DAD5008CD033 /* sqlite */,
 				C56307B515D53F2C00E2BEF7 /* Sqlite3Base.h */,
 				C56307B415D53F2C00E2BEF7 /* Sqlite3Base.cpp */,
 			);
@@ -1980,6 +1992,10 @@
 				C56307BB15D60F2E00E2BEF7 /* JellyBean in Resources */,
 				C56307BC15D60F2E00E2BEF7 /* MushMallow in Resources */,
 				C5517A7B15D728A300643697 /* Farm in Resources */,
+				C5652BDF15D7B14C002348F2 /* CookieHouse in Resources */,
+				C5652BE015D7B14C002348F2 /* JackInTheBox in Resources */,
+				C5F67F9F15D7B80E00F83D58 /* ObjectDB.sqlite in Resources */,
+				C550315815D8DAD5008CD033 /* sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

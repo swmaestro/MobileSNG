@@ -55,7 +55,7 @@ bool ObjectInMap::isIn(ObjectInMap *pObject)
     return true;
 }
 
-void ObjectInMap::UpdateSystem(ObjectInfoMgr *pInfoMgr)
+bool ObjectInMap::UpdateSystem(ObjectInfoMgr *pInfoMgr)
 {
-    //null
+    return false;
 }

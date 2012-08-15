@@ -8,10 +8,12 @@
 
 #include "Allocator.h"
 #include "MapMgr.h"
+#include "ObjectInfoMgr.h"
+
 #include "GameScene.h"
 #include "Shop.h"
-
 #include "Map.h"
+
 #include "Building.h"
 #include "Field.h"
 
@@ -22,9 +24,11 @@ Allocator::Allocator(CCLayer *& tile) : m_tile(tile)
     
 }
 
-void Allocator::init(MapMgr * mapMgr, int width, int type, int id)
+void Allocator::init(MapMgr * mapMgr, ObjectInfoMgr * infoMgr, int width, int type, int id)
 {
     m_pMapMgr = mapMgr;
+    m_pInfoMgr = infoMgr;
+    
     m_width = width;
     m_touch = NULL;
     
@@ -42,6 +46,26 @@ void Allocator::init(MapMgr * mapMgr, int width, int type, int id)
     
     m_type = type;
     m_id = id;
+    
+    switch (m_type)
+    {
+        case OBJ_FARM:
+        case OBJ_BUILDING:
+        {
+            BUILDING_INFO info;
+            infoMgr->searchInfo(m_id, &info);
+            m_name = info.name;
+            break;
+        }
+            
+        case OBJ_CROP:
+        {
+            CROP_INFO info;
+            infoMgr->searchInfo(m_id, &info);
+            m_name = info.name;
+            break;
+        }
+    }
 }
 
 void Allocator::Apply()
@@ -53,10 +77,9 @@ void Allocator::Apply()
         if (tile == NULL)
             continue;
         
-        char temp[30];
-        sprintf(temp, "%s/01.png", tempString[m_type][m_id]);
+        std::string filename = m_name + "/01.png";
         
-        CCSprite * spr = CCSprite::create(temp);
+        CCSprite * spr = CCSprite::create(filename.c_str());
         spr->setAnchorPoint(ccp(0.5, 0.3));
         
         ObjectInMap oim;
@@ -64,7 +87,11 @@ void Allocator::Apply()
         switch (m_type)
         {
             case OBJ_CROP:
-                dynamic_cast<Field *>(m_pMapMgr->FindObject(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]))))->addCrop(m_id);
+                {
+                    Field * f = dynamic_cast<Field *>(m_pMapMgr->FindObject(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]))));
+                    f->addCrop(m_id);
+                }
+                
                 tile->addChild(spr, TILE_CROP, TILE_CROP);
                 break;
                 
@@ -153,10 +180,9 @@ void Allocator::TouchesBegin(int i, int j)
         m_touch = NULL;
     }
     
-    char temp[30];
-    sprintf(temp, "%s/Complete.png", tempString[m_type][m_id]);
+    std::string filename = m_name + "/Complete.png";
     
-    m_touch = CCSprite::create(temp);
+    m_touch = CCSprite::create(filename.c_str());
     m_touch->setOpacity(180);
     m_touch->setAnchorPoint(ccp(0.5, 0.3));
     

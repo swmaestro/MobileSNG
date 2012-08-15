@@ -8,13 +8,6 @@
 
 using namespace cocos2d;
 
-const char * tempString[3][5] =
-{
-  "CandyCane",    "MushMallow", "JellyBean", NULL, NULL,
-  "HauntedHouse", NULL,         NULL,        NULL, NULL,
-  "Farm"
-};
-
 GameScene::GameScene() : m_pSystem(NULL), m_pMap(NULL), m_pShop(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL)
 {
     
@@ -24,40 +17,45 @@ GameScene::~GameScene()
 {
     removeAllChildrenWithCleanup(true);
     
-    SAFE_DELETE(m_pSystem);
-    SAFE_DELETE(m_pMap);
-    SAFE_DELETE(m_pShop);
-    SAFE_DELETE(m_pUIMgr);
+    delete m_pSystem;
+    delete m_pMap;
+    delete m_pShop;
+    delete m_pUIMgr;
     
     m_pCurrentUI = NULL;
+}
+
+CCScene * GameScene::scene()
+{
+    CCScene * scene = CCScene::create();
+    scene->addChild(GameScene::create());
+    return scene;
 }
 
 bool GameScene::init()
 {
     if (!CCLayer::init())     
         return false;
+
+    m_pSystem = new GameSystem();
+    if (!m_pSystem->initialize("ObjectDB.sqlite"))
+        return false;
     
     if (!_initUIMgr())
         return false;
     
-    m_pSystem = new GameSystem();
-    if (!m_pSystem->initialize(""))
+    if (!_initShop())
         return false;
     
     CCSize wsize = CCDirector::sharedDirector()->getWinSize();
     
     m_pMap = new Map();
-    m_pMap->init();
+    m_pMap->init(m_pSystem);
     m_pMap->setAnchorPoint(ccp(0.5, 0.5));
     m_pMap->setScale(1);
     m_pMap->setPosition(ccp(wsize.width / 2, wsize.height / 2));
     m_pMap->setVisible(false);
     addChild(m_pMap, 0);
-    
-    m_pShop = new Shop();
-    m_pShop->init(this);
-    m_pShop->setVisible(false);
-    addChild(m_pShop, 0);
     
     setTouchEnabled(true);
     
@@ -89,6 +87,38 @@ bool GameScene::_initUIMgr()
     /////////////////////////
     
     addChild(m_pUIMgr, 1);
+    
+    return true;
+}
+
+bool GameScene::_initShop()
+{
+    m_pShop = new Shop();
+    m_pShop->init(this);
+    m_pShop->setVisible(false);
+    
+    ObjectInfoMgr * infoMgr = m_pSystem->GetInfoMgr();
+    
+    std::vector<CROP_INFO> infoCrop = infoMgr->GetAllCropInfo();
+    std::vector<BUILDING_INFO> infoBuilding = infoMgr->GetAllBuildingInfo();
+    
+    for (int i = 0; i < infoCrop.size(); ++i)
+    {
+        std::string filename = infoCrop[i].name + "/" + infoCrop[i].name + ".png";
+        
+        m_pShop->addItem(OBJ_CROP, infoCrop[i].name.c_str(), filename.c_str(),
+                         infoCrop[i].price, 0, infoCrop[i].object.time, 0, infoCrop[i].object.reward);
+    }
+    
+    for (int i = 0; i < infoBuilding.size(); ++i)
+    {
+        std::string filename = infoBuilding[i].name + "/" + infoBuilding[i].name + ".png";
+        
+        m_pShop->addItem(OBJ_BUILDING, infoBuilding[i].name.c_str(), filename.c_str(),
+                         infoBuilding[i].price, 0, infoBuilding[i].object.time, 0, infoBuilding[i].object.reward);
+    }
+    
+    addChild(m_pShop, 0);
     
     return true;
 }
@@ -172,7 +202,7 @@ void GameScene::_changeUI(cocos2d::CCLayer * ui)
 
 void GameScene::alloc(int type, int id)
 {
-    m_pMap->beginEdit(m_pSystem->GetMapMgr(), type, id);
+    m_pMap->beginEdit(type, id);
     m_pUIMgr->ChangeUI(UI_EDIT);
     _changeUI(m_pMap);
 }

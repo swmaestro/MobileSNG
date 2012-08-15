@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <sqlite3.h>
+#include "sqlite/sqlite3.h"
 #include "DataType.h"
 #include <vector>
 #include "Sqlite3Base.h"

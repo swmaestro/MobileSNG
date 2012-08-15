@@ -13,6 +13,7 @@
 #include <vector>
 
 class MapMgr;
+class ObjectInfoMgr;
 
 class Allocator : public cocos2d::CCLayer
 {
@@ -20,8 +21,10 @@ private:
     int m_width;
     
     MapMgr * m_pMapMgr;
+    ObjectInfoMgr * m_pInfoMgr;
     
     int m_type, m_id;
+    std::string m_name;
     std::vector<int> m_vec;
     
     cocos2d::CCSprite * m_touch;
@@ -30,7 +33,7 @@ private:
 public:
     Allocator(cocos2d::CCLayer *& tile);
     
-    void init(MapMgr * mapMgr, int width, int type, int id);
+    void init(MapMgr * mapMgr, ObjectInfoMgr * infoMgr, int width, int type, int id);
     
     void Apply();
     void Clear();

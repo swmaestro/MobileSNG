@@ -20,20 +20,26 @@ Crop::~Crop()
     delete m_pTimer;
 }
 
-void Crop::UpdateSystem(ObjectInfoMgr *pInfoMgr)
+bool Crop::UpdateSystem(ObjectInfoMgr *pInfoMgr)
 {    
     CROP_INFO       info;
     
     if(pInfoMgr->searchInfo(m_id, &info) == false)
     {
         printf("%s <- Crop Error. Can't search Crop info", __FUNCTION__);
-        return;
+        return false;
     }
     
-    if(m_pTimer->CheckTimer(info.object.time) == false)
-            m_state = static_cast<float>(m_pTimer->GetTime()) / (static_cast<float>(info.object.time) / 4.f);
+    objectState beforeState = m_state;
+    
+    if(m_state < CROP_STATE_DONE && m_pTimer->CheckTimer(info.object.time) == false)
+            m_state = static_cast<float>(m_pTimer->GetTime()) / info.object.time * CROP_STATE_DONE;
     else    m_state = CROP_STATE_DONE;
-
+    
+    if (beforeState != m_state)
+        return true;
+    
+    return false;
 }
 
 objectState Crop::GetState()

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<Body>
+		<Info>
+			<Filename>box.max</Filename>
+			<ObjectCount>4</ObjectCount>
+			<MeshCount>3</MeshCount>
+			<AnimationStart>0f</AnimationStart>
+			<AnimationEnd>100f</AnimationEnd>
+			<KeyType>Keyframe</KeyType>
+			<Object>
+				<Value ID="0">NULL</Value>
+				<Value ID="1">Box01</Value>
+				<Value ID="2">Box02</Value>
+				<Value ID="3">Box03</Value>
+			</Object>
+			<Bone>
+				<Value BoneID="0" ID="0">NULL</Value>
+			</Bone>
+		</Info>
+		<Material>
+			<Slot Index="0">
+				<Diffuse>(color 149.94 149.94 149.94)</Diffuse>
+				<Ambient>(color 149.94 149.94 149.94)</Ambient>
+				<Specular>(color 229.5 229.5 229.5)</Specular>
+				<Emissive>(color 0 0 0)</Emissive>
+				<Opacity>100.0</Opacity>
+				<Power>0.0</Power>
+			</Slot>
+			<Slot Index="1">
+				<Diffuse>(color 39 29 240)</Diffuse>
+				<Ambient>(color 39 29 240)</Ambient>
+				<Specular>(color 229.5 229.5 229.5)</Specular>
+				<Emissive>(color 0 0 0)</Emissive>
+				<Opacity>100.0</Opacity>
+				<Power>0.0</Power>
+			</Slot>
+			<Slot Index="2">
+				<Diffuse>(color 239 73 22)</Diffuse>
+				<Ambient>(color 239 73 22)</Ambient>
+				<Specular>(color 229.5 229.5 229.5)</Specular>
+				<Emissive>(color 0 0 0)</Emissive>
+				<Opacity>100.0</Opacity>
+				<Power>0.0</Power>
+			</Slot>
+		</Material>
+		<Object ID="0" Name="NULL" Class="Dummy">
+			<Parent ID="-1" Name="undefined">
+			</Parent>
+			<LocalTM>
+				<Value>[1.0,0.0,0.0,0.0]</Value>
+				<Value>[0.0,1.0,0.0,0.0]</Value>
+				<Value>[0.0,0.0,1.0,0.0]</Value>
+				<Value>[0.0,0.0,0.0,1.0]</Value>
+			</LocalTM>
+			<BoundingBox>
+				<Max>[5,5,5]</Max>
+				<Min>[-5,-5,-5]</Min>
+				<Center>[0,0,0]</Center>
+			</BoundingBox>
+		</Object>
+		<Object ID="1" Name="Box01" Class="Editable_mesh">
+			<Parent ID="-1" Name="undefined">
+			</Parent>
+			<LocalTM>
+				<Value>[0.999999,0.0,0.00134716,0.0]</Value>
+				<Value>[0.0,1.0,0.0,0.0]</Value>
+				<Value>[-0.00134716,0.0,0.999999,0.0]</Value>
+				<Value>[-61.1353,0.0,5.0,1.0]</Value>
+			</LocalTM>
+			<BoundingBox>
+				<Max>[41.1757,14.9999,20]</Max>
+				<Min>[1.09486,-14.9999,0]</Min>
+				<Center>[21.1353,1.76258e-007,10]</Center>
+			</BoundingBox>
+			<Vertex>
+				<Value Index="0">[1.13527,0,-15]</Value>
+				<Value Index="1">[41.1353,0,-15]</Value>
+				<Value Index="2">[1.13527,0,15]</Value>
+				<Value Index="3">[41.1353,0,15]</Value>
+				<Value Index="4">[1.13527,20,-15]</Value>
+				<Value Index="5">[41.1353,20,-15]</Value>
+				<Value Index="6">[1.13527,20,15]</Value>
+				<Value Index="7">[41.1353,20,15]</Value>
+			</Vertex>
+			<VertexNormal>
+				<Value Index="0">[0,-1.5708,0]</Value>
+				<Value Index="1">[0,-1.5708,0]</Value>
+				<Value Index="2">[0,-1.5708,0]</Value>
+				<Value Index="3">[0,-1.5708,0]</Value>
+				<Value Index="4">[0,1.5708,0]</Value>
+				<Value Index="5">[0,1.5708,0]</Value>
+				<Value Index="6">[0,1.5708,0]</Value>
+				<Value Index="7">[0,1.5708,0]</Value>
+			</VertexNormal>
+			<TriIndex MaterialCount="1">
+				<Value MaterialID="1">[0,3,2]</Value>
+				<Value MaterialID="1">[3,0,1]</Value>
+				<Value MaterialID="1">[4,7,5]</Value>
+				<Value MaterialID="1">[7,4,6]</Value>
+				<Value MaterialID="1">[0,5,1]</Value>
+				<Value MaterialID="1">[5,0,4]</Value>
+				<Value MaterialID="1">[1,7,3]</Value>
+				<Value MaterialID="1">[7,1,5]</Value>
+				<Value MaterialID="1">[3,6,2]</Value>
+				<Value MaterialID="1">[6,3,7]</Value>
+				<Value MaterialID="1">[2,4,0]</Value>
+				<Value MaterialID="1">[4,2,6]</Value>
+			</TriIndex>
+			<Key>
+				<AnimationStart>0f</AnimationStart>
+				<AnimationEnd>100f</AnimationEnd>
+				<Quaternion>
+					<Value Frame="0f">[0.0,0.0,0.0,1.0]</Value>
+					<Value Frame="50f">[0.0,-0.325793,0.0,0.945441]</Value>
+					<Value Frame="100f">[0.0,-0.000673579,0.0,1.0]</Value>
+				</Quaternion>
+			</Key>
+		</Object>
+		<Object ID="2" Name="Box02" Class="Editable_mesh">
+			<Parent ID="1" Name="Box01">
+			</Parent>
+			<LocalTM>
+				<Value>[-0.00890613,0.99996,0.0,0.0]</Value>
+				<Value>[-0.99996,-0.00890613,0.0,0.0]</Value>
+				<Value>[0.0,0.0,1.0,0.0]</Value>
+				<Value>[64.1173,0.0,-0.168431,1.0]</Value>
+			</LocalTM>
+			<BoundingBox>
+				<Max>[40.8412,14.9999,-0.396644]</Max>
+				<Min>[0.848232,-14.9999,20.3966]</Min>
+				<Center>[20.8447,0,10]</Center>
+			</BoundingBox>
+			<Vertex>
+				<Value Index="0">[0.8447,0,-15]</Value>
+				<Value Index="1">[40.8447,-1.63611e-007,-15]</Value>
+				<Value Index="2">[0.8447,0,15]</Value>
+				<Value Index="3">[40.8447,0,15]</Value>
+				<Value Index="4">[0.8447,20,-15]</Value>
+				<Value Index="5">[40.8447,20,-15]</Value>
+				<Value Index="6">[0.8447,20,15]</Value>
+				<Value Index="7">[40.8447,20,15]</Value>
+			</Vertex>
+			<VertexNormal>
+				<Value Index="0">[1.57073,0.0139897,0.00211603]</Value>
+				<Value Index="1">[1.57073,0.0139897,0.00211603]</Value>
+				<Value Index="2">[1.57073,0.0139897,0.00211603]</Value>
+				<Value Index="3">[1.57073,0.0139897,0.00211603]</Value>
+				<Value Index="4">[-1.57073,-0.0139897,-0.00211603]</Value>
+				<Value Index="5">[-1.57073,-0.0139897,-0.00211603]</Value>
+				<Value Index="6">[-1.57073,-0.0139897,-0.00211603]</Value>
+				<Value Index="7">[-1.57073,-0.0139897,-0.00211603]</Value>
+			</VertexNormal>
+			<TriIndex MaterialCount="1">
+				<Value MaterialID="2">[0,3,2]</Value>
+				<Value MaterialID="2">[3,0,1]</Value>
+				<Value MaterialID="2">[4,7,5]</Value>
+				<Value MaterialID="2">[7,4,6]</Value>
+				<Value MaterialID="2">[0,5,1]</Value>
+				<Value MaterialID="2">[5,0,4]</Value>
+				<Value MaterialID="2">[1,7,3]</Value>
+				<Value MaterialID="2">[7,1,5]</Value>
+				<Value MaterialID="2">[3,6,2]</Value>
+				<Value MaterialID="2">[6,3,7]</Value>
+				<Value MaterialID="2">[2,4,0]</Value>
+				<Value MaterialID="2">[4,2,6]</Value>
+			</TriIndex>
+			<Key>
+				<AnimationStart>0f</AnimationStart>
+				<AnimationEnd>100f</AnimationEnd>
+				<Position>
+					<Value Frame="0f">[44.0157,0,0.239763]</Value>
+					<Value Frame="50f">[64.0966,0,-15.4646]</Value>
+					<Value Frame="100f">[64.1173,0,-0.168431]</Value>
+				</Position>
+				<Quaternion>
+					<Value Frame="0f">[0.0,0.0,0.0,1.0]</Value>
+					<Value Frame="50f">[0.0,0.0,0.384586,0.923089]</Value>
+					<Value Frame="100f">[0.0,0.0,0.710249,0.703951]</Value>
+				</Quaternion>
+			</Key>
+		</Object>
+		<Object ID="3" Name="Box03" Class="Editable_mesh">
+			<Parent ID="2" Name="Box02">
+			</Parent>
+			<LocalTM>
+				<Value>[1.0,0.0,0.000477195,0.0]</Value>
+				<Value>[0.0,1.0,0.0,0.0]</Value>
+				<Value>[-0.000477195,0.0,1.0,0.0]</Value>
+				<Value>[20.8688,-1.43124e-007,-33.9346,1.0]</Value>
+			</LocalTM>
+			<BoundingBox>
+				<Max>[20.0108,14.9995,-0.396669]</Max>
+				<Min>[-20.0108,-14.9995,20.3967]</Min>
+				<Center>[-1.32399e-006,-1.07915e-006,10]</Center>
+			</BoundingBox>
+			<Vertex>
+				<Value Index="0">[-20,0,-15]</Value>
+				<Value Index="1">[20,1.34473e-007,-15]</Value>
+				<Value Index="2">[-20,0,15]</Value>
+				<Value Index="3">[20,1.84893e-007,15]</Value>
+				<Value Index="4">[-20,20,-15]</Value>
+				<Value Index="5">[20,20,-15]</Value>
+				<Value Index="6">[-20,20,15]</Value>
+				<Value Index="7">[20,20,15]</Value>
+			</Vertex>
+			<VertexNormal>
+				<Value Index="0">[1.57073,0.0139897,0.00211603]</Value>
+				<Value Index="1">[1.57073,0.0139897,0.00211603]</Value>
+				<Value Index="2">[1.57073,0.0139897,0.00211603]</Value>
+				<Value Index="3">[1.57073,0.0139897,0.00211603]</Value>
+				<Value Index="4">[-1.57073,-0.0139897,-0.00211603]</Value>
+				<Value Index="5">[-1.57073,-0.0139897,-0.00211603]</Value>
+				<Value Index="6">[-1.57073,-0.0139897,-0.00211603]</Value>
+				<Value Index="7">[-1.57073,-0.0139897,-0.00211603]</Value>
+			</VertexNormal>
+			<TriIndex MaterialCount="1">
+				<Value MaterialID="-1">[0,3,2]</Value>
+				<Value MaterialID="-1">[3,0,1]</Value>
+				<Value MaterialID="-1">[4,7,5]</Value>
+				<Value MaterialID="-1">[7,4,6]</Value>
+				<Value MaterialID="-1">[0,5,1]</Value>
+				<Value MaterialID="-1">[5,0,4]</Value>
+				<Value MaterialID="-1">[1,7,3]</Value>
+				<Value MaterialID="-1">[7,1,5]</Value>
+				<Value MaterialID="-1">[3,6,2]</Value>
+				<Value MaterialID="-1">[6,3,7]</Value>
+				<Value MaterialID="-1">[2,4,0]</Value>
+				<Value MaterialID="-1">[4,2,6]</Value>
+			</TriIndex>
+			<Key>
+				<AnimationStart>0f</AnimationStart>
+				<AnimationEnd>100f</AnimationEnd>
+				<Quaternion>
+					<Value Frame="0f">[0.0,0.0,0.0,1.0]</Value>
+					<Value Frame="50f">[0.0,-0.710764,0.0,0.703431]</Value>
+					<Value Frame="100f">[0.0,-0.000238596,0.0,1.0]</Value>
+				</Quaternion>
+			</Key>
+		</Object>
+	</Body>
