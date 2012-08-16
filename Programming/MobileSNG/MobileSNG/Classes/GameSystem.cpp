@@ -32,7 +32,8 @@ bool GameSystem::initialize(const char* strDBFile)
     
     int mapLevel = 1;
     
-    m_pInfoMgr  = new ObjectInfoMgr(strDBFile);
+    m_pInfoMgr  = new ObjectInfoMgr();
+    m_pInfoMgr->loadData(strDBFile);
     m_pMap      = new MapMgr(mapLevel);
     m_pNetwork  = new Network;
     
@@ -43,8 +44,8 @@ bool GameSystem::initialize(const char* strDBFile)
 
 void GameSystem::Update(float fDelta)
 {
-    m_pMap->UpdateObjects(m_pInfoMgr);
-  
+//    m_pMap->UpdateObjects(m_pInfoMgr);
+//
 //    if(m_qHarvest.empty()) return;
 //    
 //    CURLcode code;

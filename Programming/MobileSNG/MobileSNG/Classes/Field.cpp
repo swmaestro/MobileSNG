@@ -8,11 +8,10 @@
 
 #include "Field.h"
 
-Field::Field(ObjectInMap *pObject, void (*stateChangeCAllBack)(ObjectInMap* pObj, objectState state)) : ObjectInMap(pObject)
+Field::Field(ObjectInMap *pObject) : ObjectInMap(pObject)
 {
 //120811 CA Appended : Set Type
     m_type    = OBJECT_TYPE_FIELD;
-    m_pStateChangeCallBack = stateChangeCAllBack;
     m_pCrop   = NULL;
 }
 
@@ -25,7 +24,7 @@ Field::~Field()
     }    
 }
 
-bool Field::addCrop(int id, int time)
+bool Field::addCrop(int id, int time, ObjectInfoMgr *pInfoMgr)
 {
     if( m_pCrop != NULL )
     {
@@ -33,19 +32,17 @@ bool Field::addCrop(int id, int time)
         return false;
     }
 
-    m_pCrop = new  Crop(id, time);
+    m_pCrop = new  Crop(id, time, pInfoMgr);
+    m_pCrop->GetTimer()->StartTimer();
     
     return true;
 }
 
-void Field::UpdateSystem(ObjectInfoMgr *pInfoMgr)
+bool Field::UpdateSystem()
 {
-    if(m_pCrop == NULL) return;
+    if(m_pCrop == NULL) return false;
     
-    m_pCrop->UpdateSystem(pInfoMgr);
-
-    if(m_pCrop->GetState() == CROP_STATE_DONE)
-        STATE_CHANGE_CALLBACK(this, m_pCrop->GetState());
+    return m_pCrop->UpdateSystem();
 }
 
 void Field::removeCrop()

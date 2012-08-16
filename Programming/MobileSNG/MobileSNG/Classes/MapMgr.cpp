@@ -31,13 +31,13 @@ bool MapMgr::_isInMap(POINT<int> &pos, SIZE<int> size)
     return true;
 }
 
-ObjectInMap* MapMgr::_CreateObject(ObjectInMap *pObject, int time)
+ObjectInMap* MapMgr::_CreateObject(ObjectInMap *pObject, ObjectInfoMgr *pInfoMgr, int time)
 {
-    OBJECT_TYPE     type    = pObject->m_type;
+    OBJECT_TYPE     type    = pObject->GetType();
     ObjectInMap     *object = NULL;
     
     if( type == OBJECT_TYPE_BUILDING )
-        object = dynamic_cast<ObjectInMap*>(new Building(pObject, time));
+        object = dynamic_cast<ObjectInMap*>(new Building(pObject, time, pInfoMgr));
     
     else if( type == OBJECT_TYPE_ORNAMENT )
         object = dynamic_cast<ObjectInMap*>(new Ornament(pObject));
@@ -63,6 +63,12 @@ ObjectInMap* MapMgr::_CreateObject(ObjectInMap *pObject, int time)
 //    pField->removeCrop();
 //}
 
+vector<ObjectInMap *> MapMgr::GetAllObject()
+{
+    return m_vObjects;
+}
+
+/*
 void MapMgr::UpdateObjects(ObjectInfoMgr *pInfoMgr)
 {
     vector<ObjectInMap*>::iterator iter;
@@ -70,12 +76,12 @@ void MapMgr::UpdateObjects(ObjectInfoMgr *pInfoMgr)
     for( iter = m_vObjects.begin(); iter != m_vObjects.end(); ++iter )
         (*iter)->UpdateSystem(pInfoMgr);
 }
-
-bool MapMgr::addObject(ObjectInMap &info, int time)
+*/
+bool MapMgr::addObject(ObjectInMap *pInfo, ObjectInfoMgr *pInfoMgr, int time)
 {
     ObjectInMap *object;
 
-    if( (object = _CreateObject(&info, time)) == NULL )
+    if( (object = _CreateObject(pInfo, pInfoMgr, time)) == NULL )
     {
         printf("%s <- CreateObject Error, Can't alloc", __FUNCTION__);
         return false;
@@ -92,7 +98,7 @@ bool MapMgr::isObjectInMap(POINT<int> pos)
     
     for( iter = m_vObjects.begin(); iter != m_vObjects.end(); ++iter )
     {
-        if(intersectBoxWithPoint((*iter)->m_position, (*iter)->m_size, pos))
+        if(intersectBoxWithPoint((*iter)->m_position, (*iter)->GetSize(), pos))
             return true;
     }
     
@@ -105,7 +111,7 @@ bool MapMgr::isObjectInMap(POINT<int> pos, SIZE<int> size)
     
     for( iter = m_vObjects.begin(); iter != m_vObjects.end(); ++iter )
     {
-        if(intersectBoxWithBox((*iter)->m_position, (*iter)->m_size, pos, size))
+        if(intersectBoxWithBox((*iter)->m_position, (*iter)->GetSize(), pos, size))
             return true;
     }
 
@@ -118,7 +124,7 @@ ObjectInMap* MapMgr::FindObject(POINT<int> pos)
     
     for( iter = m_vObjects.begin(); iter != m_vObjects.end(); ++iter )
     {
-        if(intersectBoxWithPoint((*iter)->m_position, (*iter)->m_size, pos))
+        if(intersectBoxWithPoint((*iter)->m_position, (*iter)->GetSize(), pos))
             return (*iter);
     }
     
@@ -132,7 +138,7 @@ vector<ObjectInMap*> MapMgr::FindObjects(POINT<int> pos, SIZE<int> size)
     
     for(iter = m_vObjects.begin(); iter != m_vObjects.end(); ++iter)
     {
-        if(intersectBoxWithBox((*iter)->m_position, (*iter)->m_size, pos, size))
+        if(intersectBoxWithBox((*iter)->m_position, (*iter)->GetSize(), pos, size))
             vObjects.push_back((*iter));
     }
     
@@ -142,14 +148,14 @@ vector<ObjectInMap*> MapMgr::FindObjects(POINT<int> pos, SIZE<int> size)
 bool MapMgr::moveObject(POINT<int> &pos, ObjectInMap *obj2)
 {    
     vector<ObjectInMap*>::iterator iter;
-    SIZE<int> size = obj2->m_size;
+    SIZE<int> size = obj2->GetSize();
     
     if(_isInMap(pos, size) == false)
         return false;
     
     for(iter = m_vObjects.begin(); iter != m_vObjects.end(); ++iter)
     {        
-        if(intersectBoxWithBox((*iter)->m_position, (*iter)->m_size, pos, size))
+        if(intersectBoxWithBox((*iter)->m_position, (*iter)->GetSize(), pos, size))
             return false;
     }
     
@@ -185,7 +191,7 @@ void MapMgr::removeObject(POINT<int> &pos)
     
     for(iter = m_vObjects.begin(); iter != m_vObjects.end(); ++iter)
     {
-        if( intersectBoxWithPoint((*iter)->m_position, (*iter)->m_size, pos) )
+        if( intersectBoxWithPoint((*iter)->m_position, (*iter)->GetSize(), pos) )
         {
             m_vObjects.erase(iter);
             return;
@@ -199,7 +205,7 @@ void MapMgr::removeObjects(POINT<int> &pos, SIZE<int> &size)
     
     for(iter = m_vObjects.begin(); iter != m_vObjects.end(); ++iter)
     {
-        if( intersectBoxWithBox((*iter)->m_position, (*iter)->m_size, pos, size) )
+        if( intersectBoxWithBox((*iter)->m_position, (*iter)->GetSize(), pos, size) )
             m_vObjects.erase(iter);
     }
 }
@@ -211,7 +217,7 @@ bool MapMgr::Harvest(POINT<int> &pos, ObjectInMap *pOut)
     
     if(pObject == NULL)
         return false;
-    
+
     pOut = pObject;
     
     return this->Harvest(pObject);
@@ -222,13 +228,15 @@ bool MapMgr::Harvest(ObjectInMap *pObject)
     if( pObject == NULL )
         return false;
     
-    OBJECT_TYPE type = pObject->m_type;
+    OBJECT_TYPE type = pObject->GetType();
     
     if(type == OBJECT_TYPE_BUILDING)
     {
-        if(pObject->m_state == BUILDING_STATE_NONE)
+        if(pObject->m_state == BUILDING_STATE_DONE)
         {
-            dynamic_cast<Building*>(pObject)->GetTimer()->StartTimer();
+            Building * b = dynamic_cast<Building*>(pObject);
+            b->m_state = BUILDING_STATE_WORKING;
+            b->GetTimer()->StartTimer();
             return true;
         }
     }

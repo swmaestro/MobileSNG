@@ -25,13 +25,14 @@ public:
     
 private:
     bool                   _isInMap(POINT<int> &pos, SIZE<int> size);
-    static ObjectInMap*    _CreateObject(ObjectInMap *obj, int time = 0);
+    static ObjectInMap*    _CreateObject(ObjectInMap *obj, ObjectInfoMgr *pInfoMgr, int time = 0);
     
 public:
-    void        UpdateObjects(ObjectInfoMgr *pInfoMgr);
+//    void        UpdateObjects(ObjectInfoMgr *pInfoMgr);
+    std::vector<ObjectInMap *> GetAllObject();
     
 public:
-    bool        addObject(ObjectInMap &info, int time);
+    bool        addObject(ObjectInMap *pInfo, ObjectInfoMgr *pInfoMgr, int time);
     bool        moveObject(POINT<int> &pos, ObjectInMap *obj2);
     
 public:

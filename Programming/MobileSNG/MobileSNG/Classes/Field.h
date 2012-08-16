@@ -15,17 +15,16 @@ class Field : public ObjectInMap
 {
 private:
     Crop              *m_pCrop;
-    void             (*m_pStateChangeCallBack)(ObjectInMap*, objectState);
     
 public:
-    Field(ObjectInMap *pObject, void (*stateChangeCAllBack)(ObjectInMap* pObj, objectState state) = NULL);
+    Field(ObjectInMap *pObject);
     ~Field();
     
 public:
-    void UpdateSystem(ObjectInfoMgr *pInfoMgr);
+    bool UpdateSystem();
     
 public:
-    bool addCrop(int id, int time = 0);
+    bool addCrop(int id, int time, ObjectInfoMgr *pInfoMgr);
     void removeCrop();
 
 public:

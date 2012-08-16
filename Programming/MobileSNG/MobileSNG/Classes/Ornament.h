@@ -18,5 +18,5 @@ public:
     ~Ornament();
     
 public:
-    void UpdateSystem(ObjectInfoMgr *pInfoMgr);
+    bool UpdateSystem();
 };

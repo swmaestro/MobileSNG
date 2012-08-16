@@ -26,13 +26,14 @@ private:
     int                     m_id;
     objectState             m_state;
     Timer                   *m_pTimer;
+    CropInfo               *m_pInfo;
     
 public:
-    Crop(int id, int time);
+    Crop(int id, int time, ObjectInfoMgr *pInfoMgr);
     ~Crop();
     
 public:
-    void UpdateSystem(ObjectInfoMgr *pInfoMgr);
+    bool UpdateSystem();
     
 public:
     objectState GetState();

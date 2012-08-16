@@ -15,23 +15,25 @@ enum BUILDING_STATE
 {
     BUILDING_STATE_UNDER_CONSTRUCTION_1,
     BUILDING_STATE_UNDER_CONSTRUCTION_2,
-    BUILDING_STATE_COMPLETE_CONSTRUCTION,
+//    BUILDING_STATE_COMPLETE_CONSTRUCTION,
     BUILDING_STATE_WORKING,
-    BUILDING_STATE_NONE
+    BUILDING_STATE_DONE
 };
 
 class Building : public ObjectInMap
 {
 private:
+    BuildingInfo   *m_pInfo;
+    
+private:
     Timer           *m_pTimer;
-    objectState      m_beforeState;
-    void           (*m_pStateChangeCallBack)(ObjectInMap*, objectState);
+    bool            m_isWorking;
     
 public:
-    Building(ObjectInMap *pObject, int nowTime, void (*stateChangeCAllBack)(ObjectInMap* pObj, objectState state) = NULL);
+    Building(ObjectInMap *pObject, int nowTime, ObjectInfoMgr *pInfoMgr);
     ~Building();
     
 public:
-    void UpdateSystem(ObjectInfoMgr *pInfoMgr);
+    bool UpdateSystem();
     Timer* GetTimer();
 };

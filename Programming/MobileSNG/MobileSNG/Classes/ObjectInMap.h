@@ -32,13 +32,15 @@ enum OBJECT_TYPE
 
 class ObjectInMap
 {
-public:
-    objectState             m_state;
-    POINT<int>              m_position;
+protected:
     SIZE<int>               m_size;
     OBJECT_DIRECTION        m_direction;
     OBJECT_TYPE             m_type;
     int                     m_id;
+    
+public:
+    objectState             m_state;
+    POINT<int>              m_position;
     
 public:
     ObjectInMap(objectState      state      = -1, 
@@ -55,5 +57,11 @@ public:
     bool isIn(ObjectInMap *pObject);
     
 public:
-    virtual void UpdateSystem(ObjectInfoMgr *pInfoMgr);
+    virtual bool UpdateSystem();
+    
+public:
+    SIZE<int>               GetSize();
+    OBJECT_DIRECTION        GetDirection();
+    OBJECT_TYPE             GetType();
+    int                     GetID();
 };

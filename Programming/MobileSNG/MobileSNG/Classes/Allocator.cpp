@@ -8,10 +8,12 @@
 
 #include "Allocator.h"
 #include "MapMgr.h"
+#include "ObjectInfoMgr.h"
+
 #include "GameScene.h"
 #include "Shop.h"
-
 #include "Map.h"
+
 #include "Building.h"
 #include "Field.h"
 
@@ -22,9 +24,11 @@ Allocator::Allocator(CCLayer *& tile) : m_tile(tile)
     
 }
 
-void Allocator::init(MapMgr * mapMgr, int width, int type, int id)
+void Allocator::init(MapMgr * mapMgr, ObjectInfoMgr * infoMgr, int width, int type, int id)
 {
     m_pMapMgr = mapMgr;
+    m_pInfoMgr = infoMgr;
+    
     m_width = width;
     m_touch = NULL;
     
@@ -42,6 +46,26 @@ void Allocator::init(MapMgr * mapMgr, int width, int type, int id)
     
     m_type = type;
     m_id = id;
+    
+    switch (m_type)
+    {
+        case OBJ_FARM:
+        case OBJ_BUILDING:
+        {
+            BuildingInfo *pInfo;
+            infoMgr->searchInfo(m_id, &pInfo);
+            m_name = pInfo->GetName();
+            break;
+        }
+            
+        case OBJ_CROP:
+        {
+            CropInfo *pInfo;
+            infoMgr->searchInfo(m_id, &pInfo);
+            m_name = pInfo->GetName();
+            break;
+        }
+    }
 }
 
 void Allocator::Apply()
@@ -53,10 +77,9 @@ void Allocator::Apply()
         if (tile == NULL)
             continue;
         
-        char temp[30];
-        sprintf(temp, "%s/01.png", tempString[m_type][m_id]);
+        std::string filename = m_name + "/01.png";
         
-        CCSprite * spr = CCSprite::create(temp);
+        CCSprite * spr = CCSprite::create(filename.c_str());
         spr->setAnchorPoint(ccp(0.5, 0.3));
         
         ObjectInMap oim;
@@ -64,35 +87,37 @@ void Allocator::Apply()
         switch (m_type)
         {
             case OBJ_CROP:
-                dynamic_cast<Field *>(m_pMapMgr->FindObject(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]))))->addCrop(m_id);
+                {
+                    Field * f = dynamic_cast<Field *>(m_pMapMgr->FindObject(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]))));
+                    f->addCrop(m_id, 0, m_pInfoMgr);
+                }
+                
                 tile->addChild(spr, TILE_CROP, TILE_CROP);
                 break;
                 
             case OBJ_BUILDING:
-                oim.m_id = m_id;
-                oim.m_direction = OBJECT_DIRECTION_LEFT;
-                oim.m_position = POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]));
-                oim.m_size = SIZE<int>(1, 1);
-                oim.m_state = 0;
+                oim = ObjectInMap(0, POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i])), SIZE<int>(1, 1), OBJECT_DIRECTION_LEFT, m_id);
                 
                 {
-                    Building b(&oim, 0);
-                    m_pMapMgr->addObject(b, 0);
+                    Building b(&oim, 0, m_pInfoMgr);
+                    m_pMapMgr->addObject(&b, m_pInfoMgr, 0);
                 }
                 
                 tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);
                 break;
                 
             case OBJ_FARM:
-                oim.m_id = m_id;
-                oim.m_direction = OBJECT_DIRECTION_LEFT;
-                oim.m_position = POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]));
-                oim.m_size = SIZE<int>(1, 1);
-                oim.m_state = 0;
-            
+//                oim.m_id = m_id;
+//                oim.m_direction = OBJECT_DIRECTION_LEFT;
+//                oim.m_position = POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]));
+//                oim.m_size = SIZE<int>(1, 1);
+//                oim.m_state = 0;
+                
+                oim = ObjectInMap(0, POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i])), SIZE<int>(1, 1), OBJECT_DIRECTION_LEFT, m_id);
+                
                 {
                     Field f(&oim);
-                    m_pMapMgr->addObject(f, 0);
+                    m_pMapMgr->addObject(&f, m_pInfoMgr, 0);
                 }
                 
                 tile->addChild(spr, TILE_FARM, TILE_FARM);
@@ -132,7 +157,7 @@ void Allocator::TouchesBegin(int i, int j)
         
         ObjectInMap * obj = m_pMapMgr->FindObject(POINT<int>(i, j));
        
-        if (obj->m_type != OBJECT_TYPE_FIELD)
+        if (obj->GetType() != OBJECT_TYPE_FIELD)
             return;
         
         if (static_cast<Field *>(obj)->hasCrop())
@@ -153,10 +178,9 @@ void Allocator::TouchesBegin(int i, int j)
         m_touch = NULL;
     }
     
-    char temp[30];
-    sprintf(temp, "%s/Complete.png", tempString[m_type][m_id]);
+    std::string filename = m_name + "/Complete.png";
     
-    m_touch = CCSprite::create(temp);
+    m_touch = CCSprite::create(filename.c_str());
     m_touch->setOpacity(180);
     m_touch->setAnchorPoint(ccp(0.5, 0.3));
     
