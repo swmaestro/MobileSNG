@@ -10,12 +10,6 @@
 
 #include "sqlite/sqlite3.h"
 
-//enum SQLITE3_COLUMN {
-//    SQLITE3_COLUMN_INT,
-//    SQLITE3_COLUMN_DOUBLE,
-//    SQLITE3_COLUMN_TEXT
-//};
-
 class Sqlite3Base
 {
 protected:
