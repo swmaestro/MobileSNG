@@ -207,6 +207,7 @@
 		3C9CF8C515DA91E100890B36 /* FirstScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C9CF8C315DA91E100890B36 /* FirstScene.cpp */; };
 		3C9CF8C915DAB49300890B36 /* Join.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C9CF8C715DAB49300890B36 /* Join.cpp */; };
 		3C9CF8D615DC1AAF00890B36 /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C9CF8D415DC1AAF00890B36 /* Network.cpp */; };
+		3C9CF91C15DE177900890B36 /* User.info in Resources */ = {isa = PBXBuildFile; fileRef = 3C9CF91B15DE177900890B36 /* User.info */; };
 		3CAB25A915B7D2070003DDE2 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAB25A815B7D2070003DDE2 /* libsqlite3.0.dylib */; };
 		3CAB25C215B815230003DDE2 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CAB25C115B815230003DDE2 /* AppDelegate.cpp */; };
 		3CAB286D15BCF7590003DDE2 /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CAB286615BCF7580003DDE2 /* GameScene.cpp */; };
@@ -695,6 +696,7 @@
 		3C9CF90915DD7B9600890B36 /* ObjectInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectInfo.h; path = Classes/ObjectInfo.h; sourceTree = "<group>"; };
 		3C9CF90A15DD7B9600890B36 /* OrnamentInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OrnamentInfo.h; path = Classes/OrnamentInfo.h; sourceTree = "<group>"; };
 		3C9CF90B15DD7C9200890B36 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = Classes/Utility.h; sourceTree = "<group>"; };
+		3C9CF91B15DE177900890B36 /* User.info */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = User.info; path = Resources/User.info; sourceTree = "<group>"; };
 		3CAB25A815B7D2070003DDE2 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		3CAB25C115B815230003DDE2 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AppDelegate.cpp; path = Classes/AppDelegate.cpp; sourceTree = "<group>"; };
 		3CAB286115BCF7580003DDE2 /* DataType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataType.h; path = Classes/DataType.h; sourceTree = "<group>"; };
@@ -973,7 +975,7 @@
 				3C5C1B4B15D247BF006E7C0B /* ObjectInMap */,
 				3C5C1B2E15D24731006E7C0B /* Network */,
 				3C5C1B2815D24718006E7C0B /* MapMgr */,
-				3CAB259815B7AB6F0003DDE2 /* Type */,
+				3CAB259815B7AB6F0003DDE2 /* Document */,
 				3CAB259A15B7AB7A0003DDE2 /* ObjectInfoMgr */,
 				3CAB259215B7A9730003DDE2 /* Scene */,
 				3CAB258F15B7A9420003DDE2 /* AppDelegate */,
@@ -984,6 +986,7 @@
 		3C9364C515B0FF6300860E6A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3C9CF91B15DE177900890B36 /* User.info */,
 				C5F67F9E15D7B80E00F83D58 /* ObjectDB.sqlite */,
 				C5652BDD15D7B14C002348F2 /* CookieHouse */,
 				C5652BDE15D7B14C002348F2 /* JackInTheBox */,
@@ -1848,7 +1851,7 @@
 			name = Menu;
 			sourceTree = "<group>";
 		};
-		3CAB259815B7AB6F0003DDE2 /* Type */ = {
+		3CAB259815B7AB6F0003DDE2 /* Document */ = {
 			isa = PBXGroup;
 			children = (
 				3C9CF90615DD7B9600890B36 /* BuildingInfo.h */,
@@ -1859,7 +1862,7 @@
 				3CAB286115BCF7580003DDE2 /* DataType.h */,
 				3C9CF90B15DD7C9200890B36 /* Utility.h */,
 			);
-			name = Type;
+			name = Document;
 			sourceTree = "<group>";
 		};
 		3CAB259A15B7AB7A0003DDE2 /* ObjectInfoMgr */ = {
@@ -2008,6 +2011,7 @@
 				C5652BE015D7B14C002348F2 /* JackInTheBox in Resources */,
 				C5F67F9F15D7B80E00F83D58 /* ObjectDB.sqlite in Resources */,
 				C550315815D8DAD5008CD033 /* sqlite in Resources */,
+				3C9CF91C15DE177900890B36 /* User.info in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

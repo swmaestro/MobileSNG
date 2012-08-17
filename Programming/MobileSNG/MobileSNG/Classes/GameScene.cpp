@@ -37,9 +37,7 @@ bool GameScene::init()
     if (!CCLayer::init())     
         return false;
 
-    m_pSystem = new GameSystem();
-    if (!m_pSystem->initialize("ObjectDB.sqlite"))
-        return false;
+    m_pSystem = new GameSystem("ObjectDB.sqlite");
     
     if (!_initUIMgr())
         return false;

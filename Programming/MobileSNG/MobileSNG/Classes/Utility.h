@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <queue>
+
 template<typename TYPE>
 struct POINT
 {
@@ -57,3 +59,12 @@ inline bool intersectBoxWithPoint(POINT<TYPE> boxPos, SIZE<TYPE> boxSize, POINT<
     
     return false;
 }
+
+template <typename T>
+static void stdQueueAllClear(std::queue<T> &stdQueue)
+{
+    while (stdQueue.empty()==false)
+        stdQueue.pop();
+}
+
+#define SAFE_DELETE(P) if(P){delete P; P = NULL;}

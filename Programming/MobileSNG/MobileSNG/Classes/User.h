@@ -38,7 +38,7 @@ public:
     bool LogOut(Network *pNetwork);
     
 public:
-    void AddMoney(int n);
+    bool AddMoney(int n);
     void AddCash(int n);
     void AddExp(int n);
     

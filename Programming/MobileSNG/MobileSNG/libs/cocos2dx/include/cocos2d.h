@@ -213,6 +213,4 @@ const char* cocos2dVersion();
 
 NS_CC_END
 
-#define SAFE_DELETE(p) if(p){delete p; p = NULL;}
-
 #endif // __COCOS2D_H__

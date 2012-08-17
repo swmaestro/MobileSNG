@@ -30,6 +30,13 @@ User::User(const char *FileName)
         m_strPassWord = txt;
     }
     
+    
+    m_strID = "test";
+    m_strPassWord = "test";
+    
+    m_money = 100000;
+    m_level = 100;
+    
     fclose(pFile);
 }
 
@@ -67,9 +74,13 @@ bool User::LogOut(Network *pNetwork)
     return true;
 }
 
-void User::AddMoney(int n)
+bool User::AddMoney(int n)
 {
+    if( (m_money + n) < 0 )
+        return false;
+
     m_money += n;
+    return true;
 }
 
 void User::AddCash(int n)

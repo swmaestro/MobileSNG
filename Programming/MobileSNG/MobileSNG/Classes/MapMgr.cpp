@@ -62,12 +62,6 @@ ObjectInMap* MapMgr::_CreateObject(ObjectInMap *pObject, ObjectInfoMgr *pInfoMgr
 //{
 //    pField->removeCrop();
 //}
-
-vector<ObjectInMap *> MapMgr::GetAllObject()
-{
-    return m_vObjects;
-}
-
 /*
 void MapMgr::UpdateObjects(ObjectInfoMgr *pInfoMgr)
 {
@@ -211,53 +205,6 @@ void MapMgr::removeObjects(POINT<int> &pos, SIZE<int> &size)
 }
 
 #pragma mark harvest
-bool MapMgr::Harvest(POINT<int> &pos, ObjectInMap *pOut)
-{
-    ObjectInMap *pObject = FindObject(pos);
-    
-    if(pObject == NULL)
-        return false;
-
-    pOut = pObject;
-    
-    return this->Harvest(pObject);
-}
-
-bool MapMgr::Harvest(ObjectInMap *pObject)
-{
-    if( pObject == NULL )
-        return false;
-    
-    OBJECT_TYPE type = pObject->GetType();
-    
-    if(type == OBJECT_TYPE_BUILDING)
-    {
-        if(pObject->m_state == BUILDING_STATE_DONE)
-        {
-            Building * b = dynamic_cast<Building*>(pObject);
-            b->m_state = BUILDING_STATE_WORKING;
-            b->GetTimer()->StartTimer();
-            return true;
-        }
-    }
-    
-    else if(type == OBJECT_TYPE_FIELD)
-    {
-        Field *pField = static_cast<Field*>(pObject);
-        if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
-        {
-            dynamic_cast<Field*>(pObject)->removeCrop();
-            return true;
-        }
-    }
-    
-    //임시
-    //    HARVEST_QUEUE object(const_cast<char*>("http://"), pObject);
-    //
-    //    m_qHarvest.push(object);
-    
-    return false;
-}
 
 
 #pragma mark -
@@ -266,6 +213,11 @@ bool MapMgr::Harvest(ObjectInMap *pObject)
 int MapMgr::GetMapLevel()
 {
     return m_mapLevel;
+}
+
+vector<ObjectInMap *> MapMgr::GetAllObject()
+{
+    return m_vObjects;
 }
 
 #pragma mark -
