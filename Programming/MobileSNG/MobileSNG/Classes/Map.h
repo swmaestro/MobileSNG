@@ -16,6 +16,7 @@ class MapTile;
 class MapMgr;
 class Allocator;
 class GameSystem;
+class ObjectInMap;
 
 //CA Edit 120728 Move Touch to Game Scene
 
@@ -38,9 +39,7 @@ private:
     
     bool                m_isDragging, m_isScaling;
     bool                m_isAllocating, m_isEditing;
-    
-    int                 m_counter;
-    
+        
     int _cursorXY(cocos2d::CCPoint cur);
     
     void _initTile();
@@ -61,6 +60,8 @@ public:
     
     float filtScale(float scale);
     cocos2d::CCPoint filtPosition(cocos2d::CCPoint pos);
+    
+    void SyncPos(ObjectInMap * oim);
     
     void beginEdit();
     void beginEdit(int type, int id);

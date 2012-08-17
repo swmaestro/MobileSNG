@@ -244,6 +244,10 @@ bool MapMgr::Harvest(ObjectInMap *pObject)
     else if(type == OBJECT_TYPE_FIELD)
     {
         Field *pField = static_cast<Field*>(pObject);
+        
+        if (pField->GetCrop() == NULL)
+            return false;
+        
         if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
         {
             dynamic_cast<Field*>(pObject)->removeCrop();

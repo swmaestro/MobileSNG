@@ -80,7 +80,6 @@ void Allocator::Apply()
         std::string filename = m_name + "/01.png";
         
         CCSprite * spr = CCSprite::create(filename.c_str());
-        spr->setAnchorPoint(ccp(0.5, 0.3));
         
         ObjectInMap oim;
         
@@ -92,6 +91,7 @@ void Allocator::Apply()
                     f->addCrop(m_id);
                 }
                 
+                spr->setAnchorPoint(ccp(0.5, 0.3));
                 tile->addChild(spr, TILE_CROP, TILE_CROP);
                 break;
                 
@@ -103,8 +103,14 @@ void Allocator::Apply()
                 oim.m_state = 0;
                 
                 {
+                    BUILDING_INFO info;
+                    m_pInfoMgr->searchInfo(m_id, &info);
+                    oim.m_size = info.size;
+                    
                     Building b(&oim, 0);
                     m_pMapMgr->addObject(b, 0);
+                    
+                    spr->setAnchorPoint(ccp(0.5, 0.3 / ((info.size.width + info.size.height) / 2)));
                 }
                 
                 tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);
@@ -122,6 +128,7 @@ void Allocator::Apply()
                     m_pMapMgr->addObject(f, 0);
                 }
                 
+                spr->setAnchorPoint(ccp(0.5, 0.3));
                 tile->addChild(spr, TILE_FARM, TILE_FARM);
                 break;
         }
@@ -149,7 +156,10 @@ void Allocator::TouchesBegin(int i, int j)
 {
     if (m_type == OBJ_BUILDING)
     {
-        if (m_pMapMgr->isObjectInMap(POINT<int>(i, j)))
+        BUILDING_INFO info;
+        m_pInfoMgr->searchInfo(m_id, &info);
+        
+        if (m_pMapMgr->isObjectInMap(POINT<int>(i, j), info.size))
             return;
     }
     else if (m_type == OBJ_CROP)
@@ -184,7 +194,16 @@ void Allocator::TouchesBegin(int i, int j)
     
     m_touch = CCSprite::create(filename.c_str());
     m_touch->setOpacity(180);
-    m_touch->setAnchorPoint(ccp(0.5, 0.3));
+    
+    if (m_type == OBJ_BUILDING)
+    {
+        BUILDING_INFO info;
+        m_pInfoMgr->searchInfo(m_id, &info);
+        m_touch->setAnchorPoint(ccp(0.5, 0.3 / ((info.size.width + info.size.height) / 2)));
+    }
+    else
+        m_touch->setAnchorPoint(ccp(0.5, 0.3));
+    
     
     tile->addChild(m_touch, TILE_PREVIEW, TILE_PREVIEW);
 }
