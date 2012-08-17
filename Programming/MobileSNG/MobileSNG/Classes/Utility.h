@@ -38,15 +38,18 @@ template <typename TYPE>
 inline bool intersectBoxWithBox(POINT<TYPE> pos1, SIZE<TYPE> size1,
                                 POINT<TYPE> pos2, SIZE<TYPE> size2)
 {
-    if( pos2.x > pos1.x + size1.width )
-        return false;
-    if( pos2.x + size2.width < pos1.x )
-        return false;
-    if( pos2.y > pos1.y + size1.height )
-        return false;
-    if( pos2.y + size2.height < pos2.y )
-        return false;
+    //CA Edit
+    //>, < to >=, <=
     
+    if( pos2.x >= pos1.x + size1.width )
+        return false;
+    if( pos2.x + size2.width <= pos1.x )
+        return false;
+    if( pos2.y >= pos1.y + size1.height )
+        return false;
+    if( pos2.y + size2.height <= pos1.y )
+        return false;
+   
     return true;
 }
 
