@@ -86,17 +86,17 @@ void GameSystem::SellObject(ObjectInMap *pObj)
     m_pUser->AddMoney(-_GetCommonInfo(pObj)->GetPrice());
 }
 
-ObjectInMap* GameSystem::GetObject(bool isNext)
-{
-    static int idx = 0;
-    if(isNext)++idx;
-    return m_pMap->GetAllObject()[idx];
-}
-
-ObjectInMap* GameSystem::GetObject(int idx)
-{
-    return m_pMap->GetAllObject()[idx];
-}
+//ObjectInMap* GameSystem::GetObject(bool isNext)
+//{
+//    static int idx = 0;
+//    if(isNext)++idx;
+//    return m_pMap->GetAllObject()[idx];
+//}
+//
+//ObjectInMap* GameSystem::GetObject(int idx)
+//{
+//    return m_pMap->GetAllObject()[idx];
+//}
 
 //MapMgr* GameSystem::GetMapMgr()
 //{

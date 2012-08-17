@@ -66,7 +66,6 @@ public:
     bool Harvest(ObjectInMap *pObject);
     
 public:
-    inline ObjectInMap*     GetObject(bool isNext = true);
-    inline ObjectInMap*     GetObject(int idx);
-    inline ObjectInfoMgr*   GetInfoMgr() { return m_pInfoMgr; }
+    inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }
+    inline MapMgr*          GetMapMgr()     { return m_pMap;    }
 };
