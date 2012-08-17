@@ -13,14 +13,22 @@
 class Sqlite3Base
 {
 protected:
-    sqlite3     *m_pDataBase;
+    sqlite3             *m_pDataBase;
+    sqlite3_stmt        *m_pStatement;
     
 public:
     Sqlite3Base(const char *DBFileName);
     virtual ~Sqlite3Base();
     
-protected:
-    bool _errorCheck(const char *table, char *whereType, char *whereBind, sqlite3_stmt **ppStatement);
+public:
+    bool ErrorCheck(const char *table, char *whereType, char *whereBind);
+    bool ErrorCheck(const char *cmd);
     
-    bool _errorCheck(const char *table, sqlite3_stmt **ppStatement);
+    bool isNextStep();
+    void Finalize();
+    
+public:
+    int             GetInt(int iCol);
+    const char*     GetTxt(int iCol);
+    double          GetDouble(int iCol);
 };

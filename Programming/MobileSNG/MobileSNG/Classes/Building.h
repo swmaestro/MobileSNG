@@ -23,15 +23,17 @@ enum BUILDING_STATE
 class Building : public ObjectInMap
 {
 private:
-    Timer           *m_pTimer;
+    BuildingInfo   *m_pInfo;
     
+private:
+    Timer           *m_pTimer;
     bool            m_isWorking;
     
 public:
-    Building(ObjectInMap *pObject, int nowTime);
+    Building(ObjectInMap *pObject, int nowTime, ObjectInfoMgr *pInfoMgr);
     ~Building();
     
 public:
-    bool UpdateSystem(ObjectInfoMgr *pInfoMgr);
+    bool UpdateSystem();
     Timer* GetTimer();
 };

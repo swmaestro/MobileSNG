@@ -9,12 +9,15 @@
 #include "Building.h"
 #include <ctime>
 
-Building::Building(ObjectInMap *pObject, int nowTime) : ObjectInMap(pObject)
+Building::Building(ObjectInMap *pObject, int nowTime, ObjectInfoMgr *pInfoMgr) : ObjectInMap(pObject)
 {
     m_type = OBJECT_TYPE_BUILDING;
     m_pTimer = new Timer(nowTime);
     m_pTimer->StartTimer();
     m_isWorking = false;
+    
+    if(pInfoMgr->searchInfo(m_id, &m_pInfo) == false)
+        printf("%s <- Error, Can't find Building Information\n", __FUNCTION__);
 }
 
 Building::~Building()
@@ -22,24 +25,16 @@ Building::~Building()
     delete m_pTimer;
 }
 
-bool Building::UpdateSystem(ObjectInfoMgr *pInfoMgr)
+bool Building::UpdateSystem()
 {
     float           time = -1;
-    BUILDING_INFO   info;
     
     objectState beforeState = m_state;
     
-    if(pInfoMgr->searchInfo(m_id, &info) == false)
-    {
-        printf("%s <- Building Error. Can't search Building info", __FUNCTION__);
-        
-        return false;
-    }
-
     if( m_state < BUILDING_STATE_WORKING )
-        time = static_cast<float>(info.buildTime);
+        time = static_cast<float>(m_pInfo->GetBuildTime());
     else if( m_state == BUILDING_STATE_WORKING )
-        time = static_cast<float>(info.object.time);
+        time = static_cast<float>(m_pInfo->GetObjInfo().GetTime());
 
     if(m_pTimer->CheckTimer(time))
     {

@@ -25,14 +25,10 @@ public:
     
 private:
     bool                   _isInMap(POINT<int> &pos, SIZE<int> size);
-    static ObjectInMap*    _CreateObject(ObjectInMap *obj, int time = 0);
+    static ObjectInMap*    _CreateObject(ObjectInMap *obj, ObjectInfoMgr *pInfoMgr, int time = 0);
     
 public:
-//    void        UpdateObjects(ObjectInfoMgr *pInfoMgr);
-    std::vector<ObjectInMap *> GetAllObject();
-    
-public:
-    bool        addObject(ObjectInMap &info, int time);
+    bool        addObject(ObjectInMap *pInfo, ObjectInfoMgr *pInfoMgr, int time);
     bool        moveObject(POINT<int> &pos, ObjectInMap *obj2);
     
 public:
@@ -52,9 +48,9 @@ public:
     bool                        isObjectInMap(POINT<int> pos, SIZE<int> size);
     
 public:
-    bool Harvest(POINT<int> &pos, ObjectInMap *pOut);
-    bool Harvest(ObjectInMap *pObject);
-    
-public:
-    int         GetMapLevel();
+    int             GetMapLevel();
+//    ObjectInMap*    GetObject(int idx);
+//    ObjectInMap*    GetObject(bool isNext = true);
+    inline std::vector<ObjectInMap *> GetAllObject();
 };
+

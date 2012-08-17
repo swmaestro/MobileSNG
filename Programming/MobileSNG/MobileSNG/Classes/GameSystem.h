@@ -10,9 +10,10 @@
 
 #include "ObjectInfoMgr.h"
 #include "MapMgr.h"
-#include "NetWork.h"
-#include <queue>
+#include "Network.h"
+#include "User.h"
 #include <string>
+
 
 struct HARVEST_QUEUE {
     std::string          url;
@@ -36,39 +37,35 @@ struct HARVEST_QUEUE {
     }
 };
 
-template <typename T>
-static void stdQueueAllClear(std::queue<T> &stdQueue)
-{
-    while (stdQueue.empty()==false)
-        stdQueue.pop();
-}
-
 class GameSystem
 {
 private:
     ObjectInfoMgr                   *m_pInfoMgr;
     MapMgr                          *m_pMap;
-    NetWork                         *m_pNetWork;
-//    std::queue<HARVEST_QUEUE>       m_qHarvest;
+    Network                         *m_pNetwork;
+    User                            *m_pUser;
     
 public:
-    GameSystem();
+    GameSystem(const char* strDBFile);
     ~GameSystem();
     
+private:
+    CommonInfo* _GetCommonInfo(ObjectInMap *pObj);
+        
 public:
-    bool        initialize(const char* strDBFile);
+    //물건을 살수있는지 여부를 묻는 그런 함수의 이름
+    bool    isUseObject(CommonInfo *pCommonInfo);
+    bool    isUseObject(ObjectInMap* pObj);
     
 public:
-    
-    
-public:
-    bool        Harvest(POINT<int> &pos, ObjectInMap *pOut);
-    bool        Harvest(ObjectInMap *pObject);
+    bool    BuyObject(ObjectInMap *pObj);
+    void    SellObject(ObjectInMap *pObj);
     
 public:
-    void        Update(float fDelta);
+    bool Harvest(POINT<int> &pos, ObjectInMap *pOut);
+    bool Harvest(ObjectInMap *pObject);
     
 public:
-    MapMgr*          GetMapMgr();
-    ObjectInfoMgr*   GetInfoMgr() { return m_pInfoMgr; }
+    inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }
+    inline MapMgr*          GetMapMgr()     { return m_pMap;    }
 };

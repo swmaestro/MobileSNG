@@ -24,7 +24,7 @@ Field::~Field()
     }    
 }
 
-bool Field::addCrop(int id, int time)
+bool Field::addCrop(int id, int time, ObjectInfoMgr *pInfoMgr)
 {
     if( m_pCrop != NULL )
     {
@@ -32,17 +32,17 @@ bool Field::addCrop(int id, int time)
         return false;
     }
 
-    m_pCrop = new  Crop(id, time);
+    m_pCrop = new  Crop(id, time, pInfoMgr);
     m_pCrop->GetTimer()->StartTimer();
     
     return true;
 }
 
-bool Field::UpdateSystem(ObjectInfoMgr *pInfoMgr)
+bool Field::UpdateSystem()
 {
     if(m_pCrop == NULL) return false;
     
-    return m_pCrop->UpdateSystem(pInfoMgr);
+    return m_pCrop->UpdateSystem();
 }
 
 void Field::removeCrop()

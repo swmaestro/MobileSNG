@@ -13,242 +13,200 @@
 using namespace cocos2d;
 using namespace std;
 
-ObjectInfoMgr::ObjectInfoMgr(const char *DBFileName) : Sqlite3Base(DBFileName)
+ObjectInfoMgr::ObjectInfoMgr()
 {
 }
 
 ObjectInfoMgr::~ObjectInfoMgr()
 {
+    int size;
+    
+    size = m_vCropInfo.size();
+    
+    for(int i=0; i<size; ++i)       delete m_vCropInfo[i];
+    m_vCropInfo.clear();
+    m_cropInfoMap.clear();
+    
+    size = m_vBuildingInfo.size();
+    
+    for(int i=0; i<size; ++i)       delete m_vBuildingInfo[i];
+    m_vBuildingInfo.clear();
+    m_buildingInfoMap.clear();
+    
+    size = m_vOrnamentInfo.size();
+    
+    for(int i=0; i<size; ++i)       delete m_vCropInfo[i];
+    m_vCropInfo.clear();
+    m_cropInfoMap.clear();
 }
 
-int ObjectInfoMgr::_getTime(sqlite3_stmt *pStatement, int col)
+bool ObjectInfoMgr::_loadBuilding(Sqlite3Base *pDBBase)
 {
-    int dbTimeValue = sqlite3_column_int(pStatement, col);
+    if( pDBBase->ErrorCheck("SELECT * FROM Building Order By id") == false )
+    {
+        printf("%s <- Error \n", __FUNCTION__);
+        return false;
+    }
+    do
+    {
+        int size                = pDBBase->GetInt(7);
+
+        ObjectInfo  obj     (_getTime(pDBBase->GetInt(6)), pDBBase->GetInt(4));
+        CommonInfo  common  (pDBBase->GetInt(1), pDBBase->GetTxt(2), pDBBase->GetInt(3), pDBBase->GetInt(8), pDBBase->GetInt(0));
+        
+        BuildingInfo *pInfo = new BuildingInfo(obj, common, SIZE<int>(size/100, size%100), _getTime(pDBBase->GetInt(5)));
+        
+        pair<const char*, BuildingInfo*> p;
+        p.first     = pInfo->GetName().data();
+        p.second    = pInfo;
+        
+        m_vBuildingInfo.push_back(pInfo);
+        m_buildingInfoMap.insert(p);
+    }
+    while (pDBBase->isNextStep());
+    pDBBase->Finalize();
+
+    return true;
+}
+
+bool ObjectInfoMgr::_loadCrop(Sqlite3Base *pDBBase)
+{
+    if( pDBBase->ErrorCheck("SELECT * FROM Crop Order By id") == false )
+    {
+        printf("%s <- Error \n", __FUNCTION__);
+        return false;
+    }
     
-    int hour = dbTimeValue/10000;
-    int min = (dbTimeValue - hour*10000)/100;
-    int sec = dbTimeValue%100;
+    do
+    {
+        ObjectInfo obj          (_getTime(pDBBase->GetInt(5)), pDBBase->GetInt(4));
+        CommonInfo common       (pDBBase->GetInt(1), pDBBase->GetTxt(2), pDBBase->GetInt(3), pDBBase->GetInt(6), pDBBase->GetInt(0));
+        
+        CropInfo *pInfo = new CropInfo(obj, common);
+                
+        pair<const char*, CropInfo*> p;
+        p.first     = pInfo->GetName().data();
+        p.second    = pInfo;
+        
+        m_vCropInfo.push_back(pInfo);
+        m_cropInfoMap.insert(p);
+    }
+    while (pDBBase->isNextStep());
+    pDBBase->Finalize();
+    
+    return true;
+}
+
+bool ObjectInfoMgr::_loadOrnament(Sqlite3Base *pDBBase)
+{
+    
+    
+    if( pDBBase->ErrorCheck("SELECT * FROM Ornament Order By id") == false )
+    {
+        printf("%s <- Error \n", __FUNCTION__);
+        return true;
+    }
+
+    do
+    {
+        CommonInfo common(pDBBase->GetInt(1), pDBBase->GetTxt(2), pDBBase->GetInt(3), pDBBase->GetInt(4), pDBBase->GetInt(0));
+        OrnamentInfo *pInfo = new OrnamentInfo(common);
+        
+        pair<const char*, OrnamentInfo*> p;
+        
+        p.first     = pInfo->GetName().data();
+        p.second    = pInfo;
+        
+        m_vOrnamentInfo.push_back(pInfo);
+        m_ornamentInfoMap.insert(p);
+    }
+    while (pDBBase->isNextStep());
+    pDBBase->Finalize();
+    
+    return true;
+}
+
+bool ObjectInfoMgr::loadData(const char *DBFileName)
+{
+    Sqlite3Base *pDBBase = new Sqlite3Base(DBFileName);
+    
+    if(_loadBuilding(pDBBase) == false)
+        printf("Error, Cant Load Building Data\n");
+    if(_loadCrop(pDBBase) == false)
+        printf("Error, Cant Load Building Data\n");
+    if(_loadOrnament(pDBBase) == false)
+        printf("Error, Cant Load Ornament Data\n");
+    
+    delete pDBBase;
+    return true;
+}
+
+int ObjectInfoMgr::_getTime(int timeValue)
+{
+    int hour = timeValue/10000;
+    int min = (timeValue - hour*10000)/100;
+    int sec = timeValue%100;
 
     return sec + (min * 60) + (hour * 3600);
 }
 
-bool ObjectInfoMgr::_searchInfo(const char *type, char *bind, BUILDING_INFO *pInfo)
+bool ObjectInfoMgr::searchInfo(int id, BuildingInfo **ppInfo)
 {
-    sqlite3_stmt *statement;
-    
-    BUILDING_INFO info;
-    
-    if( _errorCheck("Building", const_cast<char*>(type), bind, &statement) == false )
-    {
-        printf("%s <- Error \n", __FUNCTION__);
-        return false;
-    }
-        
-    info.systemVersion      = sqlite3_column_int(statement, 0);
-    info.objectID           = sqlite3_column_int(statement, 1);
-    info.name               = (char*)sqlite3_column_text(statement, 2);
-    info.price              = sqlite3_column_int(statement, 3);
-    info.object.reward      = sqlite3_column_int(statement, 4);
-    info.buildTime          = _getTime(statement, 5);
-    info.object.time        = _getTime(statement, 6);
-    
-    int size                = sqlite3_column_int(statement, 7);
+    if( (id+1) > m_vBuildingInfo.size() ) return false;
+    *ppInfo = m_vBuildingInfo[id+1];
+    return true;
+}
 
-    info.size.width         = size/100;
-    info.size.height        = size%100;
-    
-    info.level              = sqlite3_column_int(statement, 8);
-    
-    *pInfo = info;
-    
-    sqlite3_finalize(statement);
+bool ObjectInfoMgr::searchInfo(const char * name, BuildingInfo **ppInfo)
+{
+    BuildingInfo *pOut = m_buildingInfoMap.find(name)->second;
+    if( pOut == NULL)        return false;
+    *ppInfo = pOut;
     
     return true;
 }
 
-bool ObjectInfoMgr::_searchInfo(const char *type, char *bind, CROP_INFO *pInfo)
+bool ObjectInfoMgr::searchInfo(int id, CropInfo **ppInfo)
 {
-    sqlite3_stmt *statement = NULL;
-    
-    CROP_INFO info;
-    
-    if( _errorCheck("Crop", const_cast<char*>(type), bind, &statement) == false )
-    {
-        printf("%s <- Error \n", __FUNCTION__);
-        return false;
-    }
-        
-    info.systemVersion      = sqlite3_column_int(statement, 0);
-    info.objectID           = sqlite3_column_int(statement, 1);
-    info.name        = (char*)sqlite3_column_text(statement, 2);
-    info.price              = sqlite3_column_int(statement, 3);
-    info.object.reward      = sqlite3_column_int(statement, 4);
-    info.object.time        = _getTime(statement, 5);
-    info.level       = sqlite3_column_int(statement, 6);
-        
-    sqlite3_finalize(statement);
-    
-    *pInfo = info;
-    
+    if( id > m_vCropInfo.size() ) return false;
+    *ppInfo = m_vCropInfo[id];
     return true;
 }
 
-bool ObjectInfoMgr::_searchInfo(const char *type, char *bind, ORNAMENT_INFO *pInfo)
+bool ObjectInfoMgr::searchInfo(const char * name, CropInfo **ppInfo)
 {
-    sqlite3_stmt *statement;
-    ORNAMENT_INFO info;
-        
-    if( _errorCheck("Ornament", const_cast<char*>(type), bind, &statement) == false )
-    {
-        printf("%s <- Error \n", __FUNCTION__);
-        return false;
-    }
-    
-    info.systemVersion      = sqlite3_column_int(statement, 0);
-    info.objectID    = sqlite3_column_int(statement, 1);
-    info.name        = (char*)sqlite3_column_text(statement, 2);
-    info.price       = sqlite3_column_int(statement, 3);
-    info.level       = sqlite3_column_int(statement, 4);
-
-    sqlite3_finalize(statement);
-    
-    *pInfo = info;
-    
+    CropInfo *pOut = m_cropInfoMap.find(name)->second;
+    if(pOut == NULL) return false;
+    *ppInfo = pOut;
     return true;
 }
 
-bool ObjectInfoMgr::searchInfo(int id, BUILDING_INFO *pInfo)
+bool ObjectInfoMgr::searchInfo(int id, OrnamentInfo **ppInfo)
 {
-    char num[8];
-    sprintf(num, "%d", id);
-    return _searchInfo("id", num, pInfo);
+    if( id > m_vOrnamentInfo.size()) return false;
+    *ppInfo = m_vOrnamentInfo[id];
+    return true;
 }
 
-bool ObjectInfoMgr::searchInfo(const char * name, BUILDING_INFO *pInfo)
+bool ObjectInfoMgr::searchInfo(const char * name, OrnamentInfo **ppInfo)
 {
-    return _searchInfo("name", const_cast<char*>(name), pInfo);
+    OrnamentInfo *pOut = m_ornamentInfoMap.find(name)->second;
+    if(pOut == NULL) return false;
+    *ppInfo = pOut;
+    return true;
 }
 
-bool ObjectInfoMgr::searchInfo(int id, CROP_INFO *pInfo)
+vector<BuildingInfo*> ObjectInfoMgr::GetAllBuildingInfo()
 {
-    char num[8];
-    sprintf(num, "%d", id);
-    return _searchInfo("id", num, pInfo);
+    return m_vBuildingInfo;
 }
 
-bool ObjectInfoMgr::searchInfo(const char * name, CROP_INFO *pInfo)
+vector<CropInfo*> ObjectInfoMgr::GetAllCropInfo()
 {
-    return _searchInfo("name", const_cast<char*>(name), pInfo);
+    return m_vCropInfo;
 }
 
-bool ObjectInfoMgr::searchInfo(int id, ORNAMENT_INFO *pInfo)
+vector<OrnamentInfo*> ObjectInfoMgr::GetAllOrnamentInfo()
 {
-    char num[8];
-    sprintf(num, "%d", id);
-    return _searchInfo("id", num, pInfo);
-}
-
-bool ObjectInfoMgr::searchInfo(const char * name, ORNAMENT_INFO *pInfo)
-{
-    return _searchInfo("name", const_cast<char*>(name), pInfo);
-}
-
-vector<BUILDING_INFO> ObjectInfoMgr::GetAllBuildingInfo()
-{
-    sqlite3_stmt *pStatement;
-    vector<BUILDING_INFO> vBuilding;
-    BUILDING_INFO info;
-    
-    if( _errorCheck("Building Order By id", &pStatement) == false )
-    {
-        printf("%s <- Error \n", __FUNCTION__);
-        return vBuilding;
-    }
-    
-    do
-    {
-        info.systemVersion      = sqlite3_column_int(pStatement, 0);
-        info.objectID           = sqlite3_column_int(pStatement, 1);
-        info.name               = (char*)sqlite3_column_text(pStatement, 2);
-        info.price              = sqlite3_column_int(pStatement, 3);
-        info.object.reward      = sqlite3_column_int(pStatement, 4);
-        info.buildTime          = _getTime(pStatement, 5);
-        info.object.time        = _getTime(pStatement, 6);
-        
-        int size                = sqlite3_column_int(pStatement, 7);
-        
-        info.size.width         = size/100;
-        info.size.height        = size%100;
-        
-        info.level              = sqlite3_column_int(pStatement, 8);
-        
-        vBuilding.push_back(info);
-    }
-    while (sqlite3_step(pStatement) == SQLITE_ROW);
-        
-    sqlite3_finalize(pStatement);
-    
-    
-    return vBuilding;
-}
-
-vector<CROP_INFO> ObjectInfoMgr::GetAllCropInfo()
-{
-    sqlite3_stmt        *pStatement;
-    vector<CROP_INFO>   vCrop;
-    CROP_INFO           info;
-    
-    if( _errorCheck("Crop Order By id", &pStatement) == false )
-    {
-        printf("%s <- Error \n", __FUNCTION__);
-        return vCrop;
-    }
-     
-    do
-    {
-        info.systemVersion      = sqlite3_column_int(pStatement, 0);
-        info.objectID           = sqlite3_column_int(pStatement, 1);
-        info.name        = (char*)sqlite3_column_text(pStatement, 2);
-        info.price              = sqlite3_column_int(pStatement, 3);
-        info.object.reward      = sqlite3_column_int(pStatement, 4);
-        info.object.time        = _getTime(pStatement, 5);
-        info.level       = sqlite3_column_int(pStatement, 6);
-        
-        vCrop.push_back(info);
-    }
-    while (sqlite3_step(pStatement) == SQLITE_ROW);
-    
-    sqlite3_finalize(pStatement);
-    
-    
-    return vCrop;
-}
-
-vector<ORNAMENT_INFO> ObjectInfoMgr::GetAllOrnamentInfo()
-{
-    sqlite3_stmt            *pStatement;
-    vector<ORNAMENT_INFO>   vOrnament;
-    ORNAMENT_INFO           info;
-    
-    if( _errorCheck("Ornament Order By id", &pStatement) == false )
-    {
-        printf("%s <- Error \n", __FUNCTION__);
-        return vOrnament;
-    }
-    
-    do
-    {
-        info.systemVersion      = sqlite3_column_int(pStatement, 0);
-        info.objectID    = sqlite3_column_int(pStatement, 1);
-        info.name        = (char*)sqlite3_column_text(pStatement, 2);
-        info.price       = sqlite3_column_int(pStatement, 3);
-        info.level       = sqlite3_column_int(pStatement, 4);
-        
-        vOrnament.push_back(info);
-    }
-    while (sqlite3_step(pStatement) == SQLITE_ROW);
-    
-    sqlite3_finalize(pStatement);
-    
-    return vOrnament;
+    return m_vOrnamentInfo;
 }

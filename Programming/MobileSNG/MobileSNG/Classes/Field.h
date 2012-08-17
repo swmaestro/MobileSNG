@@ -21,10 +21,10 @@ public:
     ~Field();
     
 public:
-    bool UpdateSystem(ObjectInfoMgr *pInfoMgr);
+    bool UpdateSystem();
     
 public:
-    bool addCrop(int id, int time = 0);
+    bool addCrop(int id, int time, ObjectInfoMgr *pInfoMgr);
     void removeCrop();
 
 public:

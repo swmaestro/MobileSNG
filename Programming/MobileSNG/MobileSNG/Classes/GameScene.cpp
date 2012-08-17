@@ -4,6 +4,8 @@
 #include "GameSystem.h"
 #include "MapMgr.h"
 
+#include "Join.h"
+
 using namespace cocos2d;
 
 GameScene::GameScene() : m_pSystem(NULL), m_pMap(NULL), m_pShop(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL)
@@ -35,9 +37,7 @@ bool GameScene::init()
     if (!CCLayer::init())     
         return false;
 
-    m_pSystem = new GameSystem();
-    if (!m_pSystem->initialize("ObjectDB.sqlite"))
-        return false;
+    m_pSystem = new GameSystem("ObjectDB.sqlite");
     
     if (!_initUIMgr())
         return false;
@@ -97,23 +97,29 @@ bool GameScene::_initShop()
     
     ObjectInfoMgr * infoMgr = m_pSystem->GetInfoMgr();
     
-    std::vector<CROP_INFO> infoCrop = infoMgr->GetAllCropInfo();
-    std::vector<BUILDING_INFO> infoBuilding = infoMgr->GetAllBuildingInfo();
+    std::vector<CropInfo*> infoCrop = infoMgr->GetAllCropInfo();
+    std::vector<BuildingInfo*> infoBuilding = infoMgr->GetAllBuildingInfo();
+    
+//    char fileName[32];
     
     for (int i = 0; i < infoCrop.size(); ++i)
     {
-        std::string filename = infoCrop[i].name + "/" + infoCrop[i].name + ".png";
-        
-        m_pShop->addItem(OBJ_CROP, infoCrop[i].name.c_str(), filename.c_str(),
-                         infoCrop[i].price, 0, infoCrop[i].object.time, 0, infoCrop[i].object.reward);
+        std::string fileName = infoCrop[i]->GetName() + "/"
+                             + infoCrop[i]->GetName() + ".png";
+//        
+//        sprintf(fileName, "%s/%s.png", infoCrop[i].name, infoCrop[i].name);
+                
+        m_pShop->addItem(OBJ_CROP, infoCrop[i]->GetName().data(), fileName.data(),
+                         infoCrop[i]->GetPrice(), 0, infoCrop[i]->GetObjInfo().GetTime(), 0, infoCrop[i]->GetObjInfo().GetReward());
     }
     
     for (int i = 0; i < infoBuilding.size(); ++i)
     {
-        std::string filename = infoBuilding[i].name + "/" + infoBuilding[i].name + ".png";
+        std::string fileName = infoBuilding[i]->GetName() + "/" + infoBuilding[i]->GetName() + ".png";
+//        sprintf(fileName, "%s/%s.png", infoBuilding[i].name, infoBuilding[i].name);
         
-        m_pShop->addItem(OBJ_BUILDING, infoBuilding[i].name.c_str(), filename.c_str(),
-                         infoBuilding[i].price, 0, infoBuilding[i].object.time, 0, infoBuilding[i].object.reward);
+        m_pShop->addItem(OBJ_BUILDING, infoBuilding[i]->GetName().data(), fileName.data(),
+                         infoBuilding[i]->GetPrice(), 0, infoBuilding[i]->GetObjInfo().GetTime(), 0, infoBuilding[i]->GetObjInfo().GetReward());
     }
     
     addChild(m_pShop, 0);

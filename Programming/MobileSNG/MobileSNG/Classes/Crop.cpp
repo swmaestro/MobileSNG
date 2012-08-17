@@ -8,11 +8,15 @@
 
 #include "Crop.h"
 
-Crop::Crop(int id, int time)
+Crop::Crop(int id, int time, ObjectInfoMgr *pInfoMgr)
 {
     m_id        = id;
     m_state     = CROP_STATE_GROW_1;
     m_pTimer    = new Timer(time);
+    m_pInfo     = NULL;
+    
+    if(pInfoMgr->searchInfo(m_id, &m_pInfo) == false)
+        printf("%s <- Error, Can not find Crop Information\n", __FUNCTION__);
 }
 
 Crop::~Crop()
@@ -20,20 +24,12 @@ Crop::~Crop()
     delete m_pTimer;
 }
 
-bool Crop::UpdateSystem(ObjectInfoMgr *pInfoMgr)
-{    
-    CROP_INFO       info;
-    
-    if(pInfoMgr->searchInfo(m_id, &info) == false)
-    {
-        printf("%s <- Crop Error. Can't search Crop info", __FUNCTION__);
-        return false;
-    }
-    
+bool Crop::UpdateSystem()
+{
     objectState beforeState = m_state;
     
-    if(m_state < CROP_STATE_DONE && m_pTimer->CheckTimer(info.object.time) == false)
-            m_state = static_cast<float>(m_pTimer->GetTime()) / info.object.time * CROP_STATE_DONE;
+    if(m_state < CROP_STATE_DONE && m_pTimer->CheckTimer(m_pInfo->GetObjInfo().GetTime()) == false)
+            m_state = static_cast<float>(m_pTimer->GetTime()) / m_pInfo->GetObjInfo().GetTime() * CROP_STATE_DONE;
     else    m_state = CROP_STATE_DONE;
     
     if (beforeState != m_state)

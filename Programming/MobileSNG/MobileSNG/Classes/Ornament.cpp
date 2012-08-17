@@ -20,7 +20,7 @@ Ornament::~Ornament()
     
 }
 
-bool Ornament::UpdateSystem(ObjectInfoMgr *pInfoMgr)
+bool Ornament::UpdateSystem()
 {
     return false;
 }

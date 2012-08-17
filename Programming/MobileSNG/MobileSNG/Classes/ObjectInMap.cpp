@@ -55,7 +55,27 @@ bool ObjectInMap::isIn(ObjectInMap *pObject)
     return true;
 }
 
-bool ObjectInMap::UpdateSystem(ObjectInfoMgr *pInfoMgr)
+bool ObjectInMap::UpdateSystem()
 {
     return false;
+}
+
+SIZE<int> ObjectInMap::GetSize()
+{
+    return m_size;
+}
+
+OBJECT_DIRECTION ObjectInMap::GetDirection()
+{
+    return m_direction;
+}
+
+OBJECT_TYPE ObjectInMap::GetType()
+{
+    return m_type;
+}
+
+int ObjectInMap::GetID()
+{
+    return m_id;
 }
