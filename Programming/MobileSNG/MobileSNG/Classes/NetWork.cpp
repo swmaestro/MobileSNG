@@ -65,12 +65,14 @@ int Network::GetResponseCode()
     return -1;
 }
 
-bool Network::GetContentType(char *pOutStr)
+std::string Network::GetContentType()
 {
-    if(curl_easy_getinfo(m_pCTX, CURLINFO_CONTENT_TYPE, pOutStr) == CURLE_OK)
-        return true;
+    char type[256];
     
-    return false;
+    if(curl_easy_getinfo(m_pCTX, CURLINFO_CONTENT_TYPE, type) == CURLE_OK)
+        return type;
+    
+    return NULL;
 }
 
 double Network::GetSize()

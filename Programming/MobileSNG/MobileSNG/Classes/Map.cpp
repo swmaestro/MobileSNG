@@ -20,7 +20,7 @@ int Map::height = 320 * 4;
 int Map::tileWidth = 100;
 int Map::tileHeight = 60;
 
-Map::Map() : m_pTile(NULL), m_pAllocator(NULL), m_width(0), m_touchCnt(-1), m_counter(0),
+Map::Map() : m_pTile(NULL), m_pAllocator(NULL), m_width(0), m_touchCnt(-1),
                 m_isDragging(false), m_isScaling(false),
                 m_isAllocating(false), m_isEditing(false)
 {
@@ -60,10 +60,6 @@ bool Map::init(GameSystem * system)
 
 void Map::update(float dt)
 {
-    if (++m_counter < 10)
-        return;
-    m_counter = 0;
-    
     MapMgr * mapMgr = m_pSystem->GetMapMgr();
     ObjectInfoMgr * infoMgr = m_pSystem->GetInfoMgr();
 
@@ -72,86 +68,88 @@ void Map::update(float dt)
     std::vector<ObjectInMap *>::iterator i;
     
     for (i = object.begin(); i != object.end(); ++i)
-    {
         if ((*i)->UpdateSystem())
+            SyncPos(*i);
+    
+    CCLog("delta : %f", dt);
+}
+
+void Map::SyncPos(ObjectInMap *oim)
+{
+    ObjectInfoMgr * infoMgr = m_pSystem->GetInfoMgr();
+
+    CCNode * tile = m_pTile->getChildByTag(MAKEWORD(oim->m_position.x, oim->m_position.y));
+    std::string filename;
+    
+    if (oim->GetType() == OBJECT_TYPE_BUILDING)
+    {
+        Building * b = dynamic_cast<Building *>(oim);
+        BuildingInfo * info;
+        CCSprite * spr = dynamic_cast<CCSprite *>(tile->getChildByTag(TILE_BUILDING));
+        
+        infoMgr->searchInfo(b->GetID(), &info);
+        filename = info->GetName();
+        
+        switch (b->m_state)
         {
-            CCNode * tile = m_pTile->getChildByTag(MAKEWORD((*i)->m_position.x, (*i)->m_position.y));
-            std::string filename;
-            
-            if ((*i)->GetType() == OBJECT_TYPE_BUILDING)
-            {
-                Building * b = dynamic_cast<Building *>(*i);
-                BuildingInfo *pInfo;
-                CCSprite * spr = dynamic_cast<CCSprite *>(tile->getChildByTag(TILE_BUILDING));
+            case BUILDING_STATE_UNDER_CONSTRUCTION_1:
+                filename += "/01.png";
+                break;
                 
-                infoMgr->searchInfo(b->GetID(), &pInfo);
-                filename = pInfo->GetName();
+            case BUILDING_STATE_UNDER_CONSTRUCTION_2:
+                filename += "/02.png";
+                break;
                 
-                switch (b->m_state)
-                {
-                    case BUILDING_STATE_UNDER_CONSTRUCTION_1:
-                        filename += "/01.png";
-                        break;
-                        
-                    case BUILDING_STATE_UNDER_CONSTRUCTION_2:
-                        filename += "/02.png";
-                        break;
-                        
-                    case BUILDING_STATE_WORKING:
-                        filename += "/03.png";
-                        break;
-                        
-                    case BUILDING_STATE_DONE:
-                        filename += "/Complete.png";
-                        break;
-                }
-                 
-                CCTexture2D * tex = CCTextureCache::sharedTextureCache()->addImage(filename.c_str());
-                spr->setTexture(tex);
-            }
-            else if ((*i)->GetType() == OBJECT_TYPE_FIELD)
-            {
-                Field * f = dynamic_cast<Field *>(*i);
-                Crop * c = f->GetCrop();
-                CropInfo *pInfo;
-                CCSprite * spr = dynamic_cast<CCSprite *>(tile->getChildByTag(TILE_CROP));
+            case BUILDING_STATE_WORKING:
+                filename += "/03.png";
+                break;
                 
-                infoMgr->searchInfo(c->GetID(), &pInfo);
-                filename = pInfo->GetName();
-                
-                switch (c->GetState())
-                {
-                    case CROP_STATE_GROW_1:
-                        filename += "/01.png";
-                        break;
-                        
-                    case CROP_STATE_GROW_2:
-                        filename += "/02.png";
-                        break;
-                        
-                    case CROP_STATE_GROW_3:
-                        filename += "/03.png";
-                        break;
-                        
-                    case CROP_STATE_DONE:
-                        filename += "/Complete.png";
-                        break;
-                }
-                
-                CCTexture2D * tex = CCTextureCache::sharedTextureCache()->addImage(filename.c_str());
-                spr->setTexture(tex);
-            }
+            case BUILDING_STATE_DONE:
+                filename += "/Complete.png";
+                break;
         }
-        else if ((*i)->GetType() == OBJECT_TYPE_FIELD)
+        
+        CCTexture2D * tex = CCTextureCache::sharedTextureCache()->addImage(filename.c_str());
+        spr->setTexture(tex);
+    }
+    else if (oim->GetType() == OBJECT_TYPE_FIELD)
+    {
+        Field * f = dynamic_cast<Field *>(oim);
+        Crop * c = f->GetCrop();
+        
+        if (!c)
         {
-            CCNode * tile = m_pTile->getChildByTag(MAKEWORD((*i)->m_position.x, (*i)->m_position.y));
-            
-            Field * f = dynamic_cast<Field *>(*i);
-            Crop * c = f->GetCrop();
-            
-            if (!c)
-                tile->removeChildByTag(TILE_CROP, true);
+            tile->removeChildByTag(TILE_CROP, true);
+            return;
         }
+        
+        CropInfo * info;
+        CCSprite * spr = dynamic_cast<CCSprite *>(tile->getChildByTag(TILE_CROP));
+        
+        infoMgr->searchInfo(c->GetID(), &info);
+        filename = info->GetName();
+        
+        switch (c->GetState())
+        {
+            case CROP_STATE_GROW_1:
+                filename += "/01.png";
+                break;
+                
+            case CROP_STATE_GROW_2:
+                filename += "/02.png";
+                break;
+                
+            case CROP_STATE_GROW_3:
+                filename += "/03.png";
+                break;
+                
+            case CROP_STATE_DONE:
+                filename += "/Complete.png";
+                break;
+        }
+        
+        CCTexture2D * tex = CCTextureCache::sharedTextureCache()->addImage(filename.c_str());
+        spr->setTexture(tex);
     }
 }
 
@@ -167,13 +165,13 @@ void Map::_initTile()
         {
             CCLayer * tile = CCLayer::create();
             tile->setAnchorPoint(ccp(0.5, 0.5));
-            tile->setPosition(ccp((i + j) * tileWidth / 2, (j - i) * tileHeight / 2));
+            tile->setPosition(ccp((i - j) * tileWidth / 2, (i + j) * tileHeight / 2));
             
             CCSprite * spr = CCSprite::create("Tile.png");
             spr->setAnchorPoint(ccp(0.5, 0.5));
             
             tile->addChild(spr, TILE_NONE, TILE_NONE);
-            m_pTile->addChild(tile, i - j + m_width, MAKEWORD(i, j));
+            m_pTile->addChild(tile, m_width - i - j, MAKEWORD(i, j));
         }
     
     addChild(m_pTile, 1);
@@ -190,7 +188,7 @@ int Map::_cursorXY(CCPoint cur)
     
     cur.x /= tileWidth / 2;
     cur.y /= tileHeight / 2;
-    CCPoint t = ccp((cur.x - cur.y) / 2, (cur.x + cur.y) / 2);
+    CCPoint t = ccp((cur.x + cur.y) / 2, (cur.y - cur.x) / 2);
     
     int x = round(t.x);
     int y = round(t.y);
@@ -318,9 +316,6 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
 
 void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
 {
-    m_isDragging = false;
-    m_isScaling = false;
-    
     CCSetIterator i = pTouches->begin();
     
     while (i != pTouches->end() && m_touchCnt >= 0)
@@ -353,15 +348,23 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                 return;
             
             POINT<int> pos(x, y);
-            m_pSystem->Harvest(pos, NULL);
+
+//            if (m_pSystem->Harvest(pos, NULL))
+//                SyncPos(m_pSystem->GetMapMgr()->FindObject(pos));
+            ObjectInMap *pObj;
+            if(m_pSystem->Harvest(pos, &pObj))
+                SyncPos(pObj);
         }
     }
+    
+    m_isDragging = false;
+    m_isScaling = false;
 }
 
 float Map::filtScale(float scale)
 {
     if (scale < 0.5) scale = 0.5;
-    if (scale > 1) scale = 1;
+    if (scale > 1.5) scale = 1.5;
     
     return scale;
 }

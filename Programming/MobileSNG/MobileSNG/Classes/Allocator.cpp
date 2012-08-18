@@ -52,17 +52,17 @@ void Allocator::init(MapMgr * mapMgr, ObjectInfoMgr * infoMgr, int width, int ty
         case OBJ_FARM:
         case OBJ_BUILDING:
         {
-            BuildingInfo *pInfo;
-            infoMgr->searchInfo(m_id, &pInfo);
-            m_name = pInfo->GetName();
+            BuildingInfo * info;
+            infoMgr->searchInfo(m_id, &info);
+            m_name = info->GetName();
             break;
         }
             
         case OBJ_CROP:
         {
-            CropInfo *pInfo;
-            infoMgr->searchInfo(m_id, &pInfo);
-            m_name = pInfo->GetName();
+            CropInfo * info;
+            infoMgr->searchInfo(m_id, &info);
+            m_name = info->GetName();
             break;
         }
     }
@@ -80,7 +80,6 @@ void Allocator::Apply()
         std::string filename = m_name + "/01.png";
         
         CCSprite * spr = CCSprite::create(filename.c_str());
-        spr->setAnchorPoint(ccp(0.5, 0.3));
         
         ObjectInMap oim;
         
@@ -92,13 +91,18 @@ void Allocator::Apply()
                     f->addCrop(m_id, 0, m_pInfoMgr);
                 }
                 
+                spr->setAnchorPoint(ccp(0.5, 0.3));
                 tile->addChild(spr, TILE_CROP, TILE_CROP);
                 break;
                 
             case OBJ_BUILDING:
                 oim = ObjectInMap(0, POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i])), SIZE<int>(1, 1), OBJECT_DIRECTION_LEFT, m_id);
-                
+
                 {
+                    BuildingInfo * info;
+                    m_pInfoMgr->searchInfo(m_id, &info);
+                    spr->setAnchorPoint(ccp(0.5, 0.3 / ((info->GetSize().width + info->GetSize().height) / 2)));
+                    
                     Building b(&oim, 0, m_pInfoMgr);
                     m_pMapMgr->addObject(&b, m_pInfoMgr, 0);
                 }
@@ -107,19 +111,14 @@ void Allocator::Apply()
                 break;
                 
             case OBJ_FARM:
-//                oim.m_id = m_id;
-//                oim.m_direction = OBJECT_DIRECTION_LEFT;
-//                oim.m_position = POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]));
-//                oim.m_size = SIZE<int>(1, 1);
-//                oim.m_state = 0;
-                
                 oim = ObjectInMap(0, POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i])), SIZE<int>(1, 1), OBJECT_DIRECTION_LEFT, m_id);
-                
+            
                 {
                     Field f(&oim);
                     m_pMapMgr->addObject(&f, m_pInfoMgr, 0);
                 }
                 
+                spr->setAnchorPoint(ccp(0.5, 0.3));
                 tile->addChild(spr, TILE_FARM, TILE_FARM);
                 break;
         }
@@ -147,7 +146,10 @@ void Allocator::TouchesBegin(int i, int j)
 {
     if (m_type == OBJ_BUILDING)
     {
-        if (m_pMapMgr->isObjectInMap(POINT<int>(i, j)))
+        BuildingInfo * info;
+        m_pInfoMgr->searchInfo(m_id, &info);
+        
+        if (m_pMapMgr->isObjectInMap(POINT<int>(i, j), info->GetSize()))
             return;
     }
     else if (m_type == OBJ_CROP)
@@ -182,7 +184,16 @@ void Allocator::TouchesBegin(int i, int j)
     
     m_touch = CCSprite::create(filename.c_str());
     m_touch->setOpacity(180);
-    m_touch->setAnchorPoint(ccp(0.5, 0.3));
+    
+    if (m_type == OBJ_BUILDING)
+    {
+        BuildingInfo * info;
+        m_pInfoMgr->searchInfo(m_id, &info);
+        m_touch->setAnchorPoint(ccp(0.5, 0.3 / ((info->GetSize().width + info->GetSize().height) / 2)));
+    }
+    else
+        m_touch->setAnchorPoint(ccp(0.5, 0.3));
+    
     
     tile->addChild(m_touch, TILE_PREVIEW, TILE_PREVIEW);
 }

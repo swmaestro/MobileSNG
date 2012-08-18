@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <memory.h>
 #include "curl.h"
+#include <string>
 
 #define NETWORK_RESPONSE_TIME 10
 
@@ -47,8 +48,8 @@ public:
     CURLcode    connectHttp(const char *url, CURL_DATA *pData);
 
 public:
-    int         GetResponseCode();
-    bool        GetContentType(char *pOutStr);
-    double      GetSize();
-    double      GetSpeed();
+    int             GetResponseCode();
+    std::string     GetContentType();
+    double          GetSize();
+    double          GetSpeed();
 };
