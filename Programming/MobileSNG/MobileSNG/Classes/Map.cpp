@@ -353,7 +353,7 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                 return;
             
             POINT<int> pos(x, y);
-            m_pSystem->GetMapMgr()->Harvest(pos, NULL);
+            m_pSystem->Harvest(pos, NULL);
         }
     }
 }
