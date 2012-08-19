@@ -11,6 +11,8 @@ class Shop;
 class Map;
 class GameSystem;
 
+enum { UILAYER_TOUCH_RECIEVER, UILAYER_LABEL };
+
 class GameScene : public cocos2d::CCLayer
 {
 private:
@@ -18,9 +20,13 @@ private:
     
     Map                 * m_pMap;
     Shop                * m_pShop;
+    
+    cocos2d::CCLayer    * m_pMapUI, * m_pShopUI;
     cocos2d::CCLayer    * m_pCurrentUI;
     
     UIMgr               * m_pUIMgr;
+    
+    int                   m_width;
     
 public:
     GameScene();
@@ -39,6 +45,7 @@ public:
 private:
     bool _initUIMgr();
     bool _initShop();
+    bool _initLabel();
     
     void _changeUI(cocos2d::CCLayer * ui);
     
@@ -51,6 +58,8 @@ private:
     void _editCancelFunc(CCObject *pSender);
     
     void _shopCloseFunc(CCObject *pSender);
+    
+    void update(float dt);
     
 public:
     void alloc(int type, int id);

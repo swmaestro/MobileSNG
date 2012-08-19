@@ -10,10 +10,8 @@
 
 using namespace std;
 
-GameSystem::GameSystem(const char* strDBFile)
+GameSystem::GameSystem(const char* strDBFile, int & mapLevel)
 {
-    int mapLevel = 1;
-    
     m_pInfoMgr  = new ObjectInfoMgr();
     m_pInfoMgr->loadData(strDBFile);
     m_pMap      = new MapMgr(mapLevel);

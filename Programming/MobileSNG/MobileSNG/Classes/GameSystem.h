@@ -46,7 +46,7 @@ private:
     User                            *m_pUser;
     
 public:
-    GameSystem(const char* strDBFile);
+    GameSystem(const char* strDBFile, int & mapLevel);
     ~GameSystem();
     
 private:
@@ -67,5 +67,6 @@ public:
     
 public:
     inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }
-    inline MapMgr*          GetMapMgr()     { return m_pMap;    }
+    inline MapMgr*          GetMapMgr()     { return m_pMap;     }
+    inline User*            GetUser()       { return m_pUser;    }
 };
