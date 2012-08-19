@@ -62,8 +62,8 @@ public:
     void    SellObject(ObjectInMap *pObj);
     
 public:
-    bool Harvest(POINT<int> &pos, ObjectInMap *pOut);
-    bool Harvest(ObjectInMap *pObject);
+    bool Harvest(POINT<int> &pos, ObjectInMap **ppOut);
+    bool Harvest(ObjectInMap **ppObject);
     
 public:
     inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }

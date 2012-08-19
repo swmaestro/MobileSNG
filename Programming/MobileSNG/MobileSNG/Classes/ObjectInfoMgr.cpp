@@ -82,6 +82,7 @@ bool ObjectInfoMgr::_loadCrop(Sqlite3Base *pDBBase)
         ObjectInfo obj          (_getTime(pDBBase->GetInt(5)), pDBBase->GetInt(4));
         CommonInfo common       (pDBBase->GetInt(1), pDBBase->GetTxt(2), pDBBase->GetInt(3), pDBBase->GetInt(6), pDBBase->GetInt(0));
         
+        
         CropInfo *pInfo = new CropInfo(obj, common);
                 
         pair<const char*, CropInfo*> p;

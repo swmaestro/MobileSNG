@@ -37,7 +37,7 @@ public:
     
 public:
     void        removeObject(int index);
-    void        removeObject(ObjectInMap *pOut);
+    void        removeObject(ObjectInMap *pObj);
     void        removeObject(POINT<int> &pos);
     void        removeObjects(POINT<int> &pos, SIZE<int> &size);
     

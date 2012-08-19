@@ -111,42 +111,42 @@ bool GameSystem::isUseObject(ObjectInMap* pObj)
    return m_pUser->GetLevel() >= _GetCommonInfo(pObj)->GetLevel();
 }
 
-bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap *pOut)
+bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
 {
     ObjectInMap *pObject = m_pMap->FindObject(pos);
     
     if(pObject == NULL)
         return false;
     
-    pOut = pObject;
+    *ppOut = pObject;
     
-    return this->Harvest(pObject);
+    return this->Harvest(&pObject);
 }
 
-bool GameSystem::Harvest(ObjectInMap *pObject)
+bool GameSystem::Harvest(ObjectInMap **ppObject)
 {
-    if( pObject == NULL )
+    if( ppObject == NULL )
         return false;
     
-    OBJECT_TYPE type = pObject->GetType();
+    OBJECT_TYPE type = (*ppObject)->GetType();
     
     if(type == OBJECT_TYPE_BUILDING)
     {
-        if(pObject->m_state == BUILDING_STATE_DONE)
+        if((*ppObject)->m_state == BUILDING_STATE_DONE)
         {
-            Building * b = dynamic_cast<Building*>(pObject);
+            Building * b = dynamic_cast<Building*>((*ppObject));
             b->m_state = BUILDING_STATE_WORKING;
             b->GetTimer()->StartTimer();
 
             //임시. 얻는 금액만큼 경험치로 준다
-            m_pUser->AddExp(_GetCommonInfo(pObject)->GetPrice());
+            m_pUser->AddExp(_GetCommonInfo((*ppObject))->GetPrice());
             return true;
         }
     }
     
     else if(type == OBJECT_TYPE_FIELD)
     {
-        Field *pField = static_cast<Field*>(pObject);
+        Field *pField = static_cast<Field*>((*ppObject));
         if(pField->GetCrop())
             if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
             {
@@ -154,7 +154,7 @@ bool GameSystem::Harvest(ObjectInMap *pObject)
                 m_pInfoMgr->searchInfo(pField->GetCrop()->GetID(), &pInfo);
                 m_pUser->AddExp(pInfo->GetPrice());
                 
-                dynamic_cast<Field*>(pObject)->removeCrop();
+                dynamic_cast<Field*>((*ppObject))->removeCrop();
                 return true;
             }
     }

@@ -91,7 +91,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "83"
          endingLineNumber = "83"
-         landmarkName = "Map::update(float dt)"
+         landmarkName = "Map::SyncPos(ObjectInMap *oim)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint

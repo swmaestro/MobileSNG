@@ -342,8 +342,12 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                 return;
             
             POINT<int> pos(x, y);
-            if (m_pSystem->Harvest(pos, NULL))
-                SyncPos(m_pSystem->GetMapMgr()->FindObject(pos));
+
+//            if (m_pSystem->Harvest(pos, NULL))
+//                SyncPos(m_pSystem->GetMapMgr()->FindObject(pos));
+            ObjectInMap *pObj;
+            if(m_pSystem->Harvest(pos, &pObj))
+                SyncPos(pObj);
         }
     }
     
