@@ -159,7 +159,7 @@ void Allocator::TouchesBegin(int i, int j)
             return;
         
         for (int t = 0; t < m_vec.size(); ++t)
-            if (intersectBoxWithBox(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i])), info->GetSize(),
+            if (intersectBoxWithBox(POINT<int>(LOWORD(m_vec[t]), HIWORD(m_vec[t])), info->GetSize(),
                                     POINT<int>(i, j), info->GetSize()))
                 return;
     }
@@ -178,7 +178,10 @@ void Allocator::TouchesBegin(int i, int j)
             if (static_cast<Field *>(obj)->hasCrop())
                 return;
         }
-       
+        else if (m_type == OBJ_FARM)
+            if (m_pMapMgr->isObjectInMap(POINT<int>(i, j)))
+                return;
+        
         for (int t = 0; t < m_vec.size(); ++t)
             if (m_vec[t] == MAKEWORD(i, j))
                 return;
