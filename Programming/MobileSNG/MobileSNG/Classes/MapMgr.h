@@ -17,10 +17,10 @@ class MapMgr
 {
 private:
     std::vector<ObjectInMap*>           m_vObjects;
-    int                                 m_mapLevel;
+    int                                &m_mapLevel;
     
 public:  
-    MapMgr(int mapLevel);
+    MapMgr(int &mapLevel);
     ~MapMgr();
     
 private:
