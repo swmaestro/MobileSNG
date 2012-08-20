@@ -48,4 +48,7 @@ public:
     int     GetMoney();
     int     GetCash();
     int     GetExp();
+    
+public:
+    static bool hasFile(const char *FileName = USER_FILE_NAME);
 };

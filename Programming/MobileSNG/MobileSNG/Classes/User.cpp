@@ -30,10 +30,6 @@ User::User(const char *FileName)
         m_strPassWord = txt;
     }
     
-    
-    m_strID = "test";
-    m_strPassWord = "test";
-    
     m_money = 100000;
     m_level = 100;
     
@@ -48,6 +44,21 @@ User::~User()
     fprintf(pFile, "%s\n",m_strID.data());
     
     fclose(pFile);
+}
+
+bool User::hasFile(const char *FileName)
+{
+    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(FileName);
+    
+    printf("%s\n", path.c_str());
+    
+    bool has = false;
+    
+    FILE *p = fopen(path.data(), "rb");
+    has = p;
+    fclose(p);
+    
+    return has;
 }
 
 void User::SetData(char *xmlData)

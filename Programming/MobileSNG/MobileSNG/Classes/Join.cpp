@@ -17,42 +17,26 @@ Join::Join(Network *pNetwork, JoinUI *pUI)
 {
     m_pNetwork  = pNetwork;
     m_pUI       = pUI;
-    m_isDone    = false;
 }
 
 Join::Join()
 {
-}
-
-void Join::_btJoin(cocos2d::CCObject *pSender)
-{
-    JoinUI *pUI = static_cast<JoinUI*>(pSender);
     
-    const char *strID       = pUI->GetContext(JOIN_UI_ENUM_ID);
-    const char *strPW       = pUI->GetContext(JOIN_UI_ENUM_PW);
-    const char *strPhone    = pUI->GetContext(JOIN_UI_ENUM_PHONE);
+}
+
+bool Join::CreatAccount()
+{
+    const char *strID       = m_pUI->GetContext(JOIN_UI_ENUM_ID);
+    const char *strPW       = m_pUI->GetContext(JOIN_UI_ENUM_PW);
+    const char *strPhone    = m_pUI->GetContext(JOIN_UI_ENUM_PHONE);
     
-    m_isDone = _Join(strID, strPW, strPhone);
-    if( m_isDone == false)
-    {
-        CCMessageBox("Join Fail", "Error");
-        for(int i=0; i<JOIN_UI_ENUM_NUM; ++i)
-            m_pUI->setEmptyTextField((JOIN_UI_ENUM)i);
-    }
+    return _Join(strID, strPW, strPhone);
 }
 
-void Join::_btCancel(cocos2d::CCObject *pSender)
+bool Join::Overlab()
 {
-    m_isDone = true;
-}
-
-void Join::_btOverlab(cocos2d::CCObject *pSender)
-{
-    JoinUI *pUI = static_cast<JoinUI*>(pSender);
-    const char *strID = pUI->GetContext(JOIN_UI_ENUM_ID);
-
-    if(_CheckOverlapID(strID))    CCMessageBox("Overlab ID", "Error");
-    else                         CCMessageBox("OK", "OK");
+    const char *strID = m_pUI->GetContext(JOIN_UI_ENUM_ID);
+    return _CheckOverlapID(strID);
 }
 
 bool Join::_CheckPhoneNumber(const char *strPhone)
@@ -126,9 +110,4 @@ bool Join::_CheckOverlapID(const char *strID)
         return true;
     
     return false;
-}
-
-bool Join::isDone()
-{
-    return m_isDone;
 }

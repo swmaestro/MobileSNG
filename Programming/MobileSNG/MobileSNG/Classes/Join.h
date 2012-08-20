@@ -18,16 +18,13 @@ private:
     Network         *m_pNetwork;
     JoinUI          *m_pUI;
     
-    bool            m_isDone;
-    
 public:
     Join(Network *pNetwork, JoinUI *pUI);
     Join();
     
-private:
-    void _btJoin(cocos2d::CCObject *pSender);
-    void _btCancel(cocos2d::CCObject *pSender);
-    void _btOverlab(cocos2d::CCObject *pSender);
+public:
+    bool CreatAccount();
+    bool Overlab();
     
 private:
     bool _CheckPhoneNumber(const char *strPhone);

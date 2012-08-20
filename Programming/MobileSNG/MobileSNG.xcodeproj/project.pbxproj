@@ -775,13 +775,6 @@
 			name = GameSystem;
 			sourceTree = "<group>";
 		};
-		3C12F6C915D7EA7A00295503 /* Account */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Account;
-			sourceTree = "<group>";
-		};
 		3C12F6CA15D7EA8100295503 /* User */ = {
 			isa = PBXGroup;
 			children = (
@@ -969,7 +962,6 @@
 				3C9CF8C615DAB48700890B36 /* Join */,
 				3C9CF8B915DA34DE00890B36 /* System */,
 				3C12F6CA15D7EA8100295503 /* User */,
-				3C12F6C915D7EA7A00295503 /* Account */,
 				3C12F6C715D7EA7200295503 /* GameSystem */,
 				C56307B815D53F3600E2BEF7 /* Sqlite3Base */,
 				3C5C1B4B15D247BF006E7C0B /* ObjectInMap */,

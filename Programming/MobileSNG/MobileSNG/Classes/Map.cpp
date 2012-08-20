@@ -61,7 +61,7 @@ bool Map::init(GameSystem * system)
 void Map::update(float dt)
 {
     MapMgr * mapMgr = m_pSystem->GetMapMgr();
-    ObjectInfoMgr * infoMgr = m_pSystem->GetInfoMgr();
+//    ObjectInfoMgr * infoMgr = m_pSystem->GetInfoMgr();
 
     std::vector<ObjectInMap *> object = mapMgr->GetAllObject();
     
@@ -71,7 +71,7 @@ void Map::update(float dt)
         if ((*i)->UpdateSystem())
             SyncPos(*i);
     
-    CCLog("delta : %f", dt);
+//    CCLog("delta : %f", dt);
 }
 
 void Map::SyncPos(ObjectInMap *oim)
