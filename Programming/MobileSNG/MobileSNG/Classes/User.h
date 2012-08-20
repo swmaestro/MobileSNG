@@ -20,6 +20,7 @@ private:
     std::string     m_strFilePath;
     std::string     m_strID;
     std::string     m_strPassWord;
+    std::string     m_strPhoneNumber;
 
     int             m_level;
     int             m_money;
@@ -51,4 +52,5 @@ public:
     
 public:
     static bool hasFile(const char *FileName = USER_FILE_NAME);
+    static void newUser(const char *userID, const char *userPW, const char *userPhone, const char *FileName = USER_FILE_NAME);
 };

@@ -41,13 +41,18 @@ bool Join::Overlab()
 
 bool Join::_CheckPhoneNumber(const char *strPhone)
 {
-    //이따가 생각. 중요한건 아냐
     int num = strlen(strPhone);
     
-    if( num == 10 || num == 11 )
-        return true;
+    if( (num == 10 || num == 11) == false )
+        return false;
     
-    return false;
+    int size = strlen(strPhone);
+    
+    for(int i=0; i<size; ++i)
+        if( ('0' <= strPhone[i] && strPhone[i] < '9') == false )
+            return false;
+    
+    return true;
 }
 
 bool Join::_Join(const char *strID, const char *strPassword, const char *strPhone)

@@ -28,6 +28,9 @@ User::User(const char *FileName)
         
         fscanf(pFile, "%s", txt);
         m_strPassWord = txt;
+        
+        fscanf(pFile, "%s", txt);
+        m_strPhoneNumber = txt;
     }
     
     m_money = 100000;
@@ -42,7 +45,8 @@ User::~User()
     FILE *pFile = fopen(m_strFilePath.data(), "wb");
     
     fprintf(pFile, "%s\n",m_strID.data());
-    fprintf(pFile, "%s\n",m_strID.data());
+    fprintf(pFile, "%s\n",m_strPassWord.data());
+    fprintf(pFile, "%s\n",m_strPhoneNumber.data());
     
     fclose(pFile);
 }
@@ -136,4 +140,16 @@ int User::GetCash()
 int User::GetExp()
 {
     return m_exp;
+}
+
+void User::newUser(const char *userID, const char *userPW, const char *userPhone, const char *FileName)
+{
+    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(FileName);
+    FILE *pFile = fopen(path.data(), "wb");
+    
+    fprintf(pFile, "%s\n",userID);
+    fprintf(pFile, "%s\n",userPW);
+    fprintf(pFile, "%s\n",userPhone);
+    
+    fclose(pFile);
 }

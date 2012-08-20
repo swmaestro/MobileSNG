@@ -66,7 +66,15 @@ void FirstScene::_btJoin(CCObject *pSender)
     if(m_pJoin->CreatAccount())
     {
         CCMessageBox("Join OK", "Join OK");
-        _NextScene(NULL);
+        
+        const char *id = m_pUI->GetContext(JOIN_UI_ENUM_ID);
+        const char *pw = m_pUI->GetContext(JOIN_UI_ENUM_PW);
+        const char *ph = m_pUI->GetContext(JOIN_UI_ENUM_PHONE);
+        
+        User::newUser(id, pw, ph);
+        
+        CCCallFunc *p = CCCallFunc::create(this, callfunc_selector(FirstScene::_NextScene));
+        runAction(p);
     }
     else
     {
