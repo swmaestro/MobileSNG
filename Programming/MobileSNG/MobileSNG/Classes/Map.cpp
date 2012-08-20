@@ -20,7 +20,7 @@ int Map::height = 320 * 4;
 int Map::tileWidth = 100;
 int Map::tileHeight = 60;
 
-Map::Map() : m_pTile(NULL), m_pAllocator(NULL), m_width(0), m_touchCnt(-1),
+Map::Map(int & width) : m_pTile(NULL), m_pAllocator(NULL), m_width(width), m_touchCnt(-1),
                 m_isDragging(false), m_isScaling(false),
                 m_isAllocating(false), m_isEditing(false)
 {
@@ -42,7 +42,6 @@ bool Map::init(GameSystem * system)
     
     m_pSystem = system;
     
-    m_width = 5;
     _initTile();
     
     CCSprite * bg = CCSprite::create("Background.png");
@@ -61,17 +60,12 @@ bool Map::init(GameSystem * system)
 void Map::update(float dt)
 {
     MapMgr * mapMgr = m_pSystem->GetMapMgr();
-//    ObjectInfoMgr * infoMgr = m_pSystem->GetInfoMgr();
-
     std::vector<ObjectInMap *> object = mapMgr->GetAllObject();
-    
     std::vector<ObjectInMap *>::iterator i;
     
     for (i = object.begin(); i != object.end(); ++i)
         if ((*i)->UpdateSystem())
             SyncPos(*i);
-    
-//    CCLog("delta : %f", dt);
 }
 
 void Map::SyncPos(ObjectInMap *oim)

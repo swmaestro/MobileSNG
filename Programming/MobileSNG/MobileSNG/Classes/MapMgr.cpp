@@ -10,9 +10,9 @@
 
 using namespace std;
 
-MapMgr::MapMgr(int mapLevel)
+MapMgr::MapMgr(int & mapLevel) : m_mapLevel(mapLevel)
 {
-    m_mapLevel = mapLevel;
+    
 }
 
 MapMgr::~MapMgr()

@@ -17,6 +17,8 @@
 #include "Building.h"
 #include "Field.h"
 
+#include "Utility.h"
+
 using namespace cocos2d;
 
 Allocator::Allocator(CCLayer *& tile) : m_tile(tile)
@@ -96,12 +98,13 @@ void Allocator::Apply()
                 break;
                 
             case OBJ_BUILDING:
-                oim = ObjectInMap(0, POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i])), SIZE<int>(1, 1), OBJECT_DIRECTION_LEFT, m_id);
-
                 {
                     BuildingInfo * info;
                     m_pInfoMgr->searchInfo(m_id, &info);
                     spr->setAnchorPoint(ccp(0.5, 0.3 / ((info->GetSize().width + info->GetSize().height) / 2)));
+                    
+                    oim = ObjectInMap(0, POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i])),
+                                      info->GetSize(), OBJECT_DIRECTION_LEFT, m_id);
                     
                     Building b(&oim, 0, m_pInfoMgr);
                     m_pMapMgr->addObject(&b, m_pInfoMgr, 0);
@@ -149,26 +152,40 @@ void Allocator::TouchesBegin(int i, int j)
         BuildingInfo * info;
         m_pInfoMgr->searchInfo(m_id, &info);
         
+        if (i > m_width / 2 - info->GetSize().width + 1 || j > m_width / 2 - info->GetSize().height + 1)
+            return;
+        
         if (m_pMapMgr->isObjectInMap(POINT<int>(i, j), info->GetSize()))
             return;
+        
+        for (int t = 0; t < m_vec.size(); ++t)
+            if (intersectBoxWithBox(POINT<int>(LOWORD(m_vec[t]), HIWORD(m_vec[t])), info->GetSize(),
+                                    POINT<int>(i, j), info->GetSize()))
+                return;
     }
-    else if (m_type == OBJ_CROP)
+    else
     {
-        if (!m_pMapMgr->isObjectInMap(POINT<int>(i, j)))
-            return;
+        if (m_type == OBJ_CROP)
+        {
+            if (!m_pMapMgr->isObjectInMap(POINT<int>(i, j)))
+                return;
+            
+            ObjectInMap * obj = m_pMapMgr->FindObject(POINT<int>(i, j));
+           
+            if (obj->GetType() != OBJECT_TYPE_FIELD)
+                return;
+            
+            if (static_cast<Field *>(obj)->hasCrop())
+                return;
+        }
+        else if (m_type == OBJ_FARM)
+            if (m_pMapMgr->isObjectInMap(POINT<int>(i, j)))
+                return;
         
-        ObjectInMap * obj = m_pMapMgr->FindObject(POINT<int>(i, j));
-       
-        if (obj->GetType() != OBJECT_TYPE_FIELD)
-            return;
-        
-        if (static_cast<Field *>(obj)->hasCrop())
-            return;
+        for (int t = 0; t < m_vec.size(); ++t)
+            if (m_vec[t] == MAKEWORD(i, j))
+                return;
     }
-    
-    for (int t = 0; t < m_vec.size(); ++t)
-        if (m_vec[t] == MAKEWORD(i, j))
-            return;
     
     CCNode * tile = m_tile->getChildByTag(MAKEWORD(i, j));
     if (!tile)

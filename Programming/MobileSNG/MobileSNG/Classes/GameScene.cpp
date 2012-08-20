@@ -8,7 +8,8 @@
 
 using namespace cocos2d;
 
-GameScene::GameScene() : m_pSystem(NULL), m_pMap(NULL), m_pShop(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL)
+GameScene::GameScene() : m_pSystem(NULL), m_pMap(NULL), m_pShop(NULL), 
+            m_pMapUI(NULL), m_pShopUI(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL), m_width(7)
 {
     
 }
@@ -37,7 +38,7 @@ bool GameScene::init()
     if (!CCLayer::init())     
         return false;
 
-    m_pSystem = new GameSystem("ObjectDB.sqlite");
+    m_pSystem = new GameSystem("ObjectDB.sqlite", m_width);
     
     if (!_initUIMgr())
         return false;
@@ -46,21 +47,49 @@ bool GameScene::init()
         return false;
     
     CCSize wsize = CCDirector::sharedDirector()->getWinSize();
-    
-    m_pMap = new Map();
+   
+    m_pMap = new Map(m_width);
     m_pMap->init(m_pSystem);
     m_pMap->setAnchorPoint(ccp(0.5, 0.5));
     m_pMap->setScale(1);
     m_pMap->setPosition(ccp(wsize.width / 2, wsize.height / 2));
-    m_pMap->setVisible(false);
-    addChild(m_pMap, 0);
+    
+    m_pMapUI = CCLayer::create();
+    m_pMapUI->addChild(m_pMap, UILAYER_TOUCH_RECIEVER, UILAYER_TOUCH_RECIEVER);
+    m_pMapUI->setVisible(false);
+    addChild(m_pMapUI, 0);
+    
+    m_pShopUI = CCLayer::create();
+    m_pShopUI->addChild(m_pShop, UILAYER_TOUCH_RECIEVER, UILAYER_TOUCH_RECIEVER);
+    m_pShopUI->setVisible(false);
+    addChild(m_pShopUI, 0);
     
     setTouchEnabled(true);
     
     m_pUIMgr->ChangeUI(UI_MAP);
-    _changeUI(m_pMap);
+    _changeUI(m_pMapUI);
+    
+    if (!_initLabel())
+        return false;
+    
+    scheduleUpdate();
 
     return true;
+}
+
+void GameScene::update(float dt)
+{
+    CCLabelTTF * label = static_cast<CCLabelTTF *>(m_pCurrentUI->getChildByTag(UILAYER_LABEL));
+    
+    if (label)
+    {
+        User * user = m_pSystem->GetUser();
+        
+        char temp[100];
+        sprintf(temp, "Sweets : %d\nExp : %d", user->GetMoney(), user->GetExp());
+        
+        label->setString(temp);
+    }
 }
 
 bool GameScene::_initUIMgr()
@@ -93,22 +122,16 @@ bool GameScene::_initShop()
 {
     m_pShop = new Shop();
     m_pShop->init(this);
-    m_pShop->setVisible(false);
     
     ObjectInfoMgr * infoMgr = m_pSystem->GetInfoMgr();
     
     std::vector<CropInfo*> infoCrop = infoMgr->GetAllCropInfo();
     std::vector<BuildingInfo*> infoBuilding = infoMgr->GetAllBuildingInfo();
     
-//    char fileName[32];
-    
     for (int i = 0; i < infoCrop.size(); ++i)
     {
-        std::string fileName = infoCrop[i]->GetName() + "/"
-                             + infoCrop[i]->GetName() + ".png";
-//        
-//        sprintf(fileName, "%s/%s.png", infoCrop[i].name, infoCrop[i].name);
-                
+        std::string fileName = infoCrop[i]->GetName() + "/" + infoCrop[i]->GetName() + ".png";
+        
         m_pShop->addItem(OBJ_CROP, infoCrop[i]->GetName().data(), fileName.data(),
                          infoCrop[i]->GetPrice(), 0, infoCrop[i]->GetObjInfo().GetTime(), 0, infoCrop[i]->GetObjInfo().GetReward());
     }
@@ -116,13 +139,27 @@ bool GameScene::_initShop()
     for (int i = 0; i < infoBuilding.size(); ++i)
     {
         std::string fileName = infoBuilding[i]->GetName() + "/" + infoBuilding[i]->GetName() + ".png";
-//        sprintf(fileName, "%s/%s.png", infoBuilding[i].name, infoBuilding[i].name);
         
         m_pShop->addItem(OBJ_BUILDING, infoBuilding[i]->GetName().data(), fileName.data(),
                          infoBuilding[i]->GetPrice(), 0, infoBuilding[i]->GetObjInfo().GetTime(), 0, infoBuilding[i]->GetObjInfo().GetReward());
     }
     
-    addChild(m_pShop, 0);
+    return true;
+}
+
+bool GameScene::_initLabel()
+{
+    CCLabelTTF * label;
+    
+    label = CCLabelTTF::create("jgojwjgp pjpa", "Ariel", 13);
+    label->setAnchorPoint(ccp(0, 1));
+    label->setPosition(ccp(100, 200));
+    m_pMapUI->addChild(label, UILAYER_LABEL, UILAYER_LABEL);
+    
+    label = CCLabelTTF::create("hgwoojboo", "Ariel", 13);
+    label->setAnchorPoint(ccp(0, 1));
+    label->setPosition(ccp(100, 200));
+    m_pShopUI->addChild(label, UILAYER_LABEL, UILAYER_LABEL);
     
     return true;
 }
@@ -132,7 +169,7 @@ void GameScene::ccTouchesBegan(CCSet * pTouches, CCEvent * pEvent)
     if (!m_pCurrentUI && !(m_pCurrentUI = m_pMap))
         return;
     
-    m_pCurrentUI->ccTouchesBegan(pTouches, pEvent);
+    static_cast<CCLayer *>(m_pCurrentUI->getChildByTag(UILAYER_TOUCH_RECIEVER))->ccTouchesBegan(pTouches, pEvent);
 }
 
 void GameScene::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
@@ -140,7 +177,7 @@ void GameScene::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
     if (!m_pCurrentUI && !(m_pCurrentUI = m_pMap))
         return;
     
-    m_pCurrentUI->ccTouchesMoved(pTouches, pEvent);
+    static_cast<CCLayer *>(m_pCurrentUI->getChildByTag(UILAYER_TOUCH_RECIEVER))->ccTouchesMoved(pTouches, pEvent);
 }
 
 void GameScene::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
@@ -148,13 +185,13 @@ void GameScene::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
     if (!m_pCurrentUI && !(m_pCurrentUI = m_pMap))
         return;
     
-    m_pCurrentUI->ccTouchesEnded(pTouches, pEvent);
+    static_cast<CCLayer *>(m_pCurrentUI->getChildByTag(UILAYER_TOUCH_RECIEVER))->ccTouchesEnded(pTouches, pEvent);
 }
 
 void GameScene::_shopFunc(CCObject *pSender)
 {
     m_pUIMgr->ChangeUI(UI_SHOP);
-    _changeUI(m_pShop);
+    _changeUI(m_pShopUI);
     
     CCLog(__FUNCTION__);
 }
@@ -178,20 +215,20 @@ void GameScene::_editApplyFunc(CCObject *pSender)
 {
     m_pMap->endEdit(m_pSystem->GetMapMgr());
     m_pUIMgr->ChangeUI(UI_MAP);
-    _changeUI(m_pMap);
+    _changeUI(m_pMapUI);
 }
 
 void GameScene::_editCancelFunc(CCObject *pSender)
 {
     m_pMap->endEdit(false);
     m_pUIMgr->ChangeUI(UI_MAP);
-    _changeUI(m_pMap);
+    _changeUI(m_pMapUI);
 }
 
 void GameScene::_shopCloseFunc(CCObject *pSender)
 {
     m_pUIMgr->ChangeUI(UI_MAP);
-    _changeUI(m_pMap);
+    _changeUI(m_pMapUI);
 }
 
 void GameScene::_changeUI(cocos2d::CCLayer * ui)
@@ -208,5 +245,5 @@ void GameScene::alloc(int type, int id)
 {
     m_pMap->beginEdit(type, id);
     m_pUIMgr->ChangeUI(UI_EDIT);
-    _changeUI(m_pMap);
+    _changeUI(m_pMapUI);
 }

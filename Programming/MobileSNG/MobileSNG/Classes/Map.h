@@ -22,7 +22,7 @@ class ObjectInMap;
 
 enum
 {
-    TILE_NONE, TILE_FARM, TILE_BUILDING = TILE_FARM, TILE_CROP, TILE_PREVIEW, TILE_EDIT
+    TILE_NONE, TILE_EDIT, TILE_FARM, TILE_BUILDING = TILE_FARM, TILE_CROP, TILE_PREVIEW,
 };
 
 class Map : public cocos2d::CCLayer
@@ -35,7 +35,7 @@ private:
     cocos2d::CCLayer  * m_pTile;
     Allocator         * m_pAllocator;
     
-    int                 m_width;
+    int               & m_width;
     
     bool                m_isDragging, m_isScaling;
     bool                m_isAllocating, m_isEditing;
@@ -49,7 +49,7 @@ private:
 public:
     static int width, height, tileWidth, tileHeight;
     
-    Map();
+    Map(int & width);
     ~Map();
     
     virtual bool init(GameSystem * system);

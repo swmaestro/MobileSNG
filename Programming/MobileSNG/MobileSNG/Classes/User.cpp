@@ -32,6 +32,7 @@ User::User(const char *FileName)
     
     m_money = 100000;
     m_level = 100;
+    m_exp = 0;
     
     fclose(pFile);
 }
