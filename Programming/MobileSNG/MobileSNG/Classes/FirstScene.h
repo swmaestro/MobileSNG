@@ -9,14 +9,23 @@
 #include "cocos2d.h"
 #include "Join.h"
 #include "JoinUI.h"
+#include "Login.h"
+#include "LoginUI.h"
 #include "Network.h"
 
 class FirstScene : public cocos2d::CCLayer
 {
 private:
+    cocos2d::CCSprite   *m_pBackGround;
+    
     Join            *m_pJoin;
-    JoinUI          *m_pUI;
+    JoinUI          *m_pJoinUI;
+  
+    Login           *m_pLogin;
+    LoginUI         *m_pLoginUI;
+
     Network         *m_pNet;
+    
         
 public:
     FirstScene();
@@ -29,9 +38,19 @@ public:
     static cocos2d::CCScene* scene();
     
 private:
-    void _btJoin(CCObject *pSender);
-    void _btOverlab(CCObject *pSender);
-
+    bool _GetUserInfo(char *userID, char *outID, char *outPhone);
+    
 private:
-    void _NextScene(CCObject *pSender);
+    void _btOverlab(CCObject *pSender);
+    void _btJoin(CCObject *pSender);
+    void _btCancel(CCObject *pSender);
+    
+private:
+    void _btLogin(CCObject *pSender);
+    void _btChangeUI(CCObject *pSender);
+    
+private:
+    void _ChangeUI(CCObject *pSender);
+    void _Dealloc(CCObject *pSender);
+    void _NextScene();
 };

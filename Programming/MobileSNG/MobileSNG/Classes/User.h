@@ -28,16 +28,12 @@ private:
     int             m_exp;
     
 public:
-    User(const char *FileName = USER_FILE_NAME);
+    User();
     ~User();
     
 public:
     void SetData(char *xmlData);
-    
-public:
-    bool Login(Network *pNetwork);
-    bool LogOut(Network *pNetwork);
-    
+
 public:
     bool AddMoney(int n);
     void AddCash(int n);
@@ -51,6 +47,7 @@ public:
     int     GetExp();
     
 public:
-    static bool hasFile(const char *FileName = USER_FILE_NAME);
-    static void newUser(const char *userID, const char *userPW, const char *userPhone, const char *FileName = USER_FILE_NAME);
+    static bool hasFile();
+    static void newUser(const char *userID, const char *userPW, const char *userPhone);
+    static void GetInfo(char *pOutID, char *pOutPW, char *pOutPhone);
 };

@@ -218,6 +218,9 @@
 		3CAB288215BD0E3D0003DDE2 /* Friends.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CAB287E15BD0E3D0003DDE2 /* Friends.png */; };
 		3CAB288315BD0E3D0003DDE2 /* Shop.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CAB287F15BD0E3D0003DDE2 /* Shop.png */; };
 		3CAB28A615BDC40E0003DDE2 /* box.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3CAB28A515BDC40E0003DDE2 /* box.xml */; };
+		3CC2A28015E32D3D00E4DB01 /* LoginUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC2A27E15E32D3D00E4DB01 /* LoginUI.cpp */; };
+		3CC2A28415E33A3D00E4DB01 /* Login.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC2A28215E33A3D00E4DB01 /* Login.cpp */; };
+		3CC2A28A15E34C1000E4DB01 /* TestUI.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC2A28915E34C0F00E4DB01 /* TestUI.png */; };
 		3CC7890215D393D000C19F95 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC7890015D393D000C19F95 /* GameSystem.cpp */; };
 		3CDA257E15D8EFE100193717 /* JoinUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CDA257C15D8EFE100193717 /* JoinUI.cpp */; };
 		C51B140315BED2C6008491C2 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C51B140215BED2C6008491C2 /* Map.cpp */; };
@@ -711,6 +714,11 @@
 		3CAB287E15BD0E3D0003DDE2 /* Friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Friends.png; path = Resources/Friends.png; sourceTree = "<group>"; };
 		3CAB287F15BD0E3D0003DDE2 /* Shop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Shop.png; path = Resources/Shop.png; sourceTree = "<group>"; };
 		3CAB28A515BDC40E0003DDE2 /* box.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = box.xml; path = Resources/box.xml; sourceTree = "<group>"; };
+		3CC2A27E15E32D3D00E4DB01 /* LoginUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LoginUI.cpp; path = Classes/LoginUI.cpp; sourceTree = "<group>"; };
+		3CC2A27F15E32D3D00E4DB01 /* LoginUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginUI.h; path = Classes/LoginUI.h; sourceTree = "<group>"; };
+		3CC2A28215E33A3D00E4DB01 /* Login.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Login.cpp; path = Classes/Login.cpp; sourceTree = "<group>"; };
+		3CC2A28315E33A3D00E4DB01 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Login.h; path = Classes/Login.h; sourceTree = "<group>"; };
+		3CC2A28915E34C0F00E4DB01 /* TestUI.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TestUI.png; path = Resources/TestUI.png; sourceTree = "<group>"; };
 		3CC7890015D393D000C19F95 /* GameSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameSystem.cpp; path = Classes/GameSystem.cpp; sourceTree = "<group>"; };
 		3CC7890115D393D000C19F95 /* GameSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameSystem.h; path = Classes/GameSystem.h; sourceTree = "<group>"; };
 		3CDA257C15D8EFE100193717 /* JoinUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JoinUI.cpp; path = Classes/JoinUI.cpp; sourceTree = "<group>"; };
@@ -959,6 +967,7 @@
 		3C9364C415B0FF6300860E6A /* MobileSNG */ = {
 			isa = PBXGroup;
 			children = (
+				3CC2A27D15E32A6700E4DB01 /* Login */,
 				3C9CF8C615DAB48700890B36 /* Join */,
 				3C9CF8B915DA34DE00890B36 /* System */,
 				3C12F6CA15D7EA8100295503 /* User */,
@@ -978,6 +987,7 @@
 		3C9364C515B0FF6300860E6A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3CC2A28915E34C0F00E4DB01 /* TestUI.png */,
 				3C9CF91B15DE177900890B36 /* User.info */,
 				C5F67F9E15D7B80E00F83D58 /* ObjectDB.sqlite */,
 				C5652BDD15D7B14C002348F2 /* CookieHouse */,
@@ -1884,6 +1894,25 @@
 			name = Shop;
 			sourceTree = "<group>";
 		};
+		3CC2A27D15E32A6700E4DB01 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				3CC2A28115E33A2E00E4DB01 /* UI */,
+				3CC2A28215E33A3D00E4DB01 /* Login.cpp */,
+				3CC2A28315E33A3D00E4DB01 /* Login.h */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
+		3CC2A28115E33A2E00E4DB01 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				3CC2A27E15E32D3D00E4DB01 /* LoginUI.cpp */,
+				3CC2A27F15E32D3D00E4DB01 /* LoginUI.h */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		C51B140115BED2B4008491C2 /* Map */ = {
 			isa = PBXGroup;
 			children = (
@@ -2004,6 +2033,7 @@
 				C5F67F9F15D7B80E00F83D58 /* ObjectDB.sqlite in Resources */,
 				C550315815D8DAD5008CD033 /* sqlite in Resources */,
 				3C9CF91C15DE177900890B36 /* User.info in Resources */,
+				3CC2A28A15E34C1000E4DB01 /* TestUI.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2201,6 +2231,8 @@
 				3C9CF8C515DA91E100890B36 /* FirstScene.cpp in Sources */,
 				3C9CF8C915DAB49300890B36 /* Join.cpp in Sources */,
 				3C9CF8D615DC1AAF00890B36 /* Network.cpp in Sources */,
+				3CC2A28015E32D3D00E4DB01 /* LoginUI.cpp in Sources */,
+				3CC2A28415E33A3D00E4DB01 /* Login.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

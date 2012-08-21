@@ -13,9 +13,9 @@
 using namespace cocos2d;
 using namespace std;
 
-User::User(const char *FileName)
+User::User()
 {
-    m_strFilePath = CCFileUtils::sharedFileUtils()->getWriteablePath().append(FileName);
+    m_strFilePath = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
     
     FILE *pFile = fopen(m_strFilePath.data(), "rb");
     
@@ -51,9 +51,9 @@ User::~User()
     fclose(pFile);
 }
 
-bool User::hasFile(const char *FileName)
+bool User::hasFile()
 {
-    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(FileName);
+    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
     
     printf("%s\n", path.c_str());
     
@@ -74,20 +74,6 @@ void User::SetData(char *xmlData)
     }
     
     //파싱
-}
-
-bool User::Login(Network *pNetwork)
-{
-    
-    
-    return true;
-}
-
-bool User::LogOut(Network *pNetwork)
-{
-    
-    
-    return true;
 }
 
 bool User::AddMoney(int n)
@@ -142,14 +128,26 @@ int User::GetExp()
     return m_exp;
 }
 
-void User::newUser(const char *userID, const char *userPW, const char *userPhone, const char *FileName)
+void User::newUser(const char *userID, const char *userPW, const char *userPhone)
 {
-    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(FileName);
+    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
     FILE *pFile = fopen(path.data(), "wb");
     
     fprintf(pFile, "%s\n",userID);
     fprintf(pFile, "%s\n",userPW);
     fprintf(pFile, "%s\n",userPhone);
     
+    fclose(pFile);
+}
+
+void User::GetInfo(char *pOutID, char *pOutPW, char *pOutPhone)
+{
+    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
+    FILE *pFile = fopen(path.data(), "rb");
+    
+    if(pOutID)      fscanf(pFile, "%s", pOutID);
+    if(pOutPW)      fscanf(pFile, "%s", pOutPW);
+    if(pOutPhone)   fscanf(pFile, "%s", pOutPhone);
+
     fclose(pFile);
 }
