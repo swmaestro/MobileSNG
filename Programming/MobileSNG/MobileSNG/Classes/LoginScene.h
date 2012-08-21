@@ -38,7 +38,7 @@ public:
     static cocos2d::CCScene* scene();
     
 private:
-    bool _GetUserInfo(char *userID, char *outID, char *outPhone);
+    bool _GetUserInfo(char *userID, char **ppoutID, char **ppoutPhone);
     
 private:
     void _btOverlab(CCObject *pSender);

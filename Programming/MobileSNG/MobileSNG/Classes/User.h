@@ -40,11 +40,11 @@ public:
     void AddExp(int n);
     
 public:
-    bool    isEmpty();
     int     GetLevel();
     int     GetMoney();
     int     GetCash();
     int     GetExp();
+    int     GetMaximum();
     
 public:
     static bool hasFile();

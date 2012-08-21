@@ -35,6 +35,7 @@ User::User()
     }
     
     m_money = 100000;
+    m_cash  = 10000;
     m_level = 100;
     m_exp = 0;
     
@@ -83,20 +84,11 @@ void User::AddCash(int n)
 
 void User::AddExp(int n)
 {
-    //경험치 곡선을 그리든가 공식으로 하든가 해서 현재 레벨의 다음걸 알아서 유추해봐
-    const int maxExp = 100;
-    
-    if( m_exp >= maxExp )
+    if( m_exp >= m_level*2 )
     {
         ++m_level;
         m_exp = 0;
     }
-}
-
-bool User::isEmpty()
-{
-    //id가 없다는건 생성이 안된것이기 때문에 이런식으로 ㅇㅇ.
-    return m_strID.empty();
 }
 
 int User::GetLevel()
@@ -119,6 +111,11 @@ int User::GetExp()
     return m_exp;
 }
 
+int User::GetMaximum()
+{
+    return m_level * 2;
+}
+
 void User::newUser(const char *userID, const char *userPW, const char *userPhone)
 {
     std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
@@ -126,7 +123,7 @@ void User::newUser(const char *userID, const char *userPW, const char *userPhone
     
     fprintf(pFile, "%s\n",userID);
     fprintf(pFile, "%s\n",userPW);
-    fprintf(pFile, "%s\n",userPhone);
+    fprintf(pFile, "%s",userPhone);
     
     fclose(pFile);
 }

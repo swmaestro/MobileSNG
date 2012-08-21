@@ -221,7 +221,6 @@
 		3CC2A28015E32D3D00E4DB01 /* LoginUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC2A27E15E32D3D00E4DB01 /* LoginUI.cpp */; };
 		3CC2A28415E33A3D00E4DB01 /* Login.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC2A28215E33A3D00E4DB01 /* Login.cpp */; };
 		3CC2A28A15E34C1000E4DB01 /* TestUI.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC2A28915E34C0F00E4DB01 /* TestUI.png */; };
-		3CC2A29215E36D6100E4DB01 /* VersionCheckScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC2A29015E36D6100E4DB01 /* VersionCheckScene.cpp */; };
 		3CC2A29615E3831800E4DB01 /* System.info in Resources */ = {isa = PBXBuildFile; fileRef = 3CC2A29515E3831700E4DB01 /* System.info */; };
 		3CC7890215D393D000C19F95 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC7890015D393D000C19F95 /* GameSystem.cpp */; };
 		3CDA257E15D8EFE100193717 /* JoinUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CDA257C15D8EFE100193717 /* JoinUI.cpp */; };
@@ -721,8 +720,6 @@
 		3CC2A28215E33A3D00E4DB01 /* Login.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Login.cpp; path = Classes/Login.cpp; sourceTree = "<group>"; };
 		3CC2A28315E33A3D00E4DB01 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Login.h; path = Classes/Login.h; sourceTree = "<group>"; };
 		3CC2A28915E34C0F00E4DB01 /* TestUI.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TestUI.png; path = Resources/TestUI.png; sourceTree = "<group>"; };
-		3CC2A29015E36D6100E4DB01 /* VersionCheckScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VersionCheckScene.cpp; path = Classes/VersionCheckScene.cpp; sourceTree = "<group>"; };
-		3CC2A29115E36D6100E4DB01 /* VersionCheckScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VersionCheckScene.h; path = Classes/VersionCheckScene.h; sourceTree = "<group>"; };
 		3CC2A29515E3831700E4DB01 /* System.info */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = System.info; path = Resources/System.info; sourceTree = "<group>"; };
 		3CC7890015D393D000C19F95 /* GameSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameSystem.cpp; path = Classes/GameSystem.cpp; sourceTree = "<group>"; };
 		3CC7890115D393D000C19F95 /* GameSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameSystem.h; path = Classes/GameSystem.h; sourceTree = "<group>"; };
@@ -1833,7 +1830,6 @@
 		3CAB259215B7A9730003DDE2 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				3CC2A28F15E36D2100E4DB01 /* SystemVersion */,
 				3C9CF8C215DA91CC00890B36 /* Login */,
 				3CAB259415B7A9860003DDE2 /* Menu */,
 				3CAB259315B7A9780003DDE2 /* Game */,
@@ -1844,11 +1840,11 @@
 		3CAB259315B7A9780003DDE2 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				3CAB285815BCEF7B0003DDE2 /* UIMgr */,
 				3CAB287215BCFB350003DDE2 /* Shop */,
 				C51B140115BED2B4008491C2 /* Map */,
 				3CAB286615BCF7580003DDE2 /* GameScene.cpp */,
 				3CAB286715BCF7580003DDE2 /* GameScene.h */,
-				3CAB285815BCEF7B0003DDE2 /* UIMgr */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -1918,15 +1914,6 @@
 				3CC2A27F15E32D3D00E4DB01 /* LoginUI.h */,
 			);
 			name = UI;
-			sourceTree = "<group>";
-		};
-		3CC2A28F15E36D2100E4DB01 /* SystemVersion */ = {
-			isa = PBXGroup;
-			children = (
-				3CC2A29015E36D6100E4DB01 /* VersionCheckScene.cpp */,
-				3CC2A29115E36D6100E4DB01 /* VersionCheckScene.h */,
-			);
-			name = SystemVersion;
 			sourceTree = "<group>";
 		};
 		C51B140115BED2B4008491C2 /* Map */ = {
@@ -2250,7 +2237,6 @@
 				3C9CF8D615DC1AAF00890B36 /* Network.cpp in Sources */,
 				3CC2A28015E32D3D00E4DB01 /* LoginUI.cpp in Sources */,
 				3CC2A28415E33A3D00E4DB01 /* Login.cpp in Sources */,
-				3CC2A29215E36D6100E4DB01 /* VersionCheckScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

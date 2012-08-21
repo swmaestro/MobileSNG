@@ -111,13 +111,39 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/LoginScene.cpp"
-         timestampString = "367231469.162673"
+         filePath = "MobileSNG/Classes/User.cpp"
+         timestampString = "367242812.313401"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "50"
-         endingLineNumber = "50"
-         landmarkName = "LoginScene::init()"
+         startingLineNumber = "135"
+         endingLineNumber = "135"
+         landmarkName = "User::GetInfo(char *pOutID, char *pOutPW, char *pOutPhone)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/User.cpp"
+         timestampString = "367243084.959161"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "121"
+         endingLineNumber = "121"
+         landmarkName = "User::newUser(const char *userID, const char *userPW, const char *userPhone)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/LoginScene.cpp"
+         timestampString = "367244848.651525"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "195"
+         endingLineNumber = "195"
+         landmarkName = "LoginScene::_btLogin(CCObject *pSender)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

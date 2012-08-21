@@ -147,7 +147,7 @@ void LoginScene::_btCancel(CCObject *pSender)
     CCLOG(__FUNCTION__);
 }
 
-bool LoginScene::_GetUserInfo(char *userID, char *outID, char *outPhone)
+bool LoginScene::_GetUserInfo(char *userID, char **ppoutID, char **ppoutPhone)
 {
     static const char *baseURL = "http://swmaestros-sng.appspot.com/searchmember?id=%s";
     
@@ -169,9 +169,9 @@ bool LoginScene::_GetUserInfo(char *userID, char *outID, char *outPhone)
     
     rapidxml::xml_node<char> *pNode = xmlDoc.first_node()->first_node()->next_sibling()->first_node();
     
-    outID = pNode->first_node()->value();
+    if(ppoutID)     *ppoutID = pNode->first_node()->value();
     pNode = pNode->next_sibling();
-    outPhone = pNode->next_sibling()->value();
+    if(ppoutPhone)  *ppoutPhone = pNode->value();
     
     return true;
 }
@@ -188,10 +188,14 @@ void LoginScene::_btLogin(CCObject *pSender)
     
     if(m_pLogin->Logon(userID, userPW))
     {
-        char ph[11];
+        char *phone;
+        std::string phoneNum;
         
-        _GetUserInfo(const_cast<char*>(userID), NULL, ph);
-        User::newUser(userID, userPW, ph);
+        _GetUserInfo(const_cast<char*>(userID), NULL, &phone);
+        
+        phoneNum = phone;
+        
+        User::newUser(userID, userPW, phone);
         
         printf("Login Success \n");
         _NextScene();

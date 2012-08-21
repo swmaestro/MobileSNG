@@ -51,6 +51,7 @@ public:
     
 private:
     CommonInfo* _GetCommonInfo(ObjectInMap *pObj);
+    ObjectInfo _GetObjectInfo(ObjectInMap *pObj);
         
 public:
     //물건을 살수있는지 여부를 묻는 그런 함수의 이름
