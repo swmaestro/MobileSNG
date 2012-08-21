@@ -1,5 +1,5 @@
 //
-//  FirstScene.h
+//  LoginScene.h
 //  MobileSNG
 //
 //  Created by 박 진 on 12. 8. 14..
@@ -13,7 +13,7 @@
 #include "LoginUI.h"
 #include "Network.h"
 
-class FirstScene : public cocos2d::CCLayer
+class LoginScene : public cocos2d::CCLayer
 {
 private:
     cocos2d::CCSprite   *m_pBackGround;
@@ -28,12 +28,12 @@ private:
     
         
 public:
-    FirstScene();
-    ~FirstScene();
+    LoginScene();
+    ~LoginScene();
     
 public:
     bool init();
-    LAYER_CREATE_FUNC(FirstScene);
+    LAYER_CREATE_FUNC(LoginScene);
     
     static cocos2d::CCScene* scene();
     

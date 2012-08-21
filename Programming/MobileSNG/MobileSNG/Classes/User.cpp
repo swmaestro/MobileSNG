@@ -9,6 +9,7 @@
 #include "User.h"
 #include "CCFileUtils.h"
 #include <stdlib.h>
+#include "Utility.h"
 
 using namespace cocos2d;
 using namespace std;
@@ -53,17 +54,7 @@ User::~User()
 
 bool User::hasFile()
 {
-    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
-    
-    printf("%s\n", path.c_str());
-    
-    bool has = false;
-    
-    FILE *p = fopen(path.data(), "rb");
-    has = p;
-    fclose(p);
-    
-    return has;
+    return isExistFile(CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME).data());
 }
 
 void User::SetData(char *xmlData)

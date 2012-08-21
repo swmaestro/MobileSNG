@@ -1,19 +1,20 @@
 //
-//  FirstScene.cpp
+//  LoginScene.cpp
 //  MobileSNG
 //
 //  Created by 박 진 on 12. 8. 14..
 //
 //
 
-#include "FirstScene.h"
+#include "LoginScene.h"
 #include "User.h"
 #include "GameScene.h"
 #include "rapidxml.hpp"
+#include "SystemInfo.h"
 
 using namespace cocos2d;
 
-FirstScene::FirstScene()
+LoginScene::LoginScene()
 {
     m_pJoin     = NULL;
     m_pJoinUI       = NULL;
@@ -25,20 +26,39 @@ FirstScene::FirstScene()
     m_pBackGround = NULL;
 }
 
-FirstScene::~FirstScene()
+LoginScene::~LoginScene()
 {
+    SAFE_DELETE(m_pJoinUI);
+    SAFE_DELETE(m_pJoin);
+    SAFE_DELETE(m_pLoginUI);
+    SAFE_DELETE(m_pLogin);
+    SAFE_DELETE(m_pNet);
+    SAFE_DELETE(m_pBackGround);
+    
+    exit(0);
 }
 
-CCScene* FirstScene::scene()
+CCScene* LoginScene::scene()
 {
     CCScene * scene = CCScene::create();
-    scene->addChild(FirstScene::create());
+    scene->addChild(LoginScene::create());
     return scene;
 }
 
-bool FirstScene::init()
+bool LoginScene::init()
 {
     m_pNet      = new Network;
+    SystemInfo *pSystem = new SystemInfo(m_pNet);
+    
+    if(pSystem->isUpdatedVersion() == false)
+    {
+        CCDirector::sharedDirector()->end();
+        delete pSystem;
+        return false;
+    }
+    
+    delete pSystem;
+    
     m_pJoin     = new Join(m_pNet);
     m_pLogin    = new Login(m_pNet);
 
@@ -62,9 +82,9 @@ bool FirstScene::init()
     addChild(m_pBackGround);
         
     m_pJoinUI   = new JoinUI(this,
-                             menu_selector(FirstScene::_btJoin),
-                             menu_selector(FirstScene::_btChangeUI),
-                             menu_selector(FirstScene::_btOverlab));
+                             menu_selector(LoginScene::_btJoin),
+                             menu_selector(LoginScene::_btChangeUI),
+                             menu_selector(LoginScene::_btOverlab));
     
     m_pJoinUI->setVisible(false);
     
@@ -73,8 +93,8 @@ bool FirstScene::init()
     
     addChild(m_pJoinUI);
     
-    m_pLoginUI  = new LoginUI( menu_selector(FirstScene::_btLogin),
-                               menu_selector(FirstScene::_btChangeUI),
+    m_pLoginUI  = new LoginUI( menu_selector(LoginScene::_btLogin),
+                               menu_selector(LoginScene::_btChangeUI),
                                this);
     
     m_pLoginUI->setAnchorPoint(ccp(0.5,0.5));
@@ -91,7 +111,7 @@ bool FirstScene::init()
 #pragma mark -
 #pragma mark JOIN_UI
 
-void FirstScene::_btJoin(CCObject *pSender)
+void LoginScene::_btJoin(CCObject *pSender)
 {
     CCLOG(__FUNCTION__);
 
@@ -112,7 +132,7 @@ void FirstScene::_btJoin(CCObject *pSender)
     }
 }
 
-void FirstScene::_btOverlab(CCObject *pSender)
+void LoginScene::_btOverlab(CCObject *pSender)
 {
     CCLOG(__FUNCTION__);
 
@@ -122,12 +142,12 @@ void FirstScene::_btOverlab(CCObject *pSender)
         CCMessageBox("Overlab", "Overlab");
 }
 
-void FirstScene::_btCancel(CCObject *pSender)
+void LoginScene::_btCancel(CCObject *pSender)
 {
     CCLOG(__FUNCTION__);
 }
 
-bool FirstScene::_GetUserInfo(char *userID, char *outID, char *outPhone)
+bool LoginScene::_GetUserInfo(char *userID, char *outID, char *outPhone)
 {
     static const char *baseURL = "http://swmaestros-sng.appspot.com/searchmember?id=%s";
     
@@ -159,7 +179,7 @@ bool FirstScene::_GetUserInfo(char *userID, char *outID, char *outPhone)
 #pragma mark -
 #pragma mark LOGIN_UI
 
-void FirstScene::_btLogin(CCObject *pSender)
+void LoginScene::_btLogin(CCObject *pSender)
 {
     CCLOG(__FUNCTION__);
     
@@ -180,11 +200,11 @@ void FirstScene::_btLogin(CCObject *pSender)
         printf("Login Fail \n");
 }
 
-void FirstScene::_btChangeUI(CCObject *pSender)
+void LoginScene::_btChangeUI(CCObject *pSender)
 {
     CCLOG(__FUNCTION__);
     
-    CCCallFunc *func = CCCallFunc::create(this, callfunc_selector(FirstScene::_ChangeUI));
+    CCCallFunc *func = CCCallFunc::create(this, callfunc_selector(LoginScene::_ChangeUI));
     
     //추후에 액션을 추가하든가 하시죠
 //    CCSequence *seq = CCSequence::create(func);
@@ -195,7 +215,7 @@ void FirstScene::_btChangeUI(CCObject *pSender)
         m_pJoinUI->runAction(func);
 }
 
-void FirstScene::_ChangeUI(CCObject *pSender)
+void LoginScene::_ChangeUI(CCObject *pSender)
 {
     if( m_pLoginUI->isVisible() == false )
     {
@@ -212,13 +232,13 @@ void FirstScene::_ChangeUI(CCObject *pSender)
 
 #pragma mark -
 
-void FirstScene::_NextScene()
+void LoginScene::_NextScene()
 {    
-    CCCallFunc *p = CCCallFunc::create(this, callfunc_selector(FirstScene::_Dealloc));
+    CCCallFunc *p = CCCallFunc::create(this, callfunc_selector(LoginScene::_Dealloc));
     runAction(p);
 }
 
-void FirstScene::_Dealloc(CCObject *pSender)
+void LoginScene::_Dealloc(CCObject *pSender)
 {
     removeAllChildrenWithCleanup(true);
 

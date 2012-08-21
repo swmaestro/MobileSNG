@@ -91,20 +91,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "209"
          endingLineNumber = "209"
-         landmarkName = "FirstScene::_ChangeUI(CCObject *pSender)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/FirstScene.cpp"
-         timestampString = "367225876.37016"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "104"
-         endingLineNumber = "104"
-         landmarkName = "FirstScene::_btJoin(CCObject *pSender)"
+         landmarkName = "LoginScene::_ChangeUI(CCObject *pSender)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -117,7 +104,20 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "171"
          endingLineNumber = "171"
-         landmarkName = "FirstScene::_btLogin(CCObject *pSender)"
+         landmarkName = "LoginScene::_btLogin(CCObject *pSender)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/LoginScene.cpp"
+         timestampString = "367231469.162673"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "50"
+         endingLineNumber = "50"
+         landmarkName = "LoginScene::init()"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

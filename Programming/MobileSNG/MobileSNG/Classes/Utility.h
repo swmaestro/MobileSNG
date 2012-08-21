@@ -107,4 +107,15 @@ static void TextFieldKeyBoardOn(cocos2d::CCNode *pNode, cocos2d::CCSet *pTouches
     printf("x %f, y %f \n", point.x, point.y);
 }
 
+static bool isExistFile(const char* path)
+{
+    bool has = false;
+    
+    FILE *p = fopen(path, "rb");
+    has = p;
+    fclose(p);
+    
+    return has;
+}
+
 #define SAFE_DELETE(P) if(P){delete P; P = NULL;}
