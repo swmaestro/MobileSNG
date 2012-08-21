@@ -65,6 +65,8 @@ public:
 public:
     bool Harvest(POINT<int> &pos, ObjectInMap **ppOut);
     bool Harvest(ObjectInMap **ppObject);
+    void AllHarvest();
+    void FastComplete(ObjectInMap *pObject);
     
 public:
     inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }

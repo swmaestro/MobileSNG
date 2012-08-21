@@ -125,8 +125,58 @@ bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
     return this->Harvest(&pObject);
 }
 
-bool GameSystem::Harvest(ObjectInMap **ppObject)
+void GameSystem::AllHarvest()
 {
+    vector<ObjectInMap*> vObjects = m_pMap->GetAllObject();
+    vector<ObjectInMap*>::iterator iter;
+    
+    int exp         = 0;
+    int money       = 0;
+    int harvestNum  = 0;
+    
+    ObjectInfo info;
+    
+    for(iter = vObjects.begin(); iter != vObjects.end(); ++iter)
+    {
+        if(Harvest(&*iter))
+        {
+            info = _GetObjectInfo(*iter);
+            exp += info.GetExp();
+            money += info.GetReward();
+            harvestNum++;
+        }
+    }
+    
+    exp *= 1.5f;
+    money *= 1.5f;
+    
+    m_pUser->AddMoney(money);
+    m_pUser->AddExp(exp);
+    m_pUser->AddCash(-(harvestNum * 100));
+}
+
+void GameSystem::FastComplete(ObjectInMap *pObject)
+{
+    OBJECT_TYPE type = pObject->GetType();
+    
+    if( type == OBJECT_TYPE_BUILDING )
+    {
+        if(pObject->m_state == BUILDING_STATE_WORKING )
+            pObject->m_state = BUILDING_STATE_DONE;
+        else if(pObject->m_state <= BUILDING_STATE_UNDER_CONSTRUCTION_2)
+            pObject->m_state = BUILDING_STATE_WORKING;
+    }
+    else if (type == OBJECT_TYPE_CROP )
+    {
+        if(pObject->m_state != CROP_STATE_DONE)
+            pObject->m_state = CROP_STATE_DONE;
+    }
+    
+    m_pUser->AddCash(-100);
+}
+
+bool GameSystem::Harvest(ObjectInMap **ppObject)
+{    
     if( ppObject == NULL )
         return false;
     
