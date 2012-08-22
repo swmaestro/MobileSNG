@@ -85,7 +85,7 @@ bool Join::CreatAccount(const char *strID, const char *strPassword, const char *
         return false;
     }
     
-    return true;
+    return _CreateVillage(strID);
 }
 
 bool Join::CheckOverlapID(const char *strID)
