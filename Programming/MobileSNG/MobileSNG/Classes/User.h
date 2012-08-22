@@ -32,7 +32,7 @@ public:
     ~User();
     
 public:
-    void SetData(char *xmlData);
+    void UpdateData(Network *pNetwork);
 
 public:
     bool AddMoney(int n);

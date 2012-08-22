@@ -115,9 +115,9 @@ void LoginScene::_btJoin(CCObject *pSender)
 {
     CCLOG(__FUNCTION__);
 
-    const char *id = m_pJoinUI->GetString(JOIN_UI_ENUM_ID);
-    const char *pw = m_pJoinUI->GetString(JOIN_UI_ENUM_PW);
-    const char *ph = m_pJoinUI->GetString(JOIN_UI_ENUM_PHONE);
+    const char *id = m_pJoinUI->GetID();
+    const char *pw = m_pJoinUI->GetPW();
+    const char *ph = m_pJoinUI->GetPhone();
     
     if(m_pJoin->CreatAccount(id, pw, ph))
     {
@@ -125,18 +125,16 @@ void LoginScene::_btJoin(CCObject *pSender)
         _btChangeUI(NULL);
     }
     else
-    {
         CCMessageBox("Fail", "Fail");
-        for(int i=0; i<JOIN_UI_ENUM_NUM; ++i)
-            m_pJoinUI->setEmptyTextField((JOIN_UI_ENUM)i);
-    }
+    
+    m_pJoinUI->AllClear();
 }
 
 void LoginScene::_btOverlab(CCObject *pSender)
 {
     CCLOG(__FUNCTION__);
 
-    const char *id = m_pJoinUI->GetString(JOIN_UI_ENUM_ID);
+    const char *id = m_pJoinUI->GetID();
     
     if(m_pJoin->CheckOverlapID(id))
         CCMessageBox("Overlab", "Overlab");

@@ -10,9 +10,11 @@
 #include "CCFileUtils.h"
 #include <stdlib.h>
 #include "Utility.h"
+#include "rapidxml.hpp"
 
 using namespace cocos2d;
 using namespace std;
+using namespace rapidxml;
 
 User::User()
 {
@@ -34,11 +36,6 @@ User::User()
         m_strPhoneNumber = txt;
     }
     
-    m_money = 100000;
-    m_cash  = 10000;
-    m_level = 100;
-    m_exp = 0;
-    
     fclose(pFile);
 }
 
@@ -58,14 +55,31 @@ bool User::hasFile()
     return isExistFile(CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME).data());
 }
 
-void User::SetData(char *xmlData)
+void User::UpdateData(Network *pNetwork)
 {
-    if( m_strID.empty() == false )
+    const char *baseURL = "http://swmaestros-sng.appspot.com/villageinfo?id=%s";
+    char url[256];
+    sprintf(url, baseURL, m_strID.data());
+
+    CURL_DATA data;
+    if(pNetwork->connectHttp(url, &data) != CURLE_OK )
     {
-        //이미 있었으니까 파싱할필요 없이 스킵하면 될거같아
+        printf("%s <- User Update Error", __FUNCTION__);
+        return;
     }
     
-    //파싱
+    xml_document<char> xmlDoc;
+    xmlDoc.parse<0>(data.pContent);
+    
+    xml_node<char> *pNode = xmlDoc.first_node()->first_node()->next_sibling()->first_node()->next_sibling();
+    
+    m_money = atoi(pNode->value());
+    pNode = pNode->next_sibling();
+    m_cash  = atoi(pNode->value());
+    pNode = pNode->next_sibling();
+    m_level = atoi(pNode->value());
+    pNode = pNode->next_sibling();
+    m_exp = atoi(pNode->value());
 }
 
 bool User::AddMoney(int n)

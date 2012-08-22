@@ -7,6 +7,7 @@
 //
 
 #include "GameSystem.h"
+#include "CCCommon.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ GameSystem::GameSystem(const char* strDBFile, int & mapLevel)
     m_pMap      = new MapMgr(mapLevel);
     m_pNetwork  = new Network;
     m_pUser     = new User;
+    m_pUser->UpdateData(m_pNetwork);
 }
 
 GameSystem::~GameSystem()
@@ -48,7 +50,7 @@ GameSystem::~GameSystem()
 //    }
 //}
 
-CommonInfo* GameSystem::_GetCommonInfo(ObjectInMap *pObj)
+CommonInfo* GameSystem::GetCommonInfo(ObjectInMap *pObj)
 {
     if(pObj->GetType() == OBJECT_TYPE_BUILDING)
     {
@@ -72,7 +74,7 @@ CommonInfo* GameSystem::_GetCommonInfo(ObjectInMap *pObj)
     return NULL;
 }
 
-ObjectInfo GameSystem::_GetObjectInfo(ObjectInMap *pObj)
+ObjectInfo GameSystem::GetObjectInfo(ObjectInMap *pObj)
 {
     if( pObj->GetType() == OBJECT_TYPE_BUILDING )
     {
@@ -93,14 +95,14 @@ ObjectInfo GameSystem::_GetObjectInfo(ObjectInMap *pObj)
 
 bool GameSystem::BuyObject(ObjectInMap *pObj)
 {
-    if(m_pUser->AddMoney(-_GetCommonInfo(pObj)->GetPrice()) == false)
+    if(m_pUser->AddMoney(-GetCommonInfo(pObj)->GetPrice()) == false)
         return false;
     return true;
 }
 
 void GameSystem::SellObject(ObjectInMap *pObj)
 {
-    m_pUser->AddMoney(-_GetCommonInfo(pObj)->GetPrice());
+    m_pUser->AddMoney(-GetCommonInfo(pObj)->GetPrice());
 }
 
 bool GameSystem::isUseObject(CommonInfo *pCommonInfo)
@@ -110,7 +112,7 @@ bool GameSystem::isUseObject(CommonInfo *pCommonInfo)
 
 bool GameSystem::isUseObject(ObjectInMap* pObj)
 {
-   return m_pUser->GetLevel() >= _GetCommonInfo(pObj)->GetLevel();
+   return m_pUser->GetLevel() >= GetCommonInfo(pObj)->GetLevel();
 }
 
 bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
@@ -166,7 +168,7 @@ bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
     sprintf(url, baseURL, id, gold, cash, exp);
     
     CURL_DATA data;
-    if( m_pNetwork->connectHttp(url, &data) != CURLE_OK )
+    if( m_pNetwork->connectHttp(url, NULL) != CURLE_OK )
         return false;
 
     return true;
@@ -205,8 +207,8 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     int     exp         = 0;
     int     reward      = 0;
     
-    exp     = _GetObjectInfo((*ppObject)).GetExp();
-    reward  = _GetObjectInfo((*ppObject)).GetReward();
+    exp     = GetObjectInfo((*ppObject)).GetExp();
+    reward  = GetObjectInfo((*ppObject)).GetReward();
     
     if( _PostResourceInfo(reward, 0, exp) == false )
         return false;

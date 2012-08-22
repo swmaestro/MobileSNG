@@ -15,7 +15,7 @@
 using namespace cocos2d;
 using namespace std;
 
-SystemInfo::SystemInfo(Network *pNet) : m_version(0), m_isUpdated(false)
+SystemInfo::SystemInfo(Network *pNet) : m_version(0), m_isUpdated(false), m_isDisconnect(false)
 {
 //    string filePath = CCFileUtils::sharedFileUtils()->getWriteablePath() + SYSTEM_FILE_NAME;
 //    
@@ -33,6 +33,7 @@ SystemInfo::SystemInfo(Network *pNet) : m_version(0), m_isUpdated(false)
     CURL_DATA data;
     if(pNet->connectHttp(url, &data) != CURLE_OK)
     {
+        m_isDisconnect = true;
         m_isUpdated = false;
         return;
     }
@@ -63,4 +64,9 @@ int SystemInfo::GetViersion()
 bool SystemInfo::isUpdatedVersion()
 {
     return m_isUpdated;
+}
+
+bool SystemInfo::isDisconnet()
+{
+    return m_isDisconnect;
 }

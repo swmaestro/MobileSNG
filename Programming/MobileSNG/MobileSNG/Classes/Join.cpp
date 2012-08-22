@@ -32,9 +32,7 @@ bool Join::_CreateVillage(const char *userID, const int initGold, const int init
     
     CURL_DATA data;
     if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
-    {
         return false;
-    }
     
     return true;
 }
@@ -49,7 +47,7 @@ bool Join::_CheckPhoneNumber(const char *strPhone)
     int size = strlen(strPhone);
     
     for(int i=0; i<size; ++i)
-        if( ('0' <= strPhone[i] && strPhone[i] < '9') == false )
+        if( ('0' <= strPhone[i] && strPhone[i] <= '9') == false )
             return false;
     
     return true;
@@ -61,7 +59,8 @@ bool Join::CreatAccount(const char *strID, const char *strPassword, const char *
 
     char url[256];
     
-    if(_CheckPhoneNumber(strPhone) == false)    return false;
+    if(_CheckPhoneNumber(strPhone) == false)
+        return false;
     
     sprintf(url, baseUrl, strID,strPassword, strPhone);
     

@@ -7,9 +7,12 @@
 //
 
 #include "Network.h"
+#include "CCCommon.h"
 
-Network::Network()
+Network::Network(bool isMsgBoxOn)
 {
+    m_isMsgBoxOn = isMsgBoxOn;
+    
     curl_global_init(CURL_GLOBAL_ALL);
     
     m_pCTX = curl_easy_init();    
@@ -33,7 +36,12 @@ CURLcode Network::connectHttp(const char *url, CURL_DATA *pData)
     curl_easy_setopt(m_pCTX, CURLOPT_CONNECTTIMEOUT, NETWORK_RESPONSE_TIME/2);
     curl_easy_setopt(m_pCTX, CURLOPT_TIMEOUT, NETWORK_RESPONSE_TIME);
     
-    return curl_easy_perform(m_pCTX);
+    CURLcode code = curl_easy_perform(m_pCTX);
+
+    if( code != CURLE_OK && m_isMsgBoxOn )
+        cocos2d::CCMessageBox("서버에 연결되지 않습니다.", "Error");
+
+    return code;
 }
 
 int Network::_WriteCurlDataCallback(void *ptr, int size, 
