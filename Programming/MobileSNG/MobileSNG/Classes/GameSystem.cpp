@@ -127,32 +127,49 @@ bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
 
 void GameSystem::AllHarvest()
 {
-    vector<ObjectInMap*> vObjects = m_pMap->GetAllObject();
-    vector<ObjectInMap*>::iterator iter;
+//    vector<ObjectInMap*> vObjects = m_pMap->GetAllObject();
+//    vector<ObjectInMap*>::iterator iter;
+//    
+//    int exp         = 0;
+//    int money       = 0;
+//    int harvestNum  = 0;
+//    
+//    ObjectInfo info;
+//    
+//    for(iter = vObjects.begin(); iter != vObjects.end(); ++iter)
+//    {
+//        if(Harvest(&*iter))
+//        {
+//            info = _GetObjectInfo(*iter);
+//            exp += info.GetExp();
+//            money += info.GetReward();
+//            harvestNum++;
+//        }
+//    }
+//    
+//    exp *= 1.5f;
+//    money *= 1.5f;
+//    
+//    m_pUser->AddMoney(money);
+//    m_pUser->AddExp(exp);
+//    m_pUser->AddCash(-(harvestNum * 100));
+}
+
+bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
+{
+    const char *baseURL = "http://swmaestros-sng.appspot.com/villageadder?id=%s&costA=%d&costB=%d&exp=%d";
+    char url[256];
     
-    int exp         = 0;
-    int money       = 0;
-    int harvestNum  = 0;
+    char id[32];
+    m_pUser->GetInfo(id, NULL, NULL);
     
-    ObjectInfo info;
+    sprintf(url, baseURL, id, gold, cash, exp);
     
-    for(iter = vObjects.begin(); iter != vObjects.end(); ++iter)
-    {
-        if(Harvest(&*iter))
-        {
-            info = _GetObjectInfo(*iter);
-            exp += info.GetExp();
-            money += info.GetReward();
-            harvestNum++;
-        }
-    }
-    
-    exp *= 1.5f;
-    money *= 1.5f;
-    
-    m_pUser->AddMoney(money);
-    m_pUser->AddExp(exp);
-    m_pUser->AddCash(-(harvestNum * 100));
+    CURL_DATA data;
+    if( m_pNetwork->connectHttp(url, &data) != CURLE_OK )
+        return false;
+
+    return true;
 }
 
 void GameSystem::FastComplete(ObjectInMap *pObject)
@@ -172,7 +189,8 @@ void GameSystem::FastComplete(ObjectInMap *pObject)
             pObject->m_state = CROP_STATE_DONE;
     }
     
-    m_pUser->AddCash(-100);
+    if(_PostResourceInfo(0, 0, -100))
+        m_pUser->AddCash(-100);
 }
 
 bool GameSystem::Harvest(ObjectInMap **ppObject)
@@ -189,6 +207,9 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     
     exp     = _GetObjectInfo((*ppObject)).GetExp();
     reward  = _GetObjectInfo((*ppObject)).GetReward();
+    
+    if( _PostResourceInfo(reward, 0, exp) == false )
+        return false;
     
     m_pUser->AddExp(exp);
     m_pUser->AddMoney(reward);
@@ -210,13 +231,11 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
         if(pField->GetCrop())
             if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
             {
-                m_pUser->AddExp(_GetObjectInfo(*ppObject).GetExp());
-                
                 dynamic_cast<Field*>((*ppObject))->removeCrop();
                 return true;
             }
     }
-    
+
     //임시
     //    HARVEST_QUEUE object(const_cast<char*>("http://"), pObject);
     //

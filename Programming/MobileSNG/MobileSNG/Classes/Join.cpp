@@ -23,6 +23,22 @@ Join::Join()
     
 }
 
+bool Join::_CreateVillage(const char *userID, const int initGold, const int initCash)
+{
+    const char *baseUrl = "http://swmaestros-sng.appspot.com/villageregister?id=%s&costA=%d&costB=%d";
+    char url[256];
+    
+    sprintf(url, baseUrl, userID, initGold, initCash);
+    
+    CURL_DATA data;
+    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+    {
+        return false;
+    }
+    
+    return true;
+}
+
 bool Join::_CheckPhoneNumber(const char *strPhone)
 {
     int num = strlen(strPhone);
@@ -41,7 +57,7 @@ bool Join::_CheckPhoneNumber(const char *strPhone)
 
 bool Join::CreatAccount(const char *strID, const char *strPassword, const char *strPhone)
 {
-    static const char *baseUrl = "http://swmaestros-sng.appspot.com/sngtestmodule?id=%s&password=%s&phone=%s";
+    const char *baseUrl = "http://swmaestros-sng.appspot.com/sngtestmodule?id=%s&password=%s&phone=%s";
 
     char url[256];
     
@@ -75,7 +91,7 @@ bool Join::CreatAccount(const char *strID, const char *strPassword, const char *
 
 bool Join::CheckOverlapID(const char *strID)
 {
-    static const char *baseUrl = "http://swmaestros-sng.appspot.com/signupnametest?id=%s";
+    const char *baseUrl = "http://swmaestros-sng.appspot.com/signupnametest?id=%s";
     
     char url[256];
     sprintf(url, baseUrl, strID);
