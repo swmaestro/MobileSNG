@@ -50,7 +50,7 @@ bool Map::init(GameSystem * system)
     bg->setScale(4);
     addChild(bg, 0);
     
-    m_pAllocator = new Allocator(m_pTile);
+    m_pAllocator = new Allocator(m_pTile, m_width);
     
     scheduleUpdate();
     
@@ -389,7 +389,7 @@ void Map::beginEdit(int type, int id)
 {
     m_isAllocating = true;
     
-    m_pAllocator->init(m_pSystem->GetMapMgr(), m_pSystem->GetInfoMgr(), m_width, type, id);
+    m_pAllocator->init(m_pSystem->GetMapMgr(), m_pSystem->GetInfoMgr(), type, id);
 }
 
 void Map::endEdit(bool apply)

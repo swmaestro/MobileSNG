@@ -18,7 +18,7 @@ class ObjectInfoMgr;
 class Allocator : public cocos2d::CCLayer
 {
 private:
-    int m_width;
+    int & m_width;
     
     MapMgr * m_pMapMgr;
     ObjectInfoMgr * m_pInfoMgr;
@@ -31,9 +31,9 @@ private:
     cocos2d::CCLayer *& m_tile;
     
 public:
-    Allocator(cocos2d::CCLayer *& tile);
+    Allocator(cocos2d::CCLayer *& tile, int & width);
     
-    void init(MapMgr * mapMgr, ObjectInfoMgr * infoMgr, int width, int type, int id);
+    void init(MapMgr * mapMgr, ObjectInfoMgr * infoMgr, int type, int id);
     
     void Apply();
     void Clear();

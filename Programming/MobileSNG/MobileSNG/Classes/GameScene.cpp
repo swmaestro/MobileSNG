@@ -101,6 +101,7 @@ bool GameScene::_initUIMgr()
     m_pUIMgr->AppendUI(UI_MAP, ccp(145, -130), "Edit.png", "Edit.png", UI_FUNC(_editFunc));
     m_pUIMgr->AppendUI(UI_MAP, ccp(-200, -120), "Friends.png", "Friends.png", UI_FUNC(_friendsFunc));
     m_pUIMgr->AppendUI(UI_MAP, ccp(200, -120), "Shop.png", "Shop.png", UI_FUNC(_shopFunc));
+    m_pUIMgr->AppendUI(UI_MAP, ccp(-200, 120), "Status.png", "Status.png", UI_FUNC(_statusFunc));
     
     //////////////////UI_EDIT
     
@@ -207,6 +208,11 @@ void GameScene::_editFunc(CCObject *pSender)
 }
 
 void GameScene::_flatFunc(CCObject *pSender)
+{
+    CCLog(__FUNCTION__);
+}
+
+void GameScene::_statusFunc(CCObject *pSender)
 {
     CCLog(__FUNCTION__);
 }

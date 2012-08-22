@@ -11,7 +11,6 @@
 #include "cocos2d.h"
 #include "FirstScene.h"
 
-
 USING_NS_CC;
 
 AppDelegate::AppDelegate()
@@ -33,11 +32,13 @@ bool AppDelegate::applicationDidFinishLaunching()
     // pDirector->enableRetinaDisplay(true);
 
     // turn on display FPS
-    pDirector->setDisplayStats(true);
+    // pDirector->setDisplayStats(true);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     pDirector->setAnimationInterval(1.0 / 60);
-
+    
+    CCTexture2D::setDefaultAlphaPixelFormat(kTexture2DPixelFormat_RGBA4444);
+    
 //    CCScene *pScene = GameScene::scene();
     CCScene *pScene = FirstScene::scene();
     pDirector->runWithScene(pScene);

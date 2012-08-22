@@ -236,6 +236,8 @@
 		C57F18FC15BF92530055C208 /* Tile.png in Resources */ = {isa = PBXBuildFile; fileRef = C57F18FB15BF92530055C208 /* Tile.png */; };
 		C583633415D52560006F4F2A /* Allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C583633315D52560006F4F2A /* Allocator.cpp */; };
 		C583633615D5273C006F4F2A /* EditTile.png in Resources */ = {isa = PBXBuildFile; fileRef = C583633515D5273C006F4F2A /* EditTile.png */; };
+		C594CB0315E46F7000052769 /* Status.png in Resources */ = {isa = PBXBuildFile; fileRef = C594CB0215E46F7000052769 /* Status.png */; };
+		C5D3E46115E25BFA005D07BE /* Relocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5D3E45F15E25BFA005D07BE /* Relocator.cpp */; };
 		C5D57AD115CAB0AF003B8D80 /* Edit-Big.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D57AC915CAB0AF003B8D80 /* Edit-Big.png */; };
 		C5D57AD215CAB0AF003B8D80 /* Friends-Big.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D57ACA15CAB0AF003B8D80 /* Friends-Big.png */; };
 		C5D57AD315CAB0AF003B8D80 /* Shop-Big.PNG in Resources */ = {isa = PBXBuildFile; fileRef = C5D57ACB15CAB0AF003B8D80 /* Shop-Big.PNG */; };
@@ -734,6 +736,9 @@
 		C583633215D52552006F4F2A /* Allocator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Allocator.h; path = Classes/Allocator.h; sourceTree = "<group>"; };
 		C583633315D52560006F4F2A /* Allocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Allocator.cpp; path = Classes/Allocator.cpp; sourceTree = "<group>"; };
 		C583633515D5273C006F4F2A /* EditTile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EditTile.png; path = Resources/EditTile.png; sourceTree = "<group>"; };
+		C594CB0215E46F7000052769 /* Status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Status.png; path = Resources/Status.png; sourceTree = "<group>"; };
+		C5D3E45F15E25BFA005D07BE /* Relocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Relocator.cpp; path = Classes/Relocator.cpp; sourceTree = "<group>"; };
+		C5D3E46015E25BFA005D07BE /* Relocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Relocator.h; path = Classes/Relocator.h; sourceTree = "<group>"; };
 		C5D57AC915CAB0AF003B8D80 /* Edit-Big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Edit-Big.png"; path = "Resources/Edit-Big.png"; sourceTree = "<group>"; };
 		C5D57ACA15CAB0AF003B8D80 /* Friends-Big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Friends-Big.png"; path = "Resources/Friends-Big.png"; sourceTree = "<group>"; };
 		C5D57ACB15CAB0AF003B8D80 /* Shop-Big.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Shop-Big.PNG"; path = "Resources/Shop-Big.PNG"; sourceTree = "<group>"; };
@@ -978,6 +983,7 @@
 		3C9364C515B0FF6300860E6A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C594CB0215E46F7000052769 /* Status.png */,
 				3C9CF91B15DE177900890B36 /* User.info */,
 				C5F67F9E15D7B80E00F83D58 /* ObjectDB.sqlite */,
 				C5652BDD15D7B14C002348F2 /* CookieHouse */,
@@ -1887,6 +1893,7 @@
 		C51B140115BED2B4008491C2 /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				C5D3E46315E25BFF005D07BE /* Relocator */,
 				C583633115D52490006F4F2A /* Allocator */,
 				C51B140215BED2C6008491C2 /* Map.cpp */,
 				C51B13FF15BED292008491C2 /* Map.h */,
@@ -1911,6 +1918,15 @@
 				C583633215D52552006F4F2A /* Allocator.h */,
 			);
 			name = Allocator;
+			sourceTree = "<group>";
+		};
+		C5D3E46315E25BFF005D07BE /* Relocator */ = {
+			isa = PBXGroup;
+			children = (
+				C5D3E45F15E25BFA005D07BE /* Relocator.cpp */,
+				C5D3E46015E25BFA005D07BE /* Relocator.h */,
+			);
+			name = Relocator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2004,6 +2020,7 @@
 				C5F67F9F15D7B80E00F83D58 /* ObjectDB.sqlite in Resources */,
 				C550315815D8DAD5008CD033 /* sqlite in Resources */,
 				3C9CF91C15DE177900890B36 /* User.info in Resources */,
+				C594CB0315E46F7000052769 /* Status.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2201,6 +2218,7 @@
 				3C9CF8C515DA91E100890B36 /* FirstScene.cpp in Sources */,
 				3C9CF8C915DAB49300890B36 /* Join.cpp in Sources */,
 				3C9CF8D615DC1AAF00890B36 /* Network.cpp in Sources */,
+				C5D3E46115E25BFA005D07BE /* Relocator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

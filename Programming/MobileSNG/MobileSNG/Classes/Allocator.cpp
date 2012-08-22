@@ -21,17 +21,16 @@
 
 using namespace cocos2d;
 
-Allocator::Allocator(CCLayer *& tile) : m_tile(tile)
+Allocator::Allocator(CCLayer *& tile, int & width) : m_tile(tile), m_width(width)
 {
     
 }
 
-void Allocator::init(MapMgr * mapMgr, ObjectInfoMgr * infoMgr, int width, int type, int id)
+void Allocator::init(MapMgr * mapMgr, ObjectInfoMgr * infoMgr, int type, int id)
 {
     m_pMapMgr = mapMgr;
     m_pInfoMgr = infoMgr;
     
-    m_width = width;
     m_touch = NULL;
     
     m_vec.clear();
