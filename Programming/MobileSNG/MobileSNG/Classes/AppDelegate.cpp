@@ -9,7 +9,7 @@
 #include "AppDelegate.h"
 #include "GameScene.h"
 #include "cocos2d.h"
-#include "FirstScene.h"
+#include "LoginScene.h"
 
 USING_NS_CC;
 
@@ -40,7 +40,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     CCTexture2D::setDefaultAlphaPixelFormat(kTexture2DPixelFormat_RGBA4444);
     
 //    CCScene *pScene = GameScene::scene();
-    CCScene *pScene = FirstScene::scene();
+    CCScene *pScene = LoginScene::scene();
     pDirector->runWithScene(pScene);
         
     return true;

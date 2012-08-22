@@ -9,29 +9,23 @@
 #pragma once
 
 #include "DataType.h"
+#include "Network.h"
 
 #define SYSTEM_FILE_NAME "System.info"
 
 class SystemInfo
 {
 private:
-    std::string         m_strFilePath;
-    bool                m_isReWrite;
+    bool                m_isUpdated;
     
 private:
     int                 m_version;
-    DATE                m_date;
-    std::string         m_updateLog;
     
 public:
-    SystemInfo(const char *FileName = SYSTEM_FILE_NAME);
+    SystemInfo(Network *pNet);
     ~SystemInfo();
     
 public:
-    void UpdateInfo(int version, char *xmlData = NULL);
-    
-public:
     int             GetViersion();
-    DATE            GetDate();
-    const char*     GetLog();
+    bool            isUpdatedVersion();
 };

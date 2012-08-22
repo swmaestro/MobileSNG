@@ -51,6 +51,7 @@ public:
     
 private:
     CommonInfo* _GetCommonInfo(ObjectInMap *pObj);
+    ObjectInfo _GetObjectInfo(ObjectInMap *pObj);
         
 public:
     //물건을 살수있는지 여부를 묻는 그런 함수의 이름
@@ -64,6 +65,8 @@ public:
 public:
     bool Harvest(POINT<int> &pos, ObjectInMap **ppOut);
     bool Harvest(ObjectInMap **ppObject);
+    void AllHarvest();
+    void FastComplete(ObjectInMap *pObject);
     
 public:
     inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }

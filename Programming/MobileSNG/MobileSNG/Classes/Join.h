@@ -16,23 +16,18 @@ class Join
 {
 private:
     Network         *m_pNetwork;
-    JoinUI          *m_pUI;
     
 public:
-    Join(Network *pNetwork, JoinUI *pUI);
+    Join(Network *pNetwork);
     Join();
-    
-public:
-    bool CreatAccount();
-    bool Overlab();
     
 private:
     bool _CheckPhoneNumber(const char *strPhone);
     
-private:
-    bool _Join(const char *strID, const char *strPassword, const char *strPhone);
+public:
+    bool CreatAccount(const char *strID, const char *strPassword, const char *strPhone);
     
-    bool _CheckOverlapID(const char *strID);
+    bool CheckOverlapID(const char *strID);
 
 public:
     bool isDone();

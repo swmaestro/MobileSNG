@@ -9,13 +9,14 @@
 #include "User.h"
 #include "CCFileUtils.h"
 #include <stdlib.h>
+#include "Utility.h"
 
 using namespace cocos2d;
 using namespace std;
 
-User::User(const char *FileName)
+User::User()
 {
-    m_strFilePath = CCFileUtils::sharedFileUtils()->getWriteablePath().append(FileName);
+    m_strFilePath = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
     
     FILE *pFile = fopen(m_strFilePath.data(), "rb");
     
@@ -34,6 +35,7 @@ User::User(const char *FileName)
     }
     
     m_money = 100000;
+    m_cash  = 10000;
     m_level = 100;
     m_exp = 0;
     
@@ -51,19 +53,9 @@ User::~User()
     fclose(pFile);
 }
 
-bool User::hasFile(const char *FileName)
+bool User::hasFile()
 {
-    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(FileName);
-    
-    printf("%s\n", path.c_str());
-    
-    bool has = false;
-    
-    FILE *p = fopen(path.data(), "rb");
-    has = p;
-    fclose(p);
-    
-    return has;
+    return isExistFile(CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME).data());
 }
 
 void User::SetData(char *xmlData)
@@ -74,20 +66,6 @@ void User::SetData(char *xmlData)
     }
     
     //파싱
-}
-
-bool User::Login(Network *pNetwork)
-{
-    
-    
-    return true;
-}
-
-bool User::LogOut(Network *pNetwork)
-{
-    
-    
-    return true;
 }
 
 bool User::AddMoney(int n)
@@ -106,20 +84,11 @@ void User::AddCash(int n)
 
 void User::AddExp(int n)
 {
-    //경험치 곡선을 그리든가 공식으로 하든가 해서 현재 레벨의 다음걸 알아서 유추해봐
-    const int maxExp = 100;
-    
-    if( m_exp >= maxExp )
+    if( m_exp >= m_level*2 )
     {
         ++m_level;
         m_exp = 0;
     }
-}
-
-bool User::isEmpty()
-{
-    //id가 없다는건 생성이 안된것이기 때문에 이런식으로 ㅇㅇ.
-    return m_strID.empty();
 }
 
 int User::GetLevel()
@@ -142,14 +111,31 @@ int User::GetExp()
     return m_exp;
 }
 
-void User::newUser(const char *userID, const char *userPW, const char *userPhone, const char *FileName)
+int User::GetMaximum()
 {
-    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(FileName);
+    return m_level * 2;
+}
+
+void User::newUser(const char *userID, const char *userPW, const char *userPhone)
+{
+    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
     FILE *pFile = fopen(path.data(), "wb");
     
     fprintf(pFile, "%s\n",userID);
     fprintf(pFile, "%s\n",userPW);
-    fprintf(pFile, "%s\n",userPhone);
+    fprintf(pFile, "%s",userPhone);
     
+    fclose(pFile);
+}
+
+void User::GetInfo(char *pOutID, char *pOutPW, char *pOutPhone)
+{
+    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
+    FILE *pFile = fopen(path.data(), "rb");
+    
+    if(pOutID)      fscanf(pFile, "%s", pOutID);
+    if(pOutPW)      fscanf(pFile, "%s", pOutPW);
+    if(pOutPhone)   fscanf(pFile, "%s", pOutPhone);
+
     fclose(pFile);
 }

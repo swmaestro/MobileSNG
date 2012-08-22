@@ -72,6 +72,25 @@ CommonInfo* GameSystem::_GetCommonInfo(ObjectInMap *pObj)
     return NULL;
 }
 
+ObjectInfo GameSystem::_GetObjectInfo(ObjectInMap *pObj)
+{
+    if( pObj->GetType() == OBJECT_TYPE_BUILDING )
+    {
+        BuildingInfo *pInfo;
+        if(m_pInfoMgr->searchInfo(pObj->GetID(), &pInfo))
+            return pInfo->GetObjInfo();
+    }
+    else if( pObj->GetType() == OBJECT_TYPE_CROP )
+    {
+        CropInfo *pInfo;
+        if(m_pInfoMgr->searchInfo(pObj->GetID()
+                                  , &pInfo))
+            return pInfo->GetObjInfo();
+    }
+    
+    return ObjectInfo();
+}
+
 bool GameSystem::BuyObject(ObjectInMap *pObj)
 {
     if(m_pUser->AddMoney(-_GetCommonInfo(pObj)->GetPrice()) == false)
@@ -83,23 +102,6 @@ void GameSystem::SellObject(ObjectInMap *pObj)
 {
     m_pUser->AddMoney(-_GetCommonInfo(pObj)->GetPrice());
 }
-
-//ObjectInMap* GameSystem::GetObject(bool isNext)
-//{
-//    static int idx = 0;
-//    if(isNext)++idx;
-//    return m_pMap->GetAllObject()[idx];
-//}
-//
-//ObjectInMap* GameSystem::GetObject(int idx)
-//{
-//    return m_pMap->GetAllObject()[idx];
-//}
-
-//MapMgr* GameSystem::GetMapMgr()
-//{
-//    return m_pMap;
-//}
 
 bool GameSystem::isUseObject(CommonInfo *pCommonInfo)
 {
@@ -123,12 +125,73 @@ bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
     return this->Harvest(&pObject);
 }
 
-bool GameSystem::Harvest(ObjectInMap **ppObject)
+void GameSystem::AllHarvest()
 {
+    vector<ObjectInMap*> vObjects = m_pMap->GetAllObject();
+    vector<ObjectInMap*>::iterator iter;
+    
+    int exp         = 0;
+    int money       = 0;
+    int harvestNum  = 0;
+    
+    ObjectInfo info;
+    
+    for(iter = vObjects.begin(); iter != vObjects.end(); ++iter)
+    {
+        if(Harvest(&*iter))
+        {
+            info = _GetObjectInfo(*iter);
+            exp += info.GetExp();
+            money += info.GetReward();
+            harvestNum++;
+        }
+    }
+    
+    exp *= 1.5f;
+    money *= 1.5f;
+    
+    m_pUser->AddMoney(money);
+    m_pUser->AddExp(exp);
+    m_pUser->AddCash(-(harvestNum * 100));
+}
+
+void GameSystem::FastComplete(ObjectInMap *pObject)
+{
+    OBJECT_TYPE type = pObject->GetType();
+    
+    if( type == OBJECT_TYPE_BUILDING )
+    {
+        if(pObject->m_state == BUILDING_STATE_WORKING )
+            pObject->m_state = BUILDING_STATE_DONE;
+        else if(pObject->m_state <= BUILDING_STATE_UNDER_CONSTRUCTION_2)
+            pObject->m_state = BUILDING_STATE_WORKING;
+    }
+    else if (type == OBJECT_TYPE_CROP )
+    {
+        if(pObject->m_state != CROP_STATE_DONE)
+            pObject->m_state = CROP_STATE_DONE;
+    }
+    
+    m_pUser->AddCash(-100);
+}
+
+bool GameSystem::Harvest(ObjectInMap **ppObject)
+{    
     if( ppObject == NULL )
         return false;
     
     OBJECT_TYPE type = (*ppObject)->GetType();
+    
+    if( type == OBJECT_TYPE_ORNAMENT ) return false;
+    
+    int     exp         = 0;
+    int     reward      = 0;
+    
+    exp     = _GetObjectInfo((*ppObject)).GetExp();
+    reward  = _GetObjectInfo((*ppObject)).GetReward();
+    
+    m_pUser->AddExp(exp);
+    m_pUser->AddMoney(reward);
     
     if(type == OBJECT_TYPE_BUILDING)
     {
@@ -137,22 +200,17 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
             Building * b = dynamic_cast<Building*>((*ppObject));
             b->m_state = BUILDING_STATE_WORKING;
             b->GetTimer()->StartTimer();
-
-            //임시. 얻는 금액만큼 경험치로 준다
-            m_pUser->AddExp(_GetCommonInfo((*ppObject))->GetPrice());
             return true;
         }
     }
     
-    else if(type == OBJECT_TYPE_FIELD)
+    else // type == object_type_crop
     {
         Field *pField = static_cast<Field*>((*ppObject));
         if(pField->GetCrop())
             if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
             {
-                CropInfo *pInfo;
-                m_pInfoMgr->searchInfo(pField->GetCrop()->GetID(), &pInfo);
-                m_pUser->AddExp(pInfo->GetPrice());
+                m_pUser->AddExp(_GetObjectInfo(*ppObject).GetExp());
                 
                 dynamic_cast<Field*>((*ppObject))->removeCrop();
                 return true;

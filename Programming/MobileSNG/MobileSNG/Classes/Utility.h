@@ -9,6 +9,7 @@
 #pragma once
 
 #include <queue>
+#include "cocos2d.h"
 
 template<typename TYPE>
 struct POINT
@@ -68,6 +69,53 @@ static void stdQueueAllClear(std::queue<T> &stdQueue)
 {
     while (stdQueue.empty()==false)
         stdQueue.pop();
+}
+
+static void TextFieldKeyBoardOn(cocos2d::CCNode *pNode, cocos2d::CCSet *pTouches, cocos2d::CCTextFieldTTF **ppTextFields, int num = 1)
+{
+    if(pNode->isVisible() == false)
+        return;
+    
+    cocos2d::CCPoint point;
+    cocos2d::CCTouch * pTouch = static_cast<cocos2d::CCTouch *>(*(pTouches->begin()));
+    
+    point = pTouch->locationInView();
+    point = cocos2d::CCDirector::sharedDirector()->convertToGL(point);
+    point.x -= pNode->getPositionX();
+    point.y -= pNode->getPositionY();
+    
+    //뭐 여기서 남은 작업해주면되
+    POINT<int> boxPos;
+    SIZE<int>  boxSize;
+    POINT<int> touchPoint = POINT<int>(point.x, point.y);
+    
+    for (int i=0; i<num; ++i) {
+        boxPos.x = ppTextFields[i]->getPositionX();
+        boxPos.y = ppTextFields[i]->getPositionY();
+        boxSize.width = ppTextFields[i]->getContentSize().width;
+        boxSize.height = ppTextFields[i]->getContentSize().height;
+        
+        if(intersectBoxWithPoint(boxPos, boxSize, touchPoint))
+        {
+            ppTextFields[i]->attachWithIME();
+            break;
+        }
+        
+        printf("%f %f \n", ppTextFields[i]->getAnchorPoint().x, ppTextFields[i]->getAnchorPoint().y);
+    }
+    
+    printf("x %f, y %f \n", point.x, point.y);
+}
+
+static bool isExistFile(const char* path)
+{
+    bool has = false;
+    
+    FILE *p = fopen(path, "rb");
+    has = p;
+    fclose(p);
+    
+    return has;
 }
 
 #define SAFE_DELETE(P) if(P){delete P; P = NULL;}
