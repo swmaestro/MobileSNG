@@ -51,9 +51,11 @@ bool GameScene::init()
     m_pMap = new Map(m_width);
     m_pMap->init(m_pSystem);
     m_pMap->setAnchorPoint(ccp(0.5, 0.5));
-    m_pMap->setScale(1);
-    m_pMap->setPosition(ccp(wsize.width / 2, wsize.height / 2));
+    m_pMap->filtScale(1);
+    m_pMap->filtPosition(ccp(wsize.width / 2, wsize.height / 2));
+    
   //  CCMessageBox(<#const char *pszMsg#>, <#const char *pszTitle#>)
+    
     m_pMapUI = CCLayer::create();
     m_pMapUI->addChild(m_pMap, UILAYER_TOUCH_RECIEVER, UILAYER_TOUCH_RECIEVER);
     m_pMapUI->setVisible(false);
@@ -149,16 +151,21 @@ bool GameScene::_initShop()
 
 bool GameScene::_initLabel()
 {
+    CCSprite * sprite;
     CCLabelTTF * label;
+    
+    sprite = CCSprite::create("Status.png");
+    sprite->setPosition(ccp(110, 270));
+    m_pMapUI->addChild(sprite, UILAYER_LABEL);
     
     label = CCLabelTTF::create("jgojwjgp pjpa", "Ariel", 13);
     label->setAnchorPoint(ccp(0, 1));
-    label->setPosition(ccp(100, 200));
+    label->setPosition(ccp(90, 290));
     m_pMapUI->addChild(label, UILAYER_LABEL, UILAYER_LABEL);
     
     label = CCLabelTTF::create("hgwoojboo", "Ariel", 13);
     label->setAnchorPoint(ccp(0, 1));
-    label->setPosition(ccp(100, 200));
+    label->setPosition(ccp(100, 300));
     m_pShopUI->addChild(label, UILAYER_LABEL, UILAYER_LABEL);
     
     return true;

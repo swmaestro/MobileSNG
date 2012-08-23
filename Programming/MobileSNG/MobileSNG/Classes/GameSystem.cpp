@@ -52,41 +52,50 @@ GameSystem::~GameSystem()
 
 CommonInfo* GameSystem::GetCommonInfo(ObjectInMap *pObj)
 {
-    if(pObj->GetType() == OBJECT_TYPE_BUILDING)
+    return GetCommonInfo(pObj->GetType(), pObj->GetID());
+}
+
+ObjectInfo GameSystem::GetObjectInfo(ObjectInMap *pObj)
+{
+    return GetObjectInfo(pObj->GetType(), pObj->GetID());
+}
+
+CommonInfo* GameSystem::GetCommonInfo(int type, int id)
+{
+    if(type == OBJECT_TYPE_BUILDING)
     {
         BuildingInfo *pInfo;
-        if(m_pInfoMgr->searchInfo(pObj->GetID(), &pInfo))
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo;
     }
-    else if(pObj->GetType() == OBJECT_TYPE_CROP)
+    else if(type == OBJECT_TYPE_CROP)
     {
         CropInfo    *pInfo;
-        if(m_pInfoMgr->searchInfo(pObj->GetID(), &pInfo))
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo;
     }
     else // ornament type
     {
         OrnamentInfo *pInfo;
-        if(m_pInfoMgr->searchInfo(pObj->GetID(), &pInfo))
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo;
     }
-
+    
     return NULL;
 }
 
-ObjectInfo GameSystem::GetObjectInfo(ObjectInMap *pObj)
+ObjectInfo GameSystem::GetObjectInfo(int type, int id)
 {
-    if( pObj->GetType() == OBJECT_TYPE_BUILDING )
+    if( type == OBJECT_TYPE_BUILDING )
     {
         BuildingInfo *pInfo;
-        if(m_pInfoMgr->searchInfo(pObj->GetID(), &pInfo))
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo->GetObjInfo();
     }
-    else if( pObj->GetType() == OBJECT_TYPE_CROP )
+    else if( type == OBJECT_TYPE_CROP )
     {
         CropInfo *pInfo;
-        if(m_pInfoMgr->searchInfo(pObj->GetID()
-                                  , &pInfo))
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo->GetObjInfo();
     }
     
@@ -161,7 +170,7 @@ bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
 {
     const char *baseURL = "http://swmaestros-sng.appspot.com/villageadder?id=%s&costA=%d&costB=%d&exp=%d";
     char url[256];
-    
+
     char id[32];
     m_pUser->GetInfo(id, NULL, NULL);
     

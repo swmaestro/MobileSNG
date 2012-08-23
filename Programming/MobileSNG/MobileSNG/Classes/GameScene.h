@@ -53,6 +53,7 @@ private:
     void _friendsFunc(CCObject *pSender);
     void _editFunc(CCObject *pSender);
     void _flatFunc(CCObject *pSender);
+    void _statusFunc(CCObject *pSender);
     
     void _editApplyFunc(CCObject *pSender);
     void _editCancelFunc(CCObject *pSender);

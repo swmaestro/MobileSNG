@@ -26,3 +26,4 @@ public:
 public:
     inline ObjectInfo  GetObjInfo() { return m_object; }
 };
+    

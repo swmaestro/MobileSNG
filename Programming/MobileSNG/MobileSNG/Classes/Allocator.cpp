@@ -7,8 +7,7 @@
 //
 
 #include "Allocator.h"
-#include "MapMgr.h"
-#include "ObjectInfoMgr.h"
+#include "GameSystem.h"
 
 #include "GameScene.h"
 #include "Shop.h"
@@ -21,17 +20,15 @@
 
 using namespace cocos2d;
 
-Allocator::Allocator(CCLayer *& tile) : m_tile(tile)
+Allocator::Allocator(CCLayer *& tile, int & width) : m_tile(tile), m_width(width)
 {
     
 }
 
-void Allocator::init(MapMgr * mapMgr, ObjectInfoMgr * infoMgr, int width, int type, int id)
+void Allocator::init(GameSystem * system, int type, int id)
 {
-    m_pMapMgr = mapMgr;
-    m_pInfoMgr = infoMgr;
+    m_pSystem = system;
     
-    m_width = width;
     m_touch = NULL;
     
     m_vec.clear();
@@ -55,7 +52,7 @@ void Allocator::init(MapMgr * mapMgr, ObjectInfoMgr * infoMgr, int width, int ty
         case OBJ_BUILDING:
         {
             BuildingInfo * info;
-            infoMgr->searchInfo(m_id, &info);
+            m_pSystem->GetInfoMgr()->searchInfo(m_id, &info);
             m_name = info->GetName();
             break;
         }
@@ -63,7 +60,7 @@ void Allocator::init(MapMgr * mapMgr, ObjectInfoMgr * infoMgr, int width, int ty
         case OBJ_CROP:
         {
             CropInfo * info;
-            infoMgr->searchInfo(m_id, &info);
+            m_pSystem->GetInfoMgr()->searchInfo(m_id, &info);
             m_name = info->GetName();
             break;
         }
@@ -89,8 +86,8 @@ void Allocator::Apply()
         {
             case OBJ_CROP:
                 {
-                    Field * f = dynamic_cast<Field *>(m_pMapMgr->FindObject(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]))));
-                    f->addCrop(m_id, 0, m_pInfoMgr);
+                    Field * f = dynamic_cast<Field *>(m_pSystem->GetMapMgr()->FindObject(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]))));
+                    f->addCrop(m_id, 0, m_pSystem->GetInfoMgr());
                 }
                 
                 spr->setAnchorPoint(ccp(0.5, 0.3));
@@ -100,14 +97,14 @@ void Allocator::Apply()
             case OBJ_BUILDING:
                 {
                     BuildingInfo * info;
-                    m_pInfoMgr->searchInfo(m_id, &info);
+                    m_pSystem->GetInfoMgr()->searchInfo(m_id, &info);
                     spr->setAnchorPoint(ccp(0.5, 0.3 / ((info->GetSize().width + info->GetSize().height) / 2)));
                     
                     oim = ObjectInMap(0, POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i])),
                                       info->GetSize(), OBJECT_DIRECTION_LEFT, m_id);
                     
-                    Building b(&oim, 0, m_pInfoMgr);
-                    m_pMapMgr->addObject(&b, m_pInfoMgr, 0);
+                    Building b(&oim, 0, m_pSystem->GetInfoMgr());
+                    m_pSystem->GetMapMgr()->addObject(&b, m_pSystem->GetInfoMgr(), 0);
                 }
                 
                 tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);
@@ -118,7 +115,7 @@ void Allocator::Apply()
             
                 {
                     Field f(&oim);
-                    m_pMapMgr->addObject(&f, m_pInfoMgr, 0);
+                    m_pSystem->GetMapMgr()->addObject(&f, m_pSystem->GetInfoMgr(), 0);
                 }
                 
                 spr->setAnchorPoint(ccp(0.5, 0.3));
@@ -150,12 +147,12 @@ void Allocator::TouchesBegin(int i, int j)
     if (m_type == OBJ_BUILDING)
     {
         BuildingInfo * info;
-        m_pInfoMgr->searchInfo(m_id, &info);
+        m_pSystem->GetInfoMgr()->searchInfo(m_id, &info);
         
         if (i > m_width / 2 - info->GetSize().width + 1 || j > m_width / 2 - info->GetSize().height + 1)
             return;
         
-        if (m_pMapMgr->isObjectInMap(POINT<int>(i, j), info->GetSize()))
+        if (m_pSystem->GetMapMgr()->isObjectInMap(POINT<int>(i, j), info->GetSize()))
             return;
         
         for (int t = 0; t < m_vec.size(); ++t)
@@ -167,10 +164,10 @@ void Allocator::TouchesBegin(int i, int j)
     {
         if (m_type == OBJ_CROP)
         {
-            if (!m_pMapMgr->isObjectInMap(POINT<int>(i, j)))
+            if (!m_pSystem->GetMapMgr()->isObjectInMap(POINT<int>(i, j)))
                 return;
             
-            ObjectInMap * obj = m_pMapMgr->FindObject(POINT<int>(i, j));
+            ObjectInMap * obj = m_pSystem->GetMapMgr()->FindObject(POINT<int>(i, j));
            
             if (obj->GetType() != OBJECT_TYPE_FIELD)
                 return;
@@ -179,7 +176,7 @@ void Allocator::TouchesBegin(int i, int j)
                 return;
         }
         else if (m_type == OBJ_FARM)
-            if (m_pMapMgr->isObjectInMap(POINT<int>(i, j)))
+            if (m_pSystem->GetMapMgr()->isObjectInMap(POINT<int>(i, j)))
                 return;
         
         for (int t = 0; t < m_vec.size(); ++t)
@@ -205,7 +202,7 @@ void Allocator::TouchesBegin(int i, int j)
     if (m_type == OBJ_BUILDING)
     {
         BuildingInfo * info;
-        m_pInfoMgr->searchInfo(m_id, &info);
+        m_pSystem->GetInfoMgr()->searchInfo(m_id, &info);
         m_touch->setAnchorPoint(ccp(0.5, 0.3 / ((info->GetSize().width + info->GetSize().height) / 2)));
     }
     else
@@ -229,6 +226,16 @@ void Allocator::TouchesEnd()
     if (m_touch)
     {
         m_vec.push_back(m_touch->getParent()->getTag());
+        
+        CommonInfo * info;
+        
+        if(m_type == OBJ_CROP)
+            info = m_pSystem->GetCommonInfo(OBJECT_TYPE_CROP, m_id);
+        else
+            info = m_pSystem->GetCommonInfo(OBJECT_TYPE_BUILDING, m_id);
+        
+        m_pSystem->GetUser()->AddMoney(-info->GetPrice());
+        
         m_touch = NULL;
     }
 }

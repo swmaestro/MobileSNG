@@ -12,16 +12,14 @@
 #include "cocos2d.h"
 #include <vector>
 
-class MapMgr;
-class ObjectInfoMgr;
+class GameSystem;
 
-class Allocator : public cocos2d::CCLayer
+class Allocator
 {
 private:
-    int m_width;
+    int & m_width;
     
-    MapMgr * m_pMapMgr;
-    ObjectInfoMgr * m_pInfoMgr;
+    GameSystem * m_pSystem;
     
     int m_type, m_id;
     std::string m_name;
@@ -31,9 +29,9 @@ private:
     cocos2d::CCLayer *& m_tile;
     
 public:
-    Allocator(cocos2d::CCLayer *& tile);
+    Allocator(cocos2d::CCLayer *& tile, int & width);
     
-    void init(MapMgr * mapMgr, ObjectInfoMgr * infoMgr, int width, int type, int id);
+    void init(GameSystem * system, int type, int id);
     
     void Apply();
     void Clear();

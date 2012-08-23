@@ -17,6 +17,7 @@ class MapMgr;
 class Allocator;
 class GameSystem;
 class ObjectInMap;
+class Talkbox;
 
 //CA Edit 120728 Move Touch to Game Scene
 
@@ -34,6 +35,7 @@ private:
     
     cocos2d::CCLayer  * m_pTile;
     Allocator         * m_pAllocator;
+    Talkbox           * m_pTalkbox;
     
     int               & m_width;
     
