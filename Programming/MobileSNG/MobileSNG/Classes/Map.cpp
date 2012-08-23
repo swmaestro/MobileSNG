@@ -8,6 +8,7 @@
 
 #include "Map.h"
 #include "Allocator.h"
+#include "Talkbox.h"
 
 #include "Shop.h"
 #include "GameScene.h"
@@ -20,7 +21,8 @@ int Map::height = 320 * 4;
 int Map::tileWidth = 100;
 int Map::tileHeight = 60;
 
-Map::Map(int & width) : m_pTile(NULL), m_pAllocator(NULL), m_width(width), m_touchCnt(-1),
+Map::Map(int & width) : m_pTile(NULL), m_pAllocator(NULL), m_pTalkbox(NULL),
+                m_width(width), m_touchCnt(-1),
                 m_isDragging(false), m_isScaling(false),
                 m_isAllocating(false), m_isEditing(false)
 {
@@ -51,6 +53,9 @@ bool Map::init(GameSystem * system)
     addChild(bg, 0);
     
     m_pAllocator = new Allocator(m_pTile, m_width);
+    
+    m_pTalkbox = Talkbox::create();
+    addChild(m_pTalkbox, 2);
     
     scheduleUpdate();
     
@@ -389,7 +394,7 @@ void Map::beginEdit(int type, int id)
 {
     m_isAllocating = true;
     
-    m_pAllocator->init(m_pSystem->GetMapMgr(), m_pSystem->GetInfoMgr(), type, id);
+    m_pAllocator->init(m_pSystem, type, id);
 }
 
 void Map::endEdit(bool apply)

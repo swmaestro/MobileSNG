@@ -37,8 +37,6 @@ bool AppDelegate::applicationDidFinishLaunching()
     // set FPS. the default value is 1.0/60 if you don't call this
     pDirector->setAnimationInterval(1.0 / 60);
     
-    CCTexture2D::setDefaultAlphaPixelFormat(kTexture2DPixelFormat_RGBA4444);
-    
 //    CCScene *pScene = GameScene::scene();
     CCScene *pScene = LoginScene::scene();
     pDirector->runWithScene(pScene);

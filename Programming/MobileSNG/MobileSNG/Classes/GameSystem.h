@@ -49,9 +49,12 @@ public:
     GameSystem(const char* strDBFile, int & mapLevel);
     ~GameSystem();
     
-private:
-    CommonInfo* _GetCommonInfo(ObjectInMap *pObj);
-    ObjectInfo _GetObjectInfo(ObjectInMap *pObj);
+public:
+    CommonInfo* GetCommonInfo(ObjectInMap *pObj);
+    ObjectInfo GetObjectInfo(ObjectInMap *pObj);
+    
+    CommonInfo* GetCommonInfo(int type, int id);
+    ObjectInfo GetObjectInfo(int type, int id);
         
 public:
     //물건을 살수있는지 여부를 묻는 그런 함수의 이름

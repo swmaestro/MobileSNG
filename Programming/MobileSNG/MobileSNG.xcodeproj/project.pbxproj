@@ -227,6 +227,8 @@
 		C51B140315BED2C6008491C2 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C51B140215BED2C6008491C2 /* Map.cpp */; };
 		C5241CB815D3E3D5003820EE /* CandyCane in Resources */ = {isa = PBXBuildFile; fileRef = C5241CB715D3E3D5003820EE /* CandyCane */; };
 		C5241CBA15D3E3E4003820EE /* HauntedHouse in Resources */ = {isa = PBXBuildFile; fileRef = C5241CB915D3E3E4003820EE /* HauntedHouse */; };
+		C533CA9715E5272A0000CC98 /* Talkbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C533CA9515E5272A0000CC98 /* Talkbox.cpp */; };
+		C533CA9915E538830000CC98 /* Talkbox.png in Resources */ = {isa = PBXBuildFile; fileRef = C533CA9815E538830000CC98 /* Talkbox.png */; };
 		C546BD9815C8000300277186 /* Friends-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = C546BD9715C8000300277186 /* Friends-Small.png */; };
 		C546BD9D15C8001400277186 /* Shop-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = C546BD9B15C8001400277186 /* Shop-Small.png */; };
 		C550315815D8DAD5008CD033 /* sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C550315715D8DAD5008CD033 /* sqlite */; };
@@ -731,6 +733,9 @@
 		C51B140215BED2C6008491C2 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Map.cpp; path = Classes/Map.cpp; sourceTree = "<group>"; };
 		C5241CB715D3E3D5003820EE /* CandyCane */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CandyCane; path = Resources/CandyCane; sourceTree = "<group>"; };
 		C5241CB915D3E3E4003820EE /* HauntedHouse */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HauntedHouse; path = Resources/HauntedHouse; sourceTree = "<group>"; };
+		C533CA9515E5272A0000CC98 /* Talkbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Talkbox.cpp; path = Classes/Talkbox.cpp; sourceTree = "<group>"; };
+		C533CA9615E5272A0000CC98 /* Talkbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Talkbox.h; path = Classes/Talkbox.h; sourceTree = "<group>"; };
+		C533CA9815E538830000CC98 /* Talkbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Talkbox.png; path = Resources/Talkbox.png; sourceTree = "<group>"; };
 		C546BD9715C8000300277186 /* Friends-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Friends-Small.png"; path = "Resources/Friends-Small.png"; sourceTree = "<group>"; };
 		C546BD9B15C8001400277186 /* Shop-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Shop-Small.png"; path = "Resources/Shop-Small.png"; sourceTree = "<group>"; };
 		C550315715D8DAD5008CD033 /* sqlite */ = {isa = PBXFileReference; lastKnownFileType = folder; name = sqlite; path = Classes/sqlite; sourceTree = "<group>"; };
@@ -994,12 +999,10 @@
 		3C9364C515B0FF6300860E6A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
+				C533CA9815E538830000CC98 /* Talkbox.png */,
 				C594CB0215E46F7000052769 /* Status.png */,
-=======
 				3CC2A29515E3831700E4DB01 /* System.info */,
 				3CC2A28915E34C0F00E4DB01 /* TestUI.png */,
->>>>>>> 7a59bf8c0326d2a2fe7817c0763b4da9b4dcb4f3
 				3C9CF91B15DE177900890B36 /* User.info */,
 				C5F67F9E15D7B80E00F83D58 /* ObjectDB.sqlite */,
 				C5652BDD15D7B14C002348F2 /* CookieHouse */,
@@ -1849,6 +1852,7 @@
 		3CAB259315B7A9780003DDE2 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				C533CA9315E526EF0000CC98 /* Talkbox */,
 				3CAB285815BCEF7B0003DDE2 /* UIMgr */,
 				3CAB287215BCFB350003DDE2 /* Shop */,
 				C51B140115BED2B4008491C2 /* Map */,
@@ -1934,6 +1938,15 @@
 				C51B13FF15BED292008491C2 /* Map.h */,
 			);
 			name = Map;
+			sourceTree = "<group>";
+		};
+		C533CA9315E526EF0000CC98 /* Talkbox */ = {
+			isa = PBXGroup;
+			children = (
+				C533CA9515E5272A0000CC98 /* Talkbox.cpp */,
+				C533CA9615E5272A0000CC98 /* Talkbox.h */,
+			);
+			name = Talkbox;
 			sourceTree = "<group>";
 		};
 		C56307B815D53F3600E2BEF7 /* Sqlite3Base */ = {
@@ -2055,12 +2068,10 @@
 				C5F67F9F15D7B80E00F83D58 /* ObjectDB.sqlite in Resources */,
 				C550315815D8DAD5008CD033 /* sqlite in Resources */,
 				3C9CF91C15DE177900890B36 /* User.info in Resources */,
-<<<<<<< HEAD
 				C594CB0315E46F7000052769 /* Status.png in Resources */,
-=======
 				3CC2A28A15E34C1000E4DB01 /* TestUI.png in Resources */,
 				3CC2A29615E3831800E4DB01 /* System.info in Resources */,
->>>>>>> 7a59bf8c0326d2a2fe7817c0763b4da9b4dcb4f3
+				C533CA9915E538830000CC98 /* Talkbox.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2258,12 +2269,10 @@
 				3C9CF8C515DA91E100890B36 /* LoginScene.cpp in Sources */,
 				3C9CF8C915DAB49300890B36 /* Join.cpp in Sources */,
 				3C9CF8D615DC1AAF00890B36 /* Network.cpp in Sources */,
-<<<<<<< HEAD
 				C5D3E46115E25BFA005D07BE /* Relocator.cpp in Sources */,
-=======
 				3CC2A28015E32D3D00E4DB01 /* LoginUI.cpp in Sources */,
 				3CC2A28415E33A3D00E4DB01 /* Login.cpp in Sources */,
->>>>>>> 7a59bf8c0326d2a2fe7817c0763b4da9b4dcb4f3
+				C533CA9715E5272A0000CC98 /* Talkbox.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

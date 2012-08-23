@@ -15,7 +15,7 @@
 class MapMgr;
 class ObjectInfoMgr;
 
-class Relocator : public cocos2d::CCLayer
+class Relocator
 {
 private:
     int & m_width;

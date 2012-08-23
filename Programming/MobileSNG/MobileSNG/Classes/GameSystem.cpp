@@ -48,43 +48,52 @@ GameSystem::~GameSystem()
 //    }
 //}
 
-CommonInfo* GameSystem::_GetCommonInfo(ObjectInMap *pObj)
+CommonInfo* GameSystem::GetCommonInfo(ObjectInMap *pObj)
 {
-    if(pObj->GetType() == OBJECT_TYPE_BUILDING)
+    return GetCommonInfo(pObj->GetType(), pObj->GetID());
+}
+
+ObjectInfo GameSystem::GetObjectInfo(ObjectInMap *pObj)
+{
+    return GetObjectInfo(pObj->GetType(), pObj->GetID());
+}
+
+CommonInfo* GameSystem::GetCommonInfo(int type, int id)
+{
+    if(type == OBJECT_TYPE_BUILDING)
     {
         BuildingInfo *pInfo;
-        if(m_pInfoMgr->searchInfo(pObj->GetID(), &pInfo))
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo;
     }
-    else if(pObj->GetType() == OBJECT_TYPE_CROP)
+    else if(type == OBJECT_TYPE_CROP)
     {
         CropInfo    *pInfo;
-        if(m_pInfoMgr->searchInfo(pObj->GetID(), &pInfo))
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo;
     }
     else // ornament type
     {
         OrnamentInfo *pInfo;
-        if(m_pInfoMgr->searchInfo(pObj->GetID(), &pInfo))
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo;
     }
-
+    
     return NULL;
 }
 
-ObjectInfo GameSystem::_GetObjectInfo(ObjectInMap *pObj)
+ObjectInfo GameSystem::GetObjectInfo(int type, int id)
 {
-    if( pObj->GetType() == OBJECT_TYPE_BUILDING )
+    if( type == OBJECT_TYPE_BUILDING )
     {
         BuildingInfo *pInfo;
-        if(m_pInfoMgr->searchInfo(pObj->GetID(), &pInfo))
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo->GetObjInfo();
     }
-    else if( pObj->GetType() == OBJECT_TYPE_CROP )
+    else if( type == OBJECT_TYPE_CROP )
     {
         CropInfo *pInfo;
-        if(m_pInfoMgr->searchInfo(pObj->GetID()
-                                  , &pInfo))
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo->GetObjInfo();
     }
     
@@ -93,14 +102,14 @@ ObjectInfo GameSystem::_GetObjectInfo(ObjectInMap *pObj)
 
 bool GameSystem::BuyObject(ObjectInMap *pObj)
 {
-    if(m_pUser->AddMoney(-_GetCommonInfo(pObj)->GetPrice()) == false)
+    if(m_pUser->AddMoney(-GetCommonInfo(pObj)->GetPrice()) == false)
         return false;
     return true;
 }
 
 void GameSystem::SellObject(ObjectInMap *pObj)
 {
-    m_pUser->AddMoney(-_GetCommonInfo(pObj)->GetPrice());
+    m_pUser->AddMoney(-GetCommonInfo(pObj)->GetPrice());
 }
 
 bool GameSystem::isUseObject(CommonInfo *pCommonInfo)
@@ -110,7 +119,7 @@ bool GameSystem::isUseObject(CommonInfo *pCommonInfo)
 
 bool GameSystem::isUseObject(ObjectInMap* pObj)
 {
-   return m_pUser->GetLevel() >= _GetCommonInfo(pObj)->GetLevel();
+   return m_pUser->GetLevel() >= GetCommonInfo(pObj)->GetLevel();
 }
 
 bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
@@ -140,7 +149,7 @@ void GameSystem::AllHarvest()
     {
         if(Harvest(&*iter))
         {
-            info = _GetObjectInfo(*iter);
+            info = GetObjectInfo(*iter);
             exp += info.GetExp();
             money += info.GetReward();
             harvestNum++;
@@ -187,8 +196,8 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     int     exp         = 0;
     int     reward      = 0;
     
-    exp     = _GetObjectInfo((*ppObject)).GetExp();
-    reward  = _GetObjectInfo((*ppObject)).GetReward();
+    exp     = GetObjectInfo((*ppObject)).GetExp();
+    reward  = GetObjectInfo((*ppObject)).GetReward();
     
     m_pUser->AddExp(exp);
     m_pUser->AddMoney(reward);
@@ -210,7 +219,7 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
         if(pField->GetCrop())
             if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
             {
-                m_pUser->AddExp(_GetObjectInfo(*ppObject).GetExp());
+                m_pUser->AddExp(GetObjectInfo(*ppObject).GetExp());
                 
                 dynamic_cast<Field*>((*ppObject))->removeCrop();
                 return true;

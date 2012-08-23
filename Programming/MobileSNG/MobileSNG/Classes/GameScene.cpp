@@ -101,7 +101,6 @@ bool GameScene::_initUIMgr()
     m_pUIMgr->AppendUI(UI_MAP, ccp(145, -130), "Edit.png", "Edit.png", UI_FUNC(_editFunc));
     m_pUIMgr->AppendUI(UI_MAP, ccp(-200, -120), "Friends.png", "Friends.png", UI_FUNC(_friendsFunc));
     m_pUIMgr->AppendUI(UI_MAP, ccp(200, -120), "Shop.png", "Shop.png", UI_FUNC(_shopFunc));
-    m_pUIMgr->AppendUI(UI_MAP, ccp(-200, 120), "Status.png", "Status.png", UI_FUNC(_statusFunc));
     
     //////////////////UI_EDIT
     
@@ -150,16 +149,21 @@ bool GameScene::_initShop()
 
 bool GameScene::_initLabel()
 {
+    CCSprite * sprite;
     CCLabelTTF * label;
+    
+    sprite = CCSprite::create("Status.png");
+    sprite->setPosition(ccp(110, 270));
+    m_pMapUI->addChild(sprite, UILAYER_LABEL);
     
     label = CCLabelTTF::create("jgojwjgp pjpa", "Ariel", 13);
     label->setAnchorPoint(ccp(0, 1));
-    label->setPosition(ccp(100, 200));
+    label->setPosition(ccp(90, 290));
     m_pMapUI->addChild(label, UILAYER_LABEL, UILAYER_LABEL);
     
     label = CCLabelTTF::create("hgwoojboo", "Ariel", 13);
     label->setAnchorPoint(ccp(0, 1));
-    label->setPosition(ccp(100, 200));
+    label->setPosition(ccp(100, 300));
     m_pShopUI->addChild(label, UILAYER_LABEL, UILAYER_LABEL);
     
     return true;
@@ -208,11 +212,6 @@ void GameScene::_editFunc(CCObject *pSender)
 }
 
 void GameScene::_flatFunc(CCObject *pSender)
-{
-    CCLog(__FUNCTION__);
-}
-
-void GameScene::_statusFunc(CCObject *pSender)
 {
     CCLog(__FUNCTION__);
 }
