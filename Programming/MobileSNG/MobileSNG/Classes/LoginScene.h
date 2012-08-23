@@ -41,7 +41,7 @@ private:
     bool _GetUserInfo(char *userID, char **ppoutID, char **ppoutPhone);
     
 private:
-    void _btOverlab(CCObject *pSender);
+    void _btRepetition(CCObject *pSender);
     void _btJoin(CCObject *pSender);
     void _btCancel(CCObject *pSender);
     

@@ -28,7 +28,7 @@ private:
     cocos2d::CCMenu             *m_pMenu;
     
 public:
-    JoinUI(cocos2d::CCNode *pTarget, cocos2d::SEL_MenuHandler JoinSelector, cocos2d::SEL_MenuHandler CancelSelector, cocos2d::SEL_MenuHandler OverlabSelector,int fontSize = 20);
+    JoinUI(cocos2d::CCNode *pTarget, cocos2d::SEL_MenuHandler JoinSelector, cocos2d::SEL_MenuHandler CancelSelector, cocos2d::SEL_MenuHandler RepetitionSelector,int fontSize = 20);
     ~JoinUI();
     
 public:

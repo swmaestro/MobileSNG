@@ -84,7 +84,7 @@ bool LoginScene::init()
     m_pJoinUI   = new JoinUI(this,
                              menu_selector(LoginScene::_btJoin),
                              menu_selector(LoginScene::_btChangeUI),
-                             menu_selector(LoginScene::_btOverlab));
+                             menu_selector(LoginScene::_btRepetition));
     
     m_pJoinUI->setVisible(false);
     
@@ -130,14 +130,14 @@ void LoginScene::_btJoin(CCObject *pSender)
     m_pJoinUI->AllClear();
 }
 
-void LoginScene::_btOverlab(CCObject *pSender)
+void LoginScene::_btRepetition(CCObject *pSender)
 {
     CCLOG(__FUNCTION__);
 
     const char *id = m_pJoinUI->GetID();
     
     if(m_pJoin->CheckOverlapID(id))
-        CCMessageBox("Overlab", "Overlab");
+        CCMessageBox("Repetition", "Repetition");
 }
 
 void LoginScene::_btCancel(CCObject *pSender)

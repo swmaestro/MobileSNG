@@ -79,7 +79,7 @@ void User::UpdateData(Network *pNetwork)
     pNode = pNode->next_sibling();
     m_level = atoi(pNode->value());
     pNode = pNode->next_sibling();
-    m_exp = atoi(pNode->value());
+    m_exp = (int)atof(pNode->value());
 }
 
 bool User::AddMoney(int n)
@@ -98,6 +98,7 @@ void User::AddCash(int n)
 
 void User::AddExp(int n)
 {
+    m_exp+=n;
     if( m_exp >= m_level*2 )
     {
         ++m_level;

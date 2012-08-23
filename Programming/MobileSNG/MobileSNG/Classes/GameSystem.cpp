@@ -168,7 +168,7 @@ bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
     sprintf(url, baseURL, id, gold, cash, exp);
     
     CURL_DATA data;
-    if( m_pNetwork->connectHttp(url, NULL) != CURLE_OK )
+    if( m_pNetwork->connectHttp(url, &data) != CURLE_OK )
         return false;
 
     return true;
@@ -204,13 +204,30 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     
     if( type == OBJECT_TYPE_ORNAMENT ) return false;
     
+    
     int     exp         = 0;
     int     reward      = 0;
+    bool    isDone      = false;
     
     exp     = GetObjectInfo((*ppObject)).GetExp();
     reward  = GetObjectInfo((*ppObject)).GetReward();
     
-    if( _PostResourceInfo(reward, 0, exp) == false )
+    if(type == OBJECT_TYPE_BUILDING){
+    if(dynamic_cast<Building*>((*ppObject))->m_state == BUILDING_STATE_DONE)
+        isDone = true;
+    }
+    else
+    {
+        Field *pField = dynamic_cast<Field*>(*ppObject);
+        
+        if(pField->GetCrop())
+        if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
+            isDone = true;
+    }
+
+    if(isDone == false) return false;
+    
+    if( _PostResourceInfo(reward, 0, -exp) == false )
         return false;
     
     m_pUser->AddExp(exp);
@@ -218,30 +235,16 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     
     if(type == OBJECT_TYPE_BUILDING)
     {
-        if((*ppObject)->m_state == BUILDING_STATE_DONE)
-        {
-            Building * b = dynamic_cast<Building*>((*ppObject));
-            b->m_state = BUILDING_STATE_WORKING;
-            b->GetTimer()->StartTimer();
-            return true;
-        }
+        Building * b = dynamic_cast<Building*>((*ppObject));
+        b->m_state = BUILDING_STATE_WORKING;
+        b->GetTimer()->StartTimer();
     }
     
     else // type == object_type_crop
     {
         Field *pField = static_cast<Field*>((*ppObject));
-        if(pField->GetCrop())
-            if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
-            {
-                dynamic_cast<Field*>((*ppObject))->removeCrop();
-                return true;
-            }
+        pField->removeCrop();
     }
-
-    //임시
-    //    HARVEST_QUEUE object(const_cast<char*>("http://"), pObject);
-    //
-    //    m_qHarvest.push(object);
     
-    return false;
+    return true;
 }

@@ -23,19 +23,19 @@ Join::Join()
     
 }
 
-bool Join::_CreateVillage(const char *userID, const int initGold, const int initCash)
-{
-    const char *baseUrl = "http://swmaestros-sng.appspot.com/villageregister?id=%s&costA=%d&costB=%d";
-    char url[256];
-    
-    sprintf(url, baseUrl, userID, initGold, initCash);
-    
-    CURL_DATA data;
-    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
-        return false;
-    
-    return true;
-}
+//bool Join::_CreateVillage(const char *userID, const int initGold, const int initCash)
+//{
+//    const char *baseUrl = "http://swmaestros-sng.appspot.com/villageregister?id=%s&costA=%d&costB=%d";
+//    char url[256];
+//    
+//    sprintf(url, baseUrl, userID, initGold, initCash);
+//    
+//    CURL_DATA data;
+//    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+//        return false;
+//    
+//    return true;
+//}
 
 bool Join::_CheckPhoneNumber(const char *strPhone)
 {
@@ -53,16 +53,16 @@ bool Join::_CheckPhoneNumber(const char *strPhone)
     return true;
 }
 
-bool Join::CreatAccount(const char *strID, const char *strPassword, const char *strPhone)
+bool Join::CreatAccount(const char *strID, const char *strPassword, const char *strPhone, const int initGold, const int initCash)
 {
-    const char *baseUrl = "http://swmaestros-sng.appspot.com/sngtestmodule?id=%s&password=%s&phone=%s";
+    const char *baseUrl = "http://swmaestros-sng.appspot.com/memberregister?id=%s&password=%s&phone=%s&costA=%d&costB=%d";
 
     char url[256];
     
     if(_CheckPhoneNumber(strPhone) == false)
         return false;
     
-    sprintf(url, baseUrl, strID,strPassword, strPhone);
+    sprintf(url, baseUrl, strID,strPassword, strPhone, initGold, initCash);
     
     CURL_DATA data;
     
@@ -85,7 +85,7 @@ bool Join::CreatAccount(const char *strID, const char *strPassword, const char *
         return false;
     }
     
-    return _CreateVillage(strID);
+    return true;
 }
 
 bool Join::CheckOverlapID(const char *strID)

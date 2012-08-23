@@ -13,7 +13,7 @@
 
 using namespace cocos2d;
 
-JoinUI::JoinUI(CCNode *pTarget, cocos2d::SEL_MenuHandler JoinSelector, cocos2d::SEL_MenuHandler CancelSelector, SEL_MenuHandler OverlabSelector, int fontSize)
+JoinUI::JoinUI(CCNode *pTarget, cocos2d::SEL_MenuHandler JoinSelector, cocos2d::SEL_MenuHandler CancelSelector, SEL_MenuHandler RepetitionSelector, int fontSize)
 {
     m_pBackGround = new CCSprite;
     m_pBackGround->initWithFile("TestUI.png");
@@ -63,11 +63,11 @@ JoinUI::JoinUI(CCNode *pTarget, cocos2d::SEL_MenuHandler JoinSelector, cocos2d::
     pCancelButton->setPosition(ccp(170,0));
     pCancelButton->setAnchorPoint(ccp(0,0));
     
-    CCMenuItemImage *pOverlabIDButton = CCMenuItemImage::create("Icon.png", "Icon.png", pTarget, OverlabSelector);
-    pOverlabIDButton->setPosition(ccp(230,0));
-    pOverlabIDButton->setAnchorPoint(ccp(0,0));
+    CCMenuItemImage *pRepetitionIDButton = CCMenuItemImage::create("Icon.png", "Icon.png", pTarget, RepetitionSelector);
+    pRepetitionIDButton->setPosition(ccp(230,0));
+    pRepetitionIDButton->setAnchorPoint(ccp(0,0));
     
-    m_pMenu = CCMenu::create(pJoinButton, pCancelButton, pOverlabIDButton, NULL);
+    m_pMenu = CCMenu::create(pJoinButton, pCancelButton, pRepetitionIDButton, NULL);
     m_pMenu->setAnchorPoint(ccp(0,0));
     m_pMenu->setPosition(ccp(0,0));
 
