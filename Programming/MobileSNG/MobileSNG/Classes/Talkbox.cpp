@@ -16,9 +16,11 @@ bool Talkbox::init()
         return false;
     
     CCSprite * spr = CCSprite::create("Talkbox.png");
+    spr->setAnchorPoint(ccp(0.5, 0));
     addChild(spr, 0);
     
-    m_pText = CCLabelTTF::create("", "Ariel", 15);
+    m_pText = CCLabelTTF::create("SuperJail!", "Ariel", 15);
+    m_pText->setPosition(ccp(0, 50));
     addChild(m_pText, 1);
     
     return true;

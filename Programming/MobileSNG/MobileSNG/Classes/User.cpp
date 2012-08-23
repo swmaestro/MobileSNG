@@ -56,7 +56,7 @@ bool User::hasFile()
 }
 
 void User::UpdateData(Network *pNetwork)
-{
+{/*
     const char *baseURL = "http://swmaestros-sng.appspot.com/villageinfo?id=%s";
     char url[256];
     sprintf(url, baseURL, m_strID.data());
@@ -80,7 +80,7 @@ void User::UpdateData(Network *pNetwork)
     m_level = atoi(pNode->value());
     pNode = pNode->next_sibling();
     m_exp = atoi(pNode->value());
-}
+*/}
 
 bool User::AddMoney(int n)
 {

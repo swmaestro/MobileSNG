@@ -55,6 +55,8 @@ bool Map::init(GameSystem * system)
     m_pAllocator = new Allocator(m_pTile, m_width);
     
     m_pTalkbox = Talkbox::create();
+    m_pTalkbox->setAnchorPoint(ccp(0, 0));
+    m_pTalkbox->setVisible(false);
     addChild(m_pTalkbox, 2);
     
     scheduleUpdate();
@@ -250,7 +252,7 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
         {
             CCPoint o = getPosition();
             CCPoint m = ccp(x, y);
-            setPosition(filtPosition(ccpAdd(o, m)));
+            filtPosition(ccpAdd(o, m));
             m_touch[0] = p;
         }
     }
@@ -283,8 +285,6 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
             float a = dis2 / dis1;
             
             float scale = filtScale(s * a);
-            
-            setScale(scale);
             
             CCPoint p = getPosition();
             CCSize ws = CCDirector::sharedDirector()->getWinSize();
@@ -335,6 +335,9 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             m_pAllocator->TouchesEnd();
         else
         {
+            if (m_pTalkbox->isVisible())
+                m_pTalkbox->setVisible(false);
+            
             CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
             
             CCPoint p = pTouch->locationInView();
@@ -343,16 +346,25 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             int t = _cursorXY(p);
             int x = LOWORD(t), y = HIWORD(t);
             
-            if (x < -m_width / 2 || x > m_width / 2 || y < -m_width / 2 || y > m_width / 2)
-                return;
-            
-            POINT<int> pos(x, y);
+            if (!(x < -m_width / 2 || x > m_width / 2 || y < -m_width / 2 || y > m_width / 2))
+            {
+                POINT<int> pos(x, y);
 
-//            if (m_pSystem->Harvest(pos, NULL))
-//                SyncPos(m_pSystem->GetMapMgr()->FindObject(pos));
-            ObjectInMap *pObj;
-            if(m_pSystem->Harvest(pos, &pObj))
-                SyncPos(pObj);
+//              if (m_pSystem->Harvest(pos, NULL))
+//                  SyncPos(m_pSystem->GetMapMgr()->FindObject(pos));
+                
+                ObjectInMap *pObj;
+                
+                if(m_pSystem->Harvest(pos, &pObj))
+                {
+                    SyncPos(pObj);
+                }
+                else
+                {
+                    m_pTalkbox->setPosition(ccp((x - y) * tileWidth / 2, (x + y) * tileHeight / 2));
+                    m_pTalkbox->setVisible(true);
+                }
+            }
         }
     }
     
@@ -364,6 +376,9 @@ float Map::filtScale(float scale)
 {
     if (scale < 0.5) scale = 0.5;
     if (scale > 1.5) scale = 1.5;
+    
+    setScale(scale);
+    m_pTalkbox->setScale(1 / scale);
     
     return scale;
 }
@@ -381,6 +396,8 @@ CCPoint Map::filtPosition(CCPoint pos)
         pos.x = 240 - (Map::width / 2 - 240) * scale;
     if (pos.y < 160 - (Map::height / 2 - 160) * scale)
         pos.y = 160 - (Map::height / 2 - 160) * scale;
+    
+    setPosition(pos);
     
     return pos;
 }

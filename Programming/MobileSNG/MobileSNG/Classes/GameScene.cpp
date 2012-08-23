@@ -51,9 +51,11 @@ bool GameScene::init()
     m_pMap = new Map(m_width);
     m_pMap->init(m_pSystem);
     m_pMap->setAnchorPoint(ccp(0.5, 0.5));
-    m_pMap->setScale(1);
-    m_pMap->setPosition(ccp(wsize.width / 2, wsize.height / 2));
+    m_pMap->filtScale(1);
+    m_pMap->filtPosition(ccp(wsize.width / 2, wsize.height / 2));
+    
   //  CCMessageBox(<#const char *pszMsg#>, <#const char *pszTitle#>)
+    
     m_pMapUI = CCLayer::create();
     m_pMapUI->addChild(m_pMap, UILAYER_TOUCH_RECIEVER, UILAYER_TOUCH_RECIEVER);
     m_pMapUI->setVisible(false);

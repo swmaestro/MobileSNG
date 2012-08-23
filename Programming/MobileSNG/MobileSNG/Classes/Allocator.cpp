@@ -227,7 +227,13 @@ void Allocator::TouchesEnd()
     {
         m_vec.push_back(m_touch->getParent()->getTag());
         
-        CommonInfo * info = m_pSystem->GetCommonInfo(m_type, m_id);
+        CommonInfo * info;
+        
+        if(m_type == OBJ_CROP)
+            info = m_pSystem->GetCommonInfo(OBJECT_TYPE_CROP, m_id);
+        else
+            info = m_pSystem->GetCommonInfo(OBJECT_TYPE_BUILDING, m_id);
+        
         m_pSystem->GetUser()->AddMoney(-info->GetPrice());
         
         m_touch = NULL;

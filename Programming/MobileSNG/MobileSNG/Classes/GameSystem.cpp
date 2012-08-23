@@ -219,16 +219,17 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     exp     = GetObjectInfo((*ppObject)).GetExp();
     reward  = GetObjectInfo((*ppObject)).GetReward();
     
-    if( _PostResourceInfo(reward, 0, exp) == false )
-        return false;
-    
-    m_pUser->AddExp(exp);
-    m_pUser->AddMoney(reward);
-    
     if(type == OBJECT_TYPE_BUILDING)
     {
         if((*ppObject)->m_state == BUILDING_STATE_DONE)
         {
+            //CA EDIT 120823 성공했을때만 호출
+            if( _PostResourceInfo(reward, 0, exp) == false )
+                return false;
+            
+            m_pUser->AddExp(exp);
+            m_pUser->AddMoney(reward);
+            
             Building * b = dynamic_cast<Building*>((*ppObject));
             b->m_state = BUILDING_STATE_WORKING;
             b->GetTimer()->StartTimer();
@@ -242,6 +243,13 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
         if(pField->GetCrop())
             if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
             {
+                //CA EDIT 120823 성공했을때만 호출
+                if( _PostResourceInfo(reward, 0, exp) == false )
+                    return false;
+                
+                m_pUser->AddExp(exp);
+                m_pUser->AddMoney(reward);
+                
                 dynamic_cast<Field*>((*ppObject))->removeCrop();
                 return true;
             }
