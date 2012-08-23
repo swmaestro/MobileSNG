@@ -14,7 +14,6 @@
 #include "User.h"
 #include <string>
 
-
 struct HARVEST_QUEUE {
     std::string          url;
     ObjectInMap         *pObject;
@@ -55,7 +54,10 @@ public:
     
     CommonInfo* GetCommonInfo(int type, int id);
     ObjectInfo GetObjectInfo(int type, int id);
-        
+    
+private:
+    bool _PostResourceInfo(int gold, int cash, int exp);
+    
 public:
     //물건을 살수있는지 여부를 묻는 그런 함수의 이름
     bool    isUseObject(CommonInfo *pCommonInfo);

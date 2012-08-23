@@ -23,6 +23,7 @@ public:
     
 private:
     bool _CheckPhoneNumber(const char *strPhone);
+    bool _CreateVillage(const char *userID, const int initGold = 2000, const int initCash = 1000);
     
 public:
     bool CreatAccount(const char *strID, const char *strPassword, const char *strPhone);

@@ -15,24 +15,25 @@
 using namespace cocos2d;
 using namespace std;
 
-SystemInfo::SystemInfo(Network *pNet) : m_version(0), m_isUpdated(false)
+SystemInfo::SystemInfo(Network *pNet) : m_version(0), m_isUpdated(false), m_isDisconnect(false)
 {
-    string filePath = CCFileUtils::sharedFileUtils()->getWriteablePath() + SYSTEM_FILE_NAME;
-    
-    if(isExistFile(filePath.data()) == false)
-        filePath = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath(SYSTEM_FILE_NAME);
+//    string filePath = CCFileUtils::sharedFileUtils()->getWriteablePath() + SYSTEM_FILE_NAME;
+//    
+//    if(isExistFile(filePath.data()) == false)
+    string filePath = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath(SYSTEM_FILE_NAME);
     
     FILE *pFile = fopen(filePath.data(), "rb");
     if(pFile)fscanf(pFile, "%d", &m_version);
     fclose(pFile);
     
-    static const char *baseURL = "http://swmaestros-sng.appspot.com/systemversionchk?ver=%d";
+    const char *baseURL = "http://swmaestros-sng.appspot.com/systemversionchk?ver=%d";
     char url[256];
     sprintf(url, baseURL, m_version);
     
     CURL_DATA data;
     if(pNet->connectHttp(url, &data) != CURLE_OK)
     {
+        m_isDisconnect = true;
         m_isUpdated = false;
         return;
     }
@@ -46,13 +47,13 @@ SystemInfo::SystemInfo(Network *pNet) : m_version(0), m_isUpdated(false)
 
 SystemInfo::~SystemInfo()
 {
-    if( m_isUpdated == false ) return;
-
-    string filePath = CCFileUtils::sharedFileUtils()->getWriteablePath() + SYSTEM_FILE_NAME;
-    
-    FILE *pFile = fopen(filePath.data(), "wb");
-    fprintf(pFile, "%d", m_version);
-    fclose(pFile);
+//    if( m_isUpdated == false ) return;
+//
+//    string filePath = CCFileUtils::sharedFileUtils()->getWriteablePath() + SYSTEM_FILE_NAME;
+//    
+//    FILE *pFile = fopen(filePath.data(), "wb");
+//    fprintf(pFile, "%d", m_version);
+//    fclose(pFile);
 }
 
 int SystemInfo::GetViersion()
@@ -63,4 +64,9 @@ int SystemInfo::GetViersion()
 bool SystemInfo::isUpdatedVersion()
 {
     return m_isUpdated;
+}
+
+bool SystemInfo::isDisconnet()
+{
+    return m_isDisconnect;
 }

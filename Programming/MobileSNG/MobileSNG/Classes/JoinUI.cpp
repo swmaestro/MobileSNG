@@ -9,6 +9,7 @@
 #include "JoinUI.h"
 #include "DataType.h"
 #include "Utility.h"
+#include <string>
 
 using namespace cocos2d;
 
@@ -95,7 +96,31 @@ bool JoinUI::onTextFieldDetachWithIME(CCTextFieldTTF * sender)
 
 bool JoinUI::onTextFieldInsertText(cocos2d::CCTextFieldTTF * sender, const char * text, int nLen)
 {
-    //여기서 번호 텍스트 필드라면 - 처리 해주라
+    if(sender != m_pTextField[JOIN_UI_ENUM_PHONE])      return false;
+    if(text[0] == '\n')                                 return false;
+    if(('0' <= text[0] && text[0] <= '9') == false)     return true;
+    
+    std::string phone    = sender->getString();
+    int length           = phone.length();
+    
+    //최대 사이즈 벗어나
+    if(length > 12)
+        return true;
+    
+    if(length == 3 || length == 7)
+        phone += '-';
+    
+    if(length == 12 )
+    {
+        const char phone7 = phone.data()[7];
+        const char phone8 = phone.data()[8];
+        
+        phone[7] = phone8;
+        phone[8] = phone7;
+    }
+    
+    sender->setString(phone.data());
+    
     return false;
 }
 
@@ -109,7 +134,31 @@ void JoinUI::setEmptyTextField(JOIN_UI_ENUM e)
     m_pTextField[e]->setPlaceHolder("");
 }
 
-const char* JoinUI::GetString(JOIN_UI_ENUM e)
+const char* JoinUI::GetID()
 {
-    return m_pTextField[e]->getString();
+    return m_pTextField[JOIN_UI_ENUM_ID]->getString();
+}
+
+const char* JoinUI::GetPW()
+{
+    return m_pTextField[JOIN_UI_ENUM_PW]->getString();
+}
+
+const char* JoinUI::GetPhone()
+{
+    std::string phone = m_pTextField[JOIN_UI_ENUM_PHONE]->getString();
+    
+    phone.erase(phone.begin()+3);
+    if(phone.length() == 12)
+        phone.erase(phone.begin()+7);
+    else
+        phone.erase(phone.begin()+6);
+    
+    return phone.data();
+}
+
+void JoinUI::AllClear()
+{
+    for(int i=0; i<JOIN_UI_ENUM_NUM; ++i)
+        m_pTextField[i]->setString("");
 }

@@ -39,7 +39,10 @@ public:
         
 public:
     void setEmptyTextField(JOIN_UI_ENUM e);
+    void AllClear();
     
 public:
-    const char* GetString(JOIN_UI_ENUM e);
+    const char* GetID();
+    const char* GetPW();
+    const char* GetPhone();
 };

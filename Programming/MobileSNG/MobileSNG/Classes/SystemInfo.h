@@ -17,6 +17,7 @@ class SystemInfo
 {
 private:
     bool                m_isUpdated;
+    bool                m_isDisconnect;
     
 private:
     int                 m_version;
@@ -28,4 +29,5 @@ public:
 public:
     int             GetViersion();
     bool            isUpdatedVersion();
+    bool            isDisconnet();
 };
