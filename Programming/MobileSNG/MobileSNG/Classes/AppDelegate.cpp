@@ -10,6 +10,7 @@
 #include "GameScene.h"
 #include "cocos2d.h"
 #include "LoginScene.h"
+#include <hash_map.h>
 
 USING_NS_CC;
 
@@ -40,7 +41,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 //    CCScene *pScene = GameScene::scene();
     CCScene *pScene = LoginScene::scene();
     pDirector->runWithScene(pScene);
-        
+    
     return true;
 }
 

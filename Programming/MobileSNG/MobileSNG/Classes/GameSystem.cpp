@@ -57,7 +57,16 @@ CommonInfo* GameSystem::GetCommonInfo(ObjectInMap *pObj)
 
 ObjectInfo GameSystem::GetObjectInfo(ObjectInMap *pObj)
 {
-    return GetObjectInfo(pObj->GetType(), pObj->GetID());
+    int type    = pObj->GetType();
+    int id      = pObj->GetID();
+    
+    if( type == OBJECT_TYPE_FIELD )
+    {
+        Field *pField = dynamic_cast<Field*>(pObj);
+        return pField->GetCrop()->GetInfo().GetObjInfo();
+    }
+    
+    return GetObjectInfo(type, id);
 }
 
 CommonInfo* GameSystem::GetCommonInfo(int type, int id)
@@ -92,6 +101,7 @@ ObjectInfo GameSystem::GetObjectInfo(int type, int id)
         if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo->GetObjInfo();
     }
+
     else if( type == OBJECT_TYPE_CROP )
     {
         CropInfo *pInfo;
@@ -212,33 +222,17 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     OBJECT_TYPE type = (*ppObject)->GetType();
     
     if( type == OBJECT_TYPE_ORNAMENT ) return false;
-    
-    
-    int     exp         = 0;
-    int     reward      = 0;
-    bool    isDone      = false;
-    
-    exp     = GetObjectInfo((*ppObject)).GetExp();
-    reward  = GetObjectInfo((*ppObject)).GetReward();
-    
-    if(type == OBJECT_TYPE_BUILDING){
-    if(dynamic_cast<Building*>((*ppObject))->m_state == BUILDING_STATE_DONE)
-        isDone = true;
-    }
-    else
-    {
-        Field *pField = dynamic_cast<Field*>(*ppObject);
-        
-        if(pField->GetCrop())
-        if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
-            isDone = true;
-    }
+    if((*ppObject)->isDone() == false) return false;
 
-    if(isDone == false) return false;
+    //필드가 경험치를 가질리가 없잖아..
     
-    if( _PostResourceInfo(reward, 0, -exp) == false )
-        return false;
+    ObjectInfo objInfo = GetObjectInfo((*ppObject));
     
+    int     exp         = objInfo.GetExp();
+    int     reward      = objInfo.GetReward();
+
+    if( _PostResourceInfo(reward, 0, exp) == false )   return false;
+        
     m_pUser->AddExp(exp);
     m_pUser->AddMoney(reward);
     

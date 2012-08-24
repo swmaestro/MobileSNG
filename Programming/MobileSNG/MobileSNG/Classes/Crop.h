@@ -39,4 +39,5 @@ public:
     objectState GetState();
     int         GetID();
     Timer*      GetTimer();
+    CropInfo    GetInfo();
 };
