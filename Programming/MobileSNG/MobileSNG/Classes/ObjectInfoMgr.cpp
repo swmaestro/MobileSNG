@@ -169,7 +169,9 @@ bool ObjectInfoMgr::searchInfo(const char * name, BuildingInfo **ppInfo)
 
 bool ObjectInfoMgr::searchInfo(int id, CropInfo **ppInfo)
 {
-    if( id > m_vCropInfo.size() ) return false;
+    if( id > m_vCropInfo.size() )
+        return false;
+
     *ppInfo = m_vCropInfo[id];
     return true;
 }

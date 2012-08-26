@@ -60,6 +60,10 @@ public:
     virtual bool UpdateSystem();
     
 public:
+    objectState             GetState();
+    virtual bool            isDone();
+    
+public:
     SIZE<int>               GetSize();
     OBJECT_DIRECTION        GetDirection();
     OBJECT_TYPE             GetType();

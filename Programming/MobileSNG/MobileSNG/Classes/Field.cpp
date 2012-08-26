@@ -65,3 +65,9 @@ bool Field::hasCrop()
 {
     return m_pCrop != NULL;
 }
+
+bool Field::isDone()
+{
+    if(m_pCrop == NULL) return false;
+    return m_pCrop->GetState() == CROP_STATE_DONE;
+}

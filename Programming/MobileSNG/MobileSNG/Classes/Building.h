@@ -11,6 +11,8 @@
 #include "Timer.h"
 #include "ObjectInMap.h"
 
+#define FIELD_OBJECT_ID -1
+
 enum BUILDING_STATE
 {
     BUILDING_STATE_UNDER_CONSTRUCTION_1,
@@ -36,4 +38,5 @@ public:
 public:
     bool UpdateSystem();
     Timer* GetTimer();
+    bool isDone();
 };

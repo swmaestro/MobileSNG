@@ -79,3 +79,13 @@ int ObjectInMap::GetID()
 {
     return m_id;
 }
+
+objectState ObjectInMap::GetState()
+{
+    return m_state;
+}
+
+bool ObjectInMap::isDone()
+{
+    return false;
+}
