@@ -9,13 +9,16 @@
 #include "User.h"
 #include "CCFileUtils.h"
 #include <stdlib.h>
+#include "Utility.h"
+#include "rapidxml.hpp"
 
 using namespace cocos2d;
 using namespace std;
+using namespace rapidxml;
 
-User::User(const char *FileName)
+User::User()
 {
-    m_strFilePath = CCFileUtils::sharedFileUtils()->getWriteablePath().append(FileName);
+    m_strFilePath = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
     
     FILE *pFile = fopen(m_strFilePath.data(), "rb");
     
@@ -28,15 +31,10 @@ User::User(const char *FileName)
         
         fscanf(pFile, "%s", txt);
         m_strPassWord = txt;
+        
+        fscanf(pFile, "%s", txt);
+        m_strPhoneNumber = txt;
     }
-    
-    
-    m_strID = "test";
-    m_strPassWord = "test";
-    
-    m_money = 100000;
-    m_level = 100;
-    m_exp = 0;
     
     fclose(pFile);
 }
@@ -46,33 +44,42 @@ User::~User()
     FILE *pFile = fopen(m_strFilePath.data(), "wb");
     
     fprintf(pFile, "%s\n",m_strID.data());
-    fprintf(pFile, "%s\n",m_strID.data());
+    fprintf(pFile, "%s\n",m_strPassWord.data());
+    fprintf(pFile, "%s\n",m_strPhoneNumber.data());
     
     fclose(pFile);
 }
 
-void User::SetData(char *xmlData)
+bool User::hasFile()
 {
-    if( m_strID.empty() == false )
+    return isExistFile(CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME).data());
+}
+
+void User::UpdateData(Network *pNetwork)
+{
+    const char *baseURL = "http://swmaestros-sng.appspot.com/villageinfo?id=%s";
+    char url[256];
+    sprintf(url, baseURL, m_strID.data());
+
+    CURL_DATA data;
+    if(pNetwork->connectHttp(url, &data) != CURLE_OK )
     {
-        //이미 있었으니까 파싱할필요 없이 스킵하면 될거같아
+        printf("%s <- User Update Error", __FUNCTION__);
+        return;
     }
     
-    //파싱
-}
-
-bool User::Login(Network *pNetwork)
-{
+    xml_document<char> xmlDoc;
+    xmlDoc.parse<0>(data.pContent);
     
+    xml_node<char> *pNode = xmlDoc.first_node()->first_node()->next_sibling()->first_node()->next_sibling();
     
-    return true;
-}
-
-bool User::LogOut(Network *pNetwork)
-{
-    
-    
-    return true;
+    m_money = atoi(pNode->value());
+    pNode = pNode->next_sibling();
+    m_cash  = atoi(pNode->value());
+    pNode = pNode->next_sibling();
+    m_level = atoi(pNode->value());
+    pNode = pNode->next_sibling();
+    m_exp = (int)atof(pNode->value());
 }
 
 bool User::AddMoney(int n)
@@ -91,20 +98,12 @@ void User::AddCash(int n)
 
 void User::AddExp(int n)
 {
-    //경험치 곡선을 그리든가 공식으로 하든가 해서 현재 레벨의 다음걸 알아서 유추해봐
-    const int maxExp = 100;
-    
-    if( m_exp >= maxExp )
+    m_exp+=n;
+    if( m_exp >= m_level*2 )
     {
         ++m_level;
         m_exp = 0;
     }
-}
-
-bool User::isEmpty()
-{
-    //id가 없다는건 생성이 안된것이기 때문에 이런식으로 ㅇㅇ.
-    return m_strID.empty();
 }
 
 int User::GetLevel()
@@ -125,4 +124,33 @@ int User::GetCash()
 int User::GetExp()
 {
     return m_exp;
+}
+
+int User::GetMaximum()
+{
+    return m_level * 2;
+}
+
+void User::newUser(const char *userID, const char *userPW, const char *userPhone)
+{
+    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
+    FILE *pFile = fopen(path.data(), "wb");
+    
+    fprintf(pFile, "%s\n",userID);
+    fprintf(pFile, "%s\n",userPW);
+    fprintf(pFile, "%s",userPhone);
+    
+    fclose(pFile);
+}
+
+void User::GetInfo(char *pOutID, char *pOutPW, char *pOutPhone)
+{
+    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
+    FILE *pFile = fopen(path.data(), "rb");
+    
+    if(pOutID)      fscanf(pFile, "%s", pOutID);
+    if(pOutPW)      fscanf(pFile, "%s", pOutPW);
+    if(pOutPhone)   fscanf(pFile, "%s", pOutPhone);
+
+    fclose(pFile);
 }

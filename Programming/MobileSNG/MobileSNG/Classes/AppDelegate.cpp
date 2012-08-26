@@ -9,8 +9,8 @@
 #include "AppDelegate.h"
 #include "GameScene.h"
 #include "cocos2d.h"
-
-#include <queue>
+#include "LoginScene.h"
+#include <hash_map.h>
 
 USING_NS_CC;
 
@@ -33,14 +33,15 @@ bool AppDelegate::applicationDidFinishLaunching()
     // pDirector->enableRetinaDisplay(true);
 
     // turn on display FPS
-    pDirector->setDisplayStats(true);
+    // pDirector->setDisplayStats(true);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     pDirector->setAnimationInterval(1.0 / 60);
-
-    CCScene *pScene = GameScene::scene();
+    
+//    CCScene *pScene = GameScene::scene();
+    CCScene *pScene = LoginScene::scene();
     pDirector->runWithScene(pScene);
-        
+    
     return true;
 }
 

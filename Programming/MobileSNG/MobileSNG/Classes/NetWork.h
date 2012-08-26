@@ -36,9 +36,10 @@ class Network
 {
 private:
     CURL        *m_pCTX;
+    bool         m_isMsgBoxOn;
     
 public:
-    Network();
+    Network(bool isMsgBoxOn = true);
     ~Network();
 
 private:

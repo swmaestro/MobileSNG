@@ -51,7 +51,7 @@ bool ObjectInfoMgr::_loadBuilding(Sqlite3Base *pDBBase)
     {
         int size                = pDBBase->GetInt(7);
 
-        ObjectInfo  obj     (_getTime(pDBBase->GetInt(6)), pDBBase->GetInt(4));
+        ObjectInfo  obj     (_getTime(pDBBase->GetInt(6)), pDBBase->GetInt(4), pDBBase->GetInt(9), pDBBase->GetInt(10));
         CommonInfo  common  (pDBBase->GetInt(1), pDBBase->GetTxt(2), pDBBase->GetInt(3), pDBBase->GetInt(8), pDBBase->GetInt(0));
         
         BuildingInfo *pInfo = new BuildingInfo(obj, common, SIZE<int>(size/100, size%100), _getTime(pDBBase->GetInt(5)));
@@ -79,7 +79,7 @@ bool ObjectInfoMgr::_loadCrop(Sqlite3Base *pDBBase)
     
     do
     {
-        ObjectInfo obj          (_getTime(pDBBase->GetInt(5)), pDBBase->GetInt(4));
+        ObjectInfo obj          (_getTime(pDBBase->GetInt(5)), pDBBase->GetInt(4), pDBBase->GetInt(7), pDBBase->GetInt(8));
         CommonInfo common       (pDBBase->GetInt(1), pDBBase->GetTxt(2), pDBBase->GetInt(3), pDBBase->GetInt(6), pDBBase->GetInt(0));
         
         
@@ -169,7 +169,9 @@ bool ObjectInfoMgr::searchInfo(const char * name, BuildingInfo **ppInfo)
 
 bool ObjectInfoMgr::searchInfo(int id, CropInfo **ppInfo)
 {
-    if( id > m_vCropInfo.size() ) return false;
+    if( id > m_vCropInfo.size() )
+        return false;
+
     *ppInfo = m_vCropInfo[id];
     return true;
 }

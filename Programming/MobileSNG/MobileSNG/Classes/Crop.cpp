@@ -52,3 +52,8 @@ Timer* Crop::GetTimer()
 {
     return m_pTimer;
 }
+
+CropInfo Crop::GetInfo()
+{
+    return *m_pInfo;
+}

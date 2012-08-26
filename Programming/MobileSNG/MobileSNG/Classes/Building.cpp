@@ -66,3 +66,8 @@ Timer* Building::GetTimer()
 {
     return m_pTimer;
 }
+
+bool Building::isDone()
+{
+    return m_state == BUILDING_STATE_DONE;
+}

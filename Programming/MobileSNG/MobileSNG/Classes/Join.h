@@ -16,26 +16,18 @@ class Join
 {
 private:
     Network         *m_pNetwork;
-    JoinUI          *m_pUI;
-    
-    bool            m_isDone;
     
 public:
-    Join(Network *pNetwork, JoinUI *pUI);
+    Join(Network *pNetwork);
     Join();
-    
-private:
-    void _btJoin(cocos2d::CCObject *pSender);
-    void _btCancel(cocos2d::CCObject *pSender);
-    void _btOverlab(cocos2d::CCObject *pSender);
     
 private:
     bool _CheckPhoneNumber(const char *strPhone);
     
-private:
-    bool _Join(const char *strID, const char *strPassword, const char *strPhone);
+public:
+    bool CreatAccount(const char *strID, const char *strPassword, const char *strPhone, const int initGold = 2000, const int initCash = 1000);
     
-    bool _CheckOverlapID(const char *strID);
+    bool CheckOverlapID(const char *strID);
 
 public:
     bool isDone();

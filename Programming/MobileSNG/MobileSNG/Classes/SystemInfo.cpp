@@ -7,61 +7,53 @@
 //
 
 #include "SystemInfo.h"
-
+#include "rapidxml.hpp"
 #include "CCFileUtils.h"
 #include <stdlib.h>
+#include "Utility.h"
 
 using namespace cocos2d;
 using namespace std;
 
-SystemInfo::SystemInfo(const char *FileName)
+SystemInfo::SystemInfo(Network *pNet) : m_version(0), m_isUpdated(false), m_isDisconnect(false)
 {
-    m_strFilePath = CCFileUtils::sharedFileUtils()->getWriteablePath().append(FileName);
+//    string filePath = CCFileUtils::sharedFileUtils()->getWriteablePath() + SYSTEM_FILE_NAME;
+//    
+//    if(isExistFile(filePath.data()) == false)
+    string filePath = CCFileUtils::sharedFileUtils()->fullPathFromRelativePath(SYSTEM_FILE_NAME);
     
-    FILE *pFile = fopen(m_strFilePath.data(), "rb");
-    
-    if(pFile)
-    {
-        char txt[256];
-        int  num;
-        
-        fscanf(pFile, "%d", &m_version);
-        
-        fscanf(pFile, "%d", &num);
-
-        m_date.year     = num / 10000;
-        m_date.month    = (num - (m_date.year * 10000))/100;
-        m_date.day      = num % 100;
-        
-        fscanf(pFile, "%s", txt);
-        m_updateLog = txt;
-    }
-    
+    FILE *pFile = fopen(filePath.data(), "rb");
+    if(pFile)fscanf(pFile, "%d", &m_version);
     fclose(pFile);
     
-    m_isReWrite = false;
+    const char *baseURL = "http://swmaestros-sng.appspot.com/systemversionchk?ver=%d";
+    char url[256];
+    sprintf(url, baseURL, m_version);
+    
+    CURL_DATA data;
+    if(pNet->connectHttp(url, &data) != CURLE_OK)
+    {
+        m_isDisconnect = true;
+        m_isUpdated = false;
+        return;
+    }
+         
+    rapidxml::xml_document<char> xmlDoc;
+    xmlDoc.parse<0>(data.pContent);
+    
+    if(strcmp(xmlDoc.first_node()->first_node()->value(), "true") == 0)
+        m_isUpdated = true;
 }
 
 SystemInfo::~SystemInfo()
 {
-    if( m_isReWrite == false ) return;
-    
-    FILE *pFile = fopen(m_strFilePath.data(), "wb");
-    
-    fprintf(pFile, "%d\n", m_version);
-    fprintf(pFile, "%d%02d%02d\n", m_date.year, m_date.month, m_date.day);
-    fprintf(pFile, "%s\n",m_updateLog.data());
-
-    fclose(pFile);
-}
-
-void SystemInfo::UpdateInfo(int version, char *xmlData)
-{
-    if( (m_isReWrite = (m_version != version)) == false ) return;
-    
-    //추후 작업.
-    //일단 맨 처음에 시스템 정보에 관한걸 받을테니까 이렇게 해둠.
-    //물론 언제든 바낄 수 있음.
+//    if( m_isUpdated == false ) return;
+//
+//    string filePath = CCFileUtils::sharedFileUtils()->getWriteablePath() + SYSTEM_FILE_NAME;
+//    
+//    FILE *pFile = fopen(filePath.data(), "wb");
+//    fprintf(pFile, "%d", m_version);
+//    fclose(pFile);
 }
 
 int SystemInfo::GetViersion()
@@ -69,12 +61,12 @@ int SystemInfo::GetViersion()
     return m_version;
 }
 
-DATE SystemInfo::GetDate()
+bool SystemInfo::isUpdatedVersion()
 {
-    return m_date;
+    return m_isUpdated;
 }
 
-const char* SystemInfo::GetLog()
+bool SystemInfo::isDisconnet()
 {
-    return m_updateLog.data();
+    return m_isDisconnect;
 }

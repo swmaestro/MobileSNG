@@ -9,6 +9,8 @@
 
 class Shop;
 class Map;
+class Friends;
+
 class GameSystem;
 
 enum { UILAYER_TOUCH_RECIEVER, UILAYER_LABEL };
@@ -20,8 +22,9 @@ private:
     
     Map                 * m_pMap;
     Shop                * m_pShop;
+    Friends             * m_pFriends;
     
-    cocos2d::CCLayer    * m_pMapUI, * m_pShopUI;
+    cocos2d::CCLayer    * m_pMapUI, * m_pShopUI, * m_pFriendsUI;
     cocos2d::CCLayer    * m_pCurrentUI;
     
     UIMgr               * m_pUIMgr;
@@ -44,7 +47,9 @@ public:
 
 private:
     bool _initUIMgr();
+    bool _initMap();
     bool _initShop();
+    bool _initFriends();
     bool _initLabel();
     
     void _changeUI(cocos2d::CCLayer * ui);
@@ -53,11 +58,13 @@ private:
     void _friendsFunc(CCObject *pSender);
     void _editFunc(CCObject *pSender);
     void _flatFunc(CCObject *pSender);
+    void _statusFunc(CCObject *pSender);
     
     void _editApplyFunc(CCObject *pSender);
     void _editCancelFunc(CCObject *pSender);
     
     void _shopCloseFunc(CCObject *pSender);
+    void _friendsCloseFunc(CCObject *pSender);
     
     void update(float dt);
     

@@ -32,4 +32,5 @@ public:
     
 public:
     bool hasCrop();
+    bool isDone();
 };

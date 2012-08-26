@@ -14,7 +14,6 @@
 #include "User.h"
 #include <string>
 
-
 struct HARVEST_QUEUE {
     std::string          url;
     ObjectInMap         *pObject;
@@ -49,9 +48,16 @@ public:
     GameSystem(const char* strDBFile, int & mapLevel);
     ~GameSystem();
     
+public:
+    CommonInfo* GetCommonInfo(ObjectInMap *pObj);
+    ObjectInfo GetObjectInfo(ObjectInMap *pObj);
+    
+    CommonInfo* GetCommonInfo(int type, int id);
+    ObjectInfo GetObjectInfo(int type, int id);
+    
 private:
-    CommonInfo* _GetCommonInfo(ObjectInMap *pObj);
-        
+    bool _PostResourceInfo(int gold, int cash, int exp);
+    
 public:
     //물건을 살수있는지 여부를 묻는 그런 함수의 이름
     bool    isUseObject(CommonInfo *pCommonInfo);
@@ -64,6 +70,8 @@ public:
 public:
     bool Harvest(POINT<int> &pos, ObjectInMap **ppOut);
     bool Harvest(ObjectInMap **ppObject);
+    void AllHarvest();
+    void FastComplete(ObjectInMap *pObject);
     
 public:
     inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }

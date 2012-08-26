@@ -13,68 +13,56 @@
 using namespace cocos2d;
 using namespace rapidxml;
 
-Join::Join(Network *pNetwork, JoinUI *pUI)
+Join::Join(Network *pNetwork)
 {
     m_pNetwork  = pNetwork;
-    m_pUI       = pUI;
-    m_isDone    = false;
 }
 
 Join::Join()
 {
-}
-
-void Join::_btJoin(cocos2d::CCObject *pSender)
-{
-    JoinUI *pUI = static_cast<JoinUI*>(pSender);
     
-    const char *strID       = pUI->GetContext(JOIN_UI_ENUM_ID);
-    const char *strPW       = pUI->GetContext(JOIN_UI_ENUM_PW);
-    const char *strPhone    = pUI->GetContext(JOIN_UI_ENUM_PHONE);
-    
-    m_isDone = _Join(strID, strPW, strPhone);
-    if( m_isDone == false)
-    {
-        CCMessageBox("Join Fail", "Error");
-        for(int i=0; i<JOIN_UI_ENUM_NUM; ++i)
-            m_pUI->setEmptyTextField((JOIN_UI_ENUM)i);
-    }
 }
 
-void Join::_btCancel(cocos2d::CCObject *pSender)
-{
-    m_isDone = true;
-}
-
-void Join::_btOverlab(cocos2d::CCObject *pSender)
-{
-    JoinUI *pUI = static_cast<JoinUI*>(pSender);
-    const char *strID = pUI->GetContext(JOIN_UI_ENUM_ID);
-
-    if(_CheckOverlapID(strID))    CCMessageBox("Overlab ID", "Error");
-    else                         CCMessageBox("OK", "OK");
-}
+//bool Join::_CreateVillage(const char *userID, const int initGold, const int initCash)
+//{
+//    const char *baseUrl = "http://swmaestros-sng.appspot.com/villageregister?id=%s&costA=%d&costB=%d";
+//    char url[256];
+//    
+//    sprintf(url, baseUrl, userID, initGold, initCash);
+//    
+//    CURL_DATA data;
+//    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+//        return false;
+//    
+//    return true;
+//}
 
 bool Join::_CheckPhoneNumber(const char *strPhone)
 {
-    //이따가 생각. 중요한건 아냐
     int num = strlen(strPhone);
     
-    if( num == 10 || num == 11 )
-        return true;
+    if( (num == 10 || num == 11) == false )
+        return false;
     
-    return false;
+    int size = strlen(strPhone);
+    
+    for(int i=0; i<size; ++i)
+        if( ('0' <= strPhone[i] && strPhone[i] <= '9') == false )
+            return false;
+    
+    return true;
 }
 
-bool Join::_Join(const char *strID, const char *strPassword, const char *strPhone)
+bool Join::CreatAccount(const char *strID, const char *strPassword, const char *strPhone, const int initGold, const int initCash)
 {
-    const char *baseUrl = "http://swmaestros-sng.appspot.com/sngtestmodule?id=%s&password=%s&phone=%s";
+    const char *baseUrl = "http://swmaestros-sng.appspot.com/memberregister?id=%s&password=%s&phone=%s&costA=%d&costB=%d";
 
     char url[256];
     
-    if(_CheckPhoneNumber(strPhone) == false)    return false;
+    if(_CheckPhoneNumber(strPhone) == false)
+        return false;
     
-    sprintf(url, baseUrl, strID,strPassword, strPhone);
+    sprintf(url, baseUrl, strID,strPassword, strPhone, initGold, initCash);
     
     CURL_DATA data;
     
@@ -100,7 +88,7 @@ bool Join::_Join(const char *strID, const char *strPassword, const char *strPhon
     return true;
 }
 
-bool Join::_CheckOverlapID(const char *strID)
+bool Join::CheckOverlapID(const char *strID)
 {
     const char *baseUrl = "http://swmaestros-sng.appspot.com/signupnametest?id=%s";
     
@@ -126,9 +114,4 @@ bool Join::_CheckOverlapID(const char *strID)
         return true;
     
     return false;
-}
-
-bool Join::isDone()
-{
-    return m_isDone;
 }

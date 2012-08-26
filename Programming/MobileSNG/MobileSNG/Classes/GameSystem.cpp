@@ -7,6 +7,7 @@
 //
 
 #include "GameSystem.h"
+#include "CCCommon.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ GameSystem::GameSystem(const char* strDBFile, int & mapLevel)
     m_pMap      = new MapMgr(mapLevel);
     m_pNetwork  = new Network;
     m_pUser     = new User;
+    m_pUser->UpdateData(m_pNetwork);
 }
 
 GameSystem::~GameSystem()
@@ -48,58 +50,79 @@ GameSystem::~GameSystem()
 //    }
 //}
 
-CommonInfo* GameSystem::_GetCommonInfo(ObjectInMap *pObj)
+CommonInfo* GameSystem::GetCommonInfo(ObjectInMap *pObj)
 {
-    if(pObj->GetType() == OBJECT_TYPE_BUILDING)
+    return GetCommonInfo(pObj->GetType(), pObj->GetID());
+}
+
+ObjectInfo GameSystem::GetObjectInfo(ObjectInMap *pObj)
+{
+    int type    = pObj->GetType();
+    int id      = pObj->GetID();
+    
+    if( type == OBJECT_TYPE_FIELD )
+    {
+        Field *pField = dynamic_cast<Field*>(pObj);
+        return pField->GetCrop()->GetInfo().GetObjInfo();
+    }
+    
+    return GetObjectInfo(type, id);
+}
+
+CommonInfo* GameSystem::GetCommonInfo(int type, int id)
+{
+    if(type == OBJECT_TYPE_BUILDING)
     {
         BuildingInfo *pInfo;
-        if(m_pInfoMgr->searchInfo(pObj->GetID(), &pInfo))
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo;
     }
-    else if(pObj->GetType() == OBJECT_TYPE_CROP)
+    else if(type == OBJECT_TYPE_CROP)
     {
         CropInfo    *pInfo;
-        if(m_pInfoMgr->searchInfo(pObj->GetID(), &pInfo))
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo;
     }
     else // ornament type
     {
         OrnamentInfo *pInfo;
-        if(m_pInfoMgr->searchInfo(pObj->GetID(), &pInfo))
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo;
     }
-
+    
     return NULL;
+}
+
+ObjectInfo GameSystem::GetObjectInfo(int type, int id)
+{
+    if( type == OBJECT_TYPE_BUILDING )
+    {
+        BuildingInfo *pInfo;
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
+            return pInfo->GetObjInfo();
+    }
+
+    else if( type == OBJECT_TYPE_CROP )
+    {
+        CropInfo *pInfo;
+        if(m_pInfoMgr->searchInfo(id, &pInfo))
+            return pInfo->GetObjInfo();
+    }
+    
+    return ObjectInfo();
 }
 
 bool GameSystem::BuyObject(ObjectInMap *pObj)
 {
-    if(m_pUser->AddMoney(-_GetCommonInfo(pObj)->GetPrice()) == false)
+    if(m_pUser->AddMoney(-GetCommonInfo(pObj)->GetPrice()) == false)
         return false;
     return true;
 }
 
 void GameSystem::SellObject(ObjectInMap *pObj)
 {
-    m_pUser->AddMoney(-_GetCommonInfo(pObj)->GetPrice());
+    m_pUser->AddMoney(-GetCommonInfo(pObj)->GetPrice());
 }
-
-//ObjectInMap* GameSystem::GetObject(bool isNext)
-//{
-//    static int idx = 0;
-//    if(isNext)++idx;
-//    return m_pMap->GetAllObject()[idx];
-//}
-//
-//ObjectInMap* GameSystem::GetObject(int idx)
-//{
-//    return m_pMap->GetAllObject()[idx];
-//}
-
-//MapMgr* GameSystem::GetMapMgr()
-//{
-//    return m_pMap;
-//}
 
 bool GameSystem::isUseObject(CommonInfo *pCommonInfo)
 {
@@ -108,7 +131,7 @@ bool GameSystem::isUseObject(CommonInfo *pCommonInfo)
 
 bool GameSystem::isUseObject(ObjectInMap* pObj)
 {
-   return m_pUser->GetLevel() >= _GetCommonInfo(pObj)->GetLevel();
+   return m_pUser->GetLevel() >= GetCommonInfo(pObj)->GetLevel();
 }
 
 bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
@@ -123,46 +146,108 @@ bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
     return this->Harvest(&pObject);
 }
 
-bool GameSystem::Harvest(ObjectInMap **ppObject)
+void GameSystem::AllHarvest()
 {
+//    vector<ObjectInMap*> vObjects = m_pMap->GetAllObject();
+//    vector<ObjectInMap*>::iterator iter;
+//    
+//    int exp         = 0;
+//    int money       = 0;
+//    int harvestNum  = 0;
+//    
+//    ObjectInfo info;
+//    
+//    for(iter = vObjects.begin(); iter != vObjects.end(); ++iter)
+//    {
+//        if(Harvest(&*iter))
+//        {
+//            info = _GetObjectInfo(*iter);
+//            exp += info.GetExp();
+//            money += info.GetReward();
+//            harvestNum++;
+//        }
+//    }
+//    
+//    exp *= 1.5f;
+//    money *= 1.5f;
+//    
+//    m_pUser->AddMoney(money);
+//    m_pUser->AddExp(exp);
+//    m_pUser->AddCash(-(harvestNum * 100));
+}
+
+bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
+{
+    const char *baseURL = "http://swmaestros-sng.appspot.com/villageadder?id=%s&costA=%d&costB=%d&exp=%d";
+    char url[256];
+
+    char id[32];
+    m_pUser->GetInfo(id, NULL, NULL);
+    
+    sprintf(url, baseURL, id, gold, cash, exp);
+    
+    CURL_DATA data;
+    if( m_pNetwork->connectHttp(url, &data) != CURLE_OK )
+        return false;
+
+    return true;
+}
+
+void GameSystem::FastComplete(ObjectInMap *pObject)
+{
+    OBJECT_TYPE type = pObject->GetType();
+    
+    if( type == OBJECT_TYPE_BUILDING )
+    {
+        if(pObject->m_state == BUILDING_STATE_WORKING )
+            pObject->m_state = BUILDING_STATE_DONE;
+        else if(pObject->m_state <= BUILDING_STATE_UNDER_CONSTRUCTION_2)
+            pObject->m_state = BUILDING_STATE_WORKING;
+    }
+    else if (type == OBJECT_TYPE_CROP )
+    {
+        if(pObject->m_state != CROP_STATE_DONE)
+            pObject->m_state = CROP_STATE_DONE;
+    }
+    
+    if(_PostResourceInfo(0, 0, -100))
+        m_pUser->AddCash(-100);
+}
+
+bool GameSystem::Harvest(ObjectInMap **ppObject)
+{    
     if( ppObject == NULL )
         return false;
     
     OBJECT_TYPE type = (*ppObject)->GetType();
     
+    if( type == OBJECT_TYPE_ORNAMENT ) return false;
+    if((*ppObject)->isDone() == false) return false;
+
+    //필드가 경험치를 가질리가 없잖아..
+    
+    ObjectInfo objInfo = GetObjectInfo((*ppObject));
+    
+    int     exp         = objInfo.GetExp();
+    int     reward      = objInfo.GetReward();
+
+    if( _PostResourceInfo(reward, 0, exp) == false )   return false;
+        
+    m_pUser->AddExp(exp);
+    m_pUser->AddMoney(reward);
+    
     if(type == OBJECT_TYPE_BUILDING)
     {
-        if((*ppObject)->m_state == BUILDING_STATE_DONE)
-        {
-            Building * b = dynamic_cast<Building*>((*ppObject));
-            b->m_state = BUILDING_STATE_WORKING;
-            b->GetTimer()->StartTimer();
-
-            //임시. 얻는 금액만큼 경험치로 준다
-            m_pUser->AddExp(_GetCommonInfo((*ppObject))->GetPrice());
-            return true;
-        }
+        Building * b = dynamic_cast<Building*>((*ppObject));
+        b->m_state = BUILDING_STATE_WORKING;
+        b->GetTimer()->StartTimer();
     }
     
-    else if(type == OBJECT_TYPE_FIELD)
+    else // type == object_type_crop
     {
         Field *pField = static_cast<Field*>((*ppObject));
-        if(pField->GetCrop())
-            if(pField->GetCrop()->GetState() == CROP_STATE_DONE)
-            {
-                CropInfo *pInfo;
-                m_pInfoMgr->searchInfo(pField->GetCrop()->GetID(), &pInfo);
-                m_pUser->AddExp(pInfo->GetPrice());
-                
-                dynamic_cast<Field*>((*ppObject))->removeCrop();
-                return true;
-            }
+        pField->removeCrop();
     }
     
-    //임시
-    //    HARVEST_QUEUE object(const_cast<char*>("http://"), pObject);
-    //
-    //    m_qHarvest.push(object);
-    
-    return false;
+    return true;
 }

@@ -18,7 +18,7 @@ enum JOIN_UI_ENUM
     JOIN_UI_ENUM_NUM
 };
 
-class JoinUI : public cocos2d::CCLayer, public cocos2d::CCTextFieldDelegate
+class JoinUI : public cocos2d::CCLayer, private cocos2d::CCTextFieldDelegate
 {
 private:
     cocos2d::CCSprite           *m_pBackGround;
@@ -28,17 +28,21 @@ private:
     cocos2d::CCMenu             *m_pMenu;
     
 public:
-    JoinUI(const char* strBackGroundPath, cocos2d::CCNode *pTarget, cocos2d::SEL_MenuHandler JoinSelector, cocos2d::SEL_MenuHandler CancelSelector, cocos2d::SEL_MenuHandler OverlabSelector,int fontSize = 20);
+    JoinUI(cocos2d::CCNode *pTarget, cocos2d::SEL_MenuHandler JoinSelector, cocos2d::SEL_MenuHandler CancelSelector, cocos2d::SEL_MenuHandler RepetitionSelector,int fontSize = 20);
     ~JoinUI();
     
 public:
-    virtual bool onTextFieldDetachWithIME(cocos2d::CCTextFieldTTF * sender);
+    bool onTextFieldDetachWithIME(cocos2d::CCTextFieldTTF * sender);
+    bool onTextFieldInsertText(cocos2d::CCTextFieldTTF * sender, const char * text, int nLen);
     
-    virtual void ccTouchesBegan(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
-    
+    void ccTouchesBegan(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
+        
 public:
     void setEmptyTextField(JOIN_UI_ENUM e);
+    void AllClear();
     
 public:
-    const char* GetContext(JOIN_UI_ENUM e);
+    const char* GetID();
+    const char* GetPW();
+    const char* GetPhone();
 };
