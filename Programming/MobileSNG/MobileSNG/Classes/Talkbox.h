@@ -22,6 +22,8 @@ public:
     void SetContent(std::string content);
     
 private:
+    cocos2d::CCLayer * m_pScale;
+    cocos2d::CCSprite * m_pSpr;
     cocos2d::CCLabelTTF * m_pText;
     
     std::string m_content;

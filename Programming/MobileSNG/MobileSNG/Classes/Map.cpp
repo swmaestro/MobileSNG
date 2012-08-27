@@ -353,15 +353,32 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
 //              if (m_pSystem->Harvest(pos, NULL))
 //                  SyncPos(m_pSystem->GetMapMgr()->FindObject(pos));
                 
-                ObjectInMap *pObj;
+                ObjectInMap *pObj = NULL;
                 
                 if(m_pSystem->Harvest(pos, &pObj))
                 {
                     SyncPos(pObj);
                 }
-                else
+                else if (pObj && pObj->GetType() != OBJECT_TYPE_NONE)
                 {
+                    char strBuf[100];
+                    
+                    switch (pObj->GetType())
+                    {
+                        case OBJECT_TYPE_BUILDING:
+                            sprintf(strBuf, "Buuuuuilding");
+                            break;
+                            
+                        case OBJECT_TYPE_CROP:
+                            sprintf(strBuf, "Faaaaaaaaarm");
+                            break;
+                            
+                        default:
+                            sprintf(strBuf, "Error : I don't know\nwhat is this");
+                            break;
+                    }
                     m_pTalkbox->setPosition(ccp((x - y) * tileWidth / 2, (x + y) * tileHeight / 2));
+                    m_pTalkbox->SetContent(strBuf);
                     m_pTalkbox->setVisible(true);
                 }
             }

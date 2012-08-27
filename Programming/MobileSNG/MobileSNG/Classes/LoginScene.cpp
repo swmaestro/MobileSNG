@@ -76,7 +76,7 @@ bool LoginScene::init()
     }
     
     m_pBackGround = new CCSprite;
-    m_pBackGround->initWithFile("HelloWorld.png");
+    m_pBackGround->initWithFile("Loading.png");
     m_pBackGround->setAnchorPoint(ccp(0,0));
     m_pBackGround->setPosition(ccp(0,0));
     addChild(m_pBackGround);
