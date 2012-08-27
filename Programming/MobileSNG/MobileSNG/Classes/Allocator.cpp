@@ -234,7 +234,7 @@ void Allocator::TouchesEnd()
         else
             info = m_pSystem->GetCommonInfo(OBJECT_TYPE_BUILDING, m_id);
         
-        m_pSystem->GetUser()->AddMoney(-info->GetPrice());
+        m_pSystem->GetPlayer()->AddMoney(-info->GetPrice());
         
         m_touch = NULL;
     }

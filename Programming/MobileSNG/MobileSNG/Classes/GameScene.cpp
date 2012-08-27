@@ -85,10 +85,10 @@ void GameScene::update(float dt)
     
     if (label)
     {
-        User * user = m_pSystem->GetUser();
+        Player *player = m_pSystem->GetPlayer();
         
         char temp[100];
-        sprintf(temp, "Sweets : %d\nExp : %d", user->GetMoney(), user->GetExp());
+        sprintf(temp, "Sweets : %d\nExp : %d", player->GetMoney(), player->GetExp());
         
         label->setString(temp);
     }

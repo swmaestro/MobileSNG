@@ -17,8 +17,8 @@ GameSystem::GameSystem(const char* strDBFile, int & mapLevel)
     m_pInfoMgr->loadData(strDBFile);
     m_pMap      = new MapMgr(mapLevel);
     m_pNetwork  = new Network;
-    m_pUser     = new User;
-    m_pUser->UpdateData(m_pNetwork);
+    m_pPlayer     = new Player;
+    m_pPlayer->UpdateData(m_pNetwork);
 }
 
 GameSystem::~GameSystem()
@@ -26,7 +26,7 @@ GameSystem::~GameSystem()
     SAFE_DELETE(m_pInfoMgr);
     SAFE_DELETE(m_pMap);
     SAFE_DELETE(m_pNetwork);
-    SAFE_DELETE(m_pUser);
+    SAFE_DELETE(m_pPlayer);
 }
 
 //void GameSystem::Update(float fDelta)
@@ -59,13 +59,13 @@ ObjectInfo GameSystem::GetObjectInfo(ObjectInMap *pObj)
 {
     int type    = pObj->GetType();
     int id      = pObj->GetID();
-    
+
     if( type == OBJECT_TYPE_FIELD )
     {
         Field *pField = dynamic_cast<Field*>(pObj);
         return pField->GetCrop()->GetInfo().GetObjInfo();
     }
-    
+
     return GetObjectInfo(type, id);
 }
 
@@ -114,24 +114,24 @@ ObjectInfo GameSystem::GetObjectInfo(int type, int id)
 
 bool GameSystem::BuyObject(ObjectInMap *pObj)
 {
-    if(m_pUser->AddMoney(-GetCommonInfo(pObj)->GetPrice()) == false)
+    if(m_pPlayer->AddMoney(-GetCommonInfo(pObj)->GetPrice()) == false)
         return false;
     return true;
 }
 
 void GameSystem::SellObject(ObjectInMap *pObj)
 {
-    m_pUser->AddMoney(-GetCommonInfo(pObj)->GetPrice());
+    m_pPlayer->AddMoney(-GetCommonInfo(pObj)->GetPrice());
 }
 
 bool GameSystem::isUseObject(CommonInfo *pCommonInfo)
 {
-    return m_pUser->GetLevel() >= pCommonInfo->GetLevel();
+    return m_pPlayer->GetLevel() >= pCommonInfo->GetLevel();
 }
 
 bool GameSystem::isUseObject(ObjectInMap* pObj)
 {
-   return m_pUser->GetLevel() >= GetCommonInfo(pObj)->GetLevel();
+   return m_pPlayer->GetLevel() >= GetCommonInfo(pObj)->GetLevel();
 }
 
 bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
@@ -171,9 +171,9 @@ void GameSystem::AllHarvest()
 //    exp *= 1.5f;
 //    money *= 1.5f;
 //    
-//    m_pUser->AddMoney(money);
-//    m_pUser->AddExp(exp);
-//    m_pUser->AddCash(-(harvestNum * 100));
+//    m_pPlayer->AddMoney(money);
+//    m_pPlayer->AddExp(exp);
+//    m_pPlayer->AddCash(-(harvestNum * 100));
 }
 
 bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
@@ -182,7 +182,7 @@ bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
     char url[256];
 
     char id[32];
-    m_pUser->GetInfo(id, NULL, NULL);
+    m_pPlayer->GetInfo(id, NULL, NULL);
     
     sprintf(url, baseURL, id, gold, cash, exp);
     
@@ -211,7 +211,7 @@ void GameSystem::FastComplete(ObjectInMap *pObject)
     }
     
     if(_PostResourceInfo(0, 0, -100))
-        m_pUser->AddCash(-100);
+        m_pPlayer->AddCash(-100);
 }
 
 bool GameSystem::Harvest(ObjectInMap **ppObject)
@@ -233,8 +233,8 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
 
     if( _PostResourceInfo(reward, 0, exp) == false )   return false;
         
-    m_pUser->AddExp(exp);
-    m_pUser->AddMoney(reward);
+    m_pPlayer->AddExp(exp);
+    m_pPlayer->AddMoney(reward);
     
     if(type == OBJECT_TYPE_BUILDING)
     {

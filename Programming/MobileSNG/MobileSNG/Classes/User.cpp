@@ -2,155 +2,106 @@
 //  User.cpp
 //  MobileSNG
 //
-//  Created by 박 진 on 12. 8. 13..
+//  Created by 박 진 on 12. 8. 26..
 //
 //
 
 #include "User.h"
-#include "CCFileUtils.h"
-#include <stdlib.h>
-#include "Utility.h"
 #include "rapidxml.hpp"
+#include "Utility.h"
 
-using namespace cocos2d;
 using namespace std;
 using namespace rapidxml;
 
 User::User()
 {
-    m_strFilePath = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
-    
-    FILE *pFile = fopen(m_strFilePath.data(), "rb");
-    
-    if(pFile != NULL)
-    {
-        char txt[32];
-        
-        fscanf(pFile, "%s", txt);
-        m_strID = txt;
-        
-        fscanf(pFile, "%s", txt);
-        m_strPassWord = txt;
-        
-        fscanf(pFile, "%s", txt);
-        m_strPhoneNumber = txt;
-    }
-    
-    fclose(pFile);
+    m_pUserInfo = new UserInfo;
+}
+
+User::User(const char* userID, const char* userPhone) : m_pUserInfo(NULL)
+{
+    m_pUserInfo = new UserInfo(userID, userPhone);
 }
 
 User::~User()
 {
-    FILE *pFile = fopen(m_strFilePath.data(), "wb");
+    SAFE_DELETE(m_pUserInfo);
     
-    fprintf(pFile, "%s\n",m_strID.data());
-    fprintf(pFile, "%s\n",m_strPassWord.data());
-    fprintf(pFile, "%s\n",m_strPhoneNumber.data());
+    std::vector<VillageInfo*>::iterator iter;
     
-    fclose(pFile);
+    for(iter = m_vFollowing.begin(); iter != m_vFollowing.end(); ++iter)
+        SAFE_DELETE((*iter));
+    for(iter = m_vFollowers.begin(); iter != m_vFollowers.end(); ++iter)
+        SAFE_DELETE((*iter));
 }
 
-bool User::hasFile()
+std::vector<VillageInfo*> User::_GetFriend(Network *pNet, const char *userID,FRIEND_GET_ENUM type)
 {
-    return isExistFile(CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME).data());
-}
+    std::vector<VillageInfo*> vFriend;
 
-void User::UpdateData(Network *pNetwork)
-{
-    const char *baseURL = "http://swmaestros-sng.appspot.com/villageinfo?id=%s";
+    if(pNet == NULL)                    return vFriend;
+    
+    const char *baseURL = "http://swmaestros-sng.appspot.com/friendinfo?id=%s&type=%d";
     char url[256];
-    sprintf(url, baseURL, m_strID.data());
-
+    sprintf(url, baseURL, userID, type);
+    
     CURL_DATA data;
-    if(pNetwork->connectHttp(url, &data) != CURLE_OK )
+    if(pNet->connectHttp(url, &data) != CURLE_OK)
     {
-        printf("%s <- User Update Error", __FUNCTION__);
-        return;
+        printf("%s <- Error \n", __FUNCTION__);
+        return vFriend;
     }
     
     xml_document<char> xmlDoc;
     xmlDoc.parse<0>(data.pContent);
     
-    xml_node<char> *pNode = xmlDoc.first_node()->first_node()->next_sibling()->first_node()->next_sibling();
+    xml_node<char> *pRoot = xmlDoc.first_node()->first_node();
     
-    m_money = atoi(pNode->value());
-    pNode = pNode->next_sibling();
-    m_cash  = atoi(pNode->value());
-    pNode = pNode->next_sibling();
-    m_level = atoi(pNode->value());
-    pNode = pNode->next_sibling();
-    m_exp = (int)atof(pNode->value());
-}
-
-bool User::AddMoney(int n)
-{
-    if( (m_money + n) < 0 )
-        return false;
-
-    m_money += n;
-    return true;
-}
-
-void User::AddCash(int n)
-{
-    m_cash += n;
-}
-
-void User::AddExp(int n)
-{
-    m_exp+=n;
-    if( m_exp >= m_level*2 )
+    int count = atoi(pRoot->value());
+    
+    pRoot = pRoot->next_sibling();
+    
+    for(int i=0; i<count; ++i, pRoot = pRoot->next_sibling())
     {
-        ++m_level;
-        m_exp = 0;
+        xml_node<char> *pNode = pRoot->first_node();
+        VillageInfo *pVillage = new VillageInfo;
+        
+        pVillage->userID = pNode->value();
+        pNode = pNode->next_sibling();
+        pVillage->money = atoi(pNode->value());
+        pNode = pNode->next_sibling();
+        pVillage->cash = atoi(pNode->value());
+        pNode = pNode->next_sibling();
+        pVillage->level = atoi(pNode->value());
+        pNode = pNode->next_sibling();
+        pVillage->exp = atoi(pNode->value());
+        
+        vFriend.push_back(pVillage);
     }
-}
-
-int User::GetLevel()
-{
-    return m_level;
-}
-
-int User::GetMoney()
-{
-    return m_money;
-}
-
-int User::GetCash()
-{
-    return m_cash;
-}
-
-int User::GetExp()
-{
-    return m_exp;
-}
-
-int User::GetMaximum()
-{
-    return m_level * 2;
-}
-
-void User::newUser(const char *userID, const char *userPW, const char *userPhone)
-{
-    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
-    FILE *pFile = fopen(path.data(), "wb");
     
-    fprintf(pFile, "%s\n",userID);
-    fprintf(pFile, "%s\n",userPW);
-    fprintf(pFile, "%s",userPhone);
-    
-    fclose(pFile);
+    return vFriend;
+}
+ 
+std::vector<VillageInfo*> User::GetFollowing(Network *pNet, const char *userID)
+{
+    if(m_vFollowing.size() != 0) return m_vFollowing;
+    if(userID == NULL) userID = m_pUserInfo->userID.data();
+    return _GetFriend(pNet, userID, FRIEND_ENUM_FOLLOWING);
 }
 
-void User::GetInfo(char *pOutID, char *pOutPW, char *pOutPhone)
+std::vector<VillageInfo*> User::GetFollowers(Network *pNet, const char *userID)
 {
-    std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(USER_FILE_NAME);
-    FILE *pFile = fopen(path.data(), "rb");
-    
-    if(pOutID)      fscanf(pFile, "%s", pOutID);
-    if(pOutPW)      fscanf(pFile, "%s", pOutPW);
-    if(pOutPhone)   fscanf(pFile, "%s", pOutPhone);
+    if(m_vFollowers.size() != 0) return m_vFollowers;
+    if(userID == NULL) userID = m_pUserInfo->userID.data();
+    return _GetFriend(pNet, userID, FRIEND_ENUM_FOLLOWERS);
+}
 
-    fclose(pFile);
+void User::setUserInfo(UserInfo user)
+{
+    *m_pUserInfo = user;
+}
+
+const char* User::GetUserID()
+{
+    return m_pUserInfo->userID.data();
 }

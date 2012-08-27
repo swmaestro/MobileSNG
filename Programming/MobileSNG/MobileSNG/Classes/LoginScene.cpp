@@ -7,7 +7,7 @@
 //
 
 #include "LoginScene.h"
-#include "User.h"
+#include "Player.h"
 #include "GameScene.h"
 #include "rapidxml.hpp"
 #include "SystemInfo.h"
@@ -62,12 +62,12 @@ bool LoginScene::init()
     m_pJoin     = new Join(m_pNet);
     m_pLogin    = new Login(m_pNet);
 
-    if(User::hasFile())
+    if(Player::hasFile())
     {
         char id[32];
         char pw[32];
         
-        User::GetInfo(id, pw, NULL);
+        Player::GetInfo(id, pw, NULL);
         if(m_pLogin->Logon(id, pw))
         {
             _NextScene();
@@ -125,7 +125,7 @@ void LoginScene::_btJoin(CCObject *pSender)
         _btChangeUI(NULL);
     }
     else
-        CCMessageBox("Fail", "Fail");
+        CCMessageBox("Join Fail", "Join Fail");
     
     m_pJoinUI->AllClear();
 }
@@ -137,7 +137,7 @@ void LoginScene::_btRepetition(CCObject *pSender)
     const char *id = m_pJoinUI->GetID();
     
     if(m_pJoin->CheckOverlapID(id))
-        CCMessageBox("Repetition", "Repetition");
+        CCMessageBox("아이디가 이미 존재합니다", "Error");
 }
 
 void LoginScene::_btCancel(CCObject *pSender)
@@ -193,13 +193,17 @@ void LoginScene::_btLogin(CCObject *pSender)
         
         phoneNum = phone;
         
-        User::newUser(userID, userPW, phone);
+        Player::newPlayer(userID, userPW, phone);
         
         printf("Login Success \n");
+        CCMessageBox("Login Success!", "Login");
         _NextScene();
     }
     else
+    {
         printf("Login Fail \n");
+        CCMessageBox("Login Fail", "Login Fail");
+    }
 }
 
 void LoginScene::_btChangeUI(CCObject *pSender)

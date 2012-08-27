@@ -11,7 +11,7 @@
 #include "ObjectInfoMgr.h"
 #include "MapMgr.h"
 #include "Network.h"
-#include "User.h"
+#include "Player.h"
 #include <string>
 
 struct HARVEST_QUEUE {
@@ -42,7 +42,7 @@ private:
     ObjectInfoMgr                   *m_pInfoMgr;
     MapMgr                          *m_pMap;
     Network                         *m_pNetwork;
-    User                            *m_pUser;
+    Player                          *m_pPlayer;
     
 public:
     GameSystem(const char* strDBFile, int & mapLevel);
@@ -76,5 +76,5 @@ public:
 public:
     inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }
     inline MapMgr*          GetMapMgr()     { return m_pMap;     }
-    inline User*            GetUser()       { return m_pUser;    }
+    inline Player*            GetPlayer()       { return m_pPlayer;    }
 };
