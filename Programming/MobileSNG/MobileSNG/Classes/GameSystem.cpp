@@ -15,7 +15,7 @@ GameSystem::GameSystem(const char* strDBFile, int & mapLevel)
 {
     m_pInfoMgr  = new ObjectInfoMgr();
     m_pInfoMgr->loadData(strDBFile);
-    m_pMap      = new MapMgr(mapLevel);
+    m_pMap      = new MapMgr(mapLevel, NULL);
     m_pNetwork  = new Network;
     m_pPlayer     = new Player;
     m_pPlayer->UpdateData(m_pNetwork);
@@ -182,7 +182,7 @@ bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
     char url[256];
 
     char id[32];
-    m_pPlayer->GetInfo(id, NULL, NULL);
+    m_pPlayer->GetInfo(id, NULL, NULL, NULL);
     
     sprintf(url, baseURL, id, gold, cash, exp);
     
@@ -250,4 +250,15 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     }
     
     return true;
+}
+
+bool GameSystem::addCrop(Field *pField, int id, int time)
+{
+    //임시로. 일단 네트워크 작업 내일이나 곧 하겠지만말야 껄껄ㄲ럮러
+    return m_pMap->addCrop(pField, id, time, m_pInfoMgr);
+}
+
+void GameSystem::removeCrop(Field *pField)
+{
+    m_pMap->removeCrop(pField);
 }

@@ -32,7 +32,7 @@ Social::~Social()
 
 void Social::Push(UserInfo *pUserInfo)
 {
-    User *pUser = new User(pUserInfo->userID.data(), pUserInfo->userPhone.data());
+    User *pUser = new User(pUserInfo->userID.data(), pUserInfo->userPhone.data(), pUserInfo->userDate.data());
     m_vUsers.push(pUser);
 }
 
@@ -84,7 +84,7 @@ bool Social::FindUser(const char* p, UserInfo *pOut, USER_SEARCH_ENUM e)
     pNode = pNode->next_sibling();
     pOut->userPhone = pNode->value();
     pNode = pNode->next_sibling();
-//    pOut->userDate = pNode->value();
+    pOut->userDate = pNode->value();
 //    pNode = pNode->next_sibling();
     
     return true;
@@ -175,6 +175,7 @@ bool Social::RandomUser(UserInfo *pOut)
         pNode = pNode->next_sibling();
         pOut->userPhone = pNode->value();
         pNode = pNode->next_sibling();
+        pOut->userDate = pNode->value();
         
         return true;
     }

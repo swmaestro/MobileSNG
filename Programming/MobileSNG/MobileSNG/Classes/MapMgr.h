@@ -11,6 +11,7 @@
 #include "Field.h"
 #include "Ornament.h"
 #include "Building.h"
+#include "ObjectIndexMgr.h"
 #include <vector>
 
 class MapMgr
@@ -18,9 +19,10 @@ class MapMgr
 private:
     std::vector<ObjectInMap*>           m_vObjects;
     int                                &m_mapLevel;
+    ObjectIndexMgr                      *m_pObjIdxMgr;
     
 public:  
-    MapMgr(int &mapLevel);
+    MapMgr(int &mapLevel, ObjectIndexMgr *pObjIdxMgr);
     ~MapMgr();
     
 private:
@@ -32,11 +34,10 @@ public:
     bool        moveObject(POINT<int> &pos, ObjectInMap *obj2);
     
 public:
-//    bool        addCrop(Field *pField, int id, int time);
-//    void        removeCrop(Field *pField);
+    bool        addCrop(Field *pField, int id, int time, ObjectInfoMgr *pInfoMgr);
+    void        removeCrop(Field *pField);
     
 public:
-    void        removeObject(int index);
     void        removeObject(ObjectInMap *pObj);
     void        removeObject(POINT<int> &pos);
     void        removeObjects(POINT<int> &pos, SIZE<int> &size);

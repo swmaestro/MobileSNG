@@ -53,6 +53,6 @@ public:
     
 public:
     static bool hasFile();
-    static void newPlayer(const char *PlayerID, const char *PlayerPW, const char *PlayerPhone);
-    static void GetInfo(char *pOutID, char *pOutPW, char *pOutPhone);
+    static void newPlayer(const char *PlayerID, const char *PlayerPW, const char *PlayerPhone, char *PlayerDate);
+    static void GetInfo(char *pOutID, char *pOutPW, char *pOutPhone, char *pOutDate);
 };

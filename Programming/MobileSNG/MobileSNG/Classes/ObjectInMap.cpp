@@ -8,7 +8,7 @@
 
 #include "ObjectInMap.h"
 
-ObjectInMap::ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id)
+ObjectInMap::ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id) : m_index(-1)
 {
     m_state         = state;
     m_position      = position;
@@ -88,4 +88,14 @@ objectState ObjectInMap::GetState()
 bool ObjectInMap::isDone()
 {
     return false;
+}
+
+void ObjectInMap::SetIndex(int i)
+{
+    m_index = i;
+}
+
+int ObjectInMap::GetIndex()
+{
+    return m_index;
 }

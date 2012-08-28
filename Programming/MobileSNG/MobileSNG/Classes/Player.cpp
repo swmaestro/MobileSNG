@@ -25,17 +25,19 @@ Player::Player()
     m_pUserInfo         = new UserInfo;
     m_pVillageInfo      = new VillageInfo;
     
-    char id[32], pw[32], ph[11];
+    char id[32], pw[32], ph[11], date[30];
     
     if(pFile != NULL)
     {
         fscanf(pFile, "%s", id);
         fscanf(pFile, "%s", pw);
         fscanf(pFile, "%s", ph);
+        fscanf(pFile, "%s", date);
         
         m_strPassWord = pw;
         m_pUserInfo->userPhone = ph;
         m_pUserInfo->userID = id;
+        m_pUserInfo->userDate = date;
     }
     
     fclose(pFile);
@@ -51,6 +53,7 @@ Player::~Player()
     fprintf(pFile, "%s\n",m_pUserInfo->userID.data());
     fprintf(pFile, "%s\n",m_strPassWord.data());
     fprintf(pFile, "%s\n",m_pUserInfo->userPhone.data());
+    fprintf(pFile, "%s\n",m_pUserInfo->userDate.data());
     
     fclose(pFile);
     
@@ -139,8 +142,26 @@ bool Player::addFollowing(User *pPlayer, Network *pNet)
 
 bool Player::removeFollowing(User *pPlayer, Network *pNet)
 {
+    const char *baseURL = "http://swmaestros-sng.appspot.com/frienddelete?id=%s&friend=%s";
+    char url[128];
+    sprintf(url, baseURL, m_pUserInfo->userID.data(), pPlayer->GetUserID());
     
-    return false;
+    CURL_DATA data;
+    if( pNet->connectHttp(url, &data) != CURLE_OK)
+    {
+        printf("%s <- Error\n", __FUNCTION__);
+        return false;
+    }
+    
+    xml_document<char> xmlDoc;
+    xmlDoc.parse<0>(data.pContent);
+    
+    xml_node<char> *pNode = xmlDoc.first_node()->first_node();
+    
+    if(strcmp(pNode->value(), "true") != 0)
+        return false;
+    
+    return true;
 }
 
 int Player::GetLevel()
@@ -163,19 +184,20 @@ int Player::GetMinumExp()
     return m_pVillageInfo->GetMaximumExp();
 }
 
-void Player::newPlayer(const char *PlayerID, const char *PlayerPW, const char *PlayerPhone)
+void Player::newPlayer(const char *PlayerID, const char *PlayerPW, const char *PlayerPhone, char *PlayerDate)
 {
     std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(PLAYER_FILE_NAME);
     FILE *pFile = fopen(path.data(), "wb");
     
     fprintf(pFile, "%s\n",PlayerID);
     fprintf(pFile, "%s\n",PlayerPW);
-    fprintf(pFile, "%s",PlayerPhone);
+    fprintf(pFile, "%s\n",PlayerPhone);
+    fprintf(pFile, "%s", PlayerDate);
     
     fclose(pFile);
 }
 
-void Player::GetInfo(char *pOutID, char *pOutPW, char *pOutPhone)
+void Player::GetInfo(char *pOutID, char *pOutPW, char *pOutPhone, char *pOutDate)
 {
     std::string path = CCFileUtils::sharedFileUtils()->getWriteablePath().append(PLAYER_FILE_NAME);
     FILE *pFile = fopen(path.data(), "rb");
@@ -183,6 +205,7 @@ void Player::GetInfo(char *pOutID, char *pOutPW, char *pOutPhone)
     if(pOutID)      fscanf(pFile, "%s", pOutID);
     if(pOutPW)      fscanf(pFile, "%s", pOutPW);
     if(pOutPhone)   fscanf(pFile, "%s", pOutPhone);
+    if(pOutDate)    fscanf(pFile, "%s", pOutDate);
 
     fclose(pFile);
 }

@@ -12,6 +12,7 @@
 #include "MapMgr.h"
 #include "Network.h"
 #include "Player.h"
+#include "ObjectIndexMgr.h"
 #include <string>
 
 struct HARVEST_QUEUE {
@@ -66,6 +67,10 @@ public:
 public:
     bool    BuyObject(ObjectInMap *pObj);
     void    SellObject(ObjectInMap *pObj);
+    
+public:
+    bool        addCrop(Field *pField, int id, int time);
+    void        removeCrop(Field *pField);
     
 public:
     bool Harvest(POINT<int> &pos, ObjectInMap **ppOut);

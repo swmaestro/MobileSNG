@@ -10,9 +10,9 @@
 
 using namespace std;
 
-MapMgr::MapMgr(int & mapLevel) : m_mapLevel(mapLevel)
+MapMgr::MapMgr(int & mapLevel, ObjectIndexMgr *pObjIdxMgr) : m_mapLevel(mapLevel)
 {
-    
+    m_pObjIdxMgr = pObjIdxMgr;
 }
 
 MapMgr::~MapMgr()
@@ -48,20 +48,29 @@ ObjectInMap* MapMgr::_CreateObject(ObjectInMap *pObject, ObjectInfoMgr *pInfoMgr
     return object;
 }
 
-//bool MapMgr::addCrop(Field *pField, int id, int time)
-//{
-//    if( pField->isEmpty() )
-//        return false;
-//    
-//    pField->addCrop(id, time);
-//    
-//    return true;
-//}
-//
-//void MapMgr::removeCrop(Field *pField)
-//{
-//    pField->removeCrop();
-//}
+bool MapMgr::addCrop(Field *pField, int id, int time, ObjectInfoMgr *pInfoMgr)
+{
+    int idx = m_pObjIdxMgr->cropIndex();
+    if(idx == -1) return false;
+
+    if(pField->addCrop(id, time, idx, pInfoMgr))
+    {
+        m_pObjIdxMgr->addCropIndex(idx);
+        return true;
+    }
+    
+    return false;
+}
+
+void MapMgr::removeCrop(Field *pField)
+{
+    Crop *pCrop = pField->GetCrop();
+    int index;
+    if(pCrop)   index = pCrop->GetIndex();
+    m_pObjIdxMgr->removeCropIndex(index);
+
+    pField->removeCrop();
+}
 /*
 void MapMgr::UpdateObjects(ObjectInfoMgr *pInfoMgr)
 {
@@ -74,13 +83,29 @@ void MapMgr::UpdateObjects(ObjectInfoMgr *pInfoMgr)
 bool MapMgr::addObject(ObjectInMap *pInfo, ObjectInfoMgr *pInfoMgr, int time)
 {
     ObjectInMap *object;
+    int idx;
 
     if( (object = _CreateObject(pInfo, pInfoMgr, time)) == NULL )
     {
-        printf("%s <- CreateObject Error, Can't alloc", __FUNCTION__);
+        printf("%s <- CreateObject Error, Can't alloc\n", __FUNCTION__);
         return false;
     }
     
+    if(object->GetType() == OBJECT_TYPE_BUILDING)
+    {
+        idx = m_pObjIdxMgr->buildingIndex();
+
+        if(idx == -1)
+        {
+            printf("%s <- Index Full\n", __FUNCTION__);
+            delete object;
+            return false;
+        }
+
+        object->SetIndex(idx);
+    }
+    
+    m_pObjIdxMgr->addBuildingIndex(idx);
     m_vObjects.push_back(object);
     
     return true;
@@ -159,11 +184,6 @@ bool MapMgr::moveObject(POINT<int> &pos, ObjectInMap *obj2)
 }
 
 #pragma mark Remove
-
-void MapMgr::removeObject(int index)
-{
-    m_vObjects.erase(m_vObjects.begin() + index);
-}
 
 void MapMgr::removeObject(ObjectInMap *obj)
 {

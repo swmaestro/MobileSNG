@@ -27,7 +27,7 @@ protected:
     
 public:
     User();
-    User(const char* userID, const char* userPhone);
+    User(const char* userID, const char* userPhone, const char* userDate);
     ~User();
     
 private:

@@ -67,7 +67,7 @@ bool LoginScene::init()
         char id[32];
         char pw[32];
         
-        Player::GetInfo(id, pw, NULL);
+        Player::GetInfo(id, pw, NULL, NULL);
         if(m_pLogin->Logon(id, pw))
         {
             _NextScene();
@@ -145,7 +145,7 @@ void LoginScene::_btCancel(CCObject *pSender)
     CCLOG(__FUNCTION__);
 }
 
-bool LoginScene::_GetUserInfo(char *userID, char **ppoutID, char **ppoutPhone)
+bool LoginScene::_GetUserInfo(char *userID, char **ppoutID, char **ppoutPhone, char **ppOutDate)
 {
     static const char *baseURL = "http://swmaestros-sng.appspot.com/searchmember?id=%s";
     
@@ -170,6 +170,8 @@ bool LoginScene::_GetUserInfo(char *userID, char **ppoutID, char **ppoutPhone)
     if(ppoutID)     *ppoutID = pNode->first_node()->value();
     pNode = pNode->next_sibling();
     if(ppoutPhone)  *ppoutPhone = pNode->value();
+    pNode = pNode->next_sibling();
+    if(ppOutDate)   *ppOutDate = pNode->value();
     
     return true;
 }
@@ -187,13 +189,14 @@ void LoginScene::_btLogin(CCObject *pSender)
     if(m_pLogin->Logon(userID, userPW))
     {
         char *phone;
+        char *date;
         std::string phoneNum;
         
-        _GetUserInfo(const_cast<char*>(userID), NULL, &phone);
+        _GetUserInfo(const_cast<char*>(userID), NULL, &phone, &date);
         
         phoneNum = phone;
         
-        Player::newPlayer(userID, userPW, phone);
+        Player::newPlayer(userID, userPW, phone, date);
         
         printf("Login Success \n");
         CCMessageBox("Login Success!", "Login");

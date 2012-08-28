@@ -26,10 +26,11 @@ private:
     int                     m_id;
     objectState             m_state;
     Timer                   *m_pTimer;
+    int                     m_index;
     CropInfo               *m_pInfo;
     
 public:
-    Crop(int id, int time, ObjectInfoMgr *pInfoMgr);
+    Crop(int id, int time, int index, ObjectInfoMgr *pInfoMgr);
     ~Crop();
     
 public:
@@ -40,4 +41,5 @@ public:
     int         GetID();
     Timer*      GetTimer();
     CropInfo    GetInfo();
+    int         GetIndex();
 };

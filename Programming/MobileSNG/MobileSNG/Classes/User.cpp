@@ -18,9 +18,9 @@ User::User()
     m_pUserInfo = new UserInfo;
 }
 
-User::User(const char* userID, const char* userPhone) : m_pUserInfo(NULL)
+User::User(const char* userID, const char* userPhone, const char* userDate) : m_pUserInfo(NULL)
 {
-    m_pUserInfo = new UserInfo(userID, userPhone);
+    m_pUserInfo = new UserInfo(userID, userPhone, userDate);
 }
 
 User::~User()

@@ -38,7 +38,7 @@ public:
     static cocos2d::CCScene* scene();
     
 private:
-    bool _GetUserInfo(char *userID, char **ppoutID, char **ppoutPhone);
+    bool _GetUserInfo(char *userID, char **ppoutID, char **ppoutPhone, char **ppOutDate);
     
 private:
     void _btRepetition(CCObject *pSender);
