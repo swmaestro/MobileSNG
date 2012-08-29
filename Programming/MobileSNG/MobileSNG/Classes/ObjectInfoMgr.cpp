@@ -52,9 +52,13 @@ bool ObjectInfoMgr::_loadBuilding(Sqlite3Base *pDBBase)
         int size                = pDBBase->GetInt(7);
 
         ObjectInfo  obj     (_getTime(pDBBase->GetInt(6)), pDBBase->GetInt(4), pDBBase->GetInt(9), pDBBase->GetInt(10));
-        CommonInfo  common  (pDBBase->GetInt(1), pDBBase->GetTxt(2), pDBBase->GetInt(3), pDBBase->GetInt(8), pDBBase->GetInt(0));
+        CommonInfo  common  (pDBBase->GetInt(1), pDBBase->GetTxt(2), pDBBase->GetInt(3), pDBBase->GetInt(8), pDBBase->GetInt(0), pDBBase->GetInt(11));
         
-        BuildingInfo *pInfo = new BuildingInfo(obj, common, SIZE<int>(size/100, size%100), _getTime(pDBBase->GetInt(5)));
+        BuildingInfo *pInfo = new BuildingInfo(obj, common, SIZE<int>(size/1000, size%1000), _getTime(pDBBase->GetInt(5)));
+        
+        //WWWHHH
+        //123456
+        //SIZE / 1000
         
         pair<const char*, BuildingInfo*> p;
         p.first     = pInfo->GetName().data();
@@ -80,7 +84,7 @@ bool ObjectInfoMgr::_loadCrop(Sqlite3Base *pDBBase)
     do
     {
         ObjectInfo obj          (_getTime(pDBBase->GetInt(5)), pDBBase->GetInt(4), pDBBase->GetInt(7), pDBBase->GetInt(8));
-        CommonInfo common       (pDBBase->GetInt(1), pDBBase->GetTxt(2), pDBBase->GetInt(3), pDBBase->GetInt(6), pDBBase->GetInt(0));
+        CommonInfo common       (pDBBase->GetInt(1), pDBBase->GetTxt(2), pDBBase->GetInt(3), pDBBase->GetInt(6), pDBBase->GetInt(0), pDBBase->GetInt(9));
         
         
         CropInfo *pInfo = new CropInfo(obj, common);
@@ -110,7 +114,7 @@ bool ObjectInfoMgr::_loadOrnament(Sqlite3Base *pDBBase)
 
     do
     {
-        CommonInfo common(pDBBase->GetInt(1), pDBBase->GetTxt(2), pDBBase->GetInt(3), pDBBase->GetInt(4), pDBBase->GetInt(0));
+        CommonInfo common(pDBBase->GetInt(1), pDBBase->GetTxt(2), pDBBase->GetInt(3), pDBBase->GetInt(4), pDBBase->GetInt(0), 0);
         OrnamentInfo *pInfo = new OrnamentInfo(common);
         
         pair<const char*, OrnamentInfo*> p;
@@ -144,6 +148,7 @@ bool ObjectInfoMgr::loadData(const char *DBFileName)
 
 int ObjectInfoMgr::_getTime(int timeValue)
 {
+    //hhmmss
     int hour = timeValue/10000;
     int min = (timeValue - hour*10000)/100;
     int sec = timeValue%100;

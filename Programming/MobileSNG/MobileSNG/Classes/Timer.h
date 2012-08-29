@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "DataType.h"
 #include "ObjectInfoMgr.h"
 
 class Timer

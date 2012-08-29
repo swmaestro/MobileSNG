@@ -195,22 +195,22 @@ bool Social::RandomUser(VillageInfo *pOut)
     return FindVillageInfo(info.userID.data(), pOut);
 }
 
-std::vector<VillageInfo*> Social::CurrentUserFollowing()
+std::vector<VillageInfo*> Social::CurrentUserFollowing(int page)
 {
-    return m_vUsers.top()->GetFollowing(m_pNetwork);
+    return m_vUsers.top()->GetFollowing(m_pNetwork, page);
 }
 
-std::vector<VillageInfo*> Social::CurrentUserFollowers()
+std::vector<VillageInfo*> Social::CurrentUserFollowers(int page)
 {
-    return m_vUsers.top()->GetFollowers(m_pNetwork);
+    return m_vUsers.top()->GetFollowers(m_pNetwork, page);
 }
 
-std::vector<VillageInfo*> Social::GetFollowing(const char *userID)
+std::vector<VillageInfo*> Social::GetFollowing(const char *userID, int page)
 {
-    return m_vUsers.top()->GetFollowing(m_pNetwork, userID);
+    return m_vUsers.top()->GetFollowing(m_pNetwork, page, userID);
 }
 
-std::vector<VillageInfo*> Social::GetFollowers(const char *userID)
+std::vector<VillageInfo*> Social::GetFollowers(const char *userID, int page)
 {
-    return m_vUsers.top()->GetFollowers(m_pNetwork, userID);
+    return m_vUsers.top()->GetFollowers(m_pNetwork, page, userID);
 }

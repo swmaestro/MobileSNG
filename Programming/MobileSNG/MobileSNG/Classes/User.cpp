@@ -35,15 +35,15 @@ User::~User()
         SAFE_DELETE((*iter));
 }
 
-std::vector<VillageInfo*> User::_GetFriend(Network *pNet, const char *userID,FRIEND_GET_ENUM type)
+std::vector<VillageInfo*> User::_GetFriend(Network *pNet, int page, const char *userID,FRIEND_GET_ENUM type)
 {
     std::vector<VillageInfo*> vFriend;
 
     if(pNet == NULL)                    return vFriend;
     
-    const char *baseURL = "http://swmaestros-sng.appspot.com/friendinfo?id=%s&type=%d";
+    const char *baseURL = "http://swmaestros-sng.appspot.com/friendinfo?id=%s&type=%d&page=%d";
     char url[256];
-    sprintf(url, baseURL, userID, type);
+    sprintf(url, baseURL, userID, type, page);
     
     CURL_DATA data;
     if(pNet->connectHttp(url, &data) != CURLE_OK)
@@ -82,18 +82,18 @@ std::vector<VillageInfo*> User::_GetFriend(Network *pNet, const char *userID,FRI
     return vFriend;
 }
  
-std::vector<VillageInfo*> User::GetFollowing(Network *pNet, const char *userID)
+std::vector<VillageInfo*> User::GetFollowing(Network *pNet, int page, const char *userID)
 {
     if(m_vFollowing.size() != 0) return m_vFollowing;
     if(userID == NULL) userID = m_pUserInfo->userID.data();
-    return _GetFriend(pNet, userID, FRIEND_ENUM_FOLLOWING);
+    return _GetFriend(pNet, page, userID, FRIEND_ENUM_FOLLOWING);
 }
 
-std::vector<VillageInfo*> User::GetFollowers(Network *pNet, const char *userID)
+std::vector<VillageInfo*> User::GetFollowers(Network *pNet, int page, const char *userID)
 {
     if(m_vFollowers.size() != 0) return m_vFollowers;
     if(userID == NULL) userID = m_pUserInfo->userID.data();
-    return _GetFriend(pNet, userID, FRIEND_ENUM_FOLLOWERS);
+    return _GetFriend(pNet, page, userID, FRIEND_ENUM_FOLLOWERS);
 }
 
 void User::setUserInfo(UserInfo user)

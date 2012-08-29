@@ -31,14 +31,14 @@ public:
     ~User();
     
 private:
-    static std::vector<VillageInfo*> _GetFriend(Network *pNet, const char *userID, FRIEND_GET_ENUM type);
+    static std::vector<VillageInfo*> _GetFriend(Network *pNet, int page, const char *userID, FRIEND_GET_ENUM type);
 
 protected:
     void setUserInfo(UserInfo user);
 
 public:
-    std::vector<VillageInfo*> GetFollowing(Network *pNet, const char *userID = NULL);
-    std::vector<VillageInfo*> GetFollowers(Network *pNet, const char *userID = NULL);
+    std::vector<VillageInfo*> GetFollowing(Network *pNet, int page, const char *userID = NULL);
+    std::vector<VillageInfo*> GetFollowers(Network *pNet, int page, const char *userID = NULL);
     
 public:
     const char* GetUserID();

@@ -16,7 +16,7 @@ using namespace cocos2d;
 using namespace std;
 using namespace rapidxml;
 
-Player::Player()
+Player::Player(Network *pNetwork)
 {
     m_strFilePath = CCFileUtils::sharedFileUtils()->getWriteablePath().append(PLAYER_FILE_NAME);
     
@@ -43,6 +43,31 @@ Player::Player()
     fclose(pFile);
     
     m_pVillageInfo->userID = id;
+    
+    
+    const char *baseURL = "http://swmaestros-sng.appspot.com/villageinfo?id=%s";
+    char url[256];
+    sprintf(url, baseURL, m_pUserInfo->userID.data());
+    
+    CURL_DATA data;
+    if(pNetwork->connectHttp(url, &data) != CURLE_OK )
+    {
+        printf("%s <- Player Update Error", __FUNCTION__);
+        return;
+    }
+    
+    xml_document<char> xmlDoc;
+    xmlDoc.parse<0>(data.pContent);
+    
+    xml_node<char> *pNode = xmlDoc.first_node()->first_node()->next_sibling()->first_node()->next_sibling();
+    
+    m_pVillageInfo->money = atoi(pNode->value());
+    pNode = pNode->next_sibling();
+    m_pVillageInfo->cash  = atoi(pNode->value());
+    pNode = pNode->next_sibling();
+    m_pVillageInfo->level = atoi(pNode->value());
+    pNode = pNode->next_sibling();
+    m_pVillageInfo->exp = (int)atof(pNode->value());
 }
 
 Player::~Player()
@@ -63,33 +88,6 @@ Player::~Player()
 bool Player::hasFile()
 {
     return isExistFile(CCFileUtils::sharedFileUtils()->getWriteablePath().append(PLAYER_FILE_NAME).data());
-}
-
-void Player::UpdateData(Network *pNetwork)
-{
-    const char *baseURL = "http://swmaestros-sng.appspot.com/villageinfo?id=%s";
-    char url[256];
-    sprintf(url, baseURL, m_pUserInfo->userID.data());
-
-    CURL_DATA data;
-    if(pNetwork->connectHttp(url, &data) != CURLE_OK )
-    {
-        printf("%s <- Player Update Error", __FUNCTION__);
-        return;
-    }
-    
-    xml_document<char> xmlDoc;
-    xmlDoc.parse<0>(data.pContent);
-    
-    xml_node<char> *pNode = xmlDoc.first_node()->first_node()->next_sibling()->first_node()->next_sibling();
-    
-    m_pVillageInfo->money = atoi(pNode->value());
-    pNode = pNode->next_sibling();
-    m_pVillageInfo->cash  = atoi(pNode->value());
-    pNode = pNode->next_sibling();
-    m_pVillageInfo->level = atoi(pNode->value());
-    pNode = pNode->next_sibling();
-    m_pVillageInfo->exp = (int)atof(pNode->value());
 }
 
 bool Player::AddMoney(int n)

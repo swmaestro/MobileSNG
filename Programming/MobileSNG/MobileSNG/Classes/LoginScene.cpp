@@ -11,6 +11,7 @@
 #include "GameScene.h"
 #include "rapidxml.hpp"
 #include "SystemInfo.h"
+#include "Utility.h"
 
 using namespace cocos2d;
 

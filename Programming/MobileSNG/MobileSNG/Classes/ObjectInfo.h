@@ -14,7 +14,7 @@ private:
     int     m_time;
     int     m_reward;
     int     m_exp;
-    int     m_cash;
+    int     m_cashReward;
     
 public:
     ObjectInfo()
@@ -23,18 +23,18 @@ public:
         m_reward = 0;
     }
     
-    ObjectInfo(int _time, int _reward, int _exp, int _cash)
+    ObjectInfo(int _time, int _reward, int _exp, int _cashReward)
     {
         m_time        = _time;
         m_reward      = _reward;
         m_exp         = _exp;
-        m_cash        = _cash;
+        m_cashReward        = _cashReward;
     }
     
 public:
     inline int GetTime()    { return m_time;    }
     inline int GetReward()  { return m_reward;  }
     inline int GetExp()     { return m_exp;     }
-    inline int GetCash()    { return m_cash;    }
+    inline int GetCash()    { return m_cashReward;    }
 };
 

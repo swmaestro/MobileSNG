@@ -7,7 +7,6 @@
 //
 
 #include "JoinUI.h"
-#include "DataType.h"
 #include "Utility.h"
 #include <string>
 

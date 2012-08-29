@@ -66,13 +66,19 @@ bool Map::init(GameSystem * system)
 
 void Map::update(float dt)
 {
-    MapMgr * mapMgr = m_pSystem->GetMapMgr();
-    std::vector<ObjectInMap *> object = mapMgr->GetAllObject();
-    std::vector<ObjectInMap *>::iterator i;
-    
-    for (i = object.begin(); i != object.end(); ++i)
-        if ((*i)->UpdateSystem())
-            SyncPos(*i);
+//    MapMgr * mapMgr = m_pSystem->GetMapMgr();
+//    std::vector<ObjectInMap *> object = mapMgr->GetAllObject();
+//    std::vector<ObjectInMap *>::iterator i;
+//    
+//    for (i = object.begin(); i != object.end(); ++i)
+//        if ((*i)->UpdateSystem())
+//            SyncPos(*i);
+//    if(m_pSystem->UpdateMapObject())
+
+    ObjectInMap *pObj = NULL;
+
+    if(m_pSystem->UpdateMapObject(&pObj))
+        if(pObj) SyncPos(pObj);
 }
 
 void Map::SyncPos(ObjectInMap *oim)

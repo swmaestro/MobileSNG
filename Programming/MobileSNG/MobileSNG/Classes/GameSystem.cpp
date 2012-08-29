@@ -15,10 +15,10 @@ GameSystem::GameSystem(const char* strDBFile, int & mapLevel)
 {
     m_pInfoMgr  = new ObjectInfoMgr();
     m_pInfoMgr->loadData(strDBFile);
-    m_pMap      = new MapMgr(mapLevel, NULL);
     m_pNetwork  = new Network;
-    m_pPlayer     = new Player;
-    m_pPlayer->UpdateData(m_pNetwork);
+    m_pIdxMgr   = new ObjectIndexMgr;
+    m_pMap      = new MapMgr(mapLevel, m_pIdxMgr);
+    m_pPlayer     = new Player(m_pNetwork);
 }
 
 GameSystem::~GameSystem()
@@ -27,28 +27,8 @@ GameSystem::~GameSystem()
     SAFE_DELETE(m_pMap);
     SAFE_DELETE(m_pNetwork);
     SAFE_DELETE(m_pPlayer);
+    SAFE_DELETE(m_pIdxMgr);
 }
-
-//void GameSystem::Update(float fDelta)
-//{
-//    m_pMap->UpdateObjects(m_pInfoMgr);
-//
-//    if(m_qHarvest.empty()) return;
-//    
-//    CURLcode code;
-//    HARVEST_QUEUE *object = &(m_qHarvest.front());
-//        
-//    code = m_pNetwork->connectHttp(object->url.data(), &(object->data));
-//    
-//    if( code == CURLE_OK )
-//        m_qHarvest.pop();
-//    else
-//    {
-//        stdQueueAllClear(m_qHarvest);
-//        //실패하면 뭘 띄워주든가 해야하지 않냐
-//        //성공해도 뭘 해줘야할테고
-//    }
-//}
 
 CommonInfo* GameSystem::GetCommonInfo(ObjectInMap *pObj)
 {
@@ -252,13 +232,66 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     return true;
 }
 
+bool GameSystem::init()
+{
+    //아마 여기에 슬슬 서버연동이나 이런 선 작업들이 들어갈거야.
+    m_objectIter = m_pMap->GetAllObject().begin();
+    
+    return true;
+}
+
+bool GameSystem::UpdateMapObject(ObjectInMap **ppOut)
+{
+    if( m_objectIter == m_pMap->GetAllObject().end() )
+        m_objectIter = m_pMap->GetAllObject().begin();
+    else ++m_objectIter;
+    
+    *ppOut = (*m_objectIter);
+    
+    return (*m_objectIter)->UpdateSystem();
+}
+
+bool GameSystem::addObject(ObjectInMap *pObj, int time)
+{
+   return m_pMap->addObject(pObj, m_pInfoMgr, time);
+}
+
+bool GameSystem::moveObject(POINT<int> &pos, ObjectInMap *obj2)
+{
+    return m_pMap->moveObject(pos, obj2);
+}
+
 bool GameSystem::addCrop(Field *pField, int id, int time)
 {
-    //임시로. 일단 네트워크 작업 내일이나 곧 하겠지만말야 껄껄ㄲ럮러
     return m_pMap->addCrop(pField, id, time, m_pInfoMgr);
 }
 
 void GameSystem::removeCrop(Field *pField)
 {
     m_pMap->removeCrop(pField);
+}
+
+void GameSystem::removeObject(POINT<int> &pos)
+{
+    m_pMap->removeObject(pos);
+}
+
+bool GameSystem::isObjectInMap(POINT<int> pos)
+{
+    return m_pMap->isObjectInMap(pos);
+}
+
+bool GameSystem::isObjectInMap(POINT<int> pos, SIZE<int> size)
+{
+    return isObjectInMap(pos, size);
+}
+
+ObjectInMap* GameSystem::FindObject(POINT<int> pos)
+{
+    return m_pMap->FindObject(pos);
+}
+
+std::vector<ObjectInMap*> GameSystem::FindObjects(POINT<int> pos, SIZE<int> size)
+{
+    return FindObjects(pos, size);
 }

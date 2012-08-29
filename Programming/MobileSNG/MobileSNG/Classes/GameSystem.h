@@ -15,28 +15,6 @@
 #include "ObjectIndexMgr.h"
 #include <string>
 
-struct HARVEST_QUEUE {
-    std::string          url;
-    ObjectInMap         *pObject;
-    CURL_DATA            data;
-    
-    HARVEST_QUEUE()
-    {
-        pObject = NULL;
-    }
-
-    HARVEST_QUEUE(char *url, ObjectInMap *pObject)
-    {
-        this->pObject   = pObject;
-        this->url       = url;
-    }
-    
-    ~HARVEST_QUEUE()
-    {
-        free(data.pContent);
-    }
-};
-
 class GameSystem
 {
 private:
@@ -44,6 +22,10 @@ private:
     MapMgr                          *m_pMap;
     Network                         *m_pNetwork;
     Player                          *m_pPlayer;
+    ObjectIndexMgr                  *m_pIdxMgr;
+    
+private:
+    std::vector<ObjectInMap*>::iterator m_objectIter;
     
 public:
     GameSystem(const char* strDBFile, int & mapLevel);
@@ -69,17 +51,29 @@ public:
     void    SellObject(ObjectInMap *pObj);
     
 public:
-    bool        addCrop(Field *pField, int id, int time);
-    void        removeCrop(Field *pField);
-    
-public:
     bool Harvest(POINT<int> &pos, ObjectInMap **ppOut);
     bool Harvest(ObjectInMap **ppObject);
     void AllHarvest();
     void FastComplete(ObjectInMap *pObject);
     
 public:
+    bool init();
+    bool UpdateMapObject(ObjectInMap **ppOut);
+    
+public:
+    bool            addObject(ObjectInMap *pInfo, int time);
+    bool            moveObject(POINT<int> &pos, ObjectInMap *obj2);
+    bool            addCrop(Field *pField, int id, int time);
+    void            removeCrop(Field *pField);
+    void            removeObject(POINT<int> &pos);
+    bool            isObjectInMap(POINT<int> pos);
+    bool            isObjectInMap(POINT<int> pos, SIZE<int> size);
+
+    ObjectInMap*                FindObject(POINT<int> pos);
+    std::vector<ObjectInMap*>   FindObjects(POINT<int> pos, SIZE<int> size);
+    
+public:
     inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }
-    inline MapMgr*          GetMapMgr()     { return m_pMap;     }
-    inline Player*            GetPlayer()       { return m_pPlayer;    }
+//    inline MapMgr*          GetMapMgr()     { return m_pMap;     }
+    inline Player*          GetPlayer()     { return m_pPlayer;    }
 };

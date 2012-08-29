@@ -297,6 +297,7 @@
 		3C5C1B4115D2478E006E7C0B /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timer.h; path = Classes/Timer.h; sourceTree = "<group>"; };
 		3C72E20E15EC7BA00039D769 /* ObjectIndexMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ObjectIndexMgr.cpp; path = Classes/ObjectIndexMgr.cpp; sourceTree = "<group>"; };
 		3C72E20F15EC7BA00039D769 /* ObjectIndexMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectIndexMgr.h; path = Classes/ObjectIndexMgr.h; sourceTree = "<group>"; };
+		3C72E21115EE0BCF0039D769 /* DateInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DateInfo.h; path = Classes/DateInfo.h; sourceTree = "<group>"; };
 		3C9364B015B0FF6300860E6A /* MobileSNG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileSNG.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C9364B415B0FF6300860E6A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3C9364B615B0FF6300860E6A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -714,7 +715,6 @@
 		3C9CF91B15DE177900890B36 /* User.info */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = User.info; path = Resources/User.info; sourceTree = "<group>"; };
 		3CAB25A815B7D2070003DDE2 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		3CAB25C115B815230003DDE2 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AppDelegate.cpp; path = Classes/AppDelegate.cpp; sourceTree = "<group>"; };
-		3CAB286115BCF7580003DDE2 /* DataType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataType.h; path = Classes/DataType.h; sourceTree = "<group>"; };
 		3CAB286615BCF7580003DDE2 /* GameScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameScene.cpp; path = Classes/GameScene.cpp; sourceTree = "<group>"; };
 		3CAB286715BCF7580003DDE2 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameScene.h; path = Classes/GameScene.h; sourceTree = "<group>"; };
 		3CAB286815BCF7580003DDE2 /* UIMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIMgr.cpp; path = Classes/UIMgr.cpp; sourceTree = "<group>"; };
@@ -1029,7 +1029,7 @@
 				3CC4DA9A15E880EB007574F5 /* Social */,
 				3CC2A27D15E32A6700E4DB01 /* Login */,
 				3C9CF8C615DAB48700890B36 /* Join */,
-				3C9CF8B915DA34DE00890B36 /* System */,
+				3C9CF8B915DA34DE00890B36 /* SystemInfo */,
 				3C12F6CA15D7EA8100295503 /* User */,
 				3C12F6C715D7EA7200295503 /* GameSystem */,
 				C56307B815D53F3600E2BEF7 /* Sqlite3Base */,
@@ -1842,13 +1842,13 @@
 			path = MobileSNG;
 			sourceTree = "<group>";
 		};
-		3C9CF8B915DA34DE00890B36 /* System */ = {
+		3C9CF8B915DA34DE00890B36 /* SystemInfo */ = {
 			isa = PBXGroup;
 			children = (
 				3C9CF8BE15DA355400890B36 /* SystemInfo.cpp */,
 				3C9CF8BF15DA355400890B36 /* SystemInfo.h */,
 			);
-			name = System;
+			name = SystemInfo;
 			sourceTree = "<group>";
 		};
 		3C9CF8C115DA359000890B36 /* UI */ = {
@@ -1926,8 +1926,8 @@
 				3C9CF90815DD7B9600890B36 /* CropInfo.h */,
 				3C9CF90915DD7B9600890B36 /* ObjectInfo.h */,
 				3C9CF90A15DD7B9600890B36 /* OrnamentInfo.h */,
-				3CAB286115BCF7580003DDE2 /* DataType.h */,
 				3C9CF90B15DD7C9200890B36 /* Utility.h */,
+				3C72E21115EE0BCF0039D769 /* DateInfo.h */,
 			);
 			name = Document;
 			sourceTree = "<group>";

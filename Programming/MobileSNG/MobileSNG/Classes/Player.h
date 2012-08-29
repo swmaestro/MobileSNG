@@ -27,14 +27,11 @@ class Player : private User
 private:
     std::string     m_strFilePath;
     std::string     m_strPassWord;
-    VillageInfo  *m_pVillageInfo;
+    VillageInfo     *m_pVillageInfo;
     
 public:
-    Player();
+    Player(Network *pNetwork);
     ~Player();
-    
-public:
-    void UpdateData(Network *pNetwork);
 
 public:
     bool AddMoney(int n);

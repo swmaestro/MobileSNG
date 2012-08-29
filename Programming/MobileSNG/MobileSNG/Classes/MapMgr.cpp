@@ -12,7 +12,7 @@ using namespace std;
 
 MapMgr::MapMgr(int & mapLevel, ObjectIndexMgr *pObjIdxMgr) : m_mapLevel(mapLevel)
 {
-    m_pObjIdxMgr = pObjIdxMgr;
+    m_pObjIdxMgr    = pObjIdxMgr;
 }
 
 MapMgr::~MapMgr()
@@ -104,6 +104,7 @@ bool MapMgr::addObject(ObjectInMap *pInfo, ObjectInfoMgr *pInfoMgr, int time)
 
         object->SetIndex(idx);
     }
+    
     
     m_pObjIdxMgr->addBuildingIndex(idx);
     m_vObjects.push_back(object);

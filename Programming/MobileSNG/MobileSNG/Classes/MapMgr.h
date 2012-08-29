@@ -13,6 +13,7 @@
 #include "Building.h"
 #include "ObjectIndexMgr.h"
 #include <vector>
+#include "Network.h"
 
 class MapMgr
 {

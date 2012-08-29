@@ -44,9 +44,9 @@ public:
     bool RandomUser(VillageInfo *pOut);
     
 public:
-    std::vector<VillageInfo*> CurrentUserFollowing();
-    std::vector<VillageInfo*> CurrentUserFollowers();
+    std::vector<VillageInfo*> CurrentUserFollowing(int page);
+    std::vector<VillageInfo*> CurrentUserFollowers(int page);
     
-    std::vector<VillageInfo*> GetFollowing(const char *userID);
-    std::vector<VillageInfo*> GetFollowers(const char *userID);
+    std::vector<VillageInfo*> GetFollowing(const char *userID, int page);
+    std::vector<VillageInfo*> GetFollowers(const char *userID, int page);
 };
