@@ -20,10 +20,9 @@ class MapMgr
 private:
     std::vector<ObjectInMap*>           m_vObjects;
     int                                &m_mapLevel;
-    ObjectIndexMgr                      *m_pObjIdxMgr;
     
 public:  
-    MapMgr(int &mapLevel, ObjectIndexMgr *pObjIdxMgr);
+    MapMgr(int &mapLevel);
     ~MapMgr();
     
 private:
@@ -31,11 +30,11 @@ private:
     static ObjectInMap*    _CreateObject(ObjectInMap *obj, ObjectInfoMgr *pInfoMgr, int time = 0);
     
 public:
-    bool        addObject(ObjectInMap *pInfo, ObjectInfoMgr *pInfoMgr, int time);
-    bool        moveObject(POINT<int> &pos, ObjectInMap *obj2);
+    ObjectInMap*        addObject(ObjectInMap *pInfo, ObjectInfoMgr *pInfoMgr, int time);
+    bool        moveObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir);
     
 public:
-    bool        addCrop(Field *pField, int id, int time, ObjectInfoMgr *pInfoMgr);
+    Crop*        addCrop(Field *pField, int id, int time, int index, ObjectInfoMgr *pInfoMgr);
     void        removeCrop(Field *pField);
     
 public:
@@ -46,6 +45,7 @@ public:
 public:
     ObjectInMap*                FindObject(POINT<int> pos);
     std::vector<ObjectInMap*>   FindObjects(POINT<int> pos, SIZE<int> size);
+    ObjectInMap*                FindObjects(int index);
     bool                        isObjectInMap(POINT<int> pos);
     bool                        isObjectInMap(POINT<int> pos, SIZE<int> size);
     

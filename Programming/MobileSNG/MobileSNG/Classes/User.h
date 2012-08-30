@@ -39,7 +39,7 @@ protected:
 public:
     std::vector<VillageInfo*> GetFollowing(Network *pNet, int page, const char *userID = NULL);
     std::vector<VillageInfo*> GetFollowers(Network *pNet, int page, const char *userID = NULL);
-    
+
 public:
     const char* GetUserID();
 };

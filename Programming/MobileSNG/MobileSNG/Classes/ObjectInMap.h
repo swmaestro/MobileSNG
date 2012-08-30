@@ -43,8 +43,7 @@ public:
     POINT<int>              m_position;
     
 public:
-    ObjectInMap(
-                objectState      state      = -1,
+    ObjectInMap(objectState      state      = -1,
                 POINT<int>       position   = POINT<int>(0,0),
                 SIZE<int>        size       = SIZE<int>(0,0),
                 OBJECT_DIRECTION dir        = OBJECT_DIRECTION_LEFT,
@@ -73,4 +72,9 @@ public:
 public:
     void                    SetIndex(int i);
     int                     GetIndex();
+
+    inline void SetPosition(POINT<int> pos) { m_position = pos; }
+    inline POINT<int>              GetPosition() { return m_position; }
+    
+    void                    SetDirection(OBJECT_DIRECTION dir) { m_direction = dir; }
 };

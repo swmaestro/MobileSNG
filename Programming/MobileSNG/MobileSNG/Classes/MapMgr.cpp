@@ -10,9 +10,8 @@
 
 using namespace std;
 
-MapMgr::MapMgr(int & mapLevel, ObjectIndexMgr *pObjIdxMgr) : m_mapLevel(mapLevel)
+MapMgr::MapMgr(int & mapLevel) : m_mapLevel(mapLevel)
 {
-    m_pObjIdxMgr    = pObjIdxMgr;
 }
 
 MapMgr::~MapMgr()
@@ -48,28 +47,31 @@ ObjectInMap* MapMgr::_CreateObject(ObjectInMap *pObject, ObjectInfoMgr *pInfoMgr
     return object;
 }
 
-bool MapMgr::addCrop(Field *pField, int id, int time, ObjectInfoMgr *pInfoMgr)
+Crop* MapMgr::addCrop(Field *pField, int id, int time, int index, ObjectInfoMgr *pInfoMgr)
 {
-    int idx = m_pObjIdxMgr->cropIndex();
-    if(idx == -1) return false;
+//    int idx = m_pObjIdxMgr->cropIndex();
+//    if(idx == -1) return false;
 
-    if(pField->addCrop(id, time, idx, pInfoMgr))
-    {
-        m_pObjIdxMgr->addCropIndex(idx);
-        return true;
-    }
+//    if(pField->addCrop(id, time, idx, pInfoMgr))
+//    {
+////        m_pObjIdxMgr->addCropIndex(idx);
+//        return true;
+//    }
     
-    return false;
+    
+    
+    return pField->addCrop(id, time, index, pInfoMgr);
 }
 
 void MapMgr::removeCrop(Field *pField)
 {
-    Crop *pCrop = pField->GetCrop();
-    int index;
-    if(pCrop)   index = pCrop->GetIndex();
-    m_pObjIdxMgr->removeCropIndex(index);
+//    Crop *pCrop = pField->GetCrop();
+//    int index;
+//    if(pCrop)   index = pCrop->GetIndex();
+//    m_pObjIdxMgr->removeCropIndex(index);
 
-    pField->removeCrop();
+    if(pField->GetCrop())
+        pField->removeCrop();
 }
 /*
 void MapMgr::UpdateObjects(ObjectInfoMgr *pInfoMgr)
@@ -80,36 +82,36 @@ void MapMgr::UpdateObjects(ObjectInfoMgr *pInfoMgr)
         (*iter)->UpdateSystem(pInfoMgr);
 }
 */
-bool MapMgr::addObject(ObjectInMap *pInfo, ObjectInfoMgr *pInfoMgr, int time)
+ObjectInMap* MapMgr::addObject(ObjectInMap *pObj, ObjectInfoMgr *pInfoMgr, int time)
 {
     ObjectInMap *object;
-    int idx;
+//    int idx;
 
-    if( (object = _CreateObject(pInfo, pInfoMgr, time)) == NULL )
+    if( (object = _CreateObject(pObj, pInfoMgr, time)) == NULL )
     {
         printf("%s <- CreateObject Error, Can't alloc\n", __FUNCTION__);
         return false;
     }
     
-    if(object->GetType() == OBJECT_TYPE_BUILDING)
-    {
-        idx = m_pObjIdxMgr->buildingIndex();
+//    if(object->GetType() == OBJECT_TYPE_BUILDING)
+//    {
+//        idx = m_pObjIdxMgr->buildingIndex();
 
-        if(idx == -1)
-        {
-            printf("%s <- Index Full\n", __FUNCTION__);
-            delete object;
-            return false;
-        }
-
-        object->SetIndex(idx);
-    }
+//        if(idx == -1)
+//        {
+//            printf("%s <- Index Full\n", __FUNCTION__);
+//            delete object;
+//            return false;
+//        }
+//
+//        object->SetIndex(idx);
+//    }
     
     
-    m_pObjIdxMgr->addBuildingIndex(idx);
+//    m_pObjIdxMgr->addBuildingIndex(idx);
     m_vObjects.push_back(object);
     
-    return true;
+    return object;
 }
 
 bool MapMgr::isObjectInMap(POINT<int> pos)
@@ -165,7 +167,20 @@ vector<ObjectInMap*> MapMgr::FindObjects(POINT<int> pos, SIZE<int> size)
     return vObjects;
 }
 
-bool MapMgr::moveObject(POINT<int> &pos, ObjectInMap *obj2)
+ObjectInMap* MapMgr::FindObjects(int index)
+{
+    vector<ObjectInMap*>::iterator iter;
+    
+    for(iter = m_vObjects.begin(); iter != m_vObjects.end(); ++iter)
+    {
+        if((*iter)->GetIndex() == index)
+            return (*iter);
+    }
+    
+    return NULL;
+}
+
+bool MapMgr::moveObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir)
 {    
     vector<ObjectInMap*>::iterator iter;
     SIZE<int> size = obj2->GetSize();
@@ -180,6 +195,7 @@ bool MapMgr::moveObject(POINT<int> &pos, ObjectInMap *obj2)
     }
     
     obj2->m_position = pos;
+    obj2->SetDirection(dir);
     
     return true;
 }

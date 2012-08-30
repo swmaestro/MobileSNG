@@ -22,7 +22,7 @@ enum FRIEND_ENUM
     FRIEND_ENUM_PHONE
 };
 
-class Player : private User
+class Player : public User
 {
 private:
     std::string     m_strFilePath;

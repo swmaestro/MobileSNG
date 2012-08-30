@@ -24,7 +24,7 @@ public:
     bool UpdateSystem();
     
 public:
-    bool addCrop(int id, int time, int index, ObjectInfoMgr *pInfoMgr);
+    Crop* addCrop(int id, int time, int index, ObjectInfoMgr *pInfoMgr);
     void removeCrop();
 
 public:
