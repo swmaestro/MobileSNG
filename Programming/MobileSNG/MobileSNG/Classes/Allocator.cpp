@@ -86,8 +86,8 @@ void Allocator::Apply()
         {
             case OBJ_CROP:
                 {
-                    Field * f = dynamic_cast<Field *>(m_pSystem->GetMapMgr()->FindObject(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]))));
-                    f->addCrop(m_id, 0, m_pSystem->GetInfoMgr());
+                    Field * f = dynamic_cast<Field *>(m_pSystem->FindObject(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]))));
+                    m_pSystem->addCrop(f, m_id, 0);
                 }
                 
                 spr->setAnchorPoint(ccp(0.5, 0.3));
@@ -104,7 +104,7 @@ void Allocator::Apply()
                                       info->GetSize(), OBJECT_DIRECTION_LEFT, m_id);
                     
                     Building b(&oim, 0, m_pSystem->GetInfoMgr());
-                    m_pSystem->GetMapMgr()->addObject(&b, m_pSystem->GetInfoMgr(), 0);
+                    m_pSystem->addObject(&b, 0);
                 }
                 
                 tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);
@@ -115,7 +115,7 @@ void Allocator::Apply()
             
                 {
                     Field f(&oim);
-                    m_pSystem->GetMapMgr()->addObject(&f, m_pSystem->GetInfoMgr(), 0);
+                    m_pSystem->addObject(&f, 0);
                 }
                 
                 spr->setAnchorPoint(ccp(0.5, 0.3));
@@ -157,7 +157,7 @@ void Allocator::TouchesBegin(int i, int j)
         if (i > m_width / 2 - info->GetSize().width + 1 || j > m_width / 2 - info->GetSize().height + 1)
             return;
         
-        if (m_pSystem->GetMapMgr()->isObjectInMap(POINT<int>(i, j), info->GetSize()))
+        if (m_pSystem->isObjectInMap(POINT<int>(i, j), info->GetSize()))
             return;
         
         for (int t = 0; t < m_vec.size(); ++t)
@@ -169,10 +169,10 @@ void Allocator::TouchesBegin(int i, int j)
     {
         if (m_type == OBJ_CROP)
         {
-            if (!m_pSystem->GetMapMgr()->isObjectInMap(POINT<int>(i, j)))
+            if (!m_pSystem->isObjectInMap(POINT<int>(i, j)))
                 return;
             
-            ObjectInMap * obj = m_pSystem->GetMapMgr()->FindObject(POINT<int>(i, j));
+            ObjectInMap * obj = m_pSystem->FindObject(POINT<int>(i, j));
            
             if (obj->GetType() != OBJECT_TYPE_FIELD)
                 return;
@@ -181,7 +181,7 @@ void Allocator::TouchesBegin(int i, int j)
                 return;
         }
         else if (m_type == OBJ_FARM)
-            if (m_pSystem->GetMapMgr()->isObjectInMap(POINT<int>(i, j)))
+            if (m_pSystem->isObjectInMap(POINT<int>(i, j)))
                 return;
         
         for (int t = 0; t < m_vec.size(); ++t)
@@ -239,7 +239,7 @@ void Allocator::TouchesEnd()
         else
             info = m_pSystem->GetCommonInfo(OBJECT_TYPE_BUILDING, m_id);
         
-        m_pSystem->GetUser()->AddMoney(-info->GetPrice());
+        m_pSystem->GetPlayer()->AddMoney(-info->GetPrice());
         
         m_touch = NULL;
     }

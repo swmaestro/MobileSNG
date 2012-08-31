@@ -17,9 +17,11 @@ enum BUILDING_STATE
 {
     BUILDING_STATE_UNDER_CONSTRUCTION_1,
     BUILDING_STATE_UNDER_CONSTRUCTION_2,
-//    BUILDING_STATE_COMPLETE_CONSTRUCTION,
+    BUILDING_STATE_WAIT,
     BUILDING_STATE_WORKING,
-    BUILDING_STATE_DONE
+    BUILDING_STATE_DONE,
+    BUILDING_STATE_FAIL = 10,
+    BUILDING_STATE_OTEHR_WAIT
 };
 
 class Building : public ObjectInMap
@@ -29,11 +31,14 @@ private:
     
 private:
     Timer           *m_pTimer;
-    bool            m_isWorking;
     
 public:
     Building(ObjectInMap *pObject, int nowTime, ObjectInfoMgr *pInfoMgr);
     ~Building();
+    
+public:
+    bool DoWork();
+    bool CompleteWork();
     
 public:
     bool UpdateSystem();

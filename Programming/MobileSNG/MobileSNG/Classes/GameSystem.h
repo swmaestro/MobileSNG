@@ -11,30 +11,33 @@
 #include "ObjectInfoMgr.h"
 #include "MapMgr.h"
 #include "Network.h"
-#include "User.h"
+#include "Player.h"
+#include "ObjectIndexMgr.h"
+#include "DateInfo.h"
 #include <string>
+#include "rapidxml.hpp"
 
-struct HARVEST_QUEUE {
-    std::string          url;
-    ObjectInMap         *pObject;
-    CURL_DATA            data;
-    
-    HARVEST_QUEUE()
-    {
-        pObject = NULL;
-    }
-
-    HARVEST_QUEUE(char *url, ObjectInMap *pObject)
-    {
-        this->pObject   = pObject;
-        this->url       = url;
-    }
-    
-    ~HARVEST_QUEUE()
-    {
-        free(data.pContent);
-    }
+enum NETWORK_OBJECT {
+    NETWORK_OBJECT_CONSTRUCTION,
+    NETWORK_OBJECT_WAITTING,
+    NETWORK_OBJECT_WORKING,
+    NETWORK_OBJECT_DONE,
+    NETWORK_OBJECT_FAIL,
+    NETWORK_OBJECT_OTHER_WATTING
 };
+
+//struct RESOURCE {
+//    int exp;
+//    int money;
+//    int cash;
+//    
+//    RESOURCE(int exp = 0, int money = 0, int cash = 0)
+//    {
+//        this->exp   = exp;
+//        this->money = money;
+//        this->cash  = cash;
+//    }
+//};
 
 class GameSystem
 {
@@ -42,7 +45,11 @@ private:
     ObjectInfoMgr                   *m_pInfoMgr;
     MapMgr                          *m_pMap;
     Network                         *m_pNetwork;
-    User                            *m_pUser;
+    Player                          *m_pPlayer;
+    ObjectIndexMgr                  *m_pIdxMgr;
+    
+private:
+    std::vector<ObjectInMap*>::iterator m_objectIter;
     
 public:
     GameSystem(const char* strDBFile, int & mapLevel);
@@ -74,7 +81,37 @@ public:
     void FastComplete(ObjectInMap *pObject);
     
 public:
+    bool init();
+    bool UpdateMapObject(ObjectInMap **ppOut);
+
+private:
+    bool            _newObject(const char *userID, int objID, int index, POINT<int> position, OBJECT_DIRECTION dir);
+    bool            _networkNormalResult(rapidxml::xml_document<char> *pXMLDoc);
+    bool            _removeNetworkObject(const char *userID, int index);
+    std::vector< std::pair<ObjectInMap, long long int> > _parseObjectInVillage(const char* pContent);
+    bool        _getServerTime(DateInfo *pInfo);
+    void        _buildingWork(ObjectInMap *pObject);
+    
+    
+public:
+    bool            addObject(ObjectInMap *pObj, int time, int index = -1);
+    bool            moveObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir = OBJECT_DIRECTION_LEFT);
+    bool            addCrop(Field *pField, int id, int time, int index = -1);
+    void            removeCrop(Field *pField);
+    void            removeObject(POINT<int> &pos);
+    bool            isObjectInMap(POINT<int> pos);
+    bool            isObjectInMap(POINT<int> pos, SIZE<int> size);
+
+    ObjectInMap*                FindObject(POINT<int> pos);
+    std::vector<ObjectInMap*>   FindObjects(POINT<int> pos, SIZE<int> size);
+    
+    
+    
+public:
+    bool            UpdateVillageList(bool isUpdate = false);
+    
+public:
     inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }
-    inline MapMgr*          GetMapMgr()     { return m_pMap;     }
-    inline User*            GetUser()       { return m_pUser;    }
+//    inline MapMgr*          GetMapMgr()     { return m_pMap;     }
+    inline Player*          GetPlayer()     { return m_pPlayer;    }
 };

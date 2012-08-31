@@ -111,19 +111,6 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "367480042.807592"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "232"
-         endingLineNumber = "232"
-         landmarkName = "GameSystem::Harvest(ObjectInMap **ppObject)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/ObjectInfoMgr.cpp"
          timestampString = "367483396.078543"
          startingColumnNumber = "9223372036854775807"
@@ -137,14 +124,14 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "367487067.318731"
+         filePath = "MobileSNG/Classes/Friend.h"
+         timestampString = "367648257.730168"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "60"
-         endingLineNumber = "60"
-         landmarkName = "GameSystem::GetObjectInfo(ObjectInMap *pObj)"
-         landmarkType = "5">
+         startingLineNumber = "33"
+         endingLineNumber = "33"
+         landmarkName = "class Friend"
+         landmarkType = "3">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

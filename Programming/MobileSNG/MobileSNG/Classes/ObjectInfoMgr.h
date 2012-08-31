@@ -9,7 +9,9 @@
 #pragma once
 
 #include "sqlite/sqlite3.h"
-#include "DataType.h"
+#include "BuildingInfo.h"
+#include "OrnamentInfo.h"
+#include "CropInfo.h"
 #include <vector>
 #include <map>
 #include "Sqlite3Base.h"

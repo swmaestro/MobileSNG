@@ -10,7 +10,6 @@
 #define MobileSNG_Map_h
 
 #include "cocos2d.h"
-#include "DataType.h"
 
 class MapTile;
 class MapMgr;

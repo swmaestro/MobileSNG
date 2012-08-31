@@ -6,6 +6,7 @@
 #include "MapMgr.h"
 
 #include "Join.h"
+#include "DateInfo.h"
 
 using namespace cocos2d;
 
@@ -41,6 +42,12 @@ bool GameScene::init()
 
     m_pSystem = new GameSystem("ObjectDB.sqlite", m_width);
     
+    if(m_pSystem->init() == false)
+    {
+        SAFE_DELETE(m_pSystem);
+        return false;
+    }
+    
     if (!_initUIMgr())
         return false;
 
@@ -65,10 +72,10 @@ bool GameScene::init()
     m_pShopUI->setVisible(false);
     addChild(m_pShopUI, 0);
     
-    m_pFriendsUI = CCLayer::create();
-    m_pFriendsUI->addChild(m_pFriends, UILAYER_TOUCH_RECIEVER, UILAYER_TOUCH_RECIEVER);
-    m_pFriendsUI->setVisible(false);
-    addChild(m_pFriendsUI, 0);
+//    m_pFriendsUI = CCLayer::create();
+//    m_pFriendsUI->addChild(m_pFriends, UILAYER_TOUCH_RECIEVER, UILAYER_TOUCH_RECIEVER);
+//    m_pFriendsUI->setVisible(false);
+//    addChild(m_pFriendsUI, 0);
     
     setTouchEnabled(true);
     
@@ -89,10 +96,10 @@ void GameScene::update(float dt)
     
     if (label)
     {
-        User * user = m_pSystem->GetUser();
+        Player *player = m_pSystem->GetPlayer();
         
         char temp[100];
-        sprintf(temp, "Sweets : %d\nExp : %d", user->GetMoney(), user->GetExp());
+        sprintf(temp, "Sweets : %d\nExp : %d", player->GetMoney(), player->GetExp());
         
         label->setString(temp);
     }
@@ -172,8 +179,8 @@ bool GameScene::_initShop()
 
 bool GameScene::_initFriends()
 {
-    m_pFriends = new Friends();
-    m_pFriends->init();
+//    m_pFriends = new Friends();
+//    m_pFriends->init();
     
     return true;
 }
@@ -252,7 +259,7 @@ void GameScene::_flatFunc(CCObject *pSender)
 
 void GameScene::_editApplyFunc(CCObject *pSender)
 {
-    m_pMap->endEdit(m_pSystem->GetMapMgr());
+    m_pMap->endEdit(true);
     m_pUIMgr->ChangeUI(UI_MAP);
     _changeUI(m_pMapUI);
 }
