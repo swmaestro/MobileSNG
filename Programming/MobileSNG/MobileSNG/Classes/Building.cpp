@@ -34,19 +34,18 @@ bool Building::UpdateSystem()
         time = static_cast<float>(m_pInfo->GetBuildTime());
     else if( m_state == BUILDING_STATE_WORKING )
         time = static_cast<float>(m_pInfo->GetObjInfo().GetTime());
-
-    if( m_state < BUILDING_STATE_WAIT )
-        m_state = static_cast<float>(m_pTimer->GetTime()) / time * BUILDING_STATE_WAIT;
     
     if(m_pTimer->CheckTimer(time))
     {
-//        if (m_state < BUILDING_STATE_WAIT)
-//            m_state = BUILDING_STATE_WORKING;
+        if (m_state < BUILDING_STATE_WAIT)
+            m_state = BUILDING_STATE_WAIT;
         
         if(m_state == BUILDING_STATE_WORKING)
             m_state = BUILDING_STATE_DONE;
     }
 
+    if( m_state < BUILDING_STATE_WAIT )
+        m_state = static_cast<float>(m_pTimer->GetTime()) / time * BUILDING_STATE_WAIT;
     
     if( beforeState != m_state )
         return true;
@@ -68,5 +67,16 @@ bool Building::DoWork()
 {
     if(m_state != BUILDING_STATE_WAIT) return false;
     m_pTimer->StartTimer();
+    return true;
+}
+
+bool Building::CompleteWork()
+{
+    if(isDone() == false)
+        return false;
+    
+    m_state = BUILDING_STATE_WAIT;
+    m_pTimer->SetTime(0);
+    
     return true;
 }

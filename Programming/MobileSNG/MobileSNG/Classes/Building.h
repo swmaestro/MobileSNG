@@ -37,8 +37,11 @@ public:
     ~Building();
     
 public:
+    bool DoWork();
+    bool CompleteWork();
+    
+public:
     bool UpdateSystem();
     Timer* GetTimer();
     bool isDone();
-    bool DoWork();
 };

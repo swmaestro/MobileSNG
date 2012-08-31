@@ -176,23 +176,34 @@ bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
 
 void GameSystem::FastComplete(ObjectInMap *pObject)
 {
-    OBJECT_TYPE type = pObject->GetType();
+//    OBJECT_TYPE type = pObject->GetType();
+//    
+//    if( type == OBJECT_TYPE_BUILDING )
+//    {
+//        if(pObject->m_state == BUILDING_STATE_WORKING )
+//            pObject->m_state = BUILDING_STATE_DONE;
+//        else if(pObject->m_state <= BUILDING_STATE_UNDER_CONSTRUCTION_2)
+//            pObject->m_state = BUILDING_STATE_WORKING;
+//    }
+//    else if (type == OBJECT_TYPE_CROP )
+//    {
+//        if(pObject->m_state != CROP_STATE_DONE)
+//            pObject->m_state = CROP_STATE_DONE;
+//    }
+//    
+//    if(_PostResourceInfo(0, 0, -100))
+//        m_pPlayer->AddCash(-100);
+}
+
+void GameSystem::_buildingWork(ObjectInMap *pObject)
+{
+    Building        *pBuilding  = dynamic_cast<Building*>(pObject);
+    objectState      state      = pBuilding->GetState();
     
-    if( type == OBJECT_TYPE_BUILDING )
-    {
-        if(pObject->m_state == BUILDING_STATE_WORKING )
-            pObject->m_state = BUILDING_STATE_DONE;
-        else if(pObject->m_state <= BUILDING_STATE_UNDER_CONSTRUCTION_2)
-            pObject->m_state = BUILDING_STATE_WORKING;
-    }
-    else if (type == OBJECT_TYPE_CROP )
-    {
-        if(pObject->m_state != CROP_STATE_DONE)
-            pObject->m_state = CROP_STATE_DONE;
-    }
-    
-    if(_PostResourceInfo(0, 0, -100))
-        m_pPlayer->AddCash(-100);
+    if(state == BUILDING_STATE_WAIT)
+        pBuilding->DoWork();
+    else if( state == BUILDING_STATE_DONE)
+        pBuilding->CompleteWork();
 }
 
 bool GameSystem::Harvest(ObjectInMap **ppObject)
@@ -203,32 +214,23 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     OBJECT_TYPE type = (*ppObject)->GetType();
     
     if( type == OBJECT_TYPE_ORNAMENT ) return false;
-    if((*ppObject)->isDone() == false) return false;
 
-    //필드가 경험치를 가질리가 없잖아..
-    
-    ObjectInfo objInfo = GetObjectInfo((*ppObject));
-    
-    int     exp         = objInfo.GetExp();
-    int     reward      = objInfo.GetReward();
-
-    if( _PostResourceInfo(reward, 0, exp) == false )   return false;
-        
-    m_pPlayer->AddExp(exp);
-    m_pPlayer->AddMoney(reward);
-    
-    if(type == OBJECT_TYPE_BUILDING)
+    if((*ppObject)->isDone())
     {
-        Building * b = dynamic_cast<Building*>((*ppObject));
-        b->m_state = BUILDING_STATE_WORKING;
-        b->GetTimer()->StartTimer();
+        ObjectInfo objInfo = GetObjectInfo((*ppObject));
+
+        int     exp         = objInfo.GetExp();
+        int     reward      = objInfo.GetReward();
+
+        if( _PostResourceInfo(reward, 0, exp) == false )   return false;
+
+        m_pPlayer->AddExp(exp);
+        m_pPlayer->AddMoney(reward);
     }
     
-    else // type == object_type_crop
-    {
-        Field *pField = static_cast<Field*>((*ppObject));
-        pField->removeCrop();
-    }
+    if( type == OBJECT_TYPE_BUILDING )
+        _buildingWork((*ppObject));
+    else static_cast<Field*>((*ppObject))->removeCrop();
     
     return true;
 }

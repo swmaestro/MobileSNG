@@ -26,6 +26,19 @@ enum NETWORK_OBJECT {
     NETWORK_OBJECT_OTHER_WATTING
 };
 
+//struct RESOURCE {
+//    int exp;
+//    int money;
+//    int cash;
+//    
+//    RESOURCE(int exp = 0, int money = 0, int cash = 0)
+//    {
+//        this->exp   = exp;
+//        this->money = money;
+//        this->cash  = cash;
+//    }
+//};
+
 class GameSystem
 {
 private:
@@ -77,6 +90,8 @@ private:
     bool            _removeNetworkObject(const char *userID, int index);
     std::vector< std::pair<ObjectInMap, long long int> > _parseObjectInVillage(const char* pContent);
     bool        _getServerTime(DateInfo *pInfo);
+    void        _buildingWork(ObjectInMap *pObject);
+    
     
 public:
     bool            addObject(ObjectInMap *pObj, int time, int index = -1);

@@ -61,3 +61,8 @@ bool Timer::GetisUse()
 {
     return m_isUse;
 }
+
+void Timer::SetTime(int t)
+{
+    m_nowTime = t;
+}
