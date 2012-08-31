@@ -195,17 +195,6 @@ void GameSystem::FastComplete(ObjectInMap *pObject)
 //        m_pPlayer->AddCash(-100);
 }
 
-void GameSystem::_buildingWork(ObjectInMap *pObject)
-{
-    Building        *pBuilding  = dynamic_cast<Building*>(pObject);
-    objectState      state      = pBuilding->GetState();
-    
-    if(state == BUILDING_STATE_WAIT)
-        pBuilding->DoWork();
-    else if( state == BUILDING_STATE_DONE)
-        pBuilding->CompleteWork();
-}
-
 bool GameSystem::Harvest(ObjectInMap **ppObject)
 {    
     if( ppObject == NULL )
@@ -214,23 +203,29 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     OBJECT_TYPE type = (*ppObject)->GetType();
     
     if( type == OBJECT_TYPE_ORNAMENT ) return false;
+    if( (*ppObject)->isDone() == false) return false;
 
-    if((*ppObject)->isDone())
-    {
-        ObjectInfo objInfo = GetObjectInfo((*ppObject));
-
-        int     exp         = objInfo.GetExp();
-        int     reward      = objInfo.GetReward();
-
-        if( _PostResourceInfo(reward, 0, exp) == false )   return false;
-
-        m_pPlayer->AddExp(exp);
-        m_pPlayer->AddMoney(reward);
-    }
+    ObjectInfo objInfo = GetObjectInfo((*ppObject));
     
-    if( type == OBJECT_TYPE_BUILDING )
-        _buildingWork((*ppObject));
-    else static_cast<Field*>((*ppObject))->removeCrop();
+    int exp = objInfo.GetExp();
+    int reward = objInfo.GetReward();
+    
+    if(_PostResourceInfo(reward, 0, exp) == false) return false;
+    
+    m_pPlayer->AddExp(exp);
+    m_pPlayer->AddMoney(reward);
+    
+    if(type == OBJECT_TYPE_BUILDING)
+    {
+        Building *pBuilding = dynamic_cast<Building*>((*ppObject));
+        pBuilding->m_state = BUILDING_STATE_WORKING;
+        pBuilding->GetTimer()->StartTimer();
+    }
+    else
+    {
+        Field *pField = dynamic_cast<Field*>((*ppObject));
+        pField->removeCrop();
+    }
     
     return true;
 }
@@ -240,7 +235,7 @@ bool GameSystem::init()
     //아마 여기에 슬슬 서버연동이나 이런 선 작업들이 들어갈거야.
     m_objectIter = m_pMap->GetAllObject().begin();
     
-    if( UpdateVillageList() == false)
+    if( SetUpVillageList() == false)
         return false;
     
     return true;
@@ -248,11 +243,16 @@ bool GameSystem::init()
 
 bool GameSystem::UpdateMapObject(ObjectInMap **ppOut)
 {
-    if( m_objectIter == m_pMap->GetAllObject().end() )
-        m_objectIter = m_pMap->GetAllObject().begin();
-    else ++m_objectIter;
+    vector<ObjectInMap*>::iterator begin = m_pMap->GetAllObject().begin();
+    vector<ObjectInMap*>::iterator end   = m_pMap->GetAllObject().end();
     
-    *ppOut = (*m_objectIter);
+    if( m_pMap->GetAllObject().size() == 0 )
+        return false;
+    
+    if(m_objectIter == end)
+        m_objectIter++ = begin;
+    
+    *ppOut = *m_objectIter;
     
     return (*m_objectIter)->UpdateSystem();
 }
@@ -279,6 +279,8 @@ bool GameSystem::_newObject(const char *userID, int objID, int index, POINT<int>
     
     sprintf(url, baseURL, userID, objID, index, position.x, position.y, direction.data());
     
+    printf("%s\n", url);
+    
     CURL_DATA data;
     if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
     {
@@ -294,7 +296,8 @@ bool GameSystem::_newObject(const char *userID, int objID, int index, POINT<int>
 
 bool GameSystem::addObject(ObjectInMap *pObj, int time, int index)
 {    
-    if(pObj->GetType() == OBJECT_TYPE_CROP) return false;
+    if(pObj->GetType() == OBJECT_TYPE_CROP)
+        return false;
 
     if(index == -1)
     {
@@ -514,7 +517,6 @@ vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(con
             
             switch (state) {
                 case NETWORK_OBJECT_CONSTRUCTION:   state = BUILDING_STATE_UNDER_CONSTRUCTION_1;    break;
-                case NETWORK_OBJECT_WAITTING:       state = BUILDING_STATE_WAIT;                    break;
                 case NETWORK_OBJECT_WORKING:        state = BUILDING_STATE_WORKING;                 break;
                 case NETWORK_OBJECT_DONE:           state = BUILDING_STATE_DONE;                    break;
                 case NETWORK_OBJECT_FAIL:           state = BUILDING_STATE_FAIL;                    break;
@@ -543,8 +545,8 @@ vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(con
 
         long long int deltaTime = date.GetTimeValue(serverDate);
                 
-        ObjectInMap obj = ObjectInMap(state, pos, size, dir, id);
-        obj.SetIndex(index);
+        ObjectInMap obj = ObjectInMap(state, pos, size, dir, id, index);
+//        obj.SetIndex(index);
         
         pair<ObjectInMap, long long int> value(obj, deltaTime);
         v.push_back(value);
@@ -571,7 +573,7 @@ bool GameSystem::_getServerTime(DateInfo *pInfo)
     return true;
 }
 
-bool GameSystem::UpdateVillageList(bool isUpdate)
+bool GameSystem::SetUpVillageList(bool isUpdate)
 {
     const char *baseURL;
     
@@ -623,3 +625,7 @@ bool GameSystem::UpdateVillageList(bool isUpdate)
     return true;
 }
 
+void GameSystem::removeObject(ObjectInMap *pObj)
+{
+    m_pMap->removeObject(pObj);
+}

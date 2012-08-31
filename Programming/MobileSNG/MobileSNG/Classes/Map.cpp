@@ -75,7 +75,7 @@ void Map::update(float dt)
 //            SyncPos(*i);
 //    if(m_pSystem->UpdateMapObject())
 
-    ObjectInMap *pObj = NULL;
+    ObjectInMap *pObj;
 
     if(m_pSystem->UpdateMapObject(&pObj))
         if(pObj) SyncPos(pObj);
@@ -345,16 +345,16 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             
             if (m_pTalkbox->Touch(pTouch))
             {
-                MapMgr * mapmgr = m_pSystem->GetMapMgr();
+//                MapMgr * mapmgr = m_pSystem->GetMapMgr();
                 CCPoint p = m_pTalkbox->GetPos();
-                ObjectInMap * oim = mapmgr->FindObject(POINT<int>(p.x, p.y));
+                ObjectInMap * oim = m_pSystem->FindObject(POINT<int>(p.x, p.y));
                 CCNode * tile = m_pTile->getChildByTag(MAKEWORD(((int)p.x), ((int)p.y)));
                 
                 if (oim->GetType() == OBJECT_TYPE_FIELD && ((Field *)oim)->GetCrop() != NULL)
                     tile->removeChildByTag(TILE_CROP, true);
                 tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
                 
-                mapmgr->removeObject(oim);
+                m_pSystem->removeObject(oim);
                 m_pTalkbox->setVisible(false);
                 return;
             }

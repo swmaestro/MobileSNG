@@ -8,13 +8,14 @@
 
 #include "ObjectInMap.h"
 
-ObjectInMap::ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id) : m_index(-1)
+ObjectInMap::ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id, int index) : m_index(-1)
 {
     m_state         = state;
     m_position      = position;
     m_size          = size;
     m_direction     = dir;
     m_id            = id;
+    m_index         = index;
 }
 
 ObjectInMap::ObjectInMap(const ObjectInMap *pObject)
@@ -24,6 +25,7 @@ ObjectInMap::ObjectInMap(const ObjectInMap *pObject)
     m_size          = pObject->m_size;
     m_direction     = pObject->m_direction;
     m_id            = pObject->m_id;
+    m_index         = pObject->m_index;
 }
 
 ObjectInMap::~ObjectInMap()
