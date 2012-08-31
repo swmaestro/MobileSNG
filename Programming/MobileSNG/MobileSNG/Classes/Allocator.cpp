@@ -125,6 +125,11 @@ void Allocator::Apply()
     }
 }
 
+void Allocator::Cancel()
+{
+    
+}
+
 void Allocator::Clear()
 {
     for (int i = -m_width / 2; i <= m_width / 2; ++i)

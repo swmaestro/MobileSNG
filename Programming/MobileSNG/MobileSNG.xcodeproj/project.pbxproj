@@ -245,6 +245,7 @@
 		C583633415D52560006F4F2A /* Allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C583633315D52560006F4F2A /* Allocator.cpp */; };
 		C583633615D5273C006F4F2A /* EditTile.png in Resources */ = {isa = PBXBuildFile; fileRef = C583633515D5273C006F4F2A /* EditTile.png */; };
 		C594CB0315E46F7000052769 /* Status.png in Resources */ = {isa = PBXBuildFile; fileRef = C594CB0215E46F7000052769 /* Status.png */; };
+		C5B73E6B15EF7B9700E4B068 /* Remove.png in Resources */ = {isa = PBXBuildFile; fileRef = C5B73E6A15EF7B9700E4B068 /* Remove.png */; };
 		C5D3E46115E25BFA005D07BE /* Relocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5D3E45F15E25BFA005D07BE /* Relocator.cpp */; };
 		C5D57AD115CAB0AF003B8D80 /* Edit-Big.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D57AC915CAB0AF003B8D80 /* Edit-Big.png */; };
 		C5D57AD215CAB0AF003B8D80 /* Friends-Big.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D57ACA15CAB0AF003B8D80 /* Friends-Big.png */; };
@@ -757,6 +758,7 @@
 		C583633315D52560006F4F2A /* Allocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Allocator.cpp; path = Classes/Allocator.cpp; sourceTree = "<group>"; };
 		C583633515D5273C006F4F2A /* EditTile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EditTile.png; path = Resources/EditTile.png; sourceTree = "<group>"; };
 		C594CB0215E46F7000052769 /* Status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Status.png; path = Resources/Status.png; sourceTree = "<group>"; };
+		C5B73E6A15EF7B9700E4B068 /* Remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Remove.png; path = Resources/Remove.png; sourceTree = "<group>"; };
 		C5D3E45F15E25BFA005D07BE /* Relocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Relocator.cpp; path = Classes/Relocator.cpp; sourceTree = "<group>"; };
 		C5D3E46015E25BFA005D07BE /* Relocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Relocator.h; path = Classes/Relocator.h; sourceTree = "<group>"; };
 		C5D57AC915CAB0AF003B8D80 /* Edit-Big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Edit-Big.png"; path = "Resources/Edit-Big.png"; sourceTree = "<group>"; };
@@ -1004,6 +1006,7 @@
 		3C9364C515B0FF6300860E6A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C5B73E6A15EF7B9700E4B068 /* Remove.png */,
 				C512E61115E6673200625D55 /* Loading.png */,
 				C533CA9815E538830000CC98 /* Talkbox.png */,
 				C594CB0215E46F7000052769 /* Status.png */,
@@ -2089,6 +2092,7 @@
 				3CC2A29615E3831800E4DB01 /* System.info in Resources */,
 				C533CA9915E538830000CC98 /* Talkbox.png in Resources */,
 				C512E61215E6673200625D55 /* Loading.png in Resources */,
+				C5B73E6B15EF7B9700E4B068 /* Remove.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
