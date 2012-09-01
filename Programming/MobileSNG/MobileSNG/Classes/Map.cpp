@@ -181,7 +181,7 @@ void Map::_initTile()
                 {
                     case OBJECT_TYPE_FIELD:
                     {
-                        tile->addChild(CCSprite::create(), TILE_FARM, TILE_FARM);
+                        tile->addChild(CCSprite::create("Farm/01.png"), TILE_FARM, TILE_FARM);
                         Crop * c = ((Field *)oim)->GetCrop();
                         if (c)
                             tile->addChild(CCSprite::create(), TILE_CROP, TILE_CROP);
@@ -190,7 +190,12 @@ void Map::_initTile()
                     case OBJECT_TYPE_BUILDING:
                         tile->addChild(CCSprite::create(), TILE_FARM, TILE_FARM);
                         break;
+                        
+                    default:
+                        break;
                 }
+                
+                SyncPos(oim);
             }
         }
     
@@ -403,7 +408,7 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                             sprintf(strBuf, "Buuuuuilding");
                             break;
                             
-                        case OBJECT_TYPE_CROP:
+                        case OBJECT_TYPE_FIELD:
                             sprintf(strBuf, "Faaaaaaaaarm");
                             break;
                             

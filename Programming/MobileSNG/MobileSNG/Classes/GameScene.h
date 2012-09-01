@@ -2,10 +2,7 @@
 
 #include "cocos2d.h"
 #include "UIMgr.h"
-
-#define HIWORD(l)   ((short) (((long) ((l) >> 16)) & 0x0000FFFF))
-#define LOWORD(l)   ((short) ((l) & 0x0000FFFF))
-#define MAKEWORD(x,y) ((long)((LOWORD(x) & 0x0000FFFF)|((((long)LOWORD(y)) << 16) & 0xFFFF0000)))
+#include "Utility.h"
 
 class Shop;
 class Map;

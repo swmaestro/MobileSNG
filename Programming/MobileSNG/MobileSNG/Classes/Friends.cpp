@@ -1,29 +1,29 @@
-////
-////  Friends.cpp
-////  MobileSNG
-////
-////  Created by 건우 강 on 12. 8. 23..
-////
-////
 //
-//#include "Friends.h"
+//  Friends.cpp
+//  MobileSNG
 //
-//using namespace cocos2d;
+//  Created by 건우 강 on 12. 8. 23..
 //
-//Friends::Friends()
-//{
-//    
-//}
 //
-//Friends::~Friends()
-//{
-//    
-//}
-//
-//bool Friends::init()
-//{
-//    if (!CCLayer::init())
-//        return false;
-//    
-//    return true;
-//}
+
+#include "Friends.h"
+
+using namespace cocos2d;
+
+Friends::Friends()
+{
+    
+}
+
+Friends::~Friends()
+{
+    
+}
+
+bool Friends::init()
+{
+    if (!CCLayer::init())
+        return false;
+    
+    return true;
+}
