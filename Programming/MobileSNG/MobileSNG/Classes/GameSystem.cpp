@@ -12,11 +12,11 @@
 using namespace std;
 using namespace rapidxml;
 
-GameSystem::GameSystem(const char* strDBFile, int & mapLevel)
+GameSystem::GameSystem(const char* strDBFile, int & mapLevel, Network *pNetwork)
 {
     m_pInfoMgr  = new ObjectInfoMgr();
     m_pInfoMgr->loadData(strDBFile);
-    m_pNetwork  = new Network;
+    m_pNetwork  = pNetwork;
     m_pIdxMgr   = new ObjectIndexMgr;
     m_pMap      = new MapMgr(mapLevel);
     m_pPlayer     = new Player(m_pNetwork);

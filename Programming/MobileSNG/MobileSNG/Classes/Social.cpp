@@ -12,10 +12,11 @@
 using namespace rapidxml;
 using namespace std;
 
-Social::Social(Network *pNetwork, User *pMe)
+Social::Social(Network *pNetwork, Player *pMe)
 {
     m_pNetwork = pNetwork;
     
+    m_pPlayer = pMe;
     m_vUsers.push(pMe);
 //    m_vUsers.top()
     m_vUsers.top()->GetUserID();
@@ -139,60 +140,6 @@ bool Social::FindUser(const char* p, VillageInfo *pOut, USER_SEARCH_ENUM e)
     }
     
     return FindVillageInfo(user.userID.data(), pOut);;
-}
-
-bool Social::RandomUser(UserInfo *pOut)
-{
-    for(int i = 0; i<5; i++)
-    {
-        char ph[12];
-        sprintf(ph, "010%04d%04d",rand()%10000, rand()%10000);
-        
-        const char *baseURL = "http://swmaestros-sng.appspot.com/searchnumber?phone=%s";
-        char url[256];
-        sprintf(url, baseURL, ph);
-        
-        CURL_DATA data;
-        if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
-        {
-            printf("%s <- NetWork Error\n",__FUNCTION__);
-            return false;
-        }
-        
-        xml_document<char> xmlDoc;
-        xmlDoc.parse<0>(data.pContent);
-        
-        xml_node<char> *pNode = xmlDoc.first_node()->first_node();
-
-        if(atoi(pNode->value()) == 0)
-           continue;
-        
-        pNode = pNode->next_sibling()->first_node();
-        
-        if(pOut == NULL) return true;
-        
-        pOut->userID = pNode->value();
-        pNode = pNode->next_sibling();
-        pOut->userPhone = pNode->value();
-        pNode = pNode->next_sibling();
-        pOut->userDate = pNode->value();
-        
-        return true;
-    }
-    
-    return false;
-}
-
-bool Social::RandomUser(VillageInfo *pOut)
-{
-    UserInfo info;
-    if(RandomUser(&info) == false)
-    {
-        printf("%s <- Error\n", __FUNCTION__);
-        return false;
-    }
-    
-    return FindVillageInfo(info.userID.data(), pOut);
 }
 
 std::vector<VillageInfo*> Social::CurrentUserFollowing(int page)

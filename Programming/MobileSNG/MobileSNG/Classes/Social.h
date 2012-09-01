@@ -10,6 +10,7 @@
 
 #include "Network.h"
 #include "User.h"
+#include "Player.h"
 #include <stack>
 #include <vector>
 
@@ -24,9 +25,10 @@ class Social
 private:
     Network                 *m_pNetwork;
     std::stack<User*>        m_vUsers;
+    Player                  *m_pPlayer;
     
 public:
-    Social(Network *pNetwork, User *pMe);
+    Social(Network *pNetwork, Player *pMe);
     ~Social();
     
 public:
@@ -39,9 +41,6 @@ public:
 public:
     bool FindUser(const char* p, UserInfo *pOut, USER_SEARCH_ENUM e);
     bool FindUser(const char* p, VillageInfo *pOut, USER_SEARCH_ENUM e);
-    
-    bool RandomUser(UserInfo *pOut);
-    bool RandomUser(VillageInfo *pOut);
     
 public:
     std::vector<VillageInfo*> CurrentUserFollowing(int page);

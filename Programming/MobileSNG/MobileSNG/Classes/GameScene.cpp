@@ -7,13 +7,13 @@
 
 #include "Join.h"
 #include "DateInfo.h"
+#include "Utility.h"
 
 using namespace cocos2d;
 
 GameScene::GameScene() : m_pSystem(NULL), m_pMap(NULL), m_pShop(NULL), 
             m_pMapUI(NULL), m_pShopUI(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL), m_width(7)
 {
-    
 }
 
 GameScene::~GameScene()
@@ -26,6 +26,8 @@ GameScene::~GameScene()
     delete m_pUIMgr;
     
     m_pCurrentUI = NULL;
+    
+    SAFE_DELETE(m_pNetwork);
 }
 
 CCScene * GameScene::scene()
@@ -40,7 +42,8 @@ bool GameScene::init()
     if (!CCLayer::init())     
         return false;
 
-    m_pSystem = new GameSystem("ObjectDB.sqlite", m_width);
+    m_pNetwork = new Network;
+    m_pSystem = new GameSystem("ObjectDB.sqlite", m_width, m_pNetwork);
     
     if(m_pSystem->init() == false)
     {
