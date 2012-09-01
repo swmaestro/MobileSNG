@@ -19,14 +19,19 @@ public:
     
     virtual bool init();
     
-    void SetContent(std::string content);
+    void SetContent(cocos2d::CCPoint pos, std::string content);
+    
+    bool Touch(cocos2d::CCTouch * touch);
+    cocos2d::CCPoint GetPos() { return m_pos; }
     
 private:
+    cocos2d::CCPoint m_pos;
     cocos2d::CCLayer * m_pScale;
-    cocos2d::CCSprite * m_pSpr;
+    cocos2d::CCSprite * m_pTalkbox, * m_pRemove;
     cocos2d::CCLabelTTF * m_pText;
     
     std::string m_content;
 };
 
 #endif /* defined(__MobileSNG__Talkbox__) */
+  

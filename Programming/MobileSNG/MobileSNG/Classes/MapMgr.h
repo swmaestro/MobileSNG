@@ -11,7 +11,9 @@
 #include "Field.h"
 #include "Ornament.h"
 #include "Building.h"
+#include "ObjectIndexMgr.h"
 #include <vector>
+#include "Network.h"
 
 class MapMgr
 {
@@ -28,15 +30,14 @@ private:
     static ObjectInMap*    _CreateObject(ObjectInMap *obj, ObjectInfoMgr *pInfoMgr, int time = 0);
     
 public:
-    bool        addObject(ObjectInMap *pInfo, ObjectInfoMgr *pInfoMgr, int time);
-    bool        moveObject(POINT<int> &pos, ObjectInMap *obj2);
+    ObjectInMap*        addObject(ObjectInMap *pInfo, ObjectInfoMgr *pInfoMgr, int time);
+    bool        moveObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir);
     
 public:
-//    bool        addCrop(Field *pField, int id, int time);
-//    void        removeCrop(Field *pField);
+    Crop*        addCrop(Field *pField, int id, int time, int index, ObjectInfoMgr *pInfoMgr);
+    void        removeCrop(Field *pField);
     
 public:
-    void        removeObject(int index);
     void        removeObject(ObjectInMap *pObj);
     void        removeObject(POINT<int> &pos);
     void        removeObjects(POINT<int> &pos, SIZE<int> &size);
@@ -44,6 +45,7 @@ public:
 public:
     ObjectInMap*                FindObject(POINT<int> pos);
     std::vector<ObjectInMap*>   FindObjects(POINT<int> pos, SIZE<int> size);
+    ObjectInMap*                FindObjects(int index);
     bool                        isObjectInMap(POINT<int> pos);
     bool                        isObjectInMap(POINT<int> pos, SIZE<int> size);
     

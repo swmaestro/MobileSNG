@@ -21,6 +21,8 @@ private:
     
     GameSystem * m_pSystem;
     
+    int m_orgSwt;
+    
     int m_type, m_id;
     std::string m_name;
     std::vector<int> m_vec;
@@ -34,6 +36,7 @@ public:
     void init(GameSystem * system, int type, int id);
     
     void Apply();
+    void Cancel();
     void Clear();
     
     void TouchesBegin(int i, int j);

@@ -24,7 +24,7 @@ Field::~Field()
     }    
 }
 
-bool Field::addCrop(int id, int time, ObjectInfoMgr *pInfoMgr)
+Crop* Field::addCrop(int id, int time, int index, ObjectInfoMgr *pInfoMgr)
 {
     if( m_pCrop != NULL )
     {
@@ -32,10 +32,10 @@ bool Field::addCrop(int id, int time, ObjectInfoMgr *pInfoMgr)
         return false;
     }
 
-    m_pCrop = new  Crop(id, time, pInfoMgr);
+    m_pCrop = new  Crop(id, time, index, pInfoMgr);
     m_pCrop->GetTimer()->StartTimer();
     
-    return true;
+    return m_pCrop;
 }
 
 bool Field::UpdateSystem()

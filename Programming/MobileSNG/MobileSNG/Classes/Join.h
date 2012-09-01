@@ -8,7 +8,6 @@
 
 #include "cocos2d.h"
 #include "Network.h"
-#include "DataType.h"
 
 class JoinUI;
 

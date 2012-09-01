@@ -10,15 +10,16 @@
 #include "CCCommon.h"
 
 using namespace std;
+using namespace rapidxml;
 
 GameSystem::GameSystem(const char* strDBFile, int & mapLevel)
 {
     m_pInfoMgr  = new ObjectInfoMgr();
     m_pInfoMgr->loadData(strDBFile);
-    m_pMap      = new MapMgr(mapLevel);
     m_pNetwork  = new Network;
-    m_pUser     = new User;
-    m_pUser->UpdateData(m_pNetwork);
+    m_pIdxMgr   = new ObjectIndexMgr;
+    m_pMap      = new MapMgr(mapLevel);
+    m_pPlayer     = new Player(m_pNetwork);
 }
 
 GameSystem::~GameSystem()
@@ -26,29 +27,9 @@ GameSystem::~GameSystem()
     SAFE_DELETE(m_pInfoMgr);
     SAFE_DELETE(m_pMap);
     SAFE_DELETE(m_pNetwork);
-    SAFE_DELETE(m_pUser);
+    SAFE_DELETE(m_pPlayer);
+    SAFE_DELETE(m_pIdxMgr);
 }
-
-//void GameSystem::Update(float fDelta)
-//{
-//    m_pMap->UpdateObjects(m_pInfoMgr);
-//
-//    if(m_qHarvest.empty()) return;
-//    
-//    CURLcode code;
-//    HARVEST_QUEUE *object = &(m_qHarvest.front());
-//        
-//    code = m_pNetwork->connectHttp(object->url.data(), &(object->data));
-//    
-//    if( code == CURLE_OK )
-//        m_qHarvest.pop();
-//    else
-//    {
-//        stdQueueAllClear(m_qHarvest);
-//        //실패하면 뭘 띄워주든가 해야하지 않냐
-//        //성공해도 뭘 해줘야할테고
-//    }
-//}
 
 CommonInfo* GameSystem::GetCommonInfo(ObjectInMap *pObj)
 {
@@ -59,13 +40,13 @@ ObjectInfo GameSystem::GetObjectInfo(ObjectInMap *pObj)
 {
     int type    = pObj->GetType();
     int id      = pObj->GetID();
-    
+
     if( type == OBJECT_TYPE_FIELD )
     {
         Field *pField = dynamic_cast<Field*>(pObj);
         return pField->GetCrop()->GetInfo().GetObjInfo();
     }
-    
+
     return GetObjectInfo(type, id);
 }
 
@@ -114,24 +95,24 @@ ObjectInfo GameSystem::GetObjectInfo(int type, int id)
 
 bool GameSystem::BuyObject(ObjectInMap *pObj)
 {
-    if(m_pUser->AddMoney(-GetCommonInfo(pObj)->GetPrice()) == false)
+    if(m_pPlayer->AddMoney(-GetCommonInfo(pObj)->GetPrice()) == false)
         return false;
     return true;
 }
 
 void GameSystem::SellObject(ObjectInMap *pObj)
 {
-    m_pUser->AddMoney(-GetCommonInfo(pObj)->GetPrice());
+    m_pPlayer->AddMoney(-GetCommonInfo(pObj)->GetPrice());
 }
 
 bool GameSystem::isUseObject(CommonInfo *pCommonInfo)
 {
-    return m_pUser->GetLevel() >= pCommonInfo->GetLevel();
+    return m_pPlayer->GetLevel() >= pCommonInfo->GetLevel();
 }
 
 bool GameSystem::isUseObject(ObjectInMap* pObj)
 {
-   return m_pUser->GetLevel() >= GetCommonInfo(pObj)->GetLevel();
+   return m_pPlayer->GetLevel() >= GetCommonInfo(pObj)->GetLevel();
 }
 
 bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
@@ -171,9 +152,9 @@ void GameSystem::AllHarvest()
 //    exp *= 1.5f;
 //    money *= 1.5f;
 //    
-//    m_pUser->AddMoney(money);
-//    m_pUser->AddExp(exp);
-//    m_pUser->AddCash(-(harvestNum * 100));
+//    m_pPlayer->AddMoney(money);
+//    m_pPlayer->AddExp(exp);
+//    m_pPlayer->AddCash(-(harvestNum * 100));
 }
 
 bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
@@ -182,7 +163,7 @@ bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
     char url[256];
 
     char id[32];
-    m_pUser->GetInfo(id, NULL, NULL);
+    m_pPlayer->GetInfo(id, NULL, NULL, NULL);
     
     sprintf(url, baseURL, id, gold, cash, exp);
     
@@ -195,23 +176,23 @@ bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
 
 void GameSystem::FastComplete(ObjectInMap *pObject)
 {
-    OBJECT_TYPE type = pObject->GetType();
-    
-    if( type == OBJECT_TYPE_BUILDING )
-    {
-        if(pObject->m_state == BUILDING_STATE_WORKING )
-            pObject->m_state = BUILDING_STATE_DONE;
-        else if(pObject->m_state <= BUILDING_STATE_UNDER_CONSTRUCTION_2)
-            pObject->m_state = BUILDING_STATE_WORKING;
-    }
-    else if (type == OBJECT_TYPE_CROP )
-    {
-        if(pObject->m_state != CROP_STATE_DONE)
-            pObject->m_state = CROP_STATE_DONE;
-    }
-    
-    if(_PostResourceInfo(0, 0, -100))
-        m_pUser->AddCash(-100);
+//    OBJECT_TYPE type = pObject->GetType();
+//    
+//    if( type == OBJECT_TYPE_BUILDING )
+//    {
+//        if(pObject->m_state == BUILDING_STATE_WORKING )
+//            pObject->m_state = BUILDING_STATE_DONE;
+//        else if(pObject->m_state <= BUILDING_STATE_UNDER_CONSTRUCTION_2)
+//            pObject->m_state = BUILDING_STATE_WORKING;
+//    }
+//    else if (type == OBJECT_TYPE_CROP )
+//    {
+//        if(pObject->m_state != CROP_STATE_DONE)
+//            pObject->m_state = CROP_STATE_DONE;
+//    }
+//    
+//    if(_PostResourceInfo(0, 0, -100))
+//        m_pPlayer->AddCash(-100);
 }
 
 bool GameSystem::Harvest(ObjectInMap **ppObject)
@@ -222,32 +203,429 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     OBJECT_TYPE type = (*ppObject)->GetType();
     
     if( type == OBJECT_TYPE_ORNAMENT ) return false;
-    if((*ppObject)->isDone() == false) return false;
+    if( (*ppObject)->isDone() == false) return false;
 
-    //필드가 경험치를 가질리가 없잖아..
-    
     ObjectInfo objInfo = GetObjectInfo((*ppObject));
     
-    int     exp         = objInfo.GetExp();
-    int     reward      = objInfo.GetReward();
-
-    if( _PostResourceInfo(reward, 0, exp) == false )   return false;
-        
-    m_pUser->AddExp(exp);
-    m_pUser->AddMoney(reward);
+    int exp = objInfo.GetExp();
+    int reward = objInfo.GetReward();
+    
+    if(_PostResourceInfo(reward, 0, exp) == false) return false;
+    
+    m_pPlayer->AddExp(exp);
+    m_pPlayer->AddMoney(reward);
     
     if(type == OBJECT_TYPE_BUILDING)
     {
-        Building * b = dynamic_cast<Building*>((*ppObject));
-        b->m_state = BUILDING_STATE_WORKING;
-        b->GetTimer()->StartTimer();
+        Building *pBuilding = dynamic_cast<Building*>((*ppObject));
+        pBuilding->m_state = BUILDING_STATE_WORKING;
+        pBuilding->GetTimer()->StartTimer();
     }
-    
-    else // type == object_type_crop
+    else
     {
-        Field *pField = static_cast<Field*>((*ppObject));
+        Field *pField = dynamic_cast<Field*>((*ppObject));
         pField->removeCrop();
     }
     
     return true;
+}
+
+bool GameSystem::init()
+{
+    //아마 여기에 슬슬 서버연동이나 이런 선 작업들이 들어갈거야.
+    m_objectIter = m_pMap->GetAllObject().begin();
+    
+    if( SetUpVillageList() == false)
+        return false;
+    
+    return true;
+}
+
+bool GameSystem::UpdateMapObject(ObjectInMap **ppOut)
+{
+    vector<ObjectInMap*>::iterator begin = m_pMap->GetAllObject().begin();
+    vector<ObjectInMap*>::iterator end   = m_pMap->GetAllObject().end();
+    
+    if( m_pMap->GetAllObject().size() == 0 )
+        return false;
+    
+    if(m_objectIter == end)
+        m_objectIter++ = begin;
+    
+    *ppOut = *m_objectIter;
+    
+    return (*m_objectIter)->UpdateSystem();
+}
+
+bool GameSystem::_networkNormalResult(xml_document<char> *pXMLDoc)
+{
+    const char *value = pXMLDoc->first_node()->first_node()->value();
+    
+    if(strcmp(value, "false"))
+        return false;
+    
+    return true;
+}
+
+bool GameSystem::_newObject(const char *userID, int objID, int index, POINT<int> position, OBJECT_DIRECTION dir)
+{
+    const char *baseURL = "http://swmaestros-sng.appspot.com/buildinginsert?id=%s&bindex=%d&index=%d&location=%03d%03d&direction=%s";
+    char url[256];
+    
+    string direction;
+    if (dir == OBJECT_DIRECTION_LEFT)
+            direction = "false";
+    else    direction = "true";
+    
+    sprintf(url, baseURL, userID, objID, index, position.x, position.y, direction.data());
+    
+    printf("%s\n", url);
+    
+    CURL_DATA data;
+    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+    {
+        printf("%s <- Error\n", __FUNCTION__);
+        return false;
+    }
+    
+    xml_document<char> xmlDoc;
+    xmlDoc.parse<0>(data.pContent);
+    
+    return _networkNormalResult(&xmlDoc);
+}
+
+bool GameSystem::addObject(ObjectInMap *pObj, int time, int index)
+{    
+    if(pObj->GetType() == OBJECT_TYPE_CROP)
+        return false;
+
+    if(index == -1)
+    {
+        ObjectInMap *pCreatedObject = NULL;
+        int idx = m_pIdxMgr->buildingIndex();
+
+        if(idx == -1)
+        {
+            printf("%s <- Index Full\n", __FUNCTION__);
+            return false;
+        }
+    
+        pObj->SetIndex(idx);
+        
+        if( (pCreatedObject = m_pMap->addObject(pObj, m_pInfoMgr, 0)) )
+            m_pIdxMgr->addBuildingIndex(idx);
+        else return false;
+        
+        if(_newObject(m_pPlayer->GetUserID(), pObj->GetID(), pObj->GetIndex(), pObj->GetPosition(), pObj->GetDirection()) == false)
+        {
+            //서버에서 실패한거니까, 서버 통해서 재거하지 말고 클라 자체에서 제거하면되.
+            m_pMap->removeObject(pObj);
+            m_pIdxMgr->removeBuildIndex(idx);
+            return false;
+        }
+        
+        return true;
+    }
+    
+    pObj->SetIndex(index);
+    
+    if(m_pMap->addObject(pObj, m_pInfoMgr, time))
+    {
+        m_pIdxMgr->addBuildingIndex(index);
+        return true;
+    }
+    
+    return false;
+}
+
+bool GameSystem::moveObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir)
+{
+    POINT<int> tmpPos = obj2->GetPosition();
+    OBJECT_DIRECTION tmpDir = obj2->GetDirection();
+    
+    if(m_pMap->moveObject(pos, obj2, dir) == false)
+        return false;
+    
+    const char *baseURL = "http://swmaestros-sng.appspot.com/buildinglchange?id=%s&index=%d&location=%03d%03d&direction=%s";
+    char url[256];
+    string direction;
+    
+    if(dir == OBJECT_DIRECTION_LEFT)
+        direction = "false";
+    else direction = "true";
+    
+    sprintf(url, baseURL, m_pPlayer->GetUserID(), obj2->GetIndex(), obj2->GetPosition().x, obj2->GetPosition().y, direction.data());
+    
+    CURL_DATA data;
+    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+    {
+        printf("%s <- Error Moveojet\n", __FUNCTION__);
+        m_pMap->moveObject(tmpPos, obj2, tmpDir);
+        
+        return false;
+    }
+    
+    xml_document<char> xmlDoc;
+    xmlDoc.parse<0>(data.pContent);
+    
+    if(_networkNormalResult(&xmlDoc) == false)
+    {
+        m_pMap->moveObject(tmpPos, obj2, tmpDir);
+        return false;
+    }
+    
+    return true;
+}
+
+bool GameSystem::addCrop(Field *pField, int id, int time, int index)
+{
+    if(index == -1)
+    {
+        int idx = m_pIdxMgr->cropIndex();
+        if(idx == -1)
+        {
+            printf("%s <- Error Crop Index Full\n", __FUNCTION__);
+            return false;
+        }
+        
+        if (pField->addCrop(id, 0, idx, m_pInfoMgr))
+            m_pIdxMgr->addCropIndex(idx);
+        else return false;
+        
+        if (_newObject(m_pPlayer->GetUserID(), id, idx, pField->GetPosition(), pField->GetDirection()) == false) {
+            m_pIdxMgr->removeCropIndex(idx);
+            m_pMap->removeCrop(pField);
+        }
+        
+        return true;
+    }
+    
+    if(m_pMap->addCrop(pField, id, time, index, m_pInfoMgr))
+    {
+        m_pIdxMgr->addCropIndex(index);
+        return true;
+    }
+    
+    return false;
+}
+
+bool GameSystem::_removeNetworkObject(const char *userID, int index)
+{
+    const char *baseURL = "http://swmaestros-sng.appspot.com/vbdelete?id=%s&index=%d";
+    char url[256];
+    sprintf(url, baseURL, userID, index);
+
+    CURL_DATA data;
+    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+    {
+        printf("%s <- Error\n", __FUNCTION__);
+        return false;
+    }
+    
+    xml_document<char> xmlDoc;
+    xmlDoc.parse<0>(data.pContent);
+    
+    return _networkNormalResult(&xmlDoc);
+}
+
+void GameSystem::removeCrop(Field *pField)
+{
+    if(pField->GetCrop() == NULL) return;
+    int index = pField->GetCrop()->GetIndex();
+    if(_removeNetworkObject(m_pPlayer->GetUserID(), index))
+    {
+        m_pMap->removeCrop(pField);
+        m_pIdxMgr->removeCropIndex(index);
+    }
+}
+
+void GameSystem::removeObject(POINT<int> &pos)
+{
+    ObjectInMap *pObj = m_pMap->FindObject(pos);
+    int index = pObj->GetIndex();
+    
+    if(_removeNetworkObject(m_pPlayer->GetUserID(), index))
+    {
+        m_pMap->removeObject(pObj);
+        m_pIdxMgr->removeBuildIndex(index);
+    }
+}
+
+bool GameSystem::isObjectInMap(POINT<int> pos)
+{
+    return m_pMap->isObjectInMap(pos);
+}
+
+bool GameSystem::isObjectInMap(POINT<int> pos, SIZE<int> size)
+{
+    return isObjectInMap(pos, size);
+}
+
+ObjectInMap* GameSystem::FindObject(POINT<int> pos)
+{
+    return m_pMap->FindObject(pos);
+}
+
+std::vector<ObjectInMap*> GameSystem::FindObjects(POINT<int> pos, SIZE<int> size)
+{
+    return FindObjects(pos, size);
+}
+
+vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(const char* pContent)
+{
+    vector< pair<ObjectInMap, long long int> > v;
+    
+    xml_document<char> xmlDoc;
+    xmlDoc.parse<0>(const_cast<char*>(pContent));
+    
+    xml_node<char> *pRoot = xmlDoc.first_node()->first_node();
+    
+    int count = atoi(pRoot->value());
+    pRoot = pRoot->next_sibling();
+    
+    DateInfo serverDate;
+    if( _getServerTime(&serverDate) == false )
+    {
+        printf("%s <- Error\n", __FUNCTION__);
+        return v;
+    }
+
+    for(int i=0; i<count; ++i, pRoot = pRoot->next_sibling())
+    {
+        xml_node<char> *pNode = pRoot->first_node();
+        
+        int index = atoi(pNode->value());
+        pNode = pNode->next_sibling();
+        int id = atoi(pNode->value());
+        pNode = pNode->next_sibling();
+
+        OBJECT_TYPE type;
+        objectState state = atoi(pNode->value());
+        SIZE<int> size;
+        
+        if( index >= 1000 )
+        {
+            type = OBJECT_TYPE_CROP;
+
+            if(state == NETWORK_OBJECT_DONE)
+                state = CROP_STATE_DONE;
+            else state = CROP_STATE_GROW_1;
+        }
+        else
+        {
+            type = OBJECT_TYPE_BUILDING;
+            
+            switch (state) {
+                case NETWORK_OBJECT_CONSTRUCTION:   state = BUILDING_STATE_UNDER_CONSTRUCTION_1;    break;
+                case NETWORK_OBJECT_WORKING:        state = BUILDING_STATE_WORKING;                 break;
+                case NETWORK_OBJECT_DONE:           state = BUILDING_STATE_DONE;                    break;
+                case NETWORK_OBJECT_FAIL:           state = BUILDING_STATE_FAIL;                    break;
+                case NETWORK_OBJECT_OTHER_WATTING:  state = BUILDING_STATE_OTEHR_WAIT;              break;
+                default:break;
+            }
+
+            BuildingInfo *pInfo;
+            m_pInfoMgr->searchInfo(id, &pInfo);
+            size = pInfo->GetSize();
+        }
+        pNode = pNode->next_sibling();
+        
+        int posValue = atoi(pNode->value());
+        POINT<int> pos;
+        pos.x = posValue/1000;
+        pos.y = posValue%1000;
+        pNode = pNode->next_sibling();
+        
+        OBJECT_DIRECTION dir = static_cast<OBJECT_DIRECTION>(atoi(pNode->value()));
+        pNode = pNode->next_sibling();
+        
+        const char *pDate = pNode->value();
+        DateInfo date;
+        date.UpdateDate(pDate);
+
+        long long int deltaTime = date.GetTimeValue(serverDate);
+                
+        ObjectInMap obj = ObjectInMap(state, pos, size, dir, id, index);
+//        obj.SetIndex(index);
+        
+        pair<ObjectInMap, long long int> value(obj, deltaTime);
+        v.push_back(value);
+    }
+        
+    return v;
+}
+
+bool GameSystem::_getServerTime(DateInfo *pInfo)
+{
+    CURL_DATA data;
+    if(m_pNetwork->connectHttp("http://swmaestros-sng.appspot.com/timeprint", &data) == false)
+    {
+        printf("%s <- Error Get Server Time\n", __FUNCTION__);
+        return false;
+    }
+    
+    xml_document<char> xmlDoc;
+    xmlDoc.parse<0>(data.pContent);
+    
+    xml_node<char> *pNode = xmlDoc.first_node()->first_node();
+    pInfo->UpdateDate(pNode->value());
+    
+    return true;
+}
+
+bool GameSystem::SetUpVillageList(bool isUpdate)
+{
+    const char *baseURL;
+    
+    if(isUpdate)baseURL = "http://swmaestros-sng.appspot.com/vbstateupdate?id=%s";
+    else        baseURL = "http://swmaestros-sng.appspot.com/vbinfolist?id=%s";
+    
+    char url[256];
+    
+    sprintf(url, baseURL, m_pPlayer->GetUserID());
+    
+    CURL_DATA data;
+    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+    {
+        printf("%s <- Error\n", __FUNCTION__);
+        return false;
+    }
+    
+    vector< pair<ObjectInMap, long long int> > v = _parseObjectInVillage(data.pContent);
+    vector< pair<ObjectInMap, long long int> > vCrop;
+    
+    vector< pair<ObjectInMap, long long int> >::iterator iter;
+    
+    long long time;
+    ObjectInMap *pObj;
+    
+    for(iter = v.begin(); iter != v.end(); ++iter)
+    {
+        time = (*iter).second;
+        pObj = &((*iter).first);
+        
+        if(pObj->GetType() != OBJECT_TYPE_CROP)
+        {
+            addObject(pObj, time, pObj->GetIndex());
+            m_pIdxMgr->addBuildingIndex(pObj->GetIndex());
+        }
+        else vCrop.push_back((*iter));
+    }
+    
+    for(iter = vCrop.begin(); iter != vCrop.end(); ++iter)
+    {
+        time = (*iter).second;
+        pObj = &(*iter).first;
+        
+        Field *pField = dynamic_cast<Field*>(FindObject(pObj->GetIndex()));
+        addCrop(pField, pObj->GetID(), time, pObj->GetIndex());
+        m_pIdxMgr->addCropIndex(pObj->GetIndex());
+    }        
+    
+    return true;
+}
+
+void GameSystem::removeObject(ObjectInMap *pObj)
+{
+    m_pMap->removeObject(pObj);
 }

@@ -66,13 +66,19 @@ bool Map::init(GameSystem * system)
 
 void Map::update(float dt)
 {
-    MapMgr * mapMgr = m_pSystem->GetMapMgr();
-    std::vector<ObjectInMap *> object = mapMgr->GetAllObject();
-    std::vector<ObjectInMap *>::iterator i;
-    
-    for (i = object.begin(); i != object.end(); ++i)
-        if ((*i)->UpdateSystem())
-            SyncPos(*i);
+//    MapMgr * mapMgr = m_pSystem->GetMapMgr();
+//    std::vector<ObjectInMap *> object = mapMgr->GetAllObject();
+//    std::vector<ObjectInMap *>::iterator i;
+//    
+//    for (i = object.begin(); i != object.end(); ++i)
+//        if ((*i)->UpdateSystem())
+//            SyncPos(*i);
+//    if(m_pSystem->UpdateMapObject())
+
+    ObjectInMap *pObj;
+
+    if(m_pSystem->UpdateMapObject(&pObj))
+        if(pObj) SyncPos(pObj);
 }
 
 void Map::SyncPos(ObjectInMap *oim)
@@ -335,10 +341,26 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             m_pAllocator->TouchesEnd();
         else
         {
+            CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
+            
+            if (m_pTalkbox->Touch(pTouch))
+            {
+//                MapMgr * mapmgr = m_pSystem->GetMapMgr();
+                CCPoint p = m_pTalkbox->GetPos();
+                ObjectInMap * oim = m_pSystem->FindObject(POINT<int>(p.x, p.y));
+                CCNode * tile = m_pTile->getChildByTag(MAKEWORD(((int)p.x), ((int)p.y)));
+                
+                if (oim->GetType() == OBJECT_TYPE_FIELD && ((Field *)oim)->GetCrop() != NULL)
+                    tile->removeChildByTag(TILE_CROP, true);
+                tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
+                
+                m_pSystem->removeObject(oim);
+                m_pTalkbox->setVisible(false);
+                return;
+            }
+            
             if (m_pTalkbox->isVisible())
                 m_pTalkbox->setVisible(false);
-            
-            CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
             
             CCPoint p = pTouch->locationInView();
             p = CCDirector::sharedDirector()->convertToGL(p);
@@ -377,8 +399,9 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                             sprintf(strBuf, "Error : I don't know\nwhat is this");
                             break;
                     }
+                    
                     m_pTalkbox->setPosition(ccp((x - y) * tileWidth / 2, (x + y) * tileHeight / 2));
-                    m_pTalkbox->SetContent(strBuf);
+                    m_pTalkbox->SetContent(ccp(x, y), strBuf);
                     m_pTalkbox->setVisible(true);
                 }
             }
@@ -437,6 +460,8 @@ void Map::endEdit(bool apply)
     {
         if (apply)
             m_pAllocator->Apply();
+        else
+            m_pAllocator->Cancel();
         
         m_isAllocating = false;
         m_pAllocator->Clear();

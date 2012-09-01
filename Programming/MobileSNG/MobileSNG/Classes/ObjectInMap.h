@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "DataType.h"
 #include "ObjectInfoMgr.h"
 
 typedef int objectState;
@@ -26,7 +25,7 @@ enum OBJECT_TYPE
     OBJECT_TYPE_NONE,
     OBJECT_TYPE_BUILDING,
     OBJECT_TYPE_FIELD,
-    OBJECT_TYPE_CROP = OBJECT_TYPE_FIELD,
+    OBJECT_TYPE_CROP,
     OBJECT_TYPE_ORNAMENT
 };
 
@@ -37,17 +36,19 @@ protected:
     OBJECT_DIRECTION        m_direction;
     OBJECT_TYPE             m_type;
     int                     m_id;
+    int                     m_index;
     
 public:
     objectState             m_state;
     POINT<int>              m_position;
     
 public:
-    ObjectInMap(objectState      state      = -1, 
+    ObjectInMap(objectState      state      = -1,
                 POINT<int>       position   = POINT<int>(0,0),
                 SIZE<int>        size       = SIZE<int>(0,0),
                 OBJECT_DIRECTION dir        = OBJECT_DIRECTION_LEFT,
-                int              id         = -1);
+                int              id         = -1,
+                int              index      = -1);
     ObjectInMap(const ObjectInMap *pObject);
     
     virtual ~ObjectInMap();
@@ -68,4 +69,13 @@ public:
     OBJECT_DIRECTION        GetDirection();
     OBJECT_TYPE             GetType();
     int                     GetID();
+    
+public:
+    void                    SetIndex(int i);
+    int                     GetIndex();
+
+    inline void SetPosition(POINT<int> pos) { m_position = pos; }
+    inline POINT<int>              GetPosition() { return m_position; }
+    
+    void                    SetDirection(OBJECT_DIRECTION dir) { m_direction = dir; }
 };

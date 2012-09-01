@@ -7,10 +7,11 @@
 //
 
 #include "LoginScene.h"
-#include "User.h"
+#include "Player.h"
 #include "GameScene.h"
 #include "rapidxml.hpp"
 #include "SystemInfo.h"
+#include "Utility.h"
 
 using namespace cocos2d;
 
@@ -62,12 +63,12 @@ bool LoginScene::init()
     m_pJoin     = new Join(m_pNet);
     m_pLogin    = new Login(m_pNet);
 
-    if(User::hasFile())
+    if(Player::hasFile())
     {
         char id[32];
         char pw[32];
         
-        User::GetInfo(id, pw, NULL);
+        Player::GetInfo(id, pw, NULL, NULL);
         if(m_pLogin->Logon(id, pw))
         {
             _NextScene();
@@ -125,7 +126,7 @@ void LoginScene::_btJoin(CCObject *pSender)
         _btChangeUI(NULL);
     }
     else
-        CCMessageBox("Fail", "Fail");
+        CCMessageBox("Join Fail", "Join Fail");
     
     m_pJoinUI->AllClear();
 }
@@ -137,7 +138,7 @@ void LoginScene::_btRepetition(CCObject *pSender)
     const char *id = m_pJoinUI->GetID();
     
     if(m_pJoin->CheckOverlapID(id))
-        CCMessageBox("Repetition", "Repetition");
+        CCMessageBox("아이디가 이미 존재합니다", "Error");
 }
 
 void LoginScene::_btCancel(CCObject *pSender)
@@ -145,7 +146,7 @@ void LoginScene::_btCancel(CCObject *pSender)
     CCLOG(__FUNCTION__);
 }
 
-bool LoginScene::_GetUserInfo(char *userID, char **ppoutID, char **ppoutPhone)
+bool LoginScene::_GetUserInfo(char *userID, char **ppoutID, char **ppoutPhone, char **ppOutDate)
 {
     static const char *baseURL = "http://swmaestros-sng.appspot.com/searchmember?id=%s";
     
@@ -170,6 +171,8 @@ bool LoginScene::_GetUserInfo(char *userID, char **ppoutID, char **ppoutPhone)
     if(ppoutID)     *ppoutID = pNode->first_node()->value();
     pNode = pNode->next_sibling();
     if(ppoutPhone)  *ppoutPhone = pNode->value();
+    pNode = pNode->next_sibling();
+    if(ppOutDate)   *ppOutDate = pNode->value();
     
     return true;
 }
@@ -187,19 +190,24 @@ void LoginScene::_btLogin(CCObject *pSender)
     if(m_pLogin->Logon(userID, userPW))
     {
         char *phone;
+        char *date;
         std::string phoneNum;
         
-        _GetUserInfo(const_cast<char*>(userID), NULL, &phone);
+        _GetUserInfo(const_cast<char*>(userID), NULL, &phone, &date);
         
         phoneNum = phone;
         
-        User::newUser(userID, userPW, phone);
+        Player::newPlayer(userID, userPW, phone, date);
         
         printf("Login Success \n");
+        CCMessageBox("Login Success!", "Login");
         _NextScene();
     }
     else
+    {
         printf("Login Fail \n");
+        CCMessageBox("Login Fail", "Login Fail");
+    }
 }
 
 void LoginScene::_btChangeUI(CCObject *pSender)

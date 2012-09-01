@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "DataType.h"
 #include "Network.h"
 
 #define SYSTEM_FILE_NAME "System.info"

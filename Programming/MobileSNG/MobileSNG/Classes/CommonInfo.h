@@ -16,6 +16,7 @@ private:
     int             m_systemVersion;
     int             m_objectID;
     int             m_price;
+    int             m_cash;
     std::string     m_name;
     int             m_level;
     
@@ -26,7 +27,7 @@ public:
         m_price = 0;
     }
     
-    CommonInfo(int _objectID, const char *_name, int _price, int _level, int _systemVersion)
+    CommonInfo(int _objectID, const char *_name, int _price, int _level, int _cash, int _systemVersion)
     {
         m_objectID    = _objectID;
         m_price       = _price;
@@ -35,6 +36,8 @@ public:
         m_level = _level;
         
         m_systemVersion = _systemVersion;
+        
+        m_cash = _cash;
     }
     
 public:
@@ -44,4 +47,5 @@ public:
    inline int GetLevel()          { return m_level;           }
     
     inline std::string GetName()    { return m_name;            }
+    inline int GetCash()            { return m_cash;        }
 };

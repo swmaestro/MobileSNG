@@ -8,12 +8,13 @@
 
 #include "Crop.h"
 
-Crop::Crop(int id, int time, ObjectInfoMgr *pInfoMgr)
+Crop::Crop(int id, int time, int index, ObjectInfoMgr *pInfoMgr)
 {
     m_id        = id;
     m_state     = CROP_STATE_GROW_1;
     m_pTimer    = new Timer(time);
     m_pInfo     = NULL;
+    m_index     = index;
     
     if(pInfoMgr->searchInfo(m_id, &m_pInfo) == false)
         printf("%s <- Error, Can not find Crop Information\n", __FUNCTION__);
@@ -56,4 +57,9 @@ Timer* Crop::GetTimer()
 CropInfo Crop::GetInfo()
 {
     return *m_pInfo;
+}
+
+int Crop::GetIndex()
+{
+    return m_index;
 }

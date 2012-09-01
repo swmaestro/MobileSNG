@@ -14,7 +14,7 @@ Building::Building(ObjectInMap *pObject, int nowTime, ObjectInfoMgr *pInfoMgr) :
     m_type = OBJECT_TYPE_BUILDING;
     m_pTimer = new Timer(nowTime);
     m_pTimer->StartTimer();
-    m_isWorking = false;
+    m_isWork = false;
     
     if(pInfoMgr->searchInfo(m_id, &m_pInfo) == false)
         printf("%s <- Error, Can't find Building Information\n", __FUNCTION__);
@@ -35,7 +35,7 @@ bool Building::UpdateSystem()
         time = static_cast<float>(m_pInfo->GetBuildTime());
     else if( m_state == BUILDING_STATE_WORKING )
         time = static_cast<float>(m_pInfo->GetObjInfo().GetTime());
-
+    
     if(m_pTimer->CheckTimer(time))
     {
         if (m_state < BUILDING_STATE_WORKING)
@@ -43,13 +43,12 @@ bool Building::UpdateSystem()
         
         if(m_state == BUILDING_STATE_WORKING)
         {
-            if (!m_isWorking)
+            if(!m_isWork)
             {
                 m_pTimer->StartTimer();
-                m_isWorking = true;
+                m_isWork = true;
             }
-            else
-                m_state = BUILDING_STATE_DONE;
+            else m_state = BUILDING_STATE_DONE;
         }
     }
 

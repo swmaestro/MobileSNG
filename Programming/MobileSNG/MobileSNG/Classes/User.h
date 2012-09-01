@@ -1,53 +1,45 @@
 //
-//  User.h
+//  People.h
 //  MobileSNG
 //
-//  Created by 박 진 on 12. 8. 13..
+//  Created by 박 진 on 12. 8. 26..
 //
 //
 
 #pragma once
 
+#include "VillageInfo.h"
+#include <vector>
 #include <string>
-#include "Sqlite3Base.h"
 #include "Network.h"
 
-#define USER_FILE_NAME "User.info"
+enum FRIEND_GET_ENUM {
+    FRIEND_ENUM_FOLLOWING = 1,
+    FRIEND_ENUM_FOLLOWERS
+    };
 
 class User
 {
-private:
-    std::string     m_strFilePath;
-    std::string     m_strID;
-    std::string     m_strPassWord;
-    std::string     m_strPhoneNumber;
-
-    int             m_level;
-    int             m_money;
-    int             m_cash;
-    int             m_exp;
+protected:
+    UserInfo                      *m_pUserInfo;
+    std::vector<VillageInfo*>      m_vFollowers;
+    std::vector<VillageInfo*>      m_vFollowing;
     
 public:
     User();
+    User(const char* userID, const char* userPhone, const char* userDate);
     ~User();
     
-public:
-    void UpdateData(Network *pNetwork);
+private:
+    static std::vector<VillageInfo*> _GetFriend(Network *pNet, int page, const char *userID, FRIEND_GET_ENUM type);
+
+protected:
+    void setUserInfo(UserInfo user);
 
 public:
-    bool AddMoney(int n);
-    void AddCash(int n);
-    void AddExp(int n);
-    
+    std::vector<VillageInfo*> GetFollowing(Network *pNet, int page, const char *userID = NULL);
+    std::vector<VillageInfo*> GetFollowers(Network *pNet, int page, const char *userID = NULL);
+
 public:
-    int     GetLevel();
-    int     GetMoney();
-    int     GetCash();
-    int     GetExp();
-    int     GetMaximum();
-    
-public:
-    static bool hasFile();
-    static void newUser(const char *userID, const char *userPW, const char *userPhone);
-    static void GetInfo(char *pOutID, char *pOutPW, char *pOutPhone);
+    const char* GetUserID();
 };
