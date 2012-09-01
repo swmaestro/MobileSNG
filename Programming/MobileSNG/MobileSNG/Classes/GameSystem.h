@@ -49,7 +49,7 @@ private:
     ObjectIndexMgr                  *m_pIdxMgr;
     
 private:
-    std::vector<ObjectInMap*>::iterator m_objectIter;
+    int     m_nObjectLoop;
     
 public:
     GameSystem(const char* strDBFile, int & mapLevel);
