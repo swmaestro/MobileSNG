@@ -15,6 +15,13 @@ Building::Building(ObjectInMap *pObject, int nowTime, ObjectInfoMgr *pInfoMgr) :
     m_pTimer = new Timer(nowTime);
     m_pTimer->StartTimer();
     m_isWork = false;
+    m_isFriend = false;
+    
+    if(pObject->m_state == BUILDING_STATE_OTEHR_WORKING)
+    {
+        m_state = BUILDING_STATE_WORKING;
+        m_isFriend = true;
+    }
     
     if(pInfoMgr->searchInfo(m_id, &m_pInfo) == false)
         printf("%s <- Error, Can't find Building Information\n", __FUNCTION__);
@@ -69,4 +76,9 @@ Timer* Building::GetTimer()
 bool Building::isDone()
 {
     return m_state == BUILDING_STATE_DONE;
+}
+
+bool Building::isFriend()
+{
+    return m_isFriend;
 }

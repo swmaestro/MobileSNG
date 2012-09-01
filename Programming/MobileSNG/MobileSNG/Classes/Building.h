@@ -21,7 +21,7 @@ enum BUILDING_STATE
     BUILDING_STATE_WORKING,
     BUILDING_STATE_DONE,
     BUILDING_STATE_FAIL = 10,
-    BUILDING_STATE_OTEHR_WAIT
+    BUILDING_STATE_OTEHR_WORKING
 };
 
 class Building : public ObjectInMap
@@ -29,6 +29,7 @@ class Building : public ObjectInMap
 private:
     BuildingInfo   *m_pInfo;
     bool            m_isWork;
+    bool            m_isFriend;
     
 private:
     Timer           *m_pTimer;
@@ -41,4 +42,5 @@ public:
     bool UpdateSystem();
     Timer* GetTimer();
     bool isDone();
+    bool isFriend();
 };

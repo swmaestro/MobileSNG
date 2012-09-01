@@ -52,7 +52,7 @@ ObjectInfo GameSystem::GetObjectInfo(ObjectInMap *pObj)
 
 CommonInfo* GameSystem::GetCommonInfo(int type, int id)
 {
-    if(type == OBJECT_TYPE_BUILDING)
+    if(type == OBJECT_TYPE_BUILDING || type == OBJECT_TYPE_FIELD)
     {
         BuildingInfo *pInfo;
         if(m_pInfoMgr->searchInfo(id, &pInfo))
@@ -64,7 +64,7 @@ CommonInfo* GameSystem::GetCommonInfo(int type, int id)
         if(m_pInfoMgr->searchInfo(id, &pInfo))
             return pInfo;
     }
-    else // ornament type
+    else // Field type
     {
         OrnamentInfo *pInfo;
         if(m_pInfoMgr->searchInfo(id, &pInfo))
@@ -523,7 +523,7 @@ vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(con
                     case NETWORK_OBJECT_CONSTRUCTION:   state = BUILDING_STATE_UNDER_CONSTRUCTION_1;    break;
                     case NETWORK_OBJECT_WORKING:        state = BUILDING_STATE_WORKING;                 break;
                     case NETWORK_OBJECT_DONE:           state = BUILDING_STATE_DONE;                    break;
-                    case NETWORK_OBJECT_OTHER_WATTING:  state = BUILDING_STATE_OTEHR_WAIT;              break;
+                    case NETWORK_OBJECT_OTHER_WATTING:  state = BUILDING_STATE_OTEHR_WORKING;           break;
                     default:break;
                 }
 
@@ -556,7 +556,6 @@ vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(con
         long long int deltaTime = date.GetTimeValue(serverDate);
                 
         ObjectInMap obj = ObjectInMap(state, pos, size, dir, id, index);
-//        obj.SetIndex(index);
         obj.SetType(type);
         
         pair<ObjectInMap, long long int> value(obj, deltaTime);
