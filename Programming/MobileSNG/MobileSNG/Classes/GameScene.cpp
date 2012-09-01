@@ -179,7 +179,7 @@ bool GameScene::_initShop()
 
 bool GameScene::_initFriends()
 {
-    m_pFriends = new Friends();
+    m_pFriends = new Friends(m_pSystem);
     m_pFriends->init();
     
     return true;
