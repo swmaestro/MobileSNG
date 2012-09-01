@@ -338,7 +338,6 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             
             if (m_pTalkbox->Touch(pTouch))
             {
-//                MapMgr * mapmgr = m_pSystem->GetMapMgr();
                 CCPoint p = m_pTalkbox->GetPos();
                 ObjectInMap * oim = m_pSystem->FindObject(POINT<int>(p.x, p.y));
                 CCNode * tile = m_pTile->getChildByTag(MAKEWORD(((int)p.x), ((int)p.y)));
@@ -347,7 +346,7 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                     tile->removeChildByTag(TILE_CROP, true);
                 tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
                 
-                m_pSystem->removeObject(oim);
+                m_pSystem->SellObject(oim);
                 m_pTalkbox->setVisible(false);
                 return;
             }
