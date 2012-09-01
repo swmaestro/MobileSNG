@@ -93,22 +93,6 @@ ObjectInMap* MapMgr::addObject(ObjectInMap *pObj, ObjectInfoMgr *pInfoMgr, int t
         return false;
     }
     
-//    if(object->GetType() == OBJECT_TYPE_BUILDING)
-//    {
-//        idx = m_pObjIdxMgr->buildingIndex();
-
-//        if(idx == -1)
-//        {
-//            printf("%s <- Index Full\n", __FUNCTION__);
-//            delete object;
-//            return false;
-//        }
-//
-//        object->SetIndex(idx);
-//    }
-    
-    
-//    m_pObjIdxMgr->addBuildingIndex(idx);
     m_vObjects.push_back(object);
     
     return object;

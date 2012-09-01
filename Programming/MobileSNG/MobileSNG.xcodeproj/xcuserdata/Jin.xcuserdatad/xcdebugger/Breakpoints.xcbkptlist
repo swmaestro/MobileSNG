@@ -138,38 +138,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/MapMgr.cpp"
-         timestampString = "368119893.613978"
+         timestampString = "368186883.902688"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "207"
-         endingLineNumber = "207"
+         startingLineNumber = "191"
+         endingLineNumber = "191"
          landmarkName = "MapMgr::removeObject(ObjectInMap *obj)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368184828.100436"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "297"
-         endingLineNumber = "297"
-         landmarkName = "GameSystem::addObject(ObjectInMap *pObj, int time, int index)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368185451.583948"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "589"
-         endingLineNumber = "589"
-         landmarkName = "GameSystem::SetUpVillageList(bool isUpdate)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
