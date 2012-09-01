@@ -233,7 +233,6 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
 bool GameSystem::init()
 {
     //아마 여기에 슬슬 서버연동이나 이런 선 작업들이 들어갈거야.
-    m_objectIter = m_pMap->GetAllObject().begin();
     
     if( SetUpVillageList() == false)
         return false;
@@ -241,27 +240,25 @@ bool GameSystem::init()
     return true;
 }
 
-bool GameSystem::UpdateMapObject(ObjectInMap **ppOut)
-{
-    vector<ObjectInMap*>::iterator begin = m_pMap->GetAllObject().begin();
-    vector<ObjectInMap*>::iterator end   = m_pMap->GetAllObject().end();
-    
-    if( m_pMap->GetAllObject().size() == 0 )
-        return false;
-    
-    if(m_objectIter == end)
-        m_objectIter++ = begin;
-    
-    *ppOut = *m_objectIter;
-    
-    return (*m_objectIter)->UpdateSystem();
-}
+//bool GameSystem::UpdateMapObject(ObjectInMap **ppOut)
+//{
+//    vector<ObjectInMap*> &v = m_pMap->GetAllObject();
+//    int size = m_pMap->GetAllObject().size();
+//    
+//    if( size == false) return false;
+//    if( ++m_nObjectLoop >= size )
+//        m_nObjectLoop = 0;
+//    
+//    *ppOut = v[m_nObjectLoop];
+//    
+//    return v[m_nObjectLoop]->UpdateSystem();
+//}
 
 bool GameSystem::_networkNormalResult(xml_document<char> *pXMLDoc)
 {
     const char *value = pXMLDoc->first_node()->first_node()->value();
     
-    if(strcmp(value, "false"))
+    if(strcmp(value, "false") == 0)
         return false;
     
     return true;
@@ -269,7 +266,7 @@ bool GameSystem::_networkNormalResult(xml_document<char> *pXMLDoc)
 
 bool GameSystem::_newObject(const char *userID, int objID, int index, POINT<int> position, OBJECT_DIRECTION dir)
 {
-    const char *baseURL = "http://swmaestros-sng.appspot.com/buildinginsert?id=%s&bindex=%d&index=%d&location=%03d%03d&direction=%s";
+    const char *baseURL = "http://swmaestros-sng.appspot.com/buildinginsert?id=%s&bindex=%d&index=%d&location=%d&direction=%s";
     char url[256];
     
     string direction;
@@ -277,7 +274,8 @@ bool GameSystem::_newObject(const char *userID, int objID, int index, POINT<int>
             direction = "false";
     else    direction = "true";
     
-    sprintf(url, baseURL, userID, objID, index, position.x, position.y, direction.data());
+    int makePos = MAKEWORD(position.x, position.y);
+    sprintf(url, baseURL, userID, objID, index, makePos, direction.data());
     
     printf("%s\n", url);
     
@@ -319,7 +317,7 @@ bool GameSystem::addObject(ObjectInMap *pObj, int time, int index)
         if(_newObject(m_pPlayer->GetUserID(), pObj->GetID(), pObj->GetIndex(), pObj->GetPosition(), pObj->GetDirection()) == false)
         {
             //서버에서 실패한거니까, 서버 통해서 재거하지 말고 클라 자체에서 제거하면되.
-            m_pMap->removeObject(pObj);
+            m_pMap->removeObject(pObj->GetIndex());
             m_pIdxMgr->removeBuildIndex(idx);
             return false;
         }
@@ -478,6 +476,8 @@ vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(con
     xml_document<char> xmlDoc;
     xmlDoc.parse<0>(const_cast<char*>(pContent));
     
+    printf("%s\n", pContent);
+    
     xml_node<char> *pRoot = xmlDoc.first_node()->first_node();
     
     int count = atoi(pRoot->value());
@@ -509,31 +509,41 @@ vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(con
 
             if(state == NETWORK_OBJECT_DONE)
                 state = CROP_STATE_DONE;
+            else if( state == NETWORK_OBJECT_FAIL)
+                state = CROP_STATE_FAIL;
             else state = CROP_STATE_GROW_1;
         }
         else
         {
-            type = OBJECT_TYPE_BUILDING;
+            if( id != -1 )
+            {
+                type = OBJECT_TYPE_BUILDING;
             
-            switch (state) {
-                case NETWORK_OBJECT_CONSTRUCTION:   state = BUILDING_STATE_UNDER_CONSTRUCTION_1;    break;
-                case NETWORK_OBJECT_WORKING:        state = BUILDING_STATE_WORKING;                 break;
-                case NETWORK_OBJECT_DONE:           state = BUILDING_STATE_DONE;                    break;
-                case NETWORK_OBJECT_FAIL:           state = BUILDING_STATE_FAIL;                    break;
-                case NETWORK_OBJECT_OTHER_WATTING:  state = BUILDING_STATE_OTEHR_WAIT;              break;
-                default:break;
-            }
+                switch (state) {
+                    case NETWORK_OBJECT_CONSTRUCTION:   state = BUILDING_STATE_UNDER_CONSTRUCTION_1;    break;
+                    case NETWORK_OBJECT_WORKING:        state = BUILDING_STATE_WORKING;                 break;
+                    case NETWORK_OBJECT_DONE:           state = BUILDING_STATE_DONE;                    break;
+                    case NETWORK_OBJECT_OTHER_WATTING:  state = BUILDING_STATE_OTEHR_WAIT;              break;
+                    default:break;
+                }
 
-            BuildingInfo *pInfo;
-            m_pInfoMgr->searchInfo(id, &pInfo);
-            size = pInfo->GetSize();
+                BuildingInfo *pInfo;
+                m_pInfoMgr->searchInfo(id, &pInfo);
+                size = pInfo->GetSize();
+            }
+            else
+            {
+                type = OBJECT_TYPE_FIELD;
+                state = 0;
+                size = SIZE<int>(1,1);
+            }
         }
         pNode = pNode->next_sibling();
         
         int posValue = atoi(pNode->value());
         POINT<int> pos;
-        pos.x = posValue/1000;
-        pos.y = posValue%1000;
+        pos.x = GETWORD_X(posValue);
+        pos.y = GETWORD_Y(posValue);
         pNode = pNode->next_sibling();
         
         OBJECT_DIRECTION dir = static_cast<OBJECT_DIRECTION>(atoi(pNode->value()));
@@ -547,6 +557,7 @@ vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(con
                 
         ObjectInMap obj = ObjectInMap(state, pos, size, dir, id, index);
 //        obj.SetIndex(index);
+        obj.SetType(type);
         
         pair<ObjectInMap, long long int> value(obj, deltaTime);
         v.push_back(value);
@@ -558,7 +569,7 @@ vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(con
 bool GameSystem::_getServerTime(DateInfo *pInfo)
 {
     CURL_DATA data;
-    if(m_pNetwork->connectHttp("http://swmaestros-sng.appspot.com/timeprint", &data) == false)
+    if(m_pNetwork->connectHttp("http://swmaestros-sng.appspot.com/timeprint", &data) != CURLE_OK)
     {
         printf("%s <- Error Get Server Time\n", __FUNCTION__);
         return false;
@@ -605,10 +616,8 @@ bool GameSystem::SetUpVillageList(bool isUpdate)
         pObj = &((*iter).first);
         
         if(pObj->GetType() != OBJECT_TYPE_CROP)
-        {
             addObject(pObj, time, pObj->GetIndex());
-            m_pIdxMgr->addBuildingIndex(pObj->GetIndex());
-        }
+        
         else vCrop.push_back((*iter));
     }
     
@@ -617,9 +626,8 @@ bool GameSystem::SetUpVillageList(bool isUpdate)
         time = (*iter).second;
         pObj = &(*iter).first;
         
-        Field *pField = dynamic_cast<Field*>(FindObject(pObj->GetIndex()));
+        Field *pField = dynamic_cast<Field*>(m_pMap->FindObject(pObj->GetPosition()));
         addCrop(pField, pObj->GetID(), time, pObj->GetIndex());
-        m_pIdxMgr->addCropIndex(pObj->GetIndex());
     }        
     
     return true;

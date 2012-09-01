@@ -137,13 +137,13 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/LoginUI.cpp"
-         timestampString = "368097942.831986"
+         filePath = "MobileSNG/Classes/MapMgr.cpp"
+         timestampString = "368119893.613978"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "87"
-         endingLineNumber = "87"
-         landmarkName = "LoginUI::ccTouchesBegan(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent)"
+         startingLineNumber = "207"
+         endingLineNumber = "207"
+         landmarkName = "MapMgr::removeObject(ObjectInMap *obj)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -151,12 +151,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368099195.247375"
+         timestampString = "368184828.100436"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "267"
-         endingLineNumber = "267"
-         landmarkName = "GameSystem::_networkNormalResult(xml_document&lt;char&gt; *pXMLDoc)"
+         startingLineNumber = "297"
+         endingLineNumber = "297"
+         landmarkName = "GameSystem::addObject(ObjectInMap *pObj, int time, int index)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

@@ -66,19 +66,12 @@ bool Map::init(GameSystem * system)
 
 void Map::update(float dt)
 {
-//    MapMgr * mapMgr = m_pSystem->GetMapMgr();
-//    std::vector<ObjectInMap *> object = mapMgr->GetAllObject();
-//    std::vector<ObjectInMap *>::iterator i;
-//    
-//    for (i = object.begin(); i != object.end(); ++i)
-//        if ((*i)->UpdateSystem())
-//            SyncPos(*i);
-//    if(m_pSystem->UpdateMapObject())
-
-    ObjectInMap *pObj;
-
-    if(m_pSystem->UpdateMapObject(&pObj))
-        if(pObj) SyncPos(pObj);
+    std::vector<ObjectInMap *> &object = m_pSystem->GetAllObject();
+    std::vector<ObjectInMap *>::iterator i;
+    
+    for (i = object.begin(); i != object.end(); ++i)
+        if ((*i)->UpdateSystem())
+            SyncPos(*i);
 }
 
 void Map::SyncPos(ObjectInMap *oim)
@@ -92,7 +85,6 @@ void Map::SyncPos(ObjectInMap *oim)
     {
         Building * b = dynamic_cast<Building *>(oim);
         BuildingInfo * info;
-        CCSprite * spr = dynamic_cast<CCSprite *>(tile->getChildByTag(TILE_BUILDING));
         
         infoMgr->searchInfo(b->GetID(), &info);
         filename = info->GetName();
@@ -116,8 +108,11 @@ void Map::SyncPos(ObjectInMap *oim)
                 break;
         }
         
-        CCTexture2D * tex = CCTextureCache::sharedTextureCache()->addImage(filename.c_str());
-        spr->setTexture(tex);
+        tile->removeChildByTag(TILE_BUILDING, true);
+        
+        CCSprite * spr = CCSprite::create(filename.c_str());
+        spr->setAnchorPoint(ccp(0, 0));
+        tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);
     }
     else if (oim->GetType() == OBJECT_TYPE_FIELD)
     {
@@ -131,8 +126,6 @@ void Map::SyncPos(ObjectInMap *oim)
         }
         
         CropInfo * info;
-        CCSprite * spr = dynamic_cast<CCSprite *>(tile->getChildByTag(TILE_CROP));
-        
         infoMgr->searchInfo(c->GetID(), &info);
         filename = info->GetName();
         
@@ -155,8 +148,11 @@ void Map::SyncPos(ObjectInMap *oim)
                 break;
         }
         
-        CCTexture2D * tex = CCTextureCache::sharedTextureCache()->addImage(filename.c_str());
-        spr->setTexture(tex);
+        tile->removeChildByTag(TILE_CROP, true);
+        
+        CCSprite * spr = CCSprite::create(filename.c_str());
+        spr->setAnchorPoint(ccp(0, 0));
+        tile->addChild(spr, TILE_CROP, TILE_CROP);
     }
 }
 
@@ -179,6 +175,20 @@ void Map::_initTile()
             
             tile->addChild(spr, TILE_NONE, TILE_NONE);
             m_pTile->addChild(tile, m_width - i - j, MAKEWORD(i, j));
+            
+            ObjectInMap * oim = m_pSystem->FindObject(POINT<int>(i, j));
+            
+            if (oim)
+            {
+                if (oim->GetType() == OBJECT_TYPE_FIELD)
+                {
+                    spr = CCSprite::create("Farm/01.png");
+                    spr->setAnchorPoint(ccp(0, 0));
+                    tile->addChild(spr, TILE_FARM, TILE_FARM);
+                }
+                
+                SyncPos(oim);
+            }
         }
     
     addChild(m_pTile, 1);
@@ -345,7 +355,6 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             
             if (m_pTalkbox->Touch(pTouch))
             {
-//                MapMgr * mapmgr = m_pSystem->GetMapMgr();
                 CCPoint p = m_pTalkbox->GetPos();
                 ObjectInMap * oim = m_pSystem->FindObject(POINT<int>(p.x, p.y));
                 CCNode * tile = m_pTile->getChildByTag(MAKEWORD(((int)p.x), ((int)p.y)));
@@ -354,7 +363,7 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                     tile->removeChildByTag(TILE_CROP, true);
                 tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
                 
-                m_pSystem->removeObject(oim);
+                m_pSystem->SellObject(oim);
                 m_pTalkbox->setVisible(false);
                 return;
             }
@@ -371,9 +380,6 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             if (!(x < -m_width / 2 || x > m_width / 2 || y < -m_width / 2 || y > m_width / 2))
             {
                 POINT<int> pos(x, y);
-
-//              if (m_pSystem->Harvest(pos, NULL))
-//                  SyncPos(m_pSystem->GetMapMgr()->FindObject(pos));
                 
                 ObjectInMap *pObj = NULL;
                 
@@ -391,7 +397,7 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                             sprintf(strBuf, "Buuuuuilding");
                             break;
                             
-                        case OBJECT_TYPE_CROP:
+                        case OBJECT_TYPE_FIELD:
                             sprintf(strBuf, "Faaaaaaaaarm");
                             break;
                             

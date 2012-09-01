@@ -46,10 +46,7 @@ private:
     MapMgr                          *m_pMap;
     Network                         *m_pNetwork;
     Player                          *m_pPlayer;
-    ObjectIndexMgr                  *m_pIdxMgr;
-    
-private:
-    std::vector<ObjectInMap*>::iterator m_objectIter;
+    ObjectIndexMgr                  *m_pIdxMgr;    
     
 public:
     GameSystem(const char* strDBFile, int & mapLevel);
@@ -115,4 +112,6 @@ public:
     inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }
 //    inline MapMgr*          GetMapMgr()     { return m_pMap;     }
     inline Player*          GetPlayer()     { return m_pPlayer;    }
+    inline std::vector<ObjectInMap*>& GetAllObject()
+    { return m_pMap->GetAllObject(); }
 };

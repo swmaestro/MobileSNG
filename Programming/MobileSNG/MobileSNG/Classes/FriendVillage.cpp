@@ -37,11 +37,11 @@ FriendVillage::FriendVillage(int mapLevel, UserInfo *pUser, std::vector< std::pa
         pObj = &(*iter).first;
         time = (*iter).second;
         
-        Field *pField = dynamic_cast<Field*>(m_pMap->FindObject(pObj->GetIndex()));
+        Field *pField = dynamic_cast<Field*>(m_pMap->FindObject(pObj->GetPosition()));
         m_pMap->addCrop(pField, pObj->GetID(), time, pObj->GetIndex(), pInfoMgr);
     }
     
-    m_objectIter = m_pMap->GetAllObject().begin();
+    m_nObjectLoop = 0;
 }
 
 FriendVillage::~FriendVillage()
@@ -52,18 +52,16 @@ FriendVillage::~FriendVillage()
 
 bool FriendVillage::UpdateMapObject(ObjectInMap **ppOut)
 {
-    vector<ObjectInMap*>::iterator begin = m_pMap->GetAllObject().begin();
-    vector<ObjectInMap*>::iterator end   = m_pMap->GetAllObject().end();
+    vector<ObjectInMap*> v = m_pMap->GetAllObject();
+    int size = m_pMap->GetAllObject().size();
     
-    if( m_pMap->GetAllObject().size() == 0 )
-        return false;
+    if( size == false) return false;
+    if( ++m_nObjectLoop >= size )
+        m_nObjectLoop = 0;
     
-    if(m_objectIter == end)
-        m_objectIter++ = begin;
+    *ppOut = v[m_nObjectLoop];
     
-    *ppOut = *m_objectIter;
-    
-    return (*m_objectIter)->UpdateSystem();
+    return v[m_nObjectLoop]->UpdateSystem();
 }
 
 MapMgr* FriendVillage::GetMapMgr()

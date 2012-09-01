@@ -72,10 +72,10 @@ bool GameScene::init()
     m_pShopUI->setVisible(false);
     addChild(m_pShopUI, 0);
     
-//    m_pFriendsUI = CCLayer::create();
-//    m_pFriendsUI->addChild(m_pFriends, UILAYER_TOUCH_RECIEVER, UILAYER_TOUCH_RECIEVER);
-//    m_pFriendsUI->setVisible(false);
-//    addChild(m_pFriendsUI, 0);
+    m_pFriendsUI = CCLayer::create();
+    m_pFriendsUI->addChild(m_pFriends, UILAYER_TOUCH_RECIEVER, UILAYER_TOUCH_RECIEVER);
+    m_pFriendsUI->setVisible(false);
+    addChild(m_pFriendsUI, 0);
     
     setTouchEnabled(true);
     
@@ -179,8 +179,8 @@ bool GameScene::_initShop()
 
 bool GameScene::_initFriends()
 {
-//    m_pFriends = new Friends();
-//    m_pFriends->init();
+    m_pFriends = new Friends();
+    m_pFriends->init();
     
     return true;
 }

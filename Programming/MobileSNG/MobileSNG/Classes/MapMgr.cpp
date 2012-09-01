@@ -167,7 +167,7 @@ vector<ObjectInMap*> MapMgr::FindObjects(POINT<int> pos, SIZE<int> size)
     return vObjects;
 }
 
-ObjectInMap* MapMgr::FindObjects(int index)
+ObjectInMap* MapMgr::FindObject(int index)
 {
     vector<ObjectInMap*>::iterator iter;
     
@@ -216,6 +216,20 @@ void MapMgr::removeObject(ObjectInMap *obj)
     }
 }
 
+void MapMgr::removeObject(int index)
+{
+    vector<ObjectInMap*>::iterator iter;
+    
+    for(iter = m_vObjects.begin(); iter != m_vObjects.end(); ++iter)
+    {
+        if( (*iter)->GetIndex() == index )
+        {
+            m_vObjects.erase(iter);
+            return;
+        }
+    }
+}
+
 void MapMgr::removeObject(POINT<int> &pos)
 {
     vector<ObjectInMap*>::iterator iter;
@@ -252,7 +266,7 @@ int MapMgr::GetMapLevel()
     return m_mapLevel;
 }
 
-vector<ObjectInMap *> MapMgr::GetAllObject()
+vector<ObjectInMap *>& MapMgr::GetAllObject()
 {
     return m_vObjects;
 }

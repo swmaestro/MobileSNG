@@ -249,6 +249,7 @@
 		C583633415D52560006F4F2A /* Allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C583633315D52560006F4F2A /* Allocator.cpp */; };
 		C583633615D5273C006F4F2A /* EditTile.png in Resources */ = {isa = PBXBuildFile; fileRef = C583633515D5273C006F4F2A /* EditTile.png */; };
 		C594CB0315E46F7000052769 /* Status.png in Resources */ = {isa = PBXBuildFile; fileRef = C594CB0215E46F7000052769 /* Status.png */; };
+		C5A77A5B15F1E570002DEB9B /* Friends.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5A77A5A15F1E570002DEB9B /* Friends.cpp */; };
 		C5B73E6B15EF7B9700E4B068 /* Remove.png in Resources */ = {isa = PBXBuildFile; fileRef = C5B73E6A15EF7B9700E4B068 /* Remove.png */; };
 		C5D3E46115E25BFA005D07BE /* Relocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5D3E45F15E25BFA005D07BE /* Relocator.cpp */; };
 		C5D57AD115CAB0AF003B8D80 /* Edit-Big.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D57AC915CAB0AF003B8D80 /* Edit-Big.png */; };
@@ -755,7 +756,6 @@
 		C533CA9515E5272A0000CC98 /* Talkbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Talkbox.cpp; path = Classes/Talkbox.cpp; sourceTree = "<group>"; };
 		C533CA9615E5272A0000CC98 /* Talkbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Talkbox.h; path = Classes/Talkbox.h; sourceTree = "<group>"; };
 		C533CA9815E538830000CC98 /* Talkbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Talkbox.png; path = Resources/Talkbox.png; sourceTree = "<group>"; };
-		C533CAA415E64DE40000CC98 /* Friends.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Friends.cpp; path = Classes/Friends.cpp; sourceTree = "<group>"; };
 		C533CAA515E64DE40000CC98 /* Friends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friends.h; path = Classes/Friends.h; sourceTree = "<group>"; };
 		C546BD9715C8000300277186 /* Friends-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Friends-Small.png"; path = "Resources/Friends-Small.png"; sourceTree = "<group>"; };
 		C546BD9B15C8001400277186 /* Shop-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Shop-Small.png"; path = "Resources/Shop-Small.png"; sourceTree = "<group>"; };
@@ -773,6 +773,7 @@
 		C583633315D52560006F4F2A /* Allocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; name = Allocator.cpp; path = Classes/Allocator.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		C583633515D5273C006F4F2A /* EditTile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EditTile.png; path = Resources/EditTile.png; sourceTree = "<group>"; };
 		C594CB0215E46F7000052769 /* Status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Status.png; path = Resources/Status.png; sourceTree = "<group>"; };
+		C5A77A5A15F1E570002DEB9B /* Friends.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Friends.cpp; path = Classes/Friends.cpp; sourceTree = "<group>"; };
 		C5B73E6A15EF7B9700E4B068 /* Remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Remove.png; path = Resources/Remove.png; sourceTree = "<group>"; };
 		C5D3E45F15E25BFA005D07BE /* Relocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Relocator.cpp; path = Classes/Relocator.cpp; sourceTree = "<group>"; };
 		C5D3E46015E25BFA005D07BE /* Relocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Relocator.h; path = Classes/Relocator.h; sourceTree = "<group>"; };
@@ -2028,7 +2029,7 @@
 		C533CAA315E622340000CC98 /* Friends */ = {
 			isa = PBXGroup;
 			children = (
-				C533CAA415E64DE40000CC98 /* Friends.cpp */,
+				C5A77A5A15F1E570002DEB9B /* Friends.cpp */,
 				C533CAA515E64DE40000CC98 /* Friends.h */,
 			);
 			name = Friends;
@@ -2365,6 +2366,7 @@
 				3CC4DAA915E93BD5007574F5 /* User.cpp in Sources */,
 				3C72E21015EC7BA00039D769 /* ObjectIndexMgr.cpp in Sources */,
 				3C72E21815F0A7A10039D769 /* FriendVillage.cpp in Sources */,
+				C5A77A5B15F1E570002DEB9B /* Friends.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

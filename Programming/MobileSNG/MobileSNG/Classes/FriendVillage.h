@@ -17,8 +17,7 @@ class FriendVillage
 private:
     MapMgr      *m_pMap;
     UserInfo    *m_pUserInfo;
-    std::vector<ObjectInMap*>::iterator m_objectIter;
-    
+    int         m_nObjectLoop;
     
 public:
     FriendVillage(int mapLevel, UserInfo *pUser, std::vector< std::pair<ObjectInMap, long long int> > vData, ObjectInfoMgr *pInfoMgr);

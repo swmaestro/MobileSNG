@@ -77,5 +77,7 @@ public:
     inline void SetPosition(POINT<int> pos) { m_position = pos; }
     inline POINT<int>              GetPosition() { return m_position; }
     
+    void                    SetType(OBJECT_TYPE type) { m_type = type; }
+    
     void                    SetDirection(OBJECT_DIRECTION dir) { m_direction = dir; }
 };

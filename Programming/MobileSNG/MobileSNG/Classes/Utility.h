@@ -11,6 +11,14 @@
 #include <queue>
 #include "cocos2d.h"
 
+#define HIWORD(l)   ((short) (((long) ((l) >> 16)) & 0x0000FFFF))
+#define LOWORD(l)   ((short) ((l) & 0x0000FFFF))
+
+#define GETWORD_X(w) LOWORD(w)
+#define GETWORD_Y(w) HIWORD(w)
+
+#define MAKEWORD(x,y) ((long)((LOWORD(x) & 0x0000FFFF)|((((long)LOWORD(y)) << 16) & 0xFFFF0000)))
+
 template<typename TYPE>
 struct POINT
 {
