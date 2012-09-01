@@ -111,7 +111,7 @@ void Map::SyncPos(ObjectInMap *oim)
         tile->removeChildByTag(TILE_BUILDING, true);
         
         CCSprite * spr = CCSprite::create(filename.c_str());
-        spr->setAnchorPoint(ccp(0, 0));
+        spr->setAnchorPoint(ccp(0.5, 0.3 / ((info->GetSize().width + info->GetSize().height) / 2)));
         tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);
     }
     else if (oim->GetType() == OBJECT_TYPE_FIELD)
@@ -151,7 +151,7 @@ void Map::SyncPos(ObjectInMap *oim)
         tile->removeChildByTag(TILE_CROP, true);
         
         CCSprite * spr = CCSprite::create(filename.c_str());
-        spr->setAnchorPoint(ccp(0, 0));
+        spr->setAnchorPoint(ccp(0.5, 0.3));
         tile->addChild(spr, TILE_CROP, TILE_CROP);
     }
 }
@@ -182,8 +182,8 @@ void Map::_initTile()
             {
                 if (oim->GetType() == OBJECT_TYPE_FIELD)
                 {
-                    spr = CCSprite::create("Farm/01.png");
-                    spr->setAnchorPoint(ccp(0, 0));
+                    spr = CCSprite::create("Farm/Complete.png");
+                    spr->setAnchorPoint(ccp(0.5, 0.3));
                     tile->addChild(spr, TILE_FARM, TILE_FARM);
                 }
                 
