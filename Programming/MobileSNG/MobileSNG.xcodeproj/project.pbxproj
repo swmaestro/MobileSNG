@@ -18,6 +18,7 @@
 		3C5C1B4915D2478E006E7C0B /* Ornament.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3E15D2478E006E7C0B /* Ornament.cpp */; };
 		3C5C1B4A15D2478E006E7C0B /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B4015D2478E006E7C0B /* Timer.cpp */; };
 		3C72E21015EC7BA00039D769 /* ObjectIndexMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C72E20E15EC7BA00039D769 /* ObjectIndexMgr.cpp */; };
+		3C72E21815F0A7A10039D769 /* FriendVillage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C72E21615F0A7A10039D769 /* FriendVillage.cpp */; };
 		3C9364B515B0FF6300860E6A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C9364B415B0FF6300860E6A /* QuartzCore.framework */; };
 		3C9364B715B0FF6300860E6A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C9364B615B0FF6300860E6A /* OpenGLES.framework */; };
 		3C9364B915B0FF6300860E6A /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C9364B815B0FF6300860E6A /* OpenAL.framework */; };
@@ -299,6 +300,8 @@
 		3C72E20E15EC7BA00039D769 /* ObjectIndexMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ObjectIndexMgr.cpp; path = Classes/ObjectIndexMgr.cpp; sourceTree = "<group>"; };
 		3C72E20F15EC7BA00039D769 /* ObjectIndexMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectIndexMgr.h; path = Classes/ObjectIndexMgr.h; sourceTree = "<group>"; };
 		3C72E21115EE0BCF0039D769 /* DateInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DateInfo.h; path = Classes/DateInfo.h; sourceTree = "<group>"; };
+		3C72E21615F0A7A10039D769 /* FriendVillage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FriendVillage.cpp; path = Classes/FriendVillage.cpp; sourceTree = "<group>"; };
+		3C72E21715F0A7A10039D769 /* FriendVillage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendVillage.h; path = Classes/FriendVillage.h; sourceTree = "<group>"; };
 		3C9364B015B0FF6300860E6A /* MobileSNG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileSNG.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C9364B415B0FF6300860E6A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3C9364B615B0FF6300860E6A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -1042,6 +1045,8 @@
 				3CAB259A15B7AB7A0003DDE2 /* ObjectInfoMgr */,
 				3CAB259215B7A9730003DDE2 /* Scene */,
 				3CAB258F15B7A9420003DDE2 /* AppDelegate */,
+				3C72E21615F0A7A10039D769 /* FriendVillage.cpp */,
+				3C72E21715F0A7A10039D769 /* FriendVillage.h */,
 			);
 			path = MobileSNG;
 			sourceTree = "<group>";
@@ -2359,6 +2364,7 @@
 				3CC4DAA115E88B11007574F5 /* UserInfo.h in Sources */,
 				3CC4DAA915E93BD5007574F5 /* User.cpp in Sources */,
 				3C72E21015EC7BA00039D769 /* ObjectIndexMgr.cpp in Sources */,
+				3C72E21815F0A7A10039D769 /* FriendVillage.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

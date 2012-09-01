@@ -25,7 +25,7 @@ enum OBJECT_TYPE
     OBJECT_TYPE_NONE,
     OBJECT_TYPE_BUILDING,
     OBJECT_TYPE_FIELD,
-    OBJECT_TYPE_CROP = OBJECT_TYPE_FIELD,
+    OBJECT_TYPE_CROP,
     OBJECT_TYPE_ORNAMENT
 };
 
@@ -47,7 +47,8 @@ public:
                 POINT<int>       position   = POINT<int>(0,0),
                 SIZE<int>        size       = SIZE<int>(0,0),
                 OBJECT_DIRECTION dir        = OBJECT_DIRECTION_LEFT,
-                int              id         = -1);
+                int              id         = -1,
+                int              index      = -1);
     ObjectInMap(const ObjectInMap *pObject);
     
     virtual ~ObjectInMap();
@@ -75,6 +76,8 @@ public:
 
     inline void SetPosition(POINT<int> pos) { m_position = pos; }
     inline POINT<int>              GetPosition() { return m_position; }
+    
+    void                    SetType(OBJECT_TYPE type) { m_type = type; }
     
     void                    SetDirection(OBJECT_DIRECTION dir) { m_direction = dir; }
 };

@@ -49,7 +49,7 @@ private:
     ObjectIndexMgr                  *m_pIdxMgr;
     
 private:
-    std::vector<ObjectInMap*>::iterator m_objectIter;
+    int     m_nObjectLoop;
     
 public:
     GameSystem(const char* strDBFile, int & mapLevel);
@@ -99,6 +99,7 @@ public:
     bool            addCrop(Field *pField, int id, int time, int index = -1);
     void            removeCrop(Field *pField);
     void            removeObject(POINT<int> &pos);
+    void            removeObject(ObjectInMap *pObj);
     bool            isObjectInMap(POINT<int> pos);
     bool            isObjectInMap(POINT<int> pos, SIZE<int> size);
 
@@ -108,7 +109,7 @@ public:
     
     
 public:
-    bool            UpdateVillageList(bool isUpdate = false);
+    bool            SetUpVillageList(bool isUpdate = true);
     
 public:
     inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }

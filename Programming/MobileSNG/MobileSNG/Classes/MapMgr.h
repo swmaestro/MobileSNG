@@ -39,13 +39,14 @@ public:
     
 public:
     void        removeObject(ObjectInMap *pObj);
+    void        removeObject(int index);
     void        removeObject(POINT<int> &pos);
     void        removeObjects(POINT<int> &pos, SIZE<int> &size);
     
 public:
     ObjectInMap*                FindObject(POINT<int> pos);
     std::vector<ObjectInMap*>   FindObjects(POINT<int> pos, SIZE<int> size);
-    ObjectInMap*                FindObjects(int index);
+    ObjectInMap*                FindObject(int index);
     bool                        isObjectInMap(POINT<int> pos);
     bool                        isObjectInMap(POINT<int> pos, SIZE<int> size);
     

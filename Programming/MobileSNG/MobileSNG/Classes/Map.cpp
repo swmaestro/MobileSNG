@@ -75,7 +75,6 @@ void Map::update(float dt)
 //            SyncPos(*i);
 //    if(m_pSystem->UpdateMapObject())
 
-    ObjectInMap *pObj = NULL;
 
     if(m_pSystem->UpdateMapObject(&pObj))
         if(pObj) SyncPos(pObj);

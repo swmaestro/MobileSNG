@@ -195,17 +195,6 @@ void GameSystem::FastComplete(ObjectInMap *pObject)
 //        m_pPlayer->AddCash(-100);
 }
 
-void GameSystem::_buildingWork(ObjectInMap *pObject)
-{
-    Building        *pBuilding  = dynamic_cast<Building*>(pObject);
-    objectState      state      = pBuilding->GetState();
-    
-    if(state == BUILDING_STATE_WAIT)
-        pBuilding->DoWork();
-    else if( state == BUILDING_STATE_DONE)
-        pBuilding->CompleteWork();
-}
-
 bool GameSystem::Harvest(ObjectInMap **ppObject)
 {    
     if( ppObject == NULL )
@@ -214,23 +203,29 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     OBJECT_TYPE type = (*ppObject)->GetType();
     
     if( type == OBJECT_TYPE_ORNAMENT ) return false;
+    if( (*ppObject)->isDone() == false) return false;
 
-    if((*ppObject)->isDone())
-    {
-        ObjectInfo objInfo = GetObjectInfo((*ppObject));
-
-        int     exp         = objInfo.GetExp();
-        int     reward      = objInfo.GetReward();
-
-        if( _PostResourceInfo(reward, 0, exp) == false )   return false;
-
-        m_pPlayer->AddExp(exp);
-        m_pPlayer->AddMoney(reward);
-    }
+    ObjectInfo objInfo = GetObjectInfo((*ppObject));
     
-    if( type == OBJECT_TYPE_BUILDING )
-        _buildingWork((*ppObject));
-    else static_cast<Field*>((*ppObject))->removeCrop();
+    int exp = objInfo.GetExp();
+    int reward = objInfo.GetReward();
+    
+    if(_PostResourceInfo(reward, 0, exp) == false) return false;
+    
+    m_pPlayer->AddExp(exp);
+    m_pPlayer->AddMoney(reward);
+    
+    if(type == OBJECT_TYPE_BUILDING)
+    {
+        Building *pBuilding = dynamic_cast<Building*>((*ppObject));
+        pBuilding->m_state = BUILDING_STATE_WORKING;
+        pBuilding->GetTimer()->StartTimer();
+    }
+    else
+    {
+        Field *pField = dynamic_cast<Field*>((*ppObject));
+        pField->removeCrop();
+    }
     
     return true;
 }
@@ -238,9 +233,9 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
 bool GameSystem::init()
 {
     //아마 여기에 슬슬 서버연동이나 이런 선 작업들이 들어갈거야.
-    m_objectIter = m_pMap->GetAllObject().begin();
+    m_nObjectLoop = 0;
     
-    if( UpdateVillageList() == false)
+    if( SetUpVillageList() == false)
         return false;
     
     return true;
@@ -248,20 +243,23 @@ bool GameSystem::init()
 
 bool GameSystem::UpdateMapObject(ObjectInMap **ppOut)
 {
-    if( m_objectIter == m_pMap->GetAllObject().end() )
-        m_objectIter = m_pMap->GetAllObject().begin();
-    else ++m_objectIter;
+    vector<ObjectInMap*> v = m_pMap->GetAllObject();
+    int size = m_pMap->GetAllObject().size();
     
-    *ppOut = (*m_objectIter);
+    if( size == false) return false;
+    if( ++m_nObjectLoop >= size )
+        m_nObjectLoop = 0;
     
-    return (*m_objectIter)->UpdateSystem();
+    *ppOut = v[m_nObjectLoop];
+    
+    return v[m_nObjectLoop]->UpdateSystem();
 }
 
 bool GameSystem::_networkNormalResult(xml_document<char> *pXMLDoc)
 {
     const char *value = pXMLDoc->first_node()->first_node()->value();
     
-    if(strcmp(value, "false"))
+    if(strcmp(value, "false") == 0)
         return false;
     
     return true;
@@ -279,6 +277,8 @@ bool GameSystem::_newObject(const char *userID, int objID, int index, POINT<int>
     
     sprintf(url, baseURL, userID, objID, index, position.x, position.y, direction.data());
     
+    printf("%s\n", url);
+    
     CURL_DATA data;
     if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
     {
@@ -294,7 +294,8 @@ bool GameSystem::_newObject(const char *userID, int objID, int index, POINT<int>
 
 bool GameSystem::addObject(ObjectInMap *pObj, int time, int index)
 {    
-    if(pObj->GetType() == OBJECT_TYPE_CROP) return false;
+    if(pObj->GetType() == OBJECT_TYPE_CROP)
+        return false;
 
     if(index == -1)
     {
@@ -316,7 +317,7 @@ bool GameSystem::addObject(ObjectInMap *pObj, int time, int index)
         if(_newObject(m_pPlayer->GetUserID(), pObj->GetID(), pObj->GetIndex(), pObj->GetPosition(), pObj->GetDirection()) == false)
         {
             //서버에서 실패한거니까, 서버 통해서 재거하지 말고 클라 자체에서 제거하면되.
-            m_pMap->removeObject(pObj);
+            m_pMap->removeObject(pObj->GetIndex());
             m_pIdxMgr->removeBuildIndex(idx);
             return false;
         }
@@ -475,6 +476,8 @@ vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(con
     xml_document<char> xmlDoc;
     xmlDoc.parse<0>(const_cast<char*>(pContent));
     
+    printf("%s\n", pContent);
+    
     xml_node<char> *pRoot = xmlDoc.first_node()->first_node();
     
     int count = atoi(pRoot->value());
@@ -506,25 +509,34 @@ vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(con
 
             if(state == NETWORK_OBJECT_DONE)
                 state = CROP_STATE_DONE;
+            else if( state == NETWORK_OBJECT_FAIL)
+                state = CROP_STATE_FAIL;
             else state = CROP_STATE_GROW_1;
         }
         else
         {
-            type = OBJECT_TYPE_BUILDING;
+            if( id != -1 )
+            {
+                type = OBJECT_TYPE_BUILDING;
             
-            switch (state) {
-                case NETWORK_OBJECT_CONSTRUCTION:   state = BUILDING_STATE_UNDER_CONSTRUCTION_1;    break;
-                case NETWORK_OBJECT_WAITTING:       state = BUILDING_STATE_WAIT;                    break;
-                case NETWORK_OBJECT_WORKING:        state = BUILDING_STATE_WORKING;                 break;
-                case NETWORK_OBJECT_DONE:           state = BUILDING_STATE_DONE;                    break;
-                case NETWORK_OBJECT_FAIL:           state = BUILDING_STATE_FAIL;                    break;
-                case NETWORK_OBJECT_OTHER_WATTING:  state = BUILDING_STATE_OTEHR_WAIT;              break;
-                default:break;
-            }
+                switch (state) {
+                    case NETWORK_OBJECT_CONSTRUCTION:   state = BUILDING_STATE_UNDER_CONSTRUCTION_1;    break;
+                    case NETWORK_OBJECT_WORKING:        state = BUILDING_STATE_WORKING;                 break;
+                    case NETWORK_OBJECT_DONE:           state = BUILDING_STATE_DONE;                    break;
+                    case NETWORK_OBJECT_OTHER_WATTING:  state = BUILDING_STATE_OTEHR_WAIT;              break;
+                    default:break;
+                }
 
-            BuildingInfo *pInfo;
-            m_pInfoMgr->searchInfo(id, &pInfo);
-            size = pInfo->GetSize();
+                BuildingInfo *pInfo;
+                m_pInfoMgr->searchInfo(id, &pInfo);
+                size = pInfo->GetSize();
+            }
+            else
+            {
+                type = OBJECT_TYPE_FIELD;
+                state = 0;
+                size = SIZE<int>(1,1);
+            }
         }
         pNode = pNode->next_sibling();
         
@@ -543,8 +555,9 @@ vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(con
 
         long long int deltaTime = date.GetTimeValue(serverDate);
                 
-        ObjectInMap obj = ObjectInMap(state, pos, size, dir, id);
-        obj.SetIndex(index);
+        ObjectInMap obj = ObjectInMap(state, pos, size, dir, id, index);
+//        obj.SetIndex(index);
+        obj.SetType(type);
         
         pair<ObjectInMap, long long int> value(obj, deltaTime);
         v.push_back(value);
@@ -556,7 +569,7 @@ vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(con
 bool GameSystem::_getServerTime(DateInfo *pInfo)
 {
     CURL_DATA data;
-    if(m_pNetwork->connectHttp("http://swmaestros-sng.appspot.com/timeprint", &data) == false)
+    if(m_pNetwork->connectHttp("http://swmaestros-sng.appspot.com/timeprint", &data) != CURLE_OK)
     {
         printf("%s <- Error Get Server Time\n", __FUNCTION__);
         return false;
@@ -571,7 +584,7 @@ bool GameSystem::_getServerTime(DateInfo *pInfo)
     return true;
 }
 
-bool GameSystem::UpdateVillageList(bool isUpdate)
+bool GameSystem::SetUpVillageList(bool isUpdate)
 {
     const char *baseURL;
     
@@ -615,7 +628,7 @@ bool GameSystem::UpdateVillageList(bool isUpdate)
         time = (*iter).second;
         pObj = &(*iter).first;
         
-        Field *pField = dynamic_cast<Field*>(FindObject(pObj->GetIndex()));
+        Field *pField = dynamic_cast<Field*>(m_pMap->FindObject(pObj->GetPosition()));
         addCrop(pField, pObj->GetID(), time, pObj->GetIndex());
         m_pIdxMgr->addCropIndex(pObj->GetIndex());
     }        
@@ -623,3 +636,7 @@ bool GameSystem::UpdateVillageList(bool isUpdate)
     return true;
 }
 
+void GameSystem::removeObject(ObjectInMap *pObj)
+{
+    m_pMap->removeObject(pObj);
+}
