@@ -266,7 +266,7 @@ bool GameSystem::_networkNormalResult(xml_document<char> *pXMLDoc)
 
 bool GameSystem::_newObject(const char *userID, int objID, int index, POINT<int> position, OBJECT_DIRECTION dir)
 {
-    const char *baseURL = "http://swmaestros-sng.appspot.com/buildinginsert?id=%s&bindex=%d&index=%d&location=%03d%03d&direction=%s";
+    const char *baseURL = "http://swmaestros-sng.appspot.com/buildinginsert?id=%s&bindex=%d&index=%d&location=%d&direction=%s";
     char url[256];
     
     string direction;
@@ -274,7 +274,8 @@ bool GameSystem::_newObject(const char *userID, int objID, int index, POINT<int>
             direction = "false";
     else    direction = "true";
     
-    sprintf(url, baseURL, userID, objID, index, position.x, position.y, direction.data());
+    int makePos = MAKEWORD(position.x, position.y);
+    sprintf(url, baseURL, userID, objID, index, makePos, direction.data());
     
     printf("%s\n", url);
     
@@ -541,8 +542,8 @@ vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(con
         
         int posValue = atoi(pNode->value());
         POINT<int> pos;
-        pos.x = posValue/1000;
-        pos.y = posValue%1000;
+        pos.x = GETWORD_X(posValue);
+        pos.y = GETWORD_Y(posValue);
         pNode = pNode->next_sibling();
         
         OBJECT_DIRECTION dir = static_cast<OBJECT_DIRECTION>(atoi(pNode->value()));
@@ -615,10 +616,8 @@ bool GameSystem::SetUpVillageList(bool isUpdate)
         pObj = &((*iter).first);
         
         if(pObj->GetType() != OBJECT_TYPE_CROP)
-        {
             addObject(pObj, time, pObj->GetIndex());
-            m_pIdxMgr->addBuildingIndex(pObj->GetIndex());
-        }
+        
         else vCrop.push_back((*iter));
     }
     
@@ -629,7 +628,6 @@ bool GameSystem::SetUpVillageList(bool isUpdate)
         
         Field *pField = dynamic_cast<Field*>(m_pMap->FindObject(pObj->GetPosition()));
         addCrop(pField, pObj->GetID(), time, pObj->GetIndex());
-        m_pIdxMgr->addCropIndex(pObj->GetIndex());
     }        
     
     return true;
