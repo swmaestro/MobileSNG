@@ -54,7 +54,7 @@ bool ObjectInfoMgr::_loadBuilding(Sqlite3Base *pDBBase)
         ObjectInfo  obj     (_getTime(pDBBase->GetInt(6)), pDBBase->GetInt(4), pDBBase->GetInt(9), pDBBase->GetInt(10));
         CommonInfo  common  (pDBBase->GetInt(1), pDBBase->GetTxt(2), pDBBase->GetInt(3), pDBBase->GetInt(8), pDBBase->GetInt(0), pDBBase->GetInt(11));
         
-        BuildingInfo *pInfo = new BuildingInfo(obj, common, SIZE<int>(size/1000, size%1000), _getTime(pDBBase->GetInt(5)));
+        BuildingInfo *pInfo = new BuildingInfo(obj, common, SIZE<int>(size/100, size%100), _getTime(pDBBase->GetInt(5)));
         
         //WWWHHH
         //123456
