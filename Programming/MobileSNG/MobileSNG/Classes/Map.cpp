@@ -85,7 +85,6 @@ void Map::SyncPos(ObjectInMap *oim)
     {
         Building * b = dynamic_cast<Building *>(oim);
         BuildingInfo * info;
-        CCSprite * spr = dynamic_cast<CCSprite *>(tile->getChildByTag(TILE_BUILDING));
         
         infoMgr->searchInfo(b->GetID(), &info);
         filename = info->GetName();
@@ -109,8 +108,11 @@ void Map::SyncPos(ObjectInMap *oim)
                 break;
         }
         
-        CCTexture2D * tex = CCTextureCache::sharedTextureCache()->addImage(filename.c_str());
-        spr->setTexture(tex);
+        tile->removeChildByTag(TILE_BUILDING, true);
+        
+        CCSprite * spr = CCSprite::create(filename.c_str());
+        spr->setAnchorPoint(ccp(0.5, 0.3 / ((info->GetSize().width + info->GetSize().height) / 2)));
+        tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);
     }
     else if (oim->GetType() == OBJECT_TYPE_FIELD)
     {
@@ -124,8 +126,6 @@ void Map::SyncPos(ObjectInMap *oim)
         }
         
         CropInfo * info;
-        CCSprite * spr = dynamic_cast<CCSprite *>(tile->getChildByTag(TILE_CROP));
-        
         infoMgr->searchInfo(c->GetID(), &info);
         filename = info->GetName();
         
@@ -148,8 +148,11 @@ void Map::SyncPos(ObjectInMap *oim)
                 break;
         }
         
-        CCTexture2D * tex = CCTextureCache::sharedTextureCache()->addImage(filename.c_str());
-        spr->setTexture(tex);
+        tile->removeChildByTag(TILE_CROP, true);
+        
+        CCSprite * spr = CCSprite::create(filename.c_str());
+        spr->setAnchorPoint(ccp(0.5, 0.3));
+        tile->addChild(spr, TILE_CROP, TILE_CROP);
     }
 }
 
@@ -177,30 +180,11 @@ void Map::_initTile()
             
             if (oim)
             {
-                switch (oim->GetType())
+                if (oim->GetType() == OBJECT_TYPE_FIELD)
                 {
-                    case OBJECT_TYPE_FIELD:
-                    {
-                        spr = CCSprite::create("Farm/01.png");
-                        spr->setAnchorPoint(ccp(0, 0));
-                        tile->addChild(spr, TILE_FARM, TILE_FARM);
-                        Crop * c = ((Field *)oim)->GetCrop();
-                        if (c)
-                        {
-                            spr = CCSprite::create();
-                            spr->setAnchorPoint(ccp(0, 0));
-                            tile->addChild(spr, TILE_CROP, TILE_CROP);
-                        }
-                        break;
-                    }
-                    case OBJECT_TYPE_BUILDING:
-                        spr = CCSprite::create();
-                        spr->setAnchorPoint(ccp(0, 0));
-                        tile->addChild(CCSprite::create(), TILE_FARM, TILE_FARM);
-                        break;
-                        
-                    default:
-                        break;
+                    spr = CCSprite::create("Farm/Complete.png");
+                    spr->setAnchorPoint(ccp(0.5, 0.3));
+                    tile->addChild(spr, TILE_FARM, TILE_FARM);
                 }
                 
                 SyncPos(oim);
