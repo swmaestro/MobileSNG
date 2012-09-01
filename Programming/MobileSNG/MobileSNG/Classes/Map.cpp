@@ -76,8 +76,10 @@ void Map::update(float dt)
 //    if(m_pSystem->UpdateMapObject())
 
 
+    ObjectInMap * pObj;
     if(m_pSystem->UpdateMapObject(&pObj))
-        if(pObj) SyncPos(pObj);
+        if(pObj)
+            SyncPos(pObj);
 }
 
 void Map::SyncPos(ObjectInMap *oim)
@@ -178,6 +180,26 @@ void Map::_initTile()
             
             tile->addChild(spr, TILE_NONE, TILE_NONE);
             m_pTile->addChild(tile, m_width - i - j, MAKEWORD(i, j));
+            
+            ObjectInMap * oim = m_pSystem->FindObject(POINT<int>(i, j));
+            
+            if (oim)
+            {
+                switch (oim->GetType())
+                {
+                    case OBJECT_TYPE_FIELD:
+                    {
+                        tile->addChild(CCSprite::create(), TILE_FARM, TILE_FARM);
+                        Crop * c = ((Field *)oim)->GetCrop();
+                        if (c)
+                            tile->addChild(CCSprite::create(), TILE_CROP, TILE_CROP);
+                        break;
+                    }
+                    case OBJECT_TYPE_BUILDING:
+                        tile->addChild(CCSprite::create(), TILE_FARM, TILE_FARM);
+                        break;
+                }
+            }
         }
     
     addChild(m_pTile, 1);
