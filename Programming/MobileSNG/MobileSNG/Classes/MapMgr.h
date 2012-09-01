@@ -54,6 +54,6 @@ public:
     int             GetMapLevel();
 //    ObjectInMap*    GetObject(int idx);
 //    ObjectInMap*    GetObject(bool isNext = true);
-    std::vector<ObjectInMap *> GetAllObject();
+    std::vector<ObjectInMap *>& GetAllObject();
 };
 

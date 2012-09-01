@@ -137,25 +137,12 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/LoginUI.cpp"
-         timestampString = "368097942.831986"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "87"
-         endingLineNumber = "87"
-         landmarkName = "LoginUI::ccTouchesBegan(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368121468.283262"
+         timestampString = "368173218.266324"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "317"
-         endingLineNumber = "317"
+         startingLineNumber = "319"
+         endingLineNumber = "319"
          landmarkName = "GameSystem::addObject(ObjectInMap *pObj, int time, int index)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -177,12 +164,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368127506.469737"
+         timestampString = "368173218.266324"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "630"
-         endingLineNumber = "630"
-         landmarkName = "GameSystem::SetUpVillageList(bool isUpdate)"
+         startingLineNumber = "299"
+         endingLineNumber = "299"
+         landmarkName = "GameSystem::addObject(ObjectInMap *pObj, int time, int index)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

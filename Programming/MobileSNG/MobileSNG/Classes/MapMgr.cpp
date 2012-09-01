@@ -266,7 +266,7 @@ int MapMgr::GetMapLevel()
     return m_mapLevel;
 }
 
-vector<ObjectInMap *> MapMgr::GetAllObject()
+vector<ObjectInMap *>& MapMgr::GetAllObject()
 {
     return m_vObjects;
 }

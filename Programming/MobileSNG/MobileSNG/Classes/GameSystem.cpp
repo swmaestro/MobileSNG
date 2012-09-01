@@ -233,7 +233,6 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
 bool GameSystem::init()
 {
     //아마 여기에 슬슬 서버연동이나 이런 선 작업들이 들어갈거야.
-    m_nObjectLoop = 0;
     
     if( SetUpVillageList() == false)
         return false;
@@ -241,19 +240,19 @@ bool GameSystem::init()
     return true;
 }
 
-bool GameSystem::UpdateMapObject(ObjectInMap **ppOut)
-{
-    vector<ObjectInMap*> v = m_pMap->GetAllObject();
-    int size = m_pMap->GetAllObject().size();
-    
-    if( size == false) return false;
-    if( ++m_nObjectLoop >= size )
-        m_nObjectLoop = 0;
-    
-    *ppOut = v[m_nObjectLoop];
-    
-    return v[m_nObjectLoop]->UpdateSystem();
-}
+//bool GameSystem::UpdateMapObject(ObjectInMap **ppOut)
+//{
+//    vector<ObjectInMap*> &v = m_pMap->GetAllObject();
+//    int size = m_pMap->GetAllObject().size();
+//    
+//    if( size == false) return false;
+//    if( ++m_nObjectLoop >= size )
+//        m_nObjectLoop = 0;
+//    
+//    *ppOut = v[m_nObjectLoop];
+//    
+//    return v[m_nObjectLoop]->UpdateSystem();
+//}
 
 bool GameSystem::_networkNormalResult(xml_document<char> *pXMLDoc)
 {
