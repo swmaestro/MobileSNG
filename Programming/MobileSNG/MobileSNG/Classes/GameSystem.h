@@ -49,28 +49,28 @@ private:
     ObjectIndexMgr                  *m_pIdxMgr;    
     
 public:
-    GameSystem(const char* strDBFile, int & mapLevel);
+    GameSystem(const char* strDBFile, int & mapLevel, Network *pNetwork);
     ~GameSystem();
     
 public:
     CommonInfo* GetCommonInfo(ObjectInMap *pObj);
     ObjectInfo GetObjectInfo(ObjectInMap *pObj);
-    
+
     CommonInfo* GetCommonInfo(int type, int id);
     ObjectInfo GetObjectInfo(int type, int id);
-    
+
 private:
     bool _PostResourceInfo(int gold, int cash, int exp);
-    
+
 public:
     //물건을 살수있는지 여부를 묻는 그런 함수의 이름
     bool    isUseObject(CommonInfo *pCommonInfo);
     bool    isUseObject(ObjectInMap* pObj);
-    
+
 public:
     bool    BuyObject(ObjectInMap *pObj);
     void    SellObject(ObjectInMap *pObj);
-    
+
 public:
     bool Harvest(POINT<int> &pos, ObjectInMap **ppOut);
     bool Harvest(ObjectInMap **ppObject);
@@ -87,8 +87,6 @@ private:
     bool            _removeNetworkObject(const char *userID, int index);
     std::vector< std::pair<ObjectInMap, long long int> > _parseObjectInVillage(const char* pContent);
     bool        _getServerTime(DateInfo *pInfo);
-    void        _buildingWork(ObjectInMap *pObject);
-    
     
 public:
     bool            addObject(ObjectInMap *pObj, int time, int index = -1);
@@ -102,8 +100,6 @@ public:
 
     ObjectInMap*                FindObject(POINT<int> pos);
     std::vector<ObjectInMap*>   FindObjects(POINT<int> pos, SIZE<int> size);
-    
-    
     
 public:
     bool            SetUpVillageList(bool isUpdate = true);

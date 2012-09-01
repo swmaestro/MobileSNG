@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "UIMgr.h"
 #include "Utility.h"
+#include "Network.h"
 
 class Shop;
 class Map;
@@ -16,6 +17,7 @@ class GameScene : public cocos2d::CCLayer
 {
 private:
     GameSystem          * m_pSystem;
+    Network             * m_pNetwork;
     
     Map                 * m_pMap;
     Shop                * m_pShop;
