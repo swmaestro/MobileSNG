@@ -65,7 +65,13 @@ bool ObjectInfoMgr::_loadBuilding(Sqlite3Base *pDBBase)
         p.second    = pInfo;
         
         m_vBuildingInfo.push_back(pInfo);
+
+        int a = 0;
+        a = 5;
+        
         m_buildingInfoMap.insert(p);
+        
+        a = 3;
     }
     while (pDBBase->isNextStep());
     pDBBase->Finalize();

@@ -14,9 +14,8 @@
 using namespace std;
 using namespace rapidxml;
 
-CommonVillage::CommonVillage(Network *pNetwork)
+CommonVillage::CommonVillage(Network *pNetwork) : m_pNetwork(pNetwork), m_pInfoMgr(NULL)
 {
-    m_pNetwork = pNetwork;
     m_pInfoMgr = new ObjectInfoMgr;
 }
 

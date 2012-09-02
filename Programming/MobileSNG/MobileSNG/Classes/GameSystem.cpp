@@ -143,36 +143,6 @@ bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
     return this->Harvest(&pObject);
 }
 
-void GameSystem::AllHarvest()
-{
-//    vector<ObjectInMap*> vObjects = m_pMap->GetAllObject();
-//    vector<ObjectInMap*>::iterator iter;
-//    
-//    int exp         = 0;
-//    int money       = 0;
-//    int harvestNum  = 0;
-//    
-//    ObjectInfo info;
-//    
-//    for(iter = vObjects.begin(); iter != vObjects.end(); ++iter)
-//    {
-//        if(Harvest(&*iter))
-//        {
-//            info = _GetObjectInfo(*iter);
-//            exp += info.GetExp();
-//            money += info.GetReward();
-//            harvestNum++;
-//        }
-//    }
-//    
-//    exp *= 1.5f;
-//    money *= 1.5f;
-//    
-//    m_pPlayer->AddMoney(money);
-//    m_pPlayer->AddExp(exp);
-//    m_pPlayer->AddCash(-(harvestNum * 100));
-}
-
 bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
 {
     const char *baseURL = "http://swmaestros-sng.appspot.com/villageadder?id=%s&costA=%d&costB=%d&exp=%d";
@@ -188,27 +158,6 @@ bool GameSystem::_PostResourceInfo(int gold, int cash, int exp)
         return false;
 
     return true;
-}
-
-void GameSystem::FastComplete(ObjectInMap *pObject)
-{
-//    OBJECT_TYPE type = pObject->GetType();
-//    
-//    if( type == OBJECT_TYPE_BUILDING )
-//    {
-//        if(pObject->m_state == BUILDING_STATE_WORKING )
-//            pObject->m_state = BUILDING_STATE_DONE;
-//        else if(pObject->m_state <= BUILDING_STATE_UNDER_CONSTRUCTION_2)
-//            pObject->m_state = BUILDING_STATE_WORKING;
-//    }
-//    else if (type == OBJECT_TYPE_CROP )
-//    {
-//        if(pObject->m_state != CROP_STATE_DONE)
-//            pObject->m_state = CROP_STATE_DONE;
-//    }
-//    
-//    if(_PostResourceInfo(0, 0, -100))
-//        m_pPlayer->AddCash(-100);
 }
 
 bool GameSystem::Harvest(ObjectInMap **ppObject)
@@ -348,7 +297,7 @@ bool GameSystem::addObject(ObjectInMap *pObj, int time, int index)
     return false;
 }
 
-bool GameSystem::moveObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir)
+bool GameSystem::changeObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir)
 {
     POINT<int> tmpPos = obj2->GetPosition();
     OBJECT_DIRECTION tmpDir = obj2->GetDirection();

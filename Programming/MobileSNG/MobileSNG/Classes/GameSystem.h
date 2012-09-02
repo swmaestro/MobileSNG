@@ -34,7 +34,6 @@
 class GameSystem :private CommonVillage
 {
 private:
-    ObjectInfoMgr                   *m_pInfoMgr;
     MapMgr                          *m_pMap;
     Network                         *m_pNetwork;
     Player                          *m_pPlayer;
@@ -66,8 +65,6 @@ public:
 public:
     bool Harvest(POINT<int> &pos, ObjectInMap **ppOut);
     bool Harvest(ObjectInMap **ppObject);
-    void AllHarvest();
-    void FastComplete(ObjectInMap *pObject);
     
 public:
     bool init();
@@ -82,7 +79,7 @@ private:
     
 public:
     bool            addObject(ObjectInMap *pObj, int time, int index = -1);
-    bool            moveObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir = OBJECT_DIRECTION_LEFT);
+    bool            changeObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir = OBJECT_DIRECTION_LEFT);
     bool            addCrop(Field *pField, int id, int time, int index = -1);
     bool            isObjectInMap(POINT<int> pos);
     bool            isObjectInMap(POINT<int> pos, SIZE<int> size);
