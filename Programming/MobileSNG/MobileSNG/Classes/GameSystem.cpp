@@ -12,9 +12,8 @@
 using namespace std;
 using namespace rapidxml;
 
-GameSystem::GameSystem(const char* strDBFile, int & mapLevel, Network *pNetwork)
+GameSystem::GameSystem(const char* strDBFile, int & mapLevel, Network *pNetwork) : CommonVillage(pNetwork)
 {
-    m_pInfoMgr  = new ObjectInfoMgr();
     m_pInfoMgr->loadData(strDBFile);
     m_pNetwork  = pNetwork;
     m_pIdxMgr   = new ObjectIndexMgr;
@@ -24,7 +23,6 @@ GameSystem::GameSystem(const char* strDBFile, int & mapLevel, Network *pNetwork)
 
 GameSystem::~GameSystem()
 {
-    SAFE_DELETE(m_pInfoMgr);
     SAFE_DELETE(m_pMap);
     SAFE_DELETE(m_pNetwork);
     SAFE_DELETE(m_pPlayer);
@@ -100,9 +98,27 @@ bool GameSystem::BuyObject(ObjectInMap *pObj)
     return true;
 }
 
-void GameSystem::SellObject(ObjectInMap *pObj)
+bool GameSystem::SellObject(ObjectInMap *pObj)
 {
-    m_pPlayer->AddMoney(-GetCommonInfo(pObj)->GetPrice());
+    OBJECT_TYPE type = pObj->GetType();
+    
+    if( type == OBJECT_TYPE_BUILDING ){
+    if(dynamic_cast<Building*>(pObj)->isFriend())
+        return false;}
+    
+    else if( type == OBJECT_TYPE_FIELD ){
+    if(dynamic_cast<Field*>(pObj)->GetCrop())
+        return false;}
+    
+    CommonInfo *cominfo = GetCommonInfo(pObj);
+    int price = cominfo->GetPrice();
+    
+    if( _removeNetworkObject(m_pPlayer->GetUserID(), pObj->GetIndex()) == false )
+        return false;
+
+    m_pPlayer->AddMoney(-price);
+    m_pMap->removeObject(pObj);
+    return true;
 }
 
 bool GameSystem::isUseObject(CommonInfo *pCommonInfo)
@@ -215,9 +231,15 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     m_pPlayer->AddExp(exp);
     m_pPlayer->AddMoney(reward);
     
+    
     if(type == OBJECT_TYPE_BUILDING)
     {
         Building *pBuilding = dynamic_cast<Building*>((*ppObject));
+        
+//        const char *baseURL = "http://swmaestros-sng.appspot.com/brequest_end?owner=%s&index=%d";
+//        char url[256];
+//        sprintf(url, baseURL, m_pPlayer->GetUserID(), pBuilding->GetIndex());
+        
         pBuilding->m_state = BUILDING_STATE_WORKING;
         pBuilding->GetTimer()->StartTimer();
     }
@@ -253,16 +275,6 @@ bool GameSystem::init()
 //    
 //    return v[m_nObjectLoop]->UpdateSystem();
 //}
-
-bool GameSystem::_networkNormalResult(xml_document<char> *pXMLDoc)
-{
-    const char *value = pXMLDoc->first_node()->first_node()->value();
-    
-    if(strcmp(value, "false") == 0)
-        return false;
-    
-    return true;
-}
 
 bool GameSystem::_newObject(const char *userID, int objID, int index, POINT<int> position, OBJECT_DIRECTION dir)
 {
@@ -426,7 +438,7 @@ bool GameSystem::_removeNetworkObject(const char *userID, int index)
     return _networkNormalResult(&xmlDoc);
 }
 
-void GameSystem::removeCrop(Field *pField)
+void GameSystem::_removeCrop(Field *pField)
 {
     if(pField->GetCrop() == NULL) return;
     int index = pField->GetCrop()->GetIndex();
@@ -437,7 +449,7 @@ void GameSystem::removeCrop(Field *pField)
     }
 }
 
-void GameSystem::removeObject(POINT<int> &pos)
+void GameSystem::_removeObject(POINT<int> &pos)
 {
     ObjectInMap *pObj = m_pMap->FindObject(pos);
     int index = pObj->GetIndex();
@@ -467,120 +479,6 @@ ObjectInMap* GameSystem::FindObject(POINT<int> pos)
 std::vector<ObjectInMap*> GameSystem::FindObjects(POINT<int> pos, SIZE<int> size)
 {
     return FindObjects(pos, size);
-}
-
-vector< pair<ObjectInMap, long long int> > GameSystem::_parseObjectInVillage(const char* pContent)
-{
-    vector< pair<ObjectInMap, long long int> > v;
-    
-    xml_document<char> xmlDoc;
-    xmlDoc.parse<0>(const_cast<char*>(pContent));
-    
-    printf("%s\n", pContent);
-    
-    xml_node<char> *pRoot = xmlDoc.first_node()->first_node();
-    
-    int count = atoi(pRoot->value());
-    pRoot = pRoot->next_sibling();
-    
-    DateInfo serverDate;
-    if( _getServerTime(&serverDate) == false )
-    {
-        printf("%s <- Error\n", __FUNCTION__);
-        return v;
-    }
-
-    for(int i=0; i<count; ++i, pRoot = pRoot->next_sibling())
-    {
-        xml_node<char> *pNode = pRoot->first_node();
-        
-        int index = atoi(pNode->value());
-        pNode = pNode->next_sibling();
-        int id = atoi(pNode->value());
-        pNode = pNode->next_sibling();
-
-        OBJECT_TYPE type;
-        objectState state = atoi(pNode->value());
-        SIZE<int> size;
-        
-        if( index >= 1000 )
-        {
-            type = OBJECT_TYPE_CROP;
-
-            if(state == NETWORK_OBJECT_DONE)
-                state = CROP_STATE_DONE;
-            else if( state == NETWORK_OBJECT_FAIL)
-                state = CROP_STATE_FAIL;
-            else state = CROP_STATE_GROW_1;
-        }
-        else
-        {
-            if( id != -1 )
-            {
-                type = OBJECT_TYPE_BUILDING;
-            
-                switch (state) {
-                    case NETWORK_OBJECT_CONSTRUCTION:   state = BUILDING_STATE_UNDER_CONSTRUCTION_1;    break;
-                    case NETWORK_OBJECT_WORKING:        state = BUILDING_STATE_WORKING;                 break;
-                    case NETWORK_OBJECT_DONE:           state = BUILDING_STATE_DONE;                    break;
-                    case NETWORK_OBJECT_OTHER_WATTING:  state = BUILDING_STATE_OTEHR_WORKING;           break;
-                    default:break;
-                }
-
-                BuildingInfo *pInfo;
-                m_pInfoMgr->searchInfo(id, &pInfo);
-                size = pInfo->GetSize();
-            }
-            else
-            {
-                type = OBJECT_TYPE_FIELD;
-                state = 0;
-                size = SIZE<int>(1,1);
-            }
-        }
-        pNode = pNode->next_sibling();
-        
-        int posValue = atoi(pNode->value());
-        POINT<int> pos;
-        pos.x = GETWORD_X(posValue);
-        pos.y = GETWORD_Y(posValue);
-        pNode = pNode->next_sibling();
-        
-        OBJECT_DIRECTION dir = static_cast<OBJECT_DIRECTION>(atoi(pNode->value()));
-        pNode = pNode->next_sibling();
-        
-        const char *pDate = pNode->value();
-        DateInfo date;
-        date.UpdateDate(pDate);
-
-        long long int deltaTime = date.GetTimeValue(serverDate);
-                
-        ObjectInMap obj = ObjectInMap(state, pos, size, dir, id, index);
-        obj.SetType(type);
-        
-        pair<ObjectInMap, long long int> value(obj, deltaTime);
-        v.push_back(value);
-    }
-        
-    return v;
-}
-
-bool GameSystem::_getServerTime(DateInfo *pInfo)
-{
-    CURL_DATA data;
-    if(m_pNetwork->connectHttp("http://swmaestros-sng.appspot.com/timeprint", &data) != CURLE_OK)
-    {
-        printf("%s <- Error Get Server Time\n", __FUNCTION__);
-        return false;
-    }
-    
-    xml_document<char> xmlDoc;
-    xmlDoc.parse<0>(data.pContent);
-    
-    xml_node<char> *pNode = xmlDoc.first_node()->first_node();
-    pInfo->UpdateDate(pNode->value());
-    
-    return true;
 }
 
 bool GameSystem::SetUpVillageList(bool isUpdate)
@@ -632,7 +530,13 @@ bool GameSystem::SetUpVillageList(bool isUpdate)
     return true;
 }
 
-void GameSystem::removeObject(ObjectInMap *pObj)
+void GameSystem::_removeObject(ObjectInMap *pObj)
 {
-    m_pMap->removeObject(pObj);
+    int index = pObj->GetIndex();
+    
+    if(_removeNetworkObject(m_pPlayer->GetUserID(), index))
+    {
+        m_pMap->removeObject(pObj);
+        m_pIdxMgr->removeBuildIndex(index);
+    }
 }

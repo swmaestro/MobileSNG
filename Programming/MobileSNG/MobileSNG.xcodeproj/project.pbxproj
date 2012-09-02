@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3C12F6CD15D823E900295503 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C12F6CB15D823E900295503 /* Player.cpp */; };
+		3C40F86515F2DD1E00D018E8 /* CommonVillage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C40F86315F2DD1C00D018E8 /* CommonVillage.cpp */; };
 		3C5C1AFD15D23932006E7C0B /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C5C1AFC15D23932006E7C0B /* libcurl.a */; };
 		3C5C1B4215D2478E006E7C0B /* Building.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B2F15D2478E006E7C0B /* Building.cpp */; };
 		3C5C1B4315D2478E006E7C0B /* Crop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3115D2478E006E7C0B /* Crop.cpp */; };
@@ -266,6 +267,8 @@
 /* Begin PBXFileReference section */
 		3C12F6CB15D823E900295503 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = Classes/Player.cpp; sourceTree = "<group>"; };
 		3C12F6CC15D823E900295503 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = Classes/Player.h; sourceTree = "<group>"; };
+		3C40F86315F2DD1C00D018E8 /* CommonVillage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CommonVillage.cpp; path = Classes/CommonVillage.cpp; sourceTree = "<group>"; };
+		3C40F86415F2DD1D00D018E8 /* CommonVillage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommonVillage.h; path = Classes/CommonVillage.h; sourceTree = "<group>"; };
 		3C5C1AF115D23932006E7C0B /* curl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curl.h; sourceTree = "<group>"; };
 		3C5C1AF215D23932006E7C0B /* curlbuild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlbuild.h; sourceTree = "<group>"; };
 		3C5C1AF315D23932006E7C0B /* curlrules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlrules.h; sourceTree = "<group>"; };
@@ -1048,6 +1051,8 @@
 				3CAB258F15B7A9420003DDE2 /* AppDelegate */,
 				3C72E21615F0A7A10039D769 /* FriendVillage.cpp */,
 				3C72E21715F0A7A10039D769 /* FriendVillage.h */,
+				3C40F86315F2DD1C00D018E8 /* CommonVillage.cpp */,
+				3C40F86415F2DD1D00D018E8 /* CommonVillage.h */,
 			);
 			path = MobileSNG;
 			sourceTree = "<group>";
@@ -2367,6 +2372,7 @@
 				3C72E21015EC7BA00039D769 /* ObjectIndexMgr.cpp in Sources */,
 				3C72E21815F0A7A10039D769 /* FriendVillage.cpp in Sources */,
 				C5A77A5B15F1E570002DEB9B /* Friends.cpp in Sources */,
+				3C40F86515F2DD1E00D018E8 /* CommonVillage.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

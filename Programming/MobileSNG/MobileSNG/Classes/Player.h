@@ -13,6 +13,7 @@
 #include "Network.h"
 #include "VillageInfo.h"
 #include "User.h"
+#include "ObjectInMap.h"
 
 #define PLAYER_FILE_NAME "Player.info"
 
@@ -20,6 +21,13 @@ enum FRIEND_ENUM
 {
     FRIEND_ENUM_ID,
     FRIEND_ENUM_PHONE
+};
+
+struct REQUEST {
+    std::string     requester;
+    int             id;
+    
+    REQUEST():id(0) {}
 };
 
 class Player : public User
@@ -47,6 +55,7 @@ public:
 public:
     bool addFollowing(User *pUser, Network *pNet);
     bool removeFollowing(User *pUser, Network *pNet);
+    std::vector<REQUEST> viewRequestList(Network *pNet, int page, bool isMeRequest);
     
 public:
     static bool hasFile();
