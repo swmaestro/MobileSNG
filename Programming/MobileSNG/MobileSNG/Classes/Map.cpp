@@ -156,6 +156,21 @@ void Map::SyncPos(ObjectInMap *oim)
     }
 }
 
+void Map::StartProcess(int i, int j)
+{
+    CCProgressTo * prg = CCProgressTo::create(1, 100);
+    CCSprite * spr = CCSprite::create("Process.png");
+    
+    CCProgressTimer * timer = CCProgressTimer::create(spr);
+    timer->setType(kCCProgressTimerTypeRadial);
+    timer->setAnchorPoint(ccp(0.5, 0.5));
+    timer->runAction(prg);
+    
+    CCNode * tile = m_pTile->getChildByTag(MAKEWORD(i, j));
+    tile->removeChildByTag(TILE_PROCESS, true);
+    tile->addChild(timer, TILE_PROCESS, TILE_PROCESS);
+}
+
 void Map::_initTile()
 {
     if (m_pTile)
@@ -188,6 +203,7 @@ void Map::_initTile()
                 }
                 
                 SyncPos(oim);
+                StartProcess(i, j);
             }
         }
     

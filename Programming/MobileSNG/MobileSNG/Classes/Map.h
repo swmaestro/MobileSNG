@@ -22,7 +22,7 @@ class Talkbox;
 
 enum
 {
-    TILE_NONE, TILE_EDIT, TILE_FARM, TILE_BUILDING = TILE_FARM, TILE_CROP, TILE_PREVIEW,
+    TILE_NONE, TILE_EDIT, TILE_FARM, TILE_BUILDING = TILE_FARM, TILE_CROP, TILE_PREVIEW, TILE_PROCESS,
 };
 
 class Map : public cocos2d::CCLayer
@@ -63,6 +63,7 @@ public:
     cocos2d::CCPoint filtPosition(cocos2d::CCPoint pos);
     
     void SyncPos(ObjectInMap * oim);
+    void StartProcess(int i, int j);
     
     void beginEdit();
     void beginEdit(int type, int id);
