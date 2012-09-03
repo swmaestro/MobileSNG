@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+   	<servlet>
+		<servlet-name>TimePrint</servlet-name>
+		<servlet-class>com.sngSM3.TimePrint</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TimePrint</servlet-name>
+		<url-pattern>/timeprint</url-pattern>
+	</servlet-mapping>
+    
+   	<servlet>
+		<servlet-name>SNGTestModule</servlet-name>
+		<servlet-class>com.sngSM3.memberControl.SNGTestModuleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SNGTestModule</servlet-name>
+		<url-pattern>/sngtestmodule</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>MemberRegister</servlet-name>
+		<servlet-class>com.sngSM3.memberControl.MemberRegister</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MemberRegister</servlet-name>
+		<url-pattern>/memberregister</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>MemberLogIn</servlet-name>
+		<servlet-class>com.sngSM3.memberControl.MemberLogIn</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MemberLogIn</servlet-name>
+		<url-pattern>/memberlogin</url-pattern>
+	</servlet-mapping>
+		
+	<servlet>
+		<servlet-name>SignUpNameTest</servlet-name>
+		<servlet-class>com.sngSM3.memberControl.SignUpNameTest</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SignUpNameTest</servlet-name>
+		<url-pattern>/signupnametest</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>SearchMember</servlet-name>
+		<servlet-class>com.sngSM3.memberControl.SearchMember</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SearchMember</servlet-name>
+		<url-pattern>/searchmember</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>SearchMemberWithPNumber</servlet-name>
+		<servlet-class>com.sngSM3.memberControl.SearchMemberWithPNumber</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SearchMemberWithPNumber</servlet-name>
+		<url-pattern>/searchnumber</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>SystemRegister</servlet-name>
+		<servlet-class>com.sngSM3.SystemControl.SystemRegister</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SystemRegister</servlet-name>
+		<url-pattern>/systemregister</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>SystemVersionChk</servlet-name>
+		<servlet-class>com.sngSM3.SystemControl.SystemVersionChk</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SystemVersionChk</servlet-name>
+		<url-pattern>/systemversionchk</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>BuildingInputStream</servlet-name>
+		<servlet-class>com.sngSM3.SystemControl.BuildingInputStream</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingInputStream</servlet-name>
+		<url-pattern>/buindingistream</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>BuildingOutStream</servlet-name>
+		<servlet-class>com.sngSM3.SystemControl.BuildingOutStream</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingOutStream</servlet-name>
+		<url-pattern>/buindingostream</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>CropInfoInputStream</servlet-name>
+		<servlet-class>com.sngSM3.SystemControl.CropInfoInputStream</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CropInfoInputStream</servlet-name>
+		<url-pattern>/cropistream</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>CropOutStream</servlet-name>
+		<servlet-class>com.sngSM3.SystemControl.CropOutStream</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CropOutStream</servlet-name>
+		<url-pattern>/cropostream</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>VillageCreator</servlet-name>
+		<servlet-class>com.sngSM3.VillageControl.VillageCreator</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>VillageCreator</servlet-name>
+		<url-pattern>/villageregister</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>VillageExpCostAdder</servlet-name>
+		<servlet-class>com.sngSM3.VillageControl.VillageExpCostAdder</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>VillageExpCostAdder</servlet-name>
+		<url-pattern>/villageadder</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>VillageInfoGetter</servlet-name>
+		<servlet-class>com.sngSM3.VillageControl.VillageInfoGetter</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>VillageInfoGetter</servlet-name>
+		<url-pattern>/villageinfo</url-pattern>
+	</servlet-mapping>
+		
+	<servlet>
+		<servlet-name>FriendConect</servlet-name>
+		<servlet-class>com.sngSM3.VillageControl.FriendConect</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FriendConect</servlet-name>
+		<url-pattern>/friendadder</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>FriendInfoUpdate</servlet-name>
+		<servlet-class>com.sngSM3.VillageControl.FriendInfoUpdate</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FriendInfoUpdate</servlet-name>
+		<url-pattern>/friendinfo</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>FriendDelete</servlet-name>
+		<servlet-class>com.sngSM3.VillageControl.FriendDelete</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FriendDelete</servlet-name>
+		<url-pattern>/frienddelete</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>BuildingInsert</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.BuildingInsert</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingInsert</servlet-name>
+		<url-pattern>/buildinginsert</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>BuildingLocationChange</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.BuildingLocationChange</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingLocationChange</servlet-name>
+		<url-pattern>/buildinglchange</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>BuildingInfoList</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.BuildingInfoList</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingInfoList</servlet-name>
+		<url-pattern>/vbinfolist</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>BuildingStateUpdate</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.BuildingStateUpdate</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingStateUpdate</servlet-name>
+		<url-pattern>/vbstateupdate</url-pattern>
+	</servlet-mapping>	
+	
+	
+	<servlet>
+		<servlet-name>BuildingDelete</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.BuildingDelete</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingDelete</servlet-name>
+		<url-pattern>/vbdelete</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>OneBuildingStateUpdate</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.OneBuildingStateUpdate</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>OneBuildingStateUpdate</servlet-name>
+		<url-pattern>/onestateupdate</url-pattern>
+	</servlet-mapping>	
+	
+	
+	<servlet>
+		<servlet-name>BuildingRequest</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.BRequest.BuildingRequest</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingRequest</servlet-name>
+		<url-pattern>/brequest_create</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>BuildingRequestAccepter</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.BRequest.BuildingRequestAccepter</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingRequestAccepter</servlet-name>
+		<url-pattern>/brequest_accept</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>BuildingRProductComplete</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.BRequest.BuildingRProductComplete</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingRProductComplete</servlet-name>
+		<url-pattern>/brequest_productend</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>BRequestFullComplete</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.BRequest.BRequestFullComplete</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BRequestFullComplete</servlet-name>
+		<url-pattern>/brequest_end</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>RequestBoard</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.BRequest.RequestBoard</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RequestBoard</servlet-name>
+		<url-pattern>/brequest_list</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>IsBuildingRequest</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.BRequest.IsBuildingRequest</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>IsBuildingRequest</servlet-name>
+		<url-pattern>/isrequest</url-pattern>
+	</servlet-mapping>	
+
+	<servlet>
+		<servlet-name>BuildingAloneRequestEnd</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.AloneRequest.BuildingAloneRequestEnd</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingAloneRequestEnd</servlet-name>
+		<url-pattern>/ap_requestend</url-pattern>
+	</servlet-mapping>	
+
+	<servlet>
+	<servlet-name>CropRequest</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.AloneRequest.CropRequest</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CropRequest</servlet-name>
+		<url-pattern>/crop_request</url-pattern>
+	</servlet-mapping>		
+
+	<servlet>
+		<servlet-name>CropRequestEnd</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.AloneRequest.CropRequestEnd</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CropRequestEnd</servlet-name>
+		<url-pattern>/crop_rend</url-pattern>
+	</servlet-mapping>	
+
+	<servlet>
+		<servlet-name>CropRequestList</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.AloneRequest.CropRequestList</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CropRequestList</servlet-name>
+		<url-pattern>/crop_rlist</url-pattern>
+	</servlet-mapping>	
+
+	<servlet>
+		<servlet-name>BuildingAloneRequestProduct</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.StateUpdater.BuildingAloneRequestProduct</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingAloneRequestProduct</servlet-name>
+		<url-pattern>/product_check</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>BuildingBuildComplete</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.StateUpdater.BuildingBuildComplete</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingBuildComplete</servlet-name>
+		<url-pattern>/build_check</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>BuildingCropFailChecker</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.StateUpdater.BuildingCropFailChecker</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingCropFailChecker</servlet-name>
+		<url-pattern>/fail_check</url-pattern>
+	</servlet-mapping>				
+
+	<servlet>
+		<servlet-name>BuildingFriendRequestProduct</servlet-name>
+		<servlet-class>com.sngSM3.VillageBuildingControl.StateUpdater.BuildingFriendRequestProduct</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuildingFriendRequestProduct</servlet-name>
+		<url-pattern>/friendp_check</url-pattern>
+	</servlet-mapping>		
+
+					
+ <servlet>
+  <servlet-name>SystemServiceServlet</servlet-name>
+  <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
+  <init-param>
+   <param-name>services</param-name>
+   <param-value/>
+  </init-param>
+ </servlet>
+
+ <servlet-mapping>
+  <servlet-name>SystemServiceServlet</servlet-name>
+  <url-pattern>/_ah/spi/*</url-pattern>
+ </servlet-mapping>
+ 
+</web-app>
