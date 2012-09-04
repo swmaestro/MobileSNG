@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3C12F6CD15D823E900295503 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C12F6CB15D823E900295503 /* Player.cpp */; };
+		3C40F86515F2DD1E00D018E8 /* CommonVillage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C40F86315F2DD1C00D018E8 /* CommonVillage.cpp */; };
 		3C5C1AFD15D23932006E7C0B /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C5C1AFC15D23932006E7C0B /* libcurl.a */; };
 		3C5C1B4215D2478E006E7C0B /* Building.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B2F15D2478E006E7C0B /* Building.cpp */; };
 		3C5C1B4315D2478E006E7C0B /* Crop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3115D2478E006E7C0B /* Crop.cpp */; };
@@ -269,6 +270,8 @@
 /* Begin PBXFileReference section */
 		3C12F6CB15D823E900295503 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = Classes/Player.cpp; sourceTree = "<group>"; };
 		3C12F6CC15D823E900295503 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = Classes/Player.h; sourceTree = "<group>"; };
+		3C40F86315F2DD1C00D018E8 /* CommonVillage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CommonVillage.cpp; path = Classes/CommonVillage.cpp; sourceTree = "<group>"; };
+		3C40F86415F2DD1D00D018E8 /* CommonVillage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommonVillage.h; path = Classes/CommonVillage.h; sourceTree = "<group>"; };
 		3C5C1AF115D23932006E7C0B /* curl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curl.h; sourceTree = "<group>"; };
 		3C5C1AF215D23932006E7C0B /* curlbuild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlbuild.h; sourceTree = "<group>"; };
 		3C5C1AF315D23932006E7C0B /* curlrules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlrules.h; sourceTree = "<group>"; };
@@ -306,6 +309,7 @@
 		3C72E21115EE0BCF0039D769 /* DateInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DateInfo.h; path = Classes/DateInfo.h; sourceTree = "<group>"; };
 		3C72E21615F0A7A10039D769 /* FriendVillage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FriendVillage.cpp; path = Classes/FriendVillage.cpp; sourceTree = "<group>"; };
 		3C72E21715F0A7A10039D769 /* FriendVillage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendVillage.h; path = Classes/FriendVillage.h; sourceTree = "<group>"; };
+		3C7F7A5815F59FB0002D6251 /* NetworkObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NetworkObject.h; path = Classes/NetworkObject.h; sourceTree = "<group>"; };
 		3C9364B015B0FF6300860E6A /* MobileSNG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileSNG.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C9364B415B0FF6300860E6A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3C9364B615B0FF6300860E6A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -818,6 +822,7 @@
 		3C12F6C715D7EA7200295503 /* GameSystem */ = {
 			isa = PBXGroup;
 			children = (
+				3C40F86D15F383CD00D018E8 /* CommVillage */,
 				3C72E20D15EC7B7C0039D769 /* ObjIdx */,
 				3CC7890015D393D000C19F95 /* GameSystem.cpp */,
 				3CC7890115D393D000C19F95 /* GameSystem.h */,
@@ -834,6 +839,24 @@
 				3CC4DAA815E93BD5007574F5 /* User.h */,
 			);
 			name = User;
+			sourceTree = "<group>";
+		};
+		3C40F86B15F383BA00D018E8 /* FriendVillage */ = {
+			isa = PBXGroup;
+			children = (
+				3C72E21615F0A7A10039D769 /* FriendVillage.cpp */,
+				3C72E21715F0A7A10039D769 /* FriendVillage.h */,
+			);
+			name = FriendVillage;
+			sourceTree = "<group>";
+		};
+		3C40F86D15F383CD00D018E8 /* CommVillage */ = {
+			isa = PBXGroup;
+			children = (
+				3C40F86315F2DD1C00D018E8 /* CommonVillage.cpp */,
+				3C40F86415F2DD1D00D018E8 /* CommonVillage.h */,
+			);
+			name = CommVillage;
 			sourceTree = "<group>";
 		};
 		3C5328B415EA52760097DA28 /* Player */ = {
@@ -1037,6 +1060,7 @@
 		3C9364C415B0FF6300860E6A /* MobileSNG */ = {
 			isa = PBXGroup;
 			children = (
+				3C40F86B15F383BA00D018E8 /* FriendVillage */,
 				3C72E20C15EBA95A0039D769 /* ListBoxSearch */,
 				3CC4DA9A15E880EB007574F5 /* Social */,
 				3CC2A27D15E32A6700E4DB01 /* Login */,
@@ -1052,8 +1076,6 @@
 				3CAB259A15B7AB7A0003DDE2 /* ObjectInfoMgr */,
 				3CAB259215B7A9730003DDE2 /* Scene */,
 				3CAB258F15B7A9420003DDE2 /* AppDelegate */,
-				3C72E21615F0A7A10039D769 /* FriendVillage.cpp */,
-				3C72E21715F0A7A10039D769 /* FriendVillage.h */,
 			);
 			path = MobileSNG;
 			sourceTree = "<group>";
@@ -1946,6 +1968,7 @@
 				3C9CF90A15DD7B9600890B36 /* OrnamentInfo.h */,
 				3C9CF90B15DD7C9200890B36 /* Utility.h */,
 				3C72E21115EE0BCF0039D769 /* DateInfo.h */,
+				3C7F7A5815F59FB0002D6251 /* NetworkObject.h */,
 			);
 			name = Document;
 			sourceTree = "<group>";
@@ -2379,6 +2402,7 @@
 				3C72E21015EC7BA00039D769 /* ObjectIndexMgr.cpp in Sources */,
 				3C72E21815F0A7A10039D769 /* FriendVillage.cpp in Sources */,
 				C5A77A5B15F1E570002DEB9B /* Friends.cpp in Sources */,
+				3C40F86515F2DD1E00D018E8 /* CommonVillage.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

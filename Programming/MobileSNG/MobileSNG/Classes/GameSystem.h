@@ -11,20 +11,13 @@
 #include "ObjectInfoMgr.h"
 #include "MapMgr.h"
 #include "Network.h"
+#include "CommonVillage.h"
 #include "Player.h"
 #include "ObjectIndexMgr.h"
 #include "DateInfo.h"
 #include <string>
 #include "rapidxml.hpp"
-
-enum NETWORK_OBJECT {
-    NETWORK_OBJECT_CONSTRUCTION,
-    NETWORK_OBJECT_WAITTING,
-    NETWORK_OBJECT_WORKING,
-    NETWORK_OBJECT_DONE,
-    NETWORK_OBJECT_FAIL,
-    NETWORK_OBJECT_OTHER_WATTING
-};
+#include "NetworkObject.h"
 
 //struct RESOURCE {
 //    int exp;
@@ -39,14 +32,13 @@ enum NETWORK_OBJECT {
 //    }
 //};
 
-class GameSystem
+class GameSystem :private CommonVillage
 {
 private:
-    ObjectInfoMgr                   *m_pInfoMgr;
     MapMgr                          *m_pMap;
     Network                         *m_pNetwork;
     Player                          *m_pPlayer;
-    ObjectIndexMgr                  *m_pIdxMgr;    
+    ObjectIndexMgr                  *m_pIndexMgr;
     
 public:
     GameSystem(const char* strDBFile, int & mapLevel, Network *pNetwork);
@@ -59,9 +51,6 @@ public:
     CommonInfo* GetCommonInfo(int type, int id);
     ObjectInfo GetObjectInfo(int type, int id);
 
-private:
-    bool _PostResourceInfo(int gold, int cash, int exp);
-
 public:
     //물건을 살수있는지 여부를 묻는 그런 함수의 이름
     bool    isUseObject(CommonInfo *pCommonInfo);
@@ -69,32 +58,38 @@ public:
 
 public:
     bool    BuyObject(ObjectInMap *pObj);
-    void    SellObject(ObjectInMap *pObj);
+    bool    SellObject(ObjectInMap *pObj);
 
 public:
     bool Harvest(POINT<int> &pos, ObjectInMap **ppOut);
     bool Harvest(ObjectInMap **ppObject);
-    void AllHarvest();
-    void FastComplete(ObjectInMap *pObject);
     
 public:
     bool init();
     bool UpdateMapObject(ObjectInMap **ppOut);
 
 private:
-    bool            _newObject(const char *userID, int objID, int index, POINT<int> position, OBJECT_DIRECTION dir);
-    bool            _networkNormalResult(rapidxml::xml_document<char> *pXMLDoc);
-    bool            _removeNetworkObject(const char *userID, int index);
-    std::vector< std::pair<ObjectInMap, long long int> > _parseObjectInVillage(const char* pContent);
-    bool        _getServerTime(DateInfo *pInfo);
+    bool            _newObject(int objID, int index, POINT<int> position, OBJECT_DIRECTION dir);
+    bool            _newCrop(int fieldIndex, int cropID);
+
+    bool            _removeNetworkObject(ObjectInMap *pObject);
+    bool            _removeObject(POINT<int> &pos);
+    bool            _removeObject(ObjectInMap *pObj);
+    int             _findFieldTime(int index, std::vector< std::pair<int, int> > *pvData = NULL);
+    
+
+    bool            _buildingConstruct(int index);
+    bool            _buildingProductCheck(int index, bool isFriend = false);
+    bool            _buildingProductComplete(int index);
+    bool            _cropComplete(int fieldIndex);
+    bool            _cropFailCheck(int fieldIndex);
+
+    bool            _updateObject(int index, NetworkObject *pOut);
     
 public:
     bool            addObject(ObjectInMap *pObj, int time, int index = -1);
-    bool            moveObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir = OBJECT_DIRECTION_LEFT);
-    bool            addCrop(Field *pField, int id, int time, int index = -1);
-    void            removeCrop(Field *pField);
-    void            removeObject(POINT<int> &pos);
-    void            removeObject(ObjectInMap *pObj);
+    bool            changeObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir = OBJECT_DIRECTION_LEFT);
+    bool            addCrop(Field *pField, int id, int time, bool isAdd = false);
     bool            isObjectInMap(POINT<int> pos);
     bool            isObjectInMap(POINT<int> pos, SIZE<int> size);
 

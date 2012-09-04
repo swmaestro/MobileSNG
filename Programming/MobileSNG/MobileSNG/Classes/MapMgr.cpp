@@ -47,29 +47,13 @@ ObjectInMap* MapMgr::_CreateObject(ObjectInMap *pObject, ObjectInfoMgr *pInfoMgr
     return object;
 }
 
-Crop* MapMgr::addCrop(Field *pField, int id, int time, int index, ObjectInfoMgr *pInfoMgr)
+Crop* MapMgr::addCrop(Field *pField, int id, int time, ObjectInfoMgr *pInfoMgr)
 {
-//    int idx = m_pObjIdxMgr->cropIndex();
-//    if(idx == -1) return false;
-
-//    if(pField->addCrop(id, time, idx, pInfoMgr))
-//    {
-////        m_pObjIdxMgr->addCropIndex(idx);
-//        return true;
-//    }
-    
-    
-    
-    return pField->addCrop(id, time, index, pInfoMgr);
+    return pField->addCrop(id, time, pInfoMgr);
 }
 
 void MapMgr::removeCrop(Field *pField)
 {
-//    Crop *pCrop = pField->GetCrop();
-//    int index;
-//    if(pCrop)   index = pCrop->GetIndex();
-//    m_pObjIdxMgr->removeCropIndex(index);
-
     if(pField->GetCrop())
         pField->removeCrop();
 }

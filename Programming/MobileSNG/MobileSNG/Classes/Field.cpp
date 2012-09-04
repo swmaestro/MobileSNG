@@ -8,32 +8,33 @@
 
 #include "Field.h"
 
-Field::Field(ObjectInMap *pObject) : ObjectInMap(pObject)
+Field::Field(ObjectInMap *pObject)
+                                                    : ObjectInMap(pObject)
 {
-//120811 CA Appended : Set Type
-    m_type    = OBJECT_TYPE_FIELD;
-    m_pCrop   = NULL;
+    m_type      = OBJECT_TYPE_FIELD;
+    m_pCrop     = NULL;
+    m_pTimer    = NULL;
 }
 
 Field::~Field()
 {
-    if(m_pCrop != NULL)
-    {
-        delete m_pCrop;
-        m_pCrop = NULL;
-    }    
+    SAFE_DELETE(m_pCrop);
+    SAFE_DELETE(m_pTimer);
 }
 
-Crop* Field::addCrop(int id, int time, int index, ObjectInfoMgr *pInfoMgr)
+Crop* Field::addCrop(int id, int time, ObjectInfoMgr *pInfoMgr)
 {
     if( m_pCrop != NULL )
     {
         printf("%s AddCrop Error, already exist", __FUNCTION__);
         return false;
     }
-
-    m_pCrop = new  Crop(id, time, index, pInfoMgr);
-    m_pCrop->GetTimer()->StartTimer();
+    
+    m_pCrop = new  Crop(id, pInfoMgr);
+    SAFE_DELETE(m_pTimer);
+    m_pTimer = new Timer(time);
+    
+    m_pTimer->StartTimer();
     
     return m_pCrop;
 }
@@ -42,7 +43,18 @@ bool Field::UpdateSystem()
 {
     if(m_pCrop == NULL) return false;
     
-    return m_pCrop->UpdateSystem();
+    objectState beforeState = m_state;
+    
+    ObjectInfo info = m_pCrop->GetInfo()->GetObjInfo();
+    
+    if(m_state < CROP_STATE_DONE && m_pTimer->CheckTimer(info.GetTime()) == false)
+        m_state = static_cast<float>(m_pTimer->GetTime()) / info.GetTime() * CROP_STATE_DONE;
+    else    m_state = CROP_STATE_DONE;
+    
+    if (beforeState != m_state)
+        return true;
+    
+    return false;
 }
 
 void Field::removeCrop()
@@ -69,5 +81,5 @@ bool Field::hasCrop()
 bool Field::isDone()
 {
     if(m_pCrop == NULL) return false;
-    return m_pCrop->GetState() == CROP_STATE_DONE;
+    return m_state == CROP_STATE_DONE;
 }
