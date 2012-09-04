@@ -19,14 +19,14 @@ import com.sngSM3.DataStores.CropInfo;
 import com.sngSM3.DataStores.CropRequestInfo;
 import com.sngSM3.DataStores.VillageBuilding;
 import com.sngSM3.DataStores.VillageInfo;
-//모든 State를 업그레이드 해준다~~
+
 public class BuildingStateUpdate extends HttpServlet{
-//상태를 한번 자동 업그레이드 해준다.
+
 	public final int limitedTime = 13000;
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
-		String id=req.getParameter("id");    //get으로 전송된 내용 name(name)값으로 받는다.
+		String id=req.getParameter("id");    //get�쇰� ������댁� name(name)媛��濡�諛����
 		
 		PersistenceManager pm = PMF.getPMF().getPersistenceManager();
 		Boolean inputChk=false;
@@ -58,7 +58,7 @@ public class BuildingStateUpdate extends HttpServlet{
 				
 			
 					Vresults = (List<VillageBuilding>) q2.execute(id);
-					for(int i=0;i<Vresults.size();i++)	//유저 마을이 존재하냐?
+					for(int i=0;i<Vresults.size();i++)	//��� 留����議댁����?
 					{
 						VillageBuilding Temp = Vresults.get(i);
 						Bresults = (List<BuildingInfo>) q3.execute(Temp.getBuildingIndex());
@@ -71,16 +71,16 @@ public class BuildingStateUpdate extends HttpServlet{
 							//	System.out.println(TimeChecker.CheckNowTime(BuildingTime));
 									if(TimeChecker.CheckNowTime(BuildingTime))
 									{
-										if(Temp.getVBIndex()/1000 == 0)	//건물이면 자동 생산 모드 작동 
+										if(Temp.getVBIndex()/1000 == 0)	//嫄대Ъ�대㈃ ��� ��� 紐⑤� ��� 
 										{
 											Temp.StartAloneProductingMode();
 										}
 										else{
-											//밭처
+											//諛��
 										Temp.setVBState(VillageBuilding.BUILDING_WAITING);
 										Temp.UpdateDate();
 										}
-											//경험치 추가하기
+											//寃쏀�移�異����린
 									}
 									
 							}		
@@ -97,7 +97,7 @@ public class BuildingStateUpdate extends HttpServlet{
 							}break;
 							case VillageBuilding.BUILDING_ALONE_PRODUCTING:
 							{
-								if(Temp.getVBIndex()/1000 == 0) //건물 
+								if(Temp.getVBIndex()/1000 == 0) //嫄대Ъ 
 								{
 									Date BuildingTime= TimeChecker.GetTimeAdder(Temp.getVBUpdateDate(),Binfo.getBuildingPTime());
 								
@@ -125,15 +125,14 @@ public class BuildingStateUpdate extends HttpServlet{
 							}break;
 							case VillageBuilding.BUILDING_ALONE_ENDPRODUCT:
 							{
-								//단 건물은 실패 예외를 주자!!
+								//��嫄대Ъ���ㅽ� ���瑜�二쇱�!!
 								if(Temp.getVBIndex()/1000 == 0)
 									break;
 							
-								CRresults = (List<CropRequestInfo>) cr1.execute(Temp.getVBIndex());	//건물의 지정된 생존 시간만큼 생존 
+								CRresults = (List<CropRequestInfo>) cr1.execute(Temp.getVBIndex());	//嫄대Ъ��吏������〈 ���留�� ��〈 
 								Cresults = (List<CropInfo>) cr2.execute(CRresults.get(0).getCropIndex());
 								CropInfo crin = Cresults.get(0);
-								Date FailChk = TimeChecker.GetTimeAdder(Temp.getVBUpdateDate(), crin.getCropSTime());//1시간 반이 지나도록 확인안하면 식료품이 썩는다 ㅇ
-								if(TimeChecker.CheckNowTime(FailChk))
+								Date FailChk = TimeChecker.GetTimeAdder(Temp.getVBUpdateDate(), crin.getCropSTime());//1��� 諛�� 吏����� ������硫������� �⑸�����								if(TimeChecker.CheckNowTime(FailChk))
 								{
 									Temp.setVBState(VillageBuilding.BUILDING_PRODUCTFAIL);
 									Temp.UpdateDate();

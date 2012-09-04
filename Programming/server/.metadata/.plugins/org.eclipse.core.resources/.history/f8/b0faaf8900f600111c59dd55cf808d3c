@@ -1,0 +1,9 @@
+<HTML>
+<HEAD>
+<TITLE>서버 관리 화면 </TITLE>
+</HEAD>
+<FRAMESET ROWS="20%,80%">
+<FRAME SRC="a.html">
+<FRAME SRC="b.html">
+</FRAMESET>
+</HTML>
