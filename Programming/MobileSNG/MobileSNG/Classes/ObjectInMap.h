@@ -44,7 +44,7 @@ public:
     
 public:
     ObjectInMap();
-    ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id, int index);
+    ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id, int index = -1);
     ObjectInMap(const ObjectInMap *pObject);
     
     virtual ~ObjectInMap();
