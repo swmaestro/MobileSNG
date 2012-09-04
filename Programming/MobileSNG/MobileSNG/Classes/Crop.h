@@ -25,22 +25,13 @@ class Crop
 {
 private:
     int                     m_id;
-    objectState             m_state;
-    Timer                   *m_pTimer;
-    int                     m_index;
     CropInfo               *m_pInfo;
     
 public:
-    Crop(int id, int time, int index, ObjectInfoMgr *pInfoMgr);
+    Crop(int id, ObjectInfoMgr *pInfoMgr);
     ~Crop();
     
 public:
-    bool UpdateSystem();
-    
-public:
-    objectState GetState();
-    int         GetID();
-    Timer*      GetTimer();
-    CropInfo    GetInfo();
-    int         GetIndex();
+    int          GetID();
+    CropInfo*    GetInfo();
 };

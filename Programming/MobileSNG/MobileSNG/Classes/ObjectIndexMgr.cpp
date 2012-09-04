@@ -15,24 +15,20 @@ using namespace std;
 
 ObjectIndexMgr::ObjectIndexMgr()
 {
-    m_pBuildingTable    = new bool[1000];
-    m_pCropTable        = new bool[1000];
+    m_pBuildingTable    = new bool[2000];
     
-    memset(m_pBuildingTable, 0, sizeof(bool)*1000);
-    memset(m_pCropTable, 0, sizeof(bool)*1000);
+    memset(m_pBuildingTable, 0, sizeof(bool)*2000);
 }
 
 ObjectIndexMgr::~ObjectIndexMgr()
 {
     delete[] m_pBuildingTable;
     m_pBuildingTable = NULL;
-    delete[] m_pCropTable;
-    m_pCropTable = NULL;
 }
 
-int ObjectIndexMgr::_indexGenerate(bool *pTable)
+int ObjectIndexMgr::_indexGenerate(bool *pTable, int start, int max)
 {
-    for(int idx = 0; idx < 1000; ++idx)
+    for(int idx = start; idx < max; ++idx)
     {
         if(pTable[idx] == false)
             return idx;
@@ -54,9 +50,9 @@ int ObjectIndexMgr::buildingIndex()
     return _indexGenerate(m_pBuildingTable);
 }
 
-int ObjectIndexMgr::cropIndex()
+int ObjectIndexMgr::fieldIndex()
 {
-    return _indexGenerate(m_pCropTable) + 1000;
+    return _indexGenerate(m_pBuildingTable, 1000, 2000);
 }
 
 bool ObjectIndexMgr::addBuildingIndex(int idx)
@@ -65,22 +61,24 @@ bool ObjectIndexMgr::addBuildingIndex(int idx)
     return _addIndex(m_pBuildingTable, idx);
 }
 
-bool ObjectIndexMgr::addCropIndex(int idx)
+bool ObjectIndexMgr::addFieldIndex(int idx)
 {
-    if(idx < 1000) return false;
-    idx -= 1000;
-    
-    return _addIndex(m_pCropTable, idx);
+    if( idx < 1000 ) return false;
+    return _addIndex(m_pBuildingTable, idx);
 }
 
-void ObjectIndexMgr::removeBuildIndex(int idx)
+bool ObjectIndexMgr::removeBuildIndex(int idx)
 {
+    if( idx >= 1000) return false;
     m_pBuildingTable[idx] = false;
+    return true;
 }
 
-void ObjectIndexMgr::removeCropIndex(int idx)
+bool ObjectIndexMgr::removeFieldIndex(int idx)
 {
-    m_pCropTable[idx] = false;
+    if( idx < 1000) return false;
+    m_pBuildingTable[idx] = false;
+    return true;
 }
 
 std::vector<int> ObjectIndexMgr::emptyBuildingElement()
@@ -96,14 +94,14 @@ std::vector<int> ObjectIndexMgr::emptyBuildingElement()
     return v;
 }
 
-std::vector<int> ObjectIndexMgr::emptyCropElement()
+std::vector<int> ObjectIndexMgr::emptyFieldElement()
 {
     vector<int> v;
     
-    for(int i=0; i<1000; ++i)
+    for(int i=1000; i<2000; ++i)
     {
-        if(m_pCropTable[i] == false)
-            v.push_back(i+1000);
+        if(m_pBuildingTable[i] == false)
+            v.push_back(i);
     }
     
     return v;

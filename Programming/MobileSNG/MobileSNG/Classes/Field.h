@@ -15,16 +15,17 @@ class Field : public ObjectInMap
 {
 private:
     Crop              *m_pCrop;
+    Timer             *m_pTimer;
     
 public:
-    Field(ObjectInMap *pObject);
+    Field(ObjectInMap *pObject, int index);
     ~Field();
     
 public:
     bool UpdateSystem();
     
 public:
-    Crop* addCrop(int id, int time, int index, ObjectInfoMgr *pInfoMgr);
+    Crop* addCrop(int id, int time, ObjectInfoMgr *pInfoMgr);
     void removeCrop();
 
 public:
@@ -33,4 +34,7 @@ public:
 public:
     bool hasCrop();
     bool isDone();
+    
+public:
+    Timer* GetTimer() { return m_pTimer; }
 };

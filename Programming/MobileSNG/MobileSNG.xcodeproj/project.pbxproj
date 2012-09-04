@@ -308,6 +308,7 @@
 		3C72E21115EE0BCF0039D769 /* DateInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DateInfo.h; path = Classes/DateInfo.h; sourceTree = "<group>"; };
 		3C72E21615F0A7A10039D769 /* FriendVillage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FriendVillage.cpp; path = Classes/FriendVillage.cpp; sourceTree = "<group>"; };
 		3C72E21715F0A7A10039D769 /* FriendVillage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendVillage.h; path = Classes/FriendVillage.h; sourceTree = "<group>"; };
+		3C7F7A5815F59FB0002D6251 /* NetworkObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NetworkObject.h; path = Classes/NetworkObject.h; sourceTree = "<group>"; };
 		3C9364B015B0FF6300860E6A /* MobileSNG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileSNG.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C9364B415B0FF6300860E6A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3C9364B615B0FF6300860E6A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -820,7 +821,6 @@
 			isa = PBXGroup;
 			children = (
 				3C40F86D15F383CD00D018E8 /* CommVillage */,
-				3C40F86B15F383BA00D018E8 /* FriendVillage */,
 				3C72E20D15EC7B7C0039D769 /* ObjIdx */,
 				3CC7890015D393D000C19F95 /* GameSystem.cpp */,
 				3CC7890115D393D000C19F95 /* GameSystem.h */,
@@ -1058,6 +1058,7 @@
 		3C9364C415B0FF6300860E6A /* MobileSNG */ = {
 			isa = PBXGroup;
 			children = (
+				3C40F86B15F383BA00D018E8 /* FriendVillage */,
 				3C72E20C15EBA95A0039D769 /* ListBoxSearch */,
 				3CC4DA9A15E880EB007574F5 /* Social */,
 				3CC2A27D15E32A6700E4DB01 /* Login */,
@@ -1964,6 +1965,7 @@
 				3C9CF90A15DD7B9600890B36 /* OrnamentInfo.h */,
 				3C9CF90B15DD7C9200890B36 /* Utility.h */,
 				3C72E21115EE0BCF0039D769 /* DateInfo.h */,
+				3C7F7A5815F59FB0002D6251 /* NetworkObject.h */,
 			);
 			name = Document;
 			sourceTree = "<group>";
