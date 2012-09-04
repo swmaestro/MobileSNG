@@ -256,17 +256,7 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     
     if( type == OBJECT_TYPE_ORNAMENT )  return false;
     if( (*ppObject)->isDone() == false) return false;
-    
-    /*
-     어떻게 구현할건데?
-     타입을 나눠야지 않을까.
-     필드와 빌딩 2개로 말야.
-     일단 서버로 보내고. 실패하면 취소하는 형식으로?
-     아니 아니.
-     일단 클라 작업을 먼저해. 그다음 실패하면 다시 심는다? 이런 병시같은거 말고
-     서버부터 해라.
-     */
-    
+        
     int money, cash, exp;
     ObjectInfo info = GetObjectInfo((*ppObject));
     money   = info.GetExp();

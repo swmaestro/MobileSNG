@@ -18,7 +18,7 @@ private:
     Timer             *m_pTimer;
     
 public:
-    Field(ObjectInMap *pObject, int index);
+    Field(ObjectInMap *pObject);
     ~Field();
     
 public:

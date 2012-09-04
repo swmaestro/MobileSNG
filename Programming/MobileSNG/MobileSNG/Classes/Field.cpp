@@ -8,14 +8,12 @@
 
 #include "Field.h"
 
-Field::Field(ObjectInMap *pObject, int index)
+Field::Field(ObjectInMap *pObject)
                                                     : ObjectInMap(pObject)
 {
     m_type      = OBJECT_TYPE_FIELD;
     m_pCrop     = NULL;
     m_pTimer    = NULL;
-    m_index     = index;
-    m_state     = -1;
 }
 
 Field::~Field()

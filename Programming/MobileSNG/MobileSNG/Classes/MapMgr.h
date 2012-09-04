@@ -34,7 +34,7 @@ public:
     bool        moveObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir);
     
 public:
-    Crop*        addCrop(Field *pField, int id, int time, int index, ObjectInfoMgr *pInfoMgr);
+    Crop*        addCrop(Field *pField, int id, int time, ObjectInfoMgr *pInfoMgr);
     void        removeCrop(Field *pField);
     
 public:
