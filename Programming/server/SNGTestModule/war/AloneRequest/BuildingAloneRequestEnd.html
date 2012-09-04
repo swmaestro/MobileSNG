@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>건물 생산 완료 테스트</title>
+  </head>
+
+  <body>
+    <center><h1>SNG 농작물 심기 테스트 by SNG Test</h1> </center>
+	<br>
+	<form action="../ap_requestend" method="get">  
+		유저 아이디   :<input type="text" name="id"><br>
+		건물 고유 번호   :<input type="text" name="index"><br>
+ 	<input type=reset value='취소'>
+ 	<input type=submit value='확인'>
+ 	</form>
+ 	<br>
+ 	by SNG Test
+	건물의 생산 로직<br>
+	1. 건물을 생성<br>
+	2. 생성이 완료되면 자동으로 생산 시작<br>
+	3. 생산이 완료되면 소유자의 확인을 대기<br>
+	
+	p.s 생산 진행 중 친구에게 요청 받으면 생산 초기화됨
+   
+  </body>
+</html>
