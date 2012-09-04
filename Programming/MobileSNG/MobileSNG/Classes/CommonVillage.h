@@ -27,7 +27,7 @@ public:
 protected:
     void _getCropState(objectState *pState);
     void _getObjectState(objectState *pState);
-    
+    int _findFieldTime(int index, std::vector< std::pair<int, int> > *pvData = NULL);
     bool _networkNormalResult(CURL_DATA *pData);
 
     std::vector< std::pair<ObjectInMap, long long int> > _parseBuildingInVillage(const char* pContent);

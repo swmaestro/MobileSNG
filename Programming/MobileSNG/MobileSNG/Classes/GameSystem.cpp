@@ -137,7 +137,7 @@ bool GameSystem::isUseObject(ObjectInMap* pObj)
    return m_pPlayer->GetLevel() >= GetCommonInfo(pObj)->GetLevel();
 }
 
-bool GameSystem::_buildingConstruct(int index)
+bool GameSystem::buildingConstructCheck(int index)
 {
     const char *baseURL = "http://swmaestros-sng.appspot.com/build_check?id=%s&index=%d";
     char url[256];
@@ -184,6 +184,32 @@ bool GameSystem::_cropFailCheck(int fieldIndex)
     return _networkNormalResult(&data);
 }
 
+bool GameSystem::_friendProductCheck(int index)
+{
+    const char *baseURL = "http://swmaestros-sng.appspot.com/brequest_productend?owner=%s&index=%d";
+    char url[256];
+    sprintf(url, baseURL, m_pPlayer->GetUserID(), index);
+    
+    CURL_DATA data;
+    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+        return false;
+    
+    return _networkNormalResult(&data);
+}
+
+bool GameSystem::_friendProductComplete(int index)
+{
+    const char *baseURL = "http://swmaestros-sng.appspot.com/brequest_end?owner=%s&index=%d";
+    char url[256];
+    sprintf(url, baseURL, m_pPlayer->GetUserID(), index);
+    
+    CURL_DATA data;
+    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+        return false;
+    
+    return _networkNormalResult(&data);
+}
+
 bool GameSystem::_updateObject(int index, NetworkObject *pOut)
 {
     const char *baseURL = "http://swmaestros-sng.appspot.com/onestateupdate?id=%s&index=%d";
@@ -193,6 +219,8 @@ bool GameSystem::_updateObject(int index, NetworkObject *pOut)
     CURL_DATA data;
     if( m_pNetwork->connectHttp(url, &data) != CURLE_OK )
         return false;
+    
+    if( pOut == NULL ) return true;
 
     xml_document<char> xmlDoc;
     xmlDoc.parse<0>(data.pContent);
@@ -235,6 +263,32 @@ bool GameSystem::_updateObject(int index, NetworkObject *pOut)
     return true;
 }
 
+bool GameSystem::_friendProduct(Building *pObject)
+{
+    int index = pObject->GetIndex();
+        
+    if(_friendProductCheck(index)    == false)  return false;
+    if(_friendProductComplete(index) == false)  return false;
+        
+    pObject->m_state = BUILDING_STATE_WORKING;
+    pObject->GetTimer()->StartTimer();
+        
+    return true;
+}
+
+bool GameSystem::_singleProduct(Building *pObject)
+{
+    int index = pObject->GetIndex();
+    
+    if( _buildingProductCheck(index)    == false) return false;
+    if( _buildingProductComplete(index) == false) return false;
+    
+    pObject->m_state = BUILDING_STATE_WORKING;
+    pObject->GetTimer()->StartTimer();
+        
+    return true;
+}
+
 bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
 {
     ObjectInMap *pObject = m_pMap->FindObject(pos);
@@ -256,16 +310,41 @@ bool GameSystem::Harvest(ObjectInMap **ppObject)
     
     if( type == OBJECT_TYPE_ORNAMENT )  return false;
     if( (*ppObject)->isDone() == false) return false;
-        
-    int money, cash, exp;
+
+    int money, cash, exp, index;
     ObjectInfo info = GetObjectInfo((*ppObject));
     money   = info.GetExp();
     cash    = info.GetReward();
     exp     = info.GetCash();
-    
+    index   = (*ppObject)->GetIndex();
+
+    if( _updateObject(index, NULL) == false) return false;
+            
     if( type == OBJECT_TYPE_BUILDING )
     {
-        
+        Building *pBuilding = dynamic_cast<Building*>((*ppObject));
+        if( pBuilding->isFriend() )
+        {
+            if(_friendProduct(pBuilding) == false)
+                return false;
+            else return true;
+        }
+        else
+        {
+            if( _singleProduct(pBuilding) == false) return false;
+            else return true;
+        }        
+    }
+    else
+    {
+        _cropFailCheck(index);
+        if(_cropComplete(index) == false)
+            return false;
+        else
+        {
+            Field *pField = dynamic_cast<Field*>((*ppObject));
+            pField->removeCrop();
+        }
     }
     
     return true;
@@ -294,20 +373,6 @@ bool GameSystem::init()
     return true;
 }
 
-int GameSystem::_findFieldTime(int index, std::vector< std::pair<int, int> > *pvData)
-{
-    if(pvData == NULL) return -1;
-    
-    vector< pair<int, int> >::iterator iter;
-    
-    for(iter = pvData->begin(); iter != pvData->end(); ++iter)
-    {
-        if((*iter).first == index)
-            return (*iter).second;
-    }
-    
-    return -1;
-}
 
 bool GameSystem::_newObject(int objID, int index, POINT<int> position, OBJECT_DIRECTION dir)
 {

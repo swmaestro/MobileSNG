@@ -36,7 +36,7 @@ bool Building::UpdateSystem()
 {
     float           time = -1;
     
-    objectState beforeState = m_state;
+    m_beforeState = m_state;
     
     if( m_state < BUILDING_STATE_WORKING )
         time = static_cast<float>(m_pInfo->GetBuildTime());
@@ -62,7 +62,7 @@ bool Building::UpdateSystem()
     if( m_state < BUILDING_STATE_WORKING )
         m_state = static_cast<float>(m_pTimer->GetTime()) / time * BUILDING_STATE_WORKING;
     
-    if( beforeState != m_state )
+    if( m_beforeState != m_state )
         return true;
     
     return false;
@@ -81,4 +81,9 @@ bool Building::isDone()
 bool Building::isFriend()
 {
     return m_isFriend;
+}
+
+bool Building::isConstruct()
+{
+    return (m_beforeState < BUILDING_STATE_WORKING) && (m_state == BUILDING_STATE_WORKING);
 }

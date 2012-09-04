@@ -34,6 +34,7 @@ public:
 public:
     bool hasCrop();
     bool isDone();
+    bool isConstruct();
     
 public:
     Timer* GetTimer() { return m_pTimer; }

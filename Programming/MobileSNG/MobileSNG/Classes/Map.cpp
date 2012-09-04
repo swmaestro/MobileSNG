@@ -71,7 +71,14 @@ void Map::update(float dt)
     
     for (i = object.begin(); i != object.end(); ++i)
         if ((*i)->UpdateSystem())
+        {
+            int index = (*i)->GetIndex();
+            
+            if( (*i)->isConstruct() )
+                m_pSystem->buildingConstructCheck(index);
+            
             SyncPos(*i);
+        }
 }
 
 void Map::SyncPos(ObjectInMap *oim)

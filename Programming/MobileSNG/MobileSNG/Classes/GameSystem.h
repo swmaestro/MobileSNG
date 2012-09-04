@@ -74,15 +74,18 @@ private:
 
     bool            _removeNetworkObject(ObjectInMap *pObject);
     bool            _removeObject(POINT<int> &pos);
-    bool            _removeObject(ObjectInMap *pObj);
-    int             _findFieldTime(int index, std::vector< std::pair<int, int> > *pvData = NULL);
-    
+    bool            _removeObject(ObjectInMap *pObj);    
 
-    bool            _buildingConstruct(int index);
     bool            _buildingProductCheck(int index, bool isFriend = false);
     bool            _buildingProductComplete(int index);
     bool            _cropComplete(int fieldIndex);
     bool            _cropFailCheck(int fieldIndex);
+    
+    bool            _friendProductCheck(int index);
+    bool            _friendProductComplete(int index);
+    
+    bool            _friendProduct(Building *pObject);
+    bool            _singleProduct(Building *pObject);
 
     bool            _updateObject(int index, NetworkObject *pOut);
     
@@ -92,6 +95,7 @@ public:
     bool            addCrop(Field *pField, int id, int time, bool isAdd = false);
     bool            isObjectInMap(POINT<int> pos);
     bool            isObjectInMap(POINT<int> pos, SIZE<int> size);
+    bool            buildingConstructCheck(int index);
 
     ObjectInMap*                FindObject(POINT<int> pos);
     std::vector<ObjectInMap*>   FindObjects(POINT<int> pos, SIZE<int> size);

@@ -43,4 +43,5 @@ public:
     Timer* GetTimer();
     bool isDone();
     bool isFriend();
+    bool isConstruct();
 };
