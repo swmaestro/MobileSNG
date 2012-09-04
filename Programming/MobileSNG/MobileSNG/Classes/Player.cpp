@@ -162,6 +162,44 @@ bool Player::removeFollowing(User *pPlayer, Network *pNet)
     return true;
 }
 
+std::vector<REQUEST> Player::viewRequestList(Network *pNet, int page, bool isMeRequest)
+{
+    const char* baseURL = "http://swmaestros-sng.appspot.com/brequest_list?id=%s&state=3&ord=true&usertype=%s&page=%d";
+    char url[256];
+    
+    const char* type;
+    if(isMeRequest) type = "true";
+    else            type = "false";
+
+    sprintf(url, baseURL, m_pUserInfo->userID.data(), type, page);
+    
+    vector<REQUEST> v;
+    
+    CURL_DATA data;
+    if(pNet->connectHttp(url, &data) != CURLE_OK)
+        return v;
+    
+    xml_document<char> xmlDoc;
+    xmlDoc.parse<0>(data.pContent);
+    
+    xml_node<char> *pRoot = xmlDoc.first_node()->first_node();
+    int count = atoi(pRoot->value());
+    pRoot = pRoot->next_sibling();
+    
+    for (int i=0; i<count; pRoot = pRoot->next_sibling(), i++)
+    {
+        xml_node<char> *pNode = pRoot->first_node()->next_sibling();
+        REQUEST r;
+        r.requester = pNode->value();
+        pNode = pNode->next_sibling()->next_sibling()->next_sibling();
+        r.id = atoi(pNode->value());
+
+        v.push_back(r);
+    }
+    
+    return v;
+}
+
 int Player::GetLevel()
 {
     return m_pVillageInfo->level;

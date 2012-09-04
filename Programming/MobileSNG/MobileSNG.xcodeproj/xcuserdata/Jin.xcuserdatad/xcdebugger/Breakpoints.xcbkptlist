@@ -112,11 +112,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/ObjectInfoMgr.cpp"
-         timestampString = "368097757.98552"
+         timestampString = "368283741.477182"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "186"
-         endingLineNumber = "186"
+         startingLineNumber = "192"
+         endingLineNumber = "192"
          landmarkName = "ObjectInfoMgr::searchInfo(const char * name, CropInfo **ppInfo)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -138,11 +138,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/MapMgr.cpp"
-         timestampString = "368119893.613978"
+         timestampString = "368186883.902688"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "207"
-         endingLineNumber = "207"
+         startingLineNumber = "191"
+         endingLineNumber = "191"
          landmarkName = "MapMgr::removeObject(ObjectInMap *obj)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -151,12 +151,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368184828.100436"
+         timestampString = "368280755.930247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "297"
-         endingLineNumber = "297"
+         startingLineNumber = "258"
+         endingLineNumber = "258"
          landmarkName = "GameSystem::addObject(ObjectInMap *pObj, int time, int index)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/CommonVillage.cpp"
+         timestampString = "368283725.022194"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "19"
+         endingLineNumber = "19"
+         landmarkName = "CommonVillage::CommonVillage(Network *pNetwork)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

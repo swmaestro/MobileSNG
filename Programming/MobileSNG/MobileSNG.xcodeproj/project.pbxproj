@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3C12F6CD15D823E900295503 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C12F6CB15D823E900295503 /* Player.cpp */; };
+		3C40F86515F2DD1E00D018E8 /* CommonVillage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C40F86315F2DD1C00D018E8 /* CommonVillage.cpp */; };
 		3C5C1AFD15D23932006E7C0B /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C5C1AFC15D23932006E7C0B /* libcurl.a */; };
 		3C5C1B4215D2478E006E7C0B /* Building.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B2F15D2478E006E7C0B /* Building.cpp */; };
 		3C5C1B4315D2478E006E7C0B /* Crop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C1B3115D2478E006E7C0B /* Crop.cpp */; };
@@ -250,6 +251,8 @@
 		C583633615D5273C006F4F2A /* EditTile.png in Resources */ = {isa = PBXBuildFile; fileRef = C583633515D5273C006F4F2A /* EditTile.png */; };
 		C594CB0315E46F7000052769 /* Status.png in Resources */ = {isa = PBXBuildFile; fileRef = C594CB0215E46F7000052769 /* Status.png */; };
 		C5A77A5B15F1E570002DEB9B /* Friends.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5A77A5A15F1E570002DEB9B /* Friends.cpp */; };
+		C5A77A5D15F220F5002DEB9B /* Friends-Background.png in Resources */ = {isa = PBXBuildFile; fileRef = C5A77A5C15F220F5002DEB9B /* Friends-Background.png */; };
+		C5A77A5F15F2330C002DEB9B /* Process.png in Resources */ = {isa = PBXBuildFile; fileRef = C5A77A5E15F2330C002DEB9B /* Process.png */; };
 		C5B73E6B15EF7B9700E4B068 /* Remove.png in Resources */ = {isa = PBXBuildFile; fileRef = C5B73E6A15EF7B9700E4B068 /* Remove.png */; };
 		C5D3E46115E25BFA005D07BE /* Relocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5D3E45F15E25BFA005D07BE /* Relocator.cpp */; };
 		C5D57AD115CAB0AF003B8D80 /* Edit-Big.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D57AC915CAB0AF003B8D80 /* Edit-Big.png */; };
@@ -266,6 +269,8 @@
 /* Begin PBXFileReference section */
 		3C12F6CB15D823E900295503 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = Classes/Player.cpp; sourceTree = "<group>"; };
 		3C12F6CC15D823E900295503 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = Classes/Player.h; sourceTree = "<group>"; };
+		3C40F86315F2DD1C00D018E8 /* CommonVillage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CommonVillage.cpp; path = Classes/CommonVillage.cpp; sourceTree = "<group>"; };
+		3C40F86415F2DD1D00D018E8 /* CommonVillage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommonVillage.h; path = Classes/CommonVillage.h; sourceTree = "<group>"; };
 		3C5C1AF115D23932006E7C0B /* curl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curl.h; sourceTree = "<group>"; };
 		3C5C1AF215D23932006E7C0B /* curlbuild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlbuild.h; sourceTree = "<group>"; };
 		3C5C1AF315D23932006E7C0B /* curlrules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlrules.h; sourceTree = "<group>"; };
@@ -774,6 +779,8 @@
 		C583633515D5273C006F4F2A /* EditTile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EditTile.png; path = Resources/EditTile.png; sourceTree = "<group>"; };
 		C594CB0215E46F7000052769 /* Status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Status.png; path = Resources/Status.png; sourceTree = "<group>"; };
 		C5A77A5A15F1E570002DEB9B /* Friends.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Friends.cpp; path = Classes/Friends.cpp; sourceTree = "<group>"; };
+		C5A77A5C15F220F5002DEB9B /* Friends-Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Friends-Background.png"; path = "Resources/Friends-Background.png"; sourceTree = "<group>"; };
+		C5A77A5E15F2330C002DEB9B /* Process.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Process.png; path = Resources/Process.png; sourceTree = "<group>"; };
 		C5B73E6A15EF7B9700E4B068 /* Remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Remove.png; path = Resources/Remove.png; sourceTree = "<group>"; };
 		C5D3E45F15E25BFA005D07BE /* Relocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Relocator.cpp; path = Classes/Relocator.cpp; sourceTree = "<group>"; };
 		C5D3E46015E25BFA005D07BE /* Relocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Relocator.h; path = Classes/Relocator.h; sourceTree = "<group>"; };
@@ -812,6 +819,8 @@
 		3C12F6C715D7EA7200295503 /* GameSystem */ = {
 			isa = PBXGroup;
 			children = (
+				3C40F86D15F383CD00D018E8 /* CommVillage */,
+				3C40F86B15F383BA00D018E8 /* FriendVillage */,
 				3C72E20D15EC7B7C0039D769 /* ObjIdx */,
 				3CC7890015D393D000C19F95 /* GameSystem.cpp */,
 				3CC7890115D393D000C19F95 /* GameSystem.h */,
@@ -828,6 +837,24 @@
 				3CC4DAA815E93BD5007574F5 /* User.h */,
 			);
 			name = User;
+			sourceTree = "<group>";
+		};
+		3C40F86B15F383BA00D018E8 /* FriendVillage */ = {
+			isa = PBXGroup;
+			children = (
+				3C72E21615F0A7A10039D769 /* FriendVillage.cpp */,
+				3C72E21715F0A7A10039D769 /* FriendVillage.h */,
+			);
+			name = FriendVillage;
+			sourceTree = "<group>";
+		};
+		3C40F86D15F383CD00D018E8 /* CommVillage */ = {
+			isa = PBXGroup;
+			children = (
+				3C40F86315F2DD1C00D018E8 /* CommonVillage.cpp */,
+				3C40F86415F2DD1D00D018E8 /* CommonVillage.h */,
+			);
+			name = CommVillage;
 			sourceTree = "<group>";
 		};
 		3C5328B415EA52760097DA28 /* Player */ = {
@@ -1046,8 +1073,6 @@
 				3CAB259A15B7AB7A0003DDE2 /* ObjectInfoMgr */,
 				3CAB259215B7A9730003DDE2 /* Scene */,
 				3CAB258F15B7A9420003DDE2 /* AppDelegate */,
-				3C72E21615F0A7A10039D769 /* FriendVillage.cpp */,
-				3C72E21715F0A7A10039D769 /* FriendVillage.h */,
 			);
 			path = MobileSNG;
 			sourceTree = "<group>";
@@ -1055,6 +1080,8 @@
 		3C9364C515B0FF6300860E6A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C5A77A5E15F2330C002DEB9B /* Process.png */,
+				C5A77A5C15F220F5002DEB9B /* Friends-Background.png */,
 				C5B73E6A15EF7B9700E4B068 /* Remove.png */,
 				C512E61115E6673200625D55 /* Loading.png */,
 				C533CA9815E538830000CC98 /* Talkbox.png */,
@@ -2160,6 +2187,8 @@
 				C533CA9915E538830000CC98 /* Talkbox.png in Resources */,
 				C512E61215E6673200625D55 /* Loading.png in Resources */,
 				C5B73E6B15EF7B9700E4B068 /* Remove.png in Resources */,
+				C5A77A5D15F220F5002DEB9B /* Friends-Background.png in Resources */,
+				C5A77A5F15F2330C002DEB9B /* Process.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2367,6 +2396,7 @@
 				3C72E21015EC7BA00039D769 /* ObjectIndexMgr.cpp in Sources */,
 				3C72E21815F0A7A10039D769 /* FriendVillage.cpp in Sources */,
 				C5A77A5B15F1E570002DEB9B /* Friends.cpp in Sources */,
+				3C40F86515F2DD1E00D018E8 /* CommonVillage.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
