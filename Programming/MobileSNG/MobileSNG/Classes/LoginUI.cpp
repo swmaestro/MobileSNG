@@ -48,12 +48,12 @@ LoginUI::LoginUI(SEL_MenuHandler loginSelector, SEL_MenuHandler joinSelector, CC
     m_pTextField[LOGIN_UI_ENUM_ID]->setPosition(ccp(50, 110));
     m_pTextField[LOGIN_UI_ENUM_PW]->setPosition(ccp(50, 70));
     
-    CCMenuItemImage *pBtLogin = CCMenuItemImage::create("Icon.png", "Icon.png", pTarget, loginSelector);
+    CCMenuItemImage *pBtLogin = CCMenuItemImage::create("Button/Login-Login.png", "Button/Login-Login.png", pTarget, loginSelector);
     
     pBtLogin->setPosition(ccp(150,10));
     pBtLogin->setAnchorPoint(ccp(0,0));
     
-    CCMenuItemImage *pBtJoin = CCMenuItemImage::create("Icon.png", "Icon.png", pTarget, joinSelector);
+    CCMenuItemImage *pBtJoin = CCMenuItemImage::create("Button/Login-SignUp.png", "Button/Login-SignUp.png", pTarget, joinSelector);
     
     pBtJoin->setPosition(ccp(220,10));
     pBtJoin->setAnchorPoint(ccp(0,0));

@@ -54,11 +54,11 @@ JoinUI::JoinUI(CCNode *pTarget, cocos2d::SEL_MenuHandler JoinSelector, cocos2d::
     m_pTextField[JOIN_UI_ENUM_PW]->setPosition(ccp(100,85));
     m_pTextField[JOIN_UI_ENUM_PHONE]->setPosition(ccp(100,55));
         
-    CCMenuItemImage *pJoinButton = CCMenuItemImage::create("Icon.png", "Icon.png", pTarget, JoinSelector);
+    CCMenuItemImage *pJoinButton = CCMenuItemImage::create("Button/SignUp-SignUp.png", "Button/SignUp-SignUp.png", pTarget, JoinSelector);
     pJoinButton->setPosition(ccp(110,0));
     pJoinButton->setAnchorPoint(ccp(0,0));
     
-    CCMenuItemImage *pCancelButton = CCMenuItemImage::create("Icon.png", "Icon.png", pTarget, CancelSelector);
+    CCMenuItemImage *pCancelButton = CCMenuItemImage::create("Button/SignUp-Cancel.png", "Button/SignUp-Cancel.png", pTarget, CancelSelector);
     pCancelButton->setPosition(ccp(170,0));
     pCancelButton->setAnchorPoint(ccp(0,0));
     
