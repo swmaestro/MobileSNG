@@ -1,0 +1,67 @@
+package com.sngSM3.VillageBuildingControl.BRequest;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.sngSM3.PMF;
+import com.sngSM3.DataStores.BuildingRequestInfo;
+import com.sngSM3.DataStores.VillageBuilding;
+
+public class RequestBoard extends HttpServlet{
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException, ServletException {
+		String id=req.getParameter("id");    //get�쇰� ������댁� name(name)媛��濡�諛����
+		int state=(int)new Integer(req.getParameter("state")); //怨�� 踰��
+		boolean ord = (boolean)new Boolean(req.getParameter("ord"));// 遺����alse ���硫���true
+		boolean userState = (boolean)new Boolean(req.getParameter("usertype"));//true硫��닿� ��껌 諛��嫄� false硫��닿� ��껌��		int page = (int)new Integer(req.getParameter("page"));	//1踰�遺��
+		
+		PersistenceManager pm = PMF.getPMF().getPersistenceManager();
+		Query q1 = pm.newQuery(BuildingRequestInfo.class);
+		List<BuildingRequestInfo> results;
+		if(userState)
+		{
+			if(ord)
+				q1.setFilter("memberId == id && RequestState ==state");
+			else
+				q1.setFilter("memberId == id && RequestState <= state");
+		}
+		else
+		{
+			if(ord)
+				q1.setFilter("RequesterId == id && RequestState ==state");
+			else
+				q1.setFilter("RequesterId == id && RequestState <= state");
+		}
+		q1.declareParameters("String id,int state");
+		q1.setRange(0+(10*(page-1)),10+(10*(page-1)));
+		try{
+			results = (List<BuildingRequestInfo>) q1.execute(id,state);
+			//Vresults.size();	//��� 留����議댁����?
+
+			req.setAttribute("result", results.iterator());
+			req.setAttribute("count", results.size());
+
+			}finally{
+				q1.closeAll();
+				pm.close();
+			}
+			
+		//s	req.setAttribute("result", inputChk);
+			RequestDispatcher dip = getServletContext().getRequestDispatcher("/BuildingRequest/RequestList.jsp");
+			dip.forward(req, resp);
+		  
+	}
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
+    }
+	
+}

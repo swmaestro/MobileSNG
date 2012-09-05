@@ -9,94 +9,10 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Hello App Engine</title>
+    <title>API Test Set</title>
   </head>
-
-  <body>
-    <center><h1>SNG 관리 페이지 </h1>
-	<br>
-	<table>
-		<tr>
-			<td>회원 가입 및 로그인 관련</td>
-			<td>	
-				<a href = "memberControl/MemberRegister.html">1. 가입 테스트 모듈</a>   <br>
-				<a href ="memberControl/UserIdSearch.html">2. 아이디 존재 확인 </a> <br>
-				<a href ="memberControl/search.html">3. 아이디 검색 </a><br>
-				<a href ="memberControl/Login.html">4. 로그인 테스트 </a><br>
-			</td>
-		</tr>
-		<tr>
-			<td>시스템 관련</td>
-			<td>
-				<a href="SystemControl/SystemRegister.html">1.버젼 등록</a><br>
-				<a href="SystemControl/SystemVersionChk.html"> 2. 버젼 확인 </a><br>
-				<a href="SystemControl/BuildingInputStream.html"> 3. 건물 등록  </a><br>
-				<a href="SystemControl/BuildingUpdate.html"> 4. 빌딩 정보 업데이트 하기   </a><br>
-				<a href="SystemControl/CropInfoInputStream.html"> 4. 밭 등록  </a><br>
-				<a href="SystemControl/CropUpdate.html"> 5. 밭 정보 업데이트 하기   </a><br>
-			</td>
-		</tr>
-		<tr>
-			<td>유저 마을 관련</td>
-			<td>
-				<a href="VillageControl/VillageRegister.html">1.마을 등록</a><br>
-				<a href="VillageControl/VillageUpdate.html"> 2. 자원 획득 적용 </a><br>
-				<a href="VillageControl/VillageInfoGetter.html"> 3. 마을 정보 얻기   </a><br>
-				<a href="VillageControl/FriendConect.html"> 4. 친구 등록   </a><br>
-				<a href="VillageControl/FriendInfo.html"> 5. 친구 마을 정보 얻어오기 </a><br>
-				<a href="VillageControl/FriendDelete.html"> 6. 친구 삭제   </a><br>
-			</td>
-		</tr>		
-		<tr>
-			<td>건물 관련</td>
-			<td>
-				<a href="VBControl/VBInsert.html">1.건물 건설</a><br>
-				<a href="VBControl/VBLocationChanger.html"> 2. 건물 위치 및 방향 변경 </a><br>
-				<a href="VBControl/VBInfoList.html"> 3. 건물 리스트 얻어오 </a><br>
-				<a href="VBControl/VBDelete.html"> 4. 건물 삭제요  </a><br>
-				<a href="VBControl/VBStateUpdate.html"> 5. 건물 전체 상태 업그레이드 </a><br>
-				<a href="VBControl/VBOneStateUpdate.html"> 6. 한 건물의 상태 업그레이드 </a><br>
-			</td>
-		</tr>
-		<tr>
-			<td>건물 아이템 주문 요청 관련</td>
-			<td>
-				<a href="BuildingRequest/BuildingRequest_1.html">1.건물 요청 1</a><br>
-				<a href="BuildingRequest/BuildingRequest_2.html"> 2. 건물 요청 2 </a><br>
-				<a href="BuildingRequest/BuildingRequest_3.html"> 3. 건물 요청 3 </a><br>
-				<a href="BuildingRequest/BuildingRequest_4.html"> 4. 건물 요청 4  </a><br>
-				<a href="BuildingRequest/RequestListData.html"> 5. 리퀘스트 목록 뽑아오기 </a><br>
-				<a href="BuildingRequest/IsRequest.html"> 6. 요청 가능 상태 체크 </a><br>
-			</td>
-		</tr>
-		<tr>
-			<td>건물 아이템 생산 관련</td>
-			<td>
-				<a href="AloneRequest/BuildingAloneRequestEnd.html">1.건물의 생산 완료 확인</a><br>
-				<a href="AloneRequest/CropRequest.html"> 2. 밭의 작물 심기</a><br>
-				<a href="AloneRequest/CropRequestEnd.html"> 3. 밭의 작물 수확 </a><br>
-				<a href="AloneRequest/CropList.html"> 4. 작물 리스트  </a><br>
-			</td>
-		</tr>
-
-		<tr>
-			<td>건물 상태 변경 관련</td>
-			<td>
-				<a href="StateUpdate/AloneRequestPEnd.html">1.독립적인 생산이 완료되었는지 확인</a><br>
-				<a href="StateUpdate/BBuildComplete.html"> 2. 건물 생성이 완료되었는지 확인</a><br>
-				<a href="StateUpdate/CropFailChecker.html"> 3. 작물이 망가졌는지 확인 </a><br>
-				<a href="StateUpdate/FriendRequestEnd.html"> 4. 친구가 요청한 생산이 완료되었는지 확인  </a><br>
-			</td>
-		</tr>
-
-		<tr>
-			<td>시간 확인</td>
-			<td>
-				<a href="timeprint">1.서버 시간 확인</a><br>
-			</td>
-		</tr>
-	</table>
-</center>
-   
-  </body>
+<FRAMESET cols="20%,80%">
+<FRAME SRC="ServerControlPage/ServerMenuList.html" name ="menu">
+<FRAME SRC="ServerControlPage/ServerStartMainView.html" name ="view">
+</FRAMESET>
 </html>

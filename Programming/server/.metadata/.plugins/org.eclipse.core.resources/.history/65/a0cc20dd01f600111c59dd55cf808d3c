@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- The HTML 4.01 Transitional DOCTYPE declaration-->
+<!-- above set at the top of the file will set     -->
+<!-- the browser's rendering engine into           -->
+<!-- "Quirks Mode". Replacing this declaration     -->
+<!-- with a "Standards Mode" doctype is supported, -->
+<!-- but may lead to some differences in layout.   -->
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>서버 메뉴</title>
+  </head>
+  <body>
+   <table>
+   		<tr>
+   			<td>서버 관리 메뉴</td>
+   		</tr>
+   		<tr>
+   			<td>소마 로고</td>
+   		</tr>
+   		<tr>
+   			<td>1. 시스템 버젼 업데이트</td>
+   		</tr>
+   		<tr>
+   			<td>2. 건물 리스트 확인 및 변경</td>
+   		</tr>	
+   		<tr>
+   			<td>3. 작물 리스트 확인 및 변경</td>
+   		</tr>
+   		<tr>
+   			<td><a="../index.html">4. API 테스트 페이지로 이동</a> </td>
+   		</tr>
+   </table>
+   
+  </body>
+</html>

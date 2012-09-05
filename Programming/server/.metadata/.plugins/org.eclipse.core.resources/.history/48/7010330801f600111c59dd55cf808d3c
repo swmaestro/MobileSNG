@@ -1,0 +1,9 @@
+<HTML>
+<HEAD>
+<TITLE>서버 관리 화면 </TITLE>
+</HEAD>
+<FRAMESET ROWS="20%,80%">
+<FRAME SRC="ServerControlPage/ServerMenuList.html">
+<FRAME SRC="ServerControlPage/ServerStartMainView.html">
+</FRAMESET>
+</HTML>

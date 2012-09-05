@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com.google.gdt.eclipse.suite.webapp">
+<stringAttribute key="com.google.gdt.eclipse.suiteMainTypeProcessor.PREVIOUSLY_SET_MAIN_TYPE_NAME" value="com.google.appengine.tools.development.DevAppServerMain"/>
+<booleanAttribute key="com.google.gdt.eclipse.suiteWarArgumentProcessor.IS_WAR_FROM_PROJECT_PROPERTIES" value="true"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/SNGTestModule"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="com.google.gdt.eclipse.suite.appengineClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.google.appengine.tools.development.DevAppServerMain"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="--port=8888 /Users/Karuana/Documents/NewMobileSNG/Programming/server/SNGTestModule/war"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="SNGTestModule"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Ddatastore.default_high_rep_job_policy_unapplied_job_pct=50 -Xmx512m -javaagent:/Users/Karuana/Desktop/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.7.1/appengine-java-sdk-1.7.1/lib/agent/appengine-agent.jar -XstartOnFirstThread -Xbootclasspath/p:/Users/Karuana/Desktop/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.7.1/appengine-java-sdk-1.7.1/lib/override/appengine-dev-jdk-overrides.jar"/>
+</launchConfiguration>
