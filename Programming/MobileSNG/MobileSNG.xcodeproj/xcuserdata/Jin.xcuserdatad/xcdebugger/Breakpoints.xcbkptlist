@@ -143,7 +143,59 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "191"
          endingLineNumber = "191"
-         landmarkName = "MapMgr::removeObject(ObjectInMap *obj)"
+         landmarkName = "MapMgr::removeObject(int index)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/GameSystem.cpp"
+         timestampString = "368503852.000282"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "306"
+         endingLineNumber = "306"
+         landmarkName = "GameSystem::Harvest(ObjectInMap **ppObject)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/GameSystem.cpp"
+         timestampString = "368522715.572896"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "105"
+         endingLineNumber = "105"
+         landmarkName = "GameSystem::SellObject(ObjectInMap *pObj)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/GameSystem.cpp"
+         timestampString = "368541537.168038"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "585"
+         endingLineNumber = "585"
+         landmarkName = "GameSystem::SetUpVillageList(bool isUpdate)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/GameSystem.cpp"
+         timestampString = "368541554.680697"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "606"
+         endingLineNumber = "606"
+         landmarkName = "GameSystem::SetUpVillageList(bool isUpdate)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

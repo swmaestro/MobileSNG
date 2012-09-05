@@ -70,26 +70,33 @@ public:
         tm other;
         tm date;
         
-        other.tm_year   = otherDate.m_year;
-        other.tm_mon    = otherDate.m_month;
+        memset(&other, 0, sizeof(tm));
+        memset(&date, 0, sizeof(tm));
+
+        time_t t1;// = mktime(other);
+        time_t t2;// = mktime(date);
+    
+        other.tm_year   = otherDate.m_year - 1900;
+        other.tm_mon    = otherDate.m_month - 1;
         other.tm_mday   = otherDate.m_day;
         other.tm_hour   = otherDate.m_hour;
         other.tm_min    = otherDate.m_min;
         other.tm_sec    = otherDate.m_sec;
         other.tm_isdst  = 0;
+        
+        t1 = mktime(&other);
 
-        date.tm_year   = m_year;
-        date.tm_mon    = m_month;
+        date.tm_year   = m_year  - 1900;
+        date.tm_mon    = m_month - 1;
         date.tm_mday   = m_day;
         date.tm_hour   = m_hour;
         date.tm_min    = m_min;
         date.tm_sec    = m_sec;
-        date.tm_isdst  = 0;
+        date.tm_isdst = 0;
         
-        time_t t1 = mktime(&other);
-        time_t t2 = mktime(&date);
-        
-        return (long long int)difftime(t2, t1);;
+        t2 = mktime(&date);
+                
+        return (long long int)difftime(t1, t2);
     }
     
     

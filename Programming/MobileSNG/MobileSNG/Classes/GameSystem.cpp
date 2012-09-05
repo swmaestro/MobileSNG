@@ -565,7 +565,7 @@ bool GameSystem::isObjectInMap(POINT<int> pos)
 
 bool GameSystem::isObjectInMap(POINT<int> pos, SIZE<int> size)
 {
-    return isObjectInMap(pos, size);
+    return m_pMap->isObjectInMap(pos, size);
 }
 
 ObjectInMap* GameSystem::FindObject(POINT<int> pos)
@@ -575,7 +575,7 @@ ObjectInMap* GameSystem::FindObject(POINT<int> pos)
 
 std::vector<ObjectInMap*> GameSystem::FindObjects(POINT<int> pos, SIZE<int> size)
 {
-    return FindObjects(pos, size);
+    return m_pMap->FindObjects(pos, size);
 }
 
 bool GameSystem::SetUpVillageList(bool isUpdate)
