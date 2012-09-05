@@ -76,9 +76,6 @@ bool Social::FindUser(const char* p, UserInfo *pOut, USER_SEARCH_ENUM e)
     
     pNode = pNode->next_sibling()->first_node();
     
-    //유저 아이디 얻기ㄱ 전까지야.
-    //현재 어디까지 된건데 이건?
-    //파인드 유저인데 유저 인포만 읽어. 마을은 읽지 않음.
     if(pOut == NULL) return true;
 
     pOut->userID = pNode->value();

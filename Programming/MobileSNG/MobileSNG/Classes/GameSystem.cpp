@@ -160,7 +160,7 @@ bool GameSystem::_buildingProductCheck(int index, bool isFriend)
 
     char url[256];
     sprintf(url, baseURL, m_pPlayer->GetUserID(), index);
-    
+
     CURL_DATA data;
     if( m_pNetwork->connectHttp(url, &data) != CURLE_OK )
         return false;
