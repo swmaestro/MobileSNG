@@ -129,7 +129,7 @@ void Map::SyncPos(ObjectInMap *oim)
         infoMgr->searchInfo(c->GetID(), &info);
         filename = info->GetName();
         
-        switch (c->GetState())
+        switch (f->GetState())
         {
             case CROP_STATE_GROW_1:
                 filename += "/01.png";
