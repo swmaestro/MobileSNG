@@ -43,12 +43,8 @@ public:
     POINT<int>              m_position;
     
 public:
-    ObjectInMap(objectState      state      = -1,
-                POINT<int>       position   = POINT<int>(0,0),
-                SIZE<int>        size       = SIZE<int>(0,0),
-                OBJECT_DIRECTION dir        = OBJECT_DIRECTION_LEFT,
-                int              id         = -1,
-                int              index      = -1);
+    ObjectInMap();
+    ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id, int index = -1);
     ObjectInMap(const ObjectInMap *pObject);
     
     virtual ~ObjectInMap();

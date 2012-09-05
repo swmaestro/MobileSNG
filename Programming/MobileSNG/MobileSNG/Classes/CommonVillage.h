@@ -25,7 +25,14 @@ public:
     virtual ~CommonVillage();
     
 protected:
-    bool _networkNormalResult(rapidxml::xml_document<char> *pXMLDoc);
-    std::vector< std::pair<ObjectInMap, long long int> > _parseObjectInVillage(const char* pContent);
+    void _getCropState(objectState *pState);
+    void _getObjectState(objectState *pState);
+    
+    bool _networkNormalResult(CURL_DATA *pData);
+
+    std::vector< std::pair<ObjectInMap, long long int> > _parseBuildingInVillage(const char* pContent);
+    std::vector< std::pair<int, int> > _parseCropInVillage(const char* pContent);
+    
+    
     bool        _getServerTime(DateInfo *pInfo);
 };

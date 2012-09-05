@@ -24,9 +24,11 @@ CommonVillage::~CommonVillage()
     SAFE_DELETE(m_pInfoMgr);
 }
 
-bool CommonVillage::_networkNormalResult(rapidxml::xml_document<char> *pXMLDoc)
+bool CommonVillage::_networkNormalResult(CURL_DATA *pData)
 {
-    const char *value = pXMLDoc->first_node()->first_node()->value();
+    xml_document<char> xmlDoc;
+    xmlDoc.parse<0>(pData->pContent);
+    const char *value = xmlDoc.first_node()->first_node()->value();
     
     if(strcmp(value, "false") == 0)
         return false;
@@ -34,14 +36,45 @@ bool CommonVillage::_networkNormalResult(rapidxml::xml_document<char> *pXMLDoc)
     return true;
 }
 
-std::vector< std::pair<ObjectInMap, long long int> > CommonVillage::_parseObjectInVillage(const char* pContent)
+void CommonVillage::_getCropState(objectState *pState)
+{
+    switch (*pState)
+    {
+        case NETWORK_OBJECT_WAITTING: *pState = CROP_STATE_INVAILD; break;
+        case NETWORK_OBJECT_FAIL:     *pState = CROP_STATE_FAIL;    break;
+        case NETWORK_OBJECT_WORKING:  *pState = CROP_STATE_GROW_1;  break;
+        case NETWORK_OBJECT_DONE:     *pState = CROP_STATE_DONE;    break;
+    }
+}
+
+void CommonVillage::_getObjectState(objectState *pState)
+{
+    switch (*pState)
+    {
+        case NETWORK_OBJECT_CONSTRUCTION:
+            *pState = BUILDING_STATE_UNDER_CONSTRUCTION_1;
+            break;
+        case NETWORK_OBJECT_FRIEND_WORKING:
+            *pState = BUILDING_STATE_OTEHR_WORKING;
+            break;
+            
+        case NETWORK_OBJECT_DONE:
+        case NETWORK_OBJECT_FRIEND_DONE:
+            *pState = BUILDING_STATE_DONE;
+            break;
+            
+        case NETWORK_OBJECT_WORKING:
+            *pState = BUILDING_STATE_WORKING;
+            break;
+    }
+}
+
+std::vector< std::pair<ObjectInMap, long long int> > CommonVillage::_parseBuildingInVillage(const char* pContent)
 {
     vector< pair<ObjectInMap, long long int> > v;
     
     xml_document<char> xmlDoc;
     xmlDoc.parse<0>(const_cast<char*>(pContent));
-    
-    printf("%s\n", pContent);
     
     xml_node<char> *pRoot = xmlDoc.first_node()->first_node();
     
@@ -70,50 +103,32 @@ std::vector< std::pair<ObjectInMap, long long int> > CommonVillage::_parseObject
         
         if( index >= 1000 )
         {
-            type = OBJECT_TYPE_CROP;
+            _getCropState(&state);
             
-            if(state == NETWORK_OBJECT_DONE)
-                state = CROP_STATE_DONE;
-            else if( state == NETWORK_OBJECT_FAIL)
-                state = CROP_STATE_FAIL;
-            else state = CROP_STATE_GROW_1;
+            type = OBJECT_TYPE_FIELD;
+            size = SIZE<int>(1,1);
         }
         else
         {
-            if( id != -1 )
-            {
-                type = OBJECT_TYPE_BUILDING;
-                
-                switch (state) {
-                    case NETWORK_OBJECT_CONSTRUCTION:   state = BUILDING_STATE_UNDER_CONSTRUCTION_1;    break;
-                    case NETWORK_OBJECT_WORKING:        state = BUILDING_STATE_WORKING;                 break;
-                    case NETWORK_OBJECT_DONE:           state = BUILDING_STATE_DONE;                    break;
-                    case NETWORK_OBJECT_OTHER_WATTING:  state = BUILDING_STATE_OTEHR_WORKING;           break;
-                    default:break;
-                }
-                
-                BuildingInfo *pInfo;
-                m_pInfoMgr->searchInfo(id, &pInfo);
-                size = pInfo->GetSize();
-            }
-            else
-            {
-                type = OBJECT_TYPE_FIELD;
-                state = 0;
-                size = SIZE<int>(1,1);
-            }
+            _getObjectState(&state);
+
+            type = OBJECT_TYPE_BUILDING;
+                        
+            BuildingInfo *pInfo;
+            m_pInfoMgr->searchInfo(id, &pInfo);
+            size = pInfo->GetSize();
         }
         pNode = pNode->next_sibling();
-        
+
         int posValue = atoi(pNode->value());
         POINT<int> pos;
         pos.x = GETWORD_X(posValue);
         pos.y = GETWORD_Y(posValue);
         pNode = pNode->next_sibling();
-        
+
         OBJECT_DIRECTION dir = static_cast<OBJECT_DIRECTION>(atoi(pNode->value()));
         pNode = pNode->next_sibling();
-        
+
         const char *pDate = pNode->value();
         DateInfo date;
         date.UpdateDate(pDate);
@@ -124,6 +139,32 @@ std::vector< std::pair<ObjectInMap, long long int> > CommonVillage::_parseObject
         obj.SetType(type);
         
         pair<ObjectInMap, long long int> value(obj, deltaTime);
+        v.push_back(value);
+    }
+    
+    return v;
+}
+
+vector< pair<int, int> > CommonVillage::_parseCropInVillage(const char* pContent)
+{
+    vector< pair<int, int> > v;
+    xml_document<char> xmlDoc;
+    xmlDoc.parse<0>(const_cast<char*>(pContent));
+    
+    xml_node<char> *pRoot = xmlDoc.first_node()->first_node();
+
+    int count = atoi(pRoot->value());
+    pRoot = pRoot->next_sibling();
+    
+    for(int i=0; i<count; ++i, pRoot = pRoot->next_sibling())
+    {
+        xml_node<char> *pNode = pRoot->first_node();
+        
+        int index = atoi(pNode->value());
+        pNode = pNode->next_sibling();
+        int cropID = atoi(pNode->value());
+        
+        pair<int, int> value(index, cropID);
         v.push_back(value);
     }
     

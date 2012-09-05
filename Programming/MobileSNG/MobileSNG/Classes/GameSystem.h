@@ -17,6 +17,7 @@
 #include "DateInfo.h"
 #include <string>
 #include "rapidxml.hpp"
+#include "NetworkObject.h"
 
 //struct RESOURCE {
 //    int exp;
@@ -37,7 +38,7 @@ private:
     MapMgr                          *m_pMap;
     Network                         *m_pNetwork;
     Player                          *m_pPlayer;
-    ObjectIndexMgr                  *m_pIdxMgr;    
+    ObjectIndexMgr                  *m_pIndexMgr;
     
 public:
     GameSystem(const char* strDBFile, int & mapLevel, Network *pNetwork);
@@ -49,9 +50,6 @@ public:
 
     CommonInfo* GetCommonInfo(int type, int id);
     ObjectInfo GetObjectInfo(int type, int id);
-
-private:
-    bool _PostResourceInfo(int gold, int cash, int exp);
 
 public:
     //물건을 살수있는지 여부를 묻는 그런 함수의 이름
@@ -71,16 +69,27 @@ public:
     bool UpdateMapObject(ObjectInMap **ppOut);
 
 private:
-    bool            _newObject(const char *userID, int objID, int index, POINT<int> position, OBJECT_DIRECTION dir);
-    bool            _removeNetworkObject(const char *userID, int index);
-    void            _removeCrop(Field *pField);
-    void            _removeObject(POINT<int> &pos);
-    void            _removeObject(ObjectInMap *pObj);
+    bool            _newObject(int objID, int index, POINT<int> position, OBJECT_DIRECTION dir);
+    bool            _newCrop(int fieldIndex, int cropID);
+
+    bool            _removeNetworkObject(ObjectInMap *pObject);
+    bool            _removeObject(POINT<int> &pos);
+    bool            _removeObject(ObjectInMap *pObj);
+    int             _findFieldTime(int index, std::vector< std::pair<int, int> > *pvData = NULL);
+    
+
+    bool            _buildingConstruct(int index);
+    bool            _buildingProductCheck(int index, bool isFriend = false);
+    bool            _buildingProductComplete(int index);
+    bool            _cropComplete(int fieldIndex);
+    bool            _cropFailCheck(int fieldIndex);
+
+    bool            _updateObject(int index, NetworkObject *pOut);
     
 public:
     bool            addObject(ObjectInMap *pObj, int time, int index = -1);
     bool            changeObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir = OBJECT_DIRECTION_LEFT);
-    bool            addCrop(Field *pField, int id, int time, int index = -1);
+    bool            addCrop(Field *pField, int id, int time, bool isAdd = false);
     bool            isObjectInMap(POINT<int> pos);
     bool            isObjectInMap(POINT<int> pos, SIZE<int> size);
 
