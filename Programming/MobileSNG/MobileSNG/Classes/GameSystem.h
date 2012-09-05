@@ -105,8 +105,10 @@ public:
     
 public:
     inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }
-//    inline MapMgr*          GetMapMgr()     { return m_pMap;     }
     inline Player*          GetPlayer()     { return m_pPlayer;    }
     inline std::vector<ObjectInMap*>& GetAllObject()
     { return m_pMap->GetAllObject(); }
+    
+public:
+    void serverUpdate();
 };

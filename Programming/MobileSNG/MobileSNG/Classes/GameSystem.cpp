@@ -656,3 +656,8 @@ bool GameSystem::_removeObject(POINT<int> &pos)
 {
     return _removeObject(m_pMap->FindObject(pos));
 }
+
+void GameSystem::serverUpdate()
+{
+    printf("GameSystem Test \n");
+}

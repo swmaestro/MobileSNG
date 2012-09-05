@@ -12,13 +12,14 @@
 using namespace cocos2d;
 
 GameScene::GameScene() : m_pSystem(NULL), m_pMap(NULL), m_pShop(NULL), 
-            m_pMapUI(NULL), m_pShopUI(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL), m_width(7)
+            m_pMapUI(NULL), m_pShopUI(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL), m_width(7), m_threadHandle(NULL), m_threadID(0)
 {
 }
 
 GameScene::~GameScene()
 {
     removeAllChildrenWithCleanup(true);
+    pthread_exit(0);
     
     delete m_pSystem;
     delete m_pMap;
@@ -44,6 +45,11 @@ bool GameScene::init()
 
     m_pNetwork = new Network;
     m_pSystem = new GameSystem("ObjectDB.sqlite", m_width, m_pNetwork);
+        
+    m_threadID = pthread_create(&m_threadHandle, NULL, GameScene::serverUpdate, (void*)this);
+    
+    if( m_threadID < 0 )
+        return false;
     
     if(m_pSystem->init() == false)
     {
@@ -301,4 +307,18 @@ void GameScene::alloc(int type, int id)
     m_pMap->beginEdit(type, id);
     m_pUIMgr->ChangeUI(UI_EDIT);
     _changeUI(m_pMapUI);
+}
+
+void* GameScene::serverUpdate(void *p)
+{
+    GameScene *pScene = static_cast<GameScene*>(p);
+    
+    while(1)
+    {
+        pScene->m_pSystem->serverUpdate();
+        printf("test thread \n");
+        sleep(1);
+    }
+
+    return p;
 }
