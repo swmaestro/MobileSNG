@@ -29,5 +29,5 @@ public:
     long long int     GetTime();
     void    StartTimer();
     bool    GetisUse();
-    void    SetTime(int t);
+    void    SetTime(long long int t);
 };

@@ -32,6 +32,7 @@ private:
     
     pthread_t             m_threadHandle;
     int                   m_threadID;
+    bool                  m_isGameServer;
     
 public:
     GameScene();

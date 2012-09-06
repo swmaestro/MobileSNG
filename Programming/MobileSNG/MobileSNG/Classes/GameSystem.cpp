@@ -367,6 +367,8 @@ bool GameSystem::init()
 {
     //아마 여기에 슬슬 서버연동이나 이런 선 작업들이 들어갈거야.
     
+    m_qServer.push( (bool (ThreadUse::*)())(&GameSystem::test) );
+    
     if( SetUpVillageList() == false)
         return false;
     
@@ -621,6 +623,17 @@ bool GameSystem::SetUpVillageList(bool isUpdate)
             pair<int, int> value(pObject->GetIndex(), time);
             vFieldTime.push_back(value);
         }
+        else
+        {
+            int state = pObject->GetState();
+           
+            if( state == BUILDING_STATE_COMPLETE_CONSTRUCTION)
+                if(_updateObject(pObject->GetIndex(), NULL) == false)
+                {
+                    int a = 5;
+                    a=3;
+                }
+        }
     }
     
     for(vector< pair<int, int> >::iterator iter = vCrop.begin(); iter != vCrop.end(); ++iter)
@@ -655,9 +668,4 @@ bool GameSystem::_removeObject(ObjectInMap *pObj)
 bool GameSystem::_removeObject(POINT<int> &pos)
 {
     return _removeObject(m_pMap->FindObject(pos));
-}
-
-void GameSystem::serverUpdate()
-{
-    printf("GameSystem Test \n");
 }

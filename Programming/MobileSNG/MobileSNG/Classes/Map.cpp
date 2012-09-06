@@ -106,6 +106,7 @@ void Map::SyncPos(ObjectInMap *oim)
                 filename += "/02.png";
                 break;
                 
+//            case BUILDING_STATE_COMPLETE_CONSTRUCTION:
             case BUILDING_STATE_WORKING:
                 filename += "/03.png";
                 break;

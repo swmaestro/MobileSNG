@@ -12,7 +12,7 @@
 using namespace cocos2d;
 
 GameScene::GameScene() : m_pSystem(NULL), m_pMap(NULL), m_pShop(NULL), 
-            m_pMapUI(NULL), m_pShopUI(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL), m_width(7), m_threadHandle(NULL), m_threadID(0)
+            m_pMapUI(NULL), m_pShopUI(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL), m_width(7), m_threadHandle(NULL), m_threadID(0), m_isGameServer(true)
 {
 }
 
@@ -312,13 +312,16 @@ void GameScene::alloc(int type, int id)
 void* GameScene::serverUpdate(void *p)
 {
     GameScene *pScene = static_cast<GameScene*>(p);
-    
-    while(1)
-    {
-        pScene->m_pSystem->serverUpdate();
-        printf("test thread \n");
-        sleep(1);
-    }
 
+    while (1)
+    {
+        if(pScene->m_isGameServer)
+            pScene->m_pSystem->threadUpdate();
+        else
+        {
+            
+        }
+    }
+    
     return p;
 }

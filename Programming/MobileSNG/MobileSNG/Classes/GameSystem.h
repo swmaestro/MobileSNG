@@ -18,27 +18,16 @@
 #include <string>
 #include "rapidxml.hpp"
 #include "NetworkObject.h"
+#include <queue>
+#include "ThreadUse.h"
 
-//struct RESOURCE {
-//    int exp;
-//    int money;
-//    int cash;
-//    
-//    RESOURCE(int exp = 0, int money = 0, int cash = 0)
-//    {
-//        this->exp   = exp;
-//        this->money = money;
-//        this->cash  = cash;
-//    }
-//};
-
-class GameSystem :private CommonVillage
+class GameSystem :private CommonVillage, public ThreadUse
 {
 private:
-    MapMgr                          *m_pMap;
-    Network                         *m_pNetwork;
-    Player                          *m_pPlayer;
-    ObjectIndexMgr                  *m_pIndexMgr;
+    MapMgr                              *m_pMap;
+    Network                             *m_pNetwork;
+    Player                              *m_pPlayer;
+    ObjectIndexMgr                      *m_pIndexMgr;
     
 public:
     GameSystem(const char* strDBFile, int & mapLevel, Network *pNetwork);
@@ -66,7 +55,6 @@ public:
     
 public:
     bool init();
-    bool UpdateMapObject(ObjectInMap **ppOut);
 
 private:
     bool            _newObject(int objID, int index, POINT<int> position, OBJECT_DIRECTION dir);
@@ -103,12 +91,11 @@ public:
 public:
     bool            SetUpVillageList(bool isUpdate = true);
     
+    bool            test() { printf("Yeah! \n"); return true; }
+    
 public:
     inline ObjectInfoMgr*   GetInfoMgr()    { return m_pInfoMgr; }
     inline Player*          GetPlayer()     { return m_pPlayer;    }
     inline std::vector<ObjectInMap*>& GetAllObject()
     { return m_pMap->GetAllObject(); }
-    
-public:
-    void serverUpdate();
 };
