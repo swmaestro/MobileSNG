@@ -37,6 +37,7 @@ protected:
     OBJECT_TYPE             m_type;
     int                     m_id;
     int                     m_index;
+    objectState             m_beforeState;
     
 public:
     objectState             m_state;
@@ -44,7 +45,7 @@ public:
     
 public:
     ObjectInMap();
-    ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id, int index);
+    ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id, int index = -1);
     ObjectInMap(const ObjectInMap *pObject);
     
     virtual ~ObjectInMap();
@@ -76,4 +77,7 @@ public:
     void                    SetType(OBJECT_TYPE type) { m_type = type; }
     
     void                    SetDirection(OBJECT_DIRECTION dir) { m_direction = dir; }
+    
+public:
+    virtual bool isConstruct() { return false; }
 };

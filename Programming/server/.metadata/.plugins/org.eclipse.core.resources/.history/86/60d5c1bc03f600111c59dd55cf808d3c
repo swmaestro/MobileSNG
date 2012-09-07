@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>시스템 업데이트</title>
+  </head>
+
+  <body align="center">
+    
+	<br>
+	<form action="../systemregister" method="get">  
+		버젼  :<input type="text" name="ver"><br>
+		로그  :<input type="text" name="log"><br>
+ 	<input type=reset value='취소'>
+ 	<input type=submit value='확인'>
+ 	</form>
+ 
+   
+  </body>
+</html>

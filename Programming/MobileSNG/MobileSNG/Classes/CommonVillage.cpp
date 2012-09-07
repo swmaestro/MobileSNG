@@ -188,3 +188,18 @@ bool CommonVillage::_getServerTime(DateInfo *pInfo)
     
     return true;
 }
+
+int CommonVillage::_findFieldTime(int index, std::vector< std::pair<int, int> > *pvData)
+{
+    if(pvData == NULL) return -1;
+    
+    vector< pair<int, int> >::iterator iter;
+    
+    for(iter = pvData->begin(); iter != pvData->end(); ++iter)
+    {
+        if((*iter).first == index)
+            return (*iter).second;
+    }
+    
+    return -1;
+}

@@ -62,7 +62,7 @@ bool Timer::GetisUse()
     return m_isUse;
 }
 
-void Timer::SetTime(int t)
+void Timer::SetTime(long long int t)
 {
     m_nowTime = t;
 }

@@ -15,15 +15,14 @@ import com.sngSM3.PMF;
 import com.sngSM3.DataStores.BuildingRequestInfo;
 import com.sngSM3.DataStores.VillageBuilding;
 
-//친구 페이지 목록 적
 public class RequestBoard extends HttpServlet{
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
-		String id=req.getParameter("id");    //get으로 전송된 내용 name(name)값으로 받는다.
-		int state=(int)new Integer(req.getParameter("state")); //고유 번호
-		boolean ord = (boolean)new Boolean(req.getParameter("ord"));// 부등호false 아니면 등 true
-		boolean userState = (boolean)new Boolean(req.getParameter("usertype"));//true면 내가 요청 받은거, false면 내가 요청한
-		int page = (int)new Integer(req.getParameter("page"));	//1번 부터
+		String id=req.getParameter("id");    //get�쇰� ������댁� name(name)媛��濡�諛����
+		int state=(int)new Integer(req.getParameter("state")); //怨�� 踰��
+		boolean ord = (boolean)new Boolean(req.getParameter("ord"));// 遺����alse ���硫���true
+		boolean userState = (boolean)new Boolean(req.getParameter("usertype"));//true硫��닿� ��껌 諛��嫄� false硫��닿� ��껌��		
+		int page = (int)new Integer(req.getParameter("page"));	//1踰�遺��
 		
 		PersistenceManager pm = PMF.getPMF().getPersistenceManager();
 		Query q1 = pm.newQuery(BuildingRequestInfo.class);
@@ -46,7 +45,7 @@ public class RequestBoard extends HttpServlet{
 		q1.setRange(0+(10*(page-1)),10+(10*(page-1)));
 		try{
 			results = (List<BuildingRequestInfo>) q1.execute(id,state);
-			//Vresults.size();	//유저 마을이 존재하냐?
+			//Vresults.size();	//��� 留����議댁����?
 
 			req.setAttribute("result", results.iterator());
 			req.setAttribute("count", results.size());

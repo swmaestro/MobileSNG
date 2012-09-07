@@ -43,7 +43,7 @@ bool Field::UpdateSystem()
 {
     if(m_pCrop == NULL) return false;
     
-    objectState beforeState = m_state;
+    m_beforeState = m_state;
     
     ObjectInfo info = m_pCrop->GetInfo()->GetObjInfo();
     
@@ -51,7 +51,7 @@ bool Field::UpdateSystem()
         m_state = static_cast<float>(m_pTimer->GetTime()) / info.GetTime() * CROP_STATE_DONE;
     else    m_state = CROP_STATE_DONE;
     
-    if (beforeState != m_state)
+    if (m_beforeState != m_state)
         return true;
     
     return false;
@@ -82,4 +82,9 @@ bool Field::isDone()
 {
     if(m_pCrop == NULL) return false;
     return m_state == CROP_STATE_DONE;
+}
+
+bool Field::isConstruct()
+{
+    return (m_beforeState < CROP_STATE_DONE) && (m_state == CROP_STATE_DONE);
 }

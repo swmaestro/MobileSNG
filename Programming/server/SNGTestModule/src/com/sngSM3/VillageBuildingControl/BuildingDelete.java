@@ -31,11 +31,29 @@ public class BuildingDelete extends HttpServlet{
 		q3.setFilter("memberId == id && VBIndex == index");
 		q3.declareParameters("String id,int index");
 		
+		Query q2 = pm.newQuery(VillageInfo.class);
+		List<VillageInfo> Viresults;
+		
+		q2.setFilter("memberId == id");
+		q2.declareParameters("String id");
+		q2.setRange(0,1);
+		Query q1 = pm.newQuery(BuildingInfo.class);
+		List<BuildingInfo> Bresults;
+		
+		q1.setFilter("BuildingIndex == index");
+		q1.declareParameters("int index");
 	
 		try{
-					Vresults = (List<VillageBuilding>) q3.execute(id,index);
+			
+					
+			Vresults = (List<VillageBuilding>) q3.execute(id,index);
+					Viresults = (List<VillageInfo>) q2.execute(id);
+					
 					VillageBuilding deleteData = Vresults.get(0);
+					Bresults = (List<BuildingInfo>) q1.execute(deleteData.getBuildingIndex());
 					pm.deletePersistent(deleteData);
+					Viresults.get(0).AddCostA(Bresults.get(0).getBuildingCostA()/3);
+					Viresults.get(0).AddCostB(Bresults.get(0).getBuildingCostB()/3);
 					inputChk=true;
 
 			}finally{

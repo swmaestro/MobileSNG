@@ -10,15 +10,16 @@
 
 using namespace cocos2d;
 
-Friends::Friends(GameSystem * system)
+Friends::Friends(GameSystem * system, Network *pNetwork)
 {
+    m_pNetwork = pNetwork;
     m_pSystem = system;
-//    m_pSocial = new Social();
+    m_pSocial = new Social(pNetwork, system->GetPlayer());
 }
 
 Friends::~Friends()
 {
-//    SAFE_DELETE(m_pSocial);
+    SAFE_DELETE(m_pSocial);
 }
 
 bool Friends::init()

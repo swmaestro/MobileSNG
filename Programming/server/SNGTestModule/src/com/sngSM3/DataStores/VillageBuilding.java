@@ -12,7 +12,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
 import com.sngSM3.TimeChecker;
-// 마을의 건물을 저장하는 데이
+
 @PersistenceCapable ( identityType = IdentityType.APPLICATION)
 public class VillageBuilding {
 	@PrimaryKey
@@ -41,14 +41,13 @@ public class VillageBuilding {
 	private Date VBUpdateDate;
 	
 	public static final int BUILDING_BUILD = 0;
-	public static final int BUILDING_WAITING = 1;//밭을 위한 기능 
+	public static final int BUILDING_WAITING = 1;
 	public static final int BUILDING_PRODUCTING = 2;
-	public static final int BUILDING_ENDPRODUCT = 3;//생산 완
-	public static final int BUILDING_PRODUCTFAIL = 4;//생산 실패 
-	public static final int BUILDING_REQUEST_WAITING = 5; //다른 유저의 요청을 받아 유저가 승인하기 전에 대기
-	public static final int BUILDING_ALONE_PRODUCTING =6; //자가 생
-	public static final int BUILDING_ALONE_ENDPRODUCT =7; //자가 생
-	
+	public static final int BUILDING_ENDPRODUCT = 3;
+	public static final int BUILDING_PRODUCTFAIL = 4;
+	public static final int BUILDING_REQUEST_WAITING = 5; 
+	public static final int BUILDING_ALONE_PRODUCTING =6; 
+	public static final int BUILDING_ALONE_ENDPRODUCT =7; 
 	
 	
 	public VillageBuilding(String memberId, int vbIndex, int buildingIndex, int vBLocation, boolean vBDirection) {

@@ -1,9 +1,9 @@
-<!-- Indices written at Sat, 1 Sep 2012 06:21:43 KST -->
+<!-- Indices written at Tue, 4 Sep 2012 07:39:17 KST -->
 
 <datastore-indexes>
 
     <!-- Used 1 time in query history -->
-    <datastore-index kind="CropRequestInfo" ancestor="false" source="auto">
+    <datastore-index kind="VillageBuilding" ancestor="false" source="auto">
         <property name="memberId" direction="asc"/>
         <property name="VBIndex" direction="asc"/>
     </datastore-index>

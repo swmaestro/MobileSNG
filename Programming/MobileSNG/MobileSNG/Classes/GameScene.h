@@ -30,6 +30,10 @@ private:
     
     int                   m_width;
     
+    pthread_t             m_threadHandle;
+    int                   m_threadID;
+    bool                  m_isGameServer;
+    
 public:
     GameScene();
     ~GameScene();
@@ -69,4 +73,7 @@ private:
     
 public:
     void alloc(int type, int id);
+    
+private:
+    static void* serverUpdate(void *p);
 };

@@ -71,7 +71,14 @@ void Map::update(float dt)
     
     for (i = object.begin(); i != object.end(); ++i)
         if ((*i)->UpdateSystem())
+        {
+            int index = (*i)->GetIndex();
+            
+            if( (*i)->isConstruct() )
+                m_pSystem->buildingConstructCheck(index);
+            
             SyncPos(*i);
+        }
 }
 
 void Map::SyncPos(ObjectInMap *oim)
@@ -99,6 +106,7 @@ void Map::SyncPos(ObjectInMap *oim)
                 filename += "/02.png";
                 break;
                 
+//            case BUILDING_STATE_COMPLETE_CONSTRUCTION:
             case BUILDING_STATE_WORKING:
                 filename += "/03.png";
                 break;

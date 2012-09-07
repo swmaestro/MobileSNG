@@ -221,6 +221,7 @@
 		3CAB288215BD0E3D0003DDE2 /* Friends.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CAB287E15BD0E3D0003DDE2 /* Friends.png */; };
 		3CAB288315BD0E3D0003DDE2 /* Shop.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CAB287F15BD0E3D0003DDE2 /* Shop.png */; };
 		3CAB28A615BDC40E0003DDE2 /* box.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3CAB28A515BDC40E0003DDE2 /* box.xml */; };
+		3CAFE22515F85E8F00220947 /* ServerQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE22315F85E8F00220947 /* ServerQueue.cpp */; };
 		3CC2A28015E32D3D00E4DB01 /* LoginUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC2A27E15E32D3D00E4DB01 /* LoginUI.cpp */; };
 		3CC2A28415E33A3D00E4DB01 /* Login.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC2A28215E33A3D00E4DB01 /* Login.cpp */; };
 		3CC2A28A15E34C1000E4DB01 /* TestUI.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC2A28915E34C0F00E4DB01 /* TestUI.png */; };
@@ -738,6 +739,9 @@
 		3CAB287E15BD0E3D0003DDE2 /* Friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Friends.png; path = Resources/Friends.png; sourceTree = "<group>"; };
 		3CAB287F15BD0E3D0003DDE2 /* Shop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Shop.png; path = Resources/Shop.png; sourceTree = "<group>"; };
 		3CAB28A515BDC40E0003DDE2 /* box.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = box.xml; path = Resources/box.xml; sourceTree = "<group>"; };
+		3CAFE22315F85E8F00220947 /* ServerQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ServerQueue.cpp; path = Classes/ServerQueue.cpp; sourceTree = "<group>"; };
+		3CAFE22415F85E8F00220947 /* ServerQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerQueue.h; path = Classes/ServerQueue.h; sourceTree = "<group>"; };
+		3CAFE22615F8A68500220947 /* ThreadUse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ThreadUse.h; path = Classes/ThreadUse.h; sourceTree = "<group>"; };
 		3CC2A27E15E32D3D00E4DB01 /* LoginUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LoginUI.cpp; path = Classes/LoginUI.cpp; sourceTree = "<group>"; };
 		3CC2A27F15E32D3D00E4DB01 /* LoginUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginUI.h; path = Classes/LoginUI.h; sourceTree = "<group>"; };
 		3CC2A28215E33A3D00E4DB01 /* Login.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Login.cpp; path = Classes/Login.cpp; sourceTree = "<group>"; };
@@ -1060,6 +1064,7 @@
 		3C9364C415B0FF6300860E6A /* MobileSNG */ = {
 			isa = PBXGroup;
 			children = (
+				3CAFE22115F85E7E00220947 /* ServerQueue */,
 				3C40F86B15F383BA00D018E8 /* FriendVillage */,
 				3C72E20C15EBA95A0039D769 /* ListBoxSearch */,
 				3CC4DA9A15E880EB007574F5 /* Social */,
@@ -1969,6 +1974,7 @@
 				3C9CF90B15DD7C9200890B36 /* Utility.h */,
 				3C72E21115EE0BCF0039D769 /* DateInfo.h */,
 				3C7F7A5815F59FB0002D6251 /* NetworkObject.h */,
+				3CAFE22615F8A68500220947 /* ThreadUse.h */,
 			);
 			name = Document;
 			sourceTree = "<group>";
@@ -1998,6 +2004,15 @@
 				3CAB286F15BCFAF60003DDE2 /* Shop.h */,
 			);
 			name = Shop;
+			sourceTree = "<group>";
+		};
+		3CAFE22115F85E7E00220947 /* ServerQueue */ = {
+			isa = PBXGroup;
+			children = (
+				3CAFE22315F85E8F00220947 /* ServerQueue.cpp */,
+				3CAFE22415F85E8F00220947 /* ServerQueue.h */,
+			);
+			name = ServerQueue;
 			sourceTree = "<group>";
 		};
 		3CC2A27D15E32A6700E4DB01 /* Login */ = {
@@ -2403,6 +2418,7 @@
 				3C72E21815F0A7A10039D769 /* FriendVillage.cpp in Sources */,
 				C5A77A5B15F1E570002DEB9B /* Friends.cpp in Sources */,
 				3C40F86515F2DD1E00D018E8 /* CommonVillage.cpp in Sources */,
+				3CAFE22515F85E8F00220947 /* ServerQueue.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

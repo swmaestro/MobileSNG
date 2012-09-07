@@ -30,6 +30,9 @@ public:
 private:
     bool _initMap();
     bool _checkPosiibleWork();
+
+    bool _request(int index);
+    bool _ownerCheckRequest(int index);
     
 public:
     bool init();

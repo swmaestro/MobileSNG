@@ -18,9 +18,10 @@ class Friends : public cocos2d::CCLayer
 private:
     GameSystem * m_pSystem;
     Social * m_pSocial;
+    Network *m_pNetwork;
     
 public:
-    Friends(GameSystem * system);
+    Friends(GameSystem * system, Network *pNetwork);
     ~Friends();
     
     bool init();

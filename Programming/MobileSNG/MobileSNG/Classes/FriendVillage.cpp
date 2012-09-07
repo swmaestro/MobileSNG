@@ -28,43 +28,50 @@ FriendVillage::~FriendVillage()
 bool FriendVillage::_initMap()
 {
     const char *baseURL = "http://swmaestros-sng.appspot.com/vbstateupdate?id=%s";
-    
     char url[256];
-    
     sprintf(url, baseURL, m_pUserInfo->userID.data());
     
-    CURL_DATA data;
-    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+    CURL_DATA buildingData;
+    if(m_pNetwork->connectHttp(url, &buildingData) != CURLE_OK)
     {
         printf("%s <- Error\n", __FUNCTION__);
         return false;
     }
     
-    vector< pair<ObjectInMap, long long int> > v = _parseObjectInVillage(data.pContent);
-    vector< pair<ObjectInMap, long long int> > vCrop;
-    vector< pair<ObjectInMap, long long int> >::iterator iter;
+    baseURL = "http://swmaestros-sng.appspot.com/crop_rlist?id=%s";
+    sprintf(url, baseURL, m_pUserInfo->userID.data());
     
-    long long time;
-    ObjectInMap *pObj;
+    CURL_DATA cropData;
+    if(m_pNetwork->connectHttp(url, &cropData) != CURLE_OK)
+        return false;
     
-    for(iter = v.begin(); iter != v.end(); ++iter)
+    vector< pair<ObjectInMap, long long int> > vBuild = _parseBuildingInVillage(buildingData.pContent);
+    vector< pair<int, int> > vCrop = _parseCropInVillage(cropData.pContent);
+    vector< pair<int, int> > vFieldTime;
+    
+    for(vector< pair<ObjectInMap, long long int> >::iterator
+        iter = vBuild.begin(); iter != vBuild.end(); ++iter)
     {
-        time = (*iter).second;
-        pObj = &((*iter).first);
+        //밭과 건물을 비교하는 방법. index비교.
+        ObjectInMap *pObject = &(*iter).first;
+        long long int time = (*iter).second;
         
-        if(pObj->GetType() != OBJECT_TYPE_CROP)
-            m_pMap->addObject(pObj, m_pInfoMgr, time);
+        m_pMap->addObject(pObject, m_pInfoMgr, time);
         
-        else vCrop.push_back((*iter));
+        if(pObject->GetType() == OBJECT_TYPE_FIELD)
+        {
+            pair<int, int> value(pObject->GetIndex(), time);
+            vFieldTime.push_back(value);
+        }
     }
     
-    for(iter = vCrop.begin(); iter != vCrop.end(); ++iter)
+    for(vector< pair<int, int> >::iterator iter = vCrop.begin(); iter != vCrop.end(); ++iter)
     {
-        time = (*iter).second;
-        pObj = &(*iter).first;
+        int fieldIndex  = (*iter).first;
+        int cropID      = (*iter).second;
         
-        Field *pField = dynamic_cast<Field*>(m_pMap->FindObject(pObj->GetPosition()));
-        m_pMap->addCrop(pField, pObj->GetID(), time, pObj->GetIndex(), m_pInfoMgr);
+        Field *pField = dynamic_cast<Field*>(m_pMap->FindObject(fieldIndex));
+        m_pMap->addCrop(pField, cropID, _findFieldTime(pField->GetIndex()), m_pInfoMgr);
     }
     
     return true;
@@ -74,16 +81,13 @@ bool FriendVillage::_checkPosiibleWork()
 {
     const char *baseURL = "http://swmaestros-sng.appspot.com/isrequest?owner=%s&requester=%s";
     char url[256];
-    sprintf(url, baseURL, m_playerName, m_pUserInfo->userID.data());
-    
+    sprintf(url, baseURL, m_pUserInfo->userID.data(), m_playerName);
+
     CURL_DATA data;
     if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
         return false;
     
-    rapidxml::xml_document<char> xmlDoc;
-    xmlDoc.parse<0>(data.pContent);
-    
-    if( _networkNormalResult(&xmlDoc) == false)
+    if( _networkNormalResult(&data) == false)
         return false;
 
     return true;
@@ -99,6 +103,32 @@ bool FriendVillage::init()
     return true;
 }
 
+bool FriendVillage::_request(int index)
+{
+    const char *baseURL ="http://swmaestros-sng.appspot.com/brequest_create?owner=%s&requester=%s&index=%d";
+    char url[256];
+    sprintf(url, baseURL, m_pUserInfo->userID.data(), m_playerName, index);
+    
+    CURL_DATA data;
+    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+        return false;
+    
+    return _networkNormalResult(&data);
+}
+
+bool FriendVillage::_ownerCheckRequest(int index)
+{
+    const char *baseURL = "http://swmaestros-sng.appspot.com/brequest_accept?owner=%s&index=%d";
+    char url[256];
+    sprintf(url, baseURL, m_pUserInfo->userID.data(), index);
+    
+    CURL_DATA data;
+    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+        return false;
+    
+    return _networkNormalResult(&data);
+}
+
 bool FriendVillage::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
 {    
     ObjectInMap *pObj = m_pMap->FindObject(pos);
@@ -108,19 +138,11 @@ bool FriendVillage::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
     if(pObj->GetState() != BUILDING_STATE_WORKING)  return false;
     
     int index = pObj->GetIndex();
+
+    if(_request(index) == false)            return false;
+    if(_ownerCheckRequest(index) == false)  return false;
     
-    const char *baseURL ="http://swmaestros-sng.appspot.com/brequest_create?owner=%s&requester=%s&index=%d";
-    char url[256];
-    sprintf(url, baseURL, m_playerName, m_pUserInfo->userID.data(), index);
-    
-    CURL_DATA data;
-    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
-        return false;
-    
-    xml_document<char> xmlDoc;
-    xmlDoc.parse<0>(data.pContent);
-        
-    return _networkNormalResult(&xmlDoc);
+    return true;
 }
 
 std::vector<ObjectInMap*>& FriendVillage::GetAllObject()

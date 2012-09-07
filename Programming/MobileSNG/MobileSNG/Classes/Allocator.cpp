@@ -87,7 +87,7 @@ void Allocator::Apply()
             case OBJ_CROP:
                 {
                     Field * f = dynamic_cast<Field *>(m_pSystem->FindObject(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]))));
-                    m_pSystem->addCrop(f, m_id, 0);
+                    m_pSystem->addCrop(f, m_id, 0, true);
                 }
                 
                 spr->setAnchorPoint(ccp(0.5, 0.3));
