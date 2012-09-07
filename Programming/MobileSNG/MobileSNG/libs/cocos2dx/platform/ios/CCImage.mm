@@ -211,6 +211,8 @@ static CGSize _calculateStringSizeWithFontOrZFont(NSString *str, id font, CGSize
 
 static bool _initWithString(const char * pText, cocos2d::CCImage::ETextAlign eAlign, const char * pFontName, int nSize, tImageInfo* pInfo)
 {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    
     bool bRet = false;
     do 
     {
@@ -335,6 +337,8 @@ static bool _initWithString(const char * pText, cocos2d::CCImage::ETextAlign eAl
         pInfo->height = dim.height;
         bRet = true;
     } while (0);
+    
+    [pool release];
 
     return bRet;
 }
