@@ -10,6 +10,7 @@
 #define MobileSNG_Map_h
 
 #include "cocos2d.h"
+#include "Thread.h"
 
 class MapTile;
 class MapMgr;
@@ -20,12 +21,22 @@ class Talkbox;
 
 //CA Edit 120728 Move Touch to Game Scene
 
+struct TALKBOX
+{
+    ObjectInMap *pObj;
+    int x,y;
+    
+    TALKBOX() : pObj(NULL), x(0), y(0) {}
+    TALKBOX(ObjectInMap *pObj, int x, int y)
+    { this->pObj = pObj; this->x = x; this->y = y; }
+};
+
 enum
 {
     TILE_NONE, TILE_EDIT, TILE_FARM, TILE_BUILDING = TILE_FARM, TILE_CROP, TILE_PREVIEW, TILE_PROCESS,
 };
 
-class Map : public cocos2d::CCLayer
+class Map : public cocos2d::CCLayer, private Thread
 {
 private:
     cocos2d::CCPoint    m_touch[2];
@@ -47,6 +58,10 @@ private:
     
     GameSystem * m_pSystem;
     
+private:
+//    bool _SyncPos(Thread *t, void *p);
+    bool _ShowTalkBox(Thread *t,void *p);
+    
 public:
     static int width, height, tileWidth, tileHeight;
     
@@ -62,7 +77,7 @@ public:
     float filtScale(float scale);
     cocos2d::CCPoint filtPosition(cocos2d::CCPoint pos);
     
-    void SyncPos(ObjectInMap * oim);
+    bool SyncPos(Thread *t, ObjectInMap * oim);
     void StartProcess(int i, int j);
     
     void beginEdit();

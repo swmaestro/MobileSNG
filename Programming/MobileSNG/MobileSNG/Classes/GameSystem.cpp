@@ -8,6 +8,7 @@
 
 #include "GameSystem.h"
 #include "CCCommon.h"
+#include "Map.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -100,33 +101,6 @@ bool GameSystem::BuyObject(ObjectInMap *pObj)
     return true;
 }
 
-bool GameSystem::SellObject(ObjectInMap *pObj)
-{
-    OBJECT_TYPE type = pObj->GetType();
-    
-    if( type == OBJECT_TYPE_BUILDING )
-    {
-        if(dynamic_cast<Building*>(pObj)->isFriend())
-            return false;
-    }
-    
-    else if( type == OBJECT_TYPE_FIELD )
-    {
-        if(dynamic_cast<Field*>(pObj)->GetCrop())
-            return false;
-    }
-    
-    CommonInfo *cominfo = GetCommonInfo(pObj);
-    int price = cominfo->GetPrice();
-    
-    if( _removeObject(pObj) == false)
-        return false;
-    
-    m_pPlayer->AddMoney(price/3);
-
-    return true;
-}
-
 bool GameSystem::isUseObject(CommonInfo *pCommonInfo)
 {
     return m_pPlayer->GetLevel() >= pCommonInfo->GetLevel();
@@ -137,19 +111,7 @@ bool GameSystem::isUseObject(ObjectInMap* pObj)
    return m_pPlayer->GetLevel() >= GetCommonInfo(pObj)->GetLevel();
 }
 
-bool GameSystem::buildingConstructCheck(int index)
-{
-    const char *baseURL = "http://swmaestros-sng.appspot.com/build_check?id=%s&index=%d";
-    char url[256];
-    
-    sprintf(url, baseURL, m_pPlayer->GetUserID(), index);
-    
-    CURL_DATA data;
-    if( m_pNetwork->connectHttp(url, &data) != CURLE_OK)
-        return false;
 
-    return _networkNormalResult(&data);
-}
 
 bool GameSystem::_buildingProductCheck(int index, bool isFriend)
 {
@@ -289,65 +251,25 @@ bool GameSystem::_singleProduct(Building *pObject)
     return true;
 }
 
-bool GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
+void GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut, ThreadObject complete, ThreadObject fail)
 {
     ObjectInMap *pObject = m_pMap->FindObject(pos);
     
-    if(pObject == NULL)
-        return false;
+    if(pObject == NULL) return;
     
     *ppOut = pObject;
     
-    return this->Harvest(&pObject);
-}
-
-bool GameSystem::Harvest(ObjectInMap **ppObject)
-{
-    if( *ppObject == NULL )
-        return false;
+//    return this->_Harvest(&pObject);
+    ThreadObject work(this);
+    work.pFunc = (bool (Thread::*)(Thread*, void*))(&GameSystem::_Harvest);
+    work.parameter = pObject;
     
-    OBJECT_TYPE type = (*ppObject)->GetType();
+    complete.parameter  = pObject;
+//    fail.parameter      = pObject;
+    static_cast<TALKBOX*>(fail.parameter)->pObj = pObject;
     
-    if( type == OBJECT_TYPE_ORNAMENT )  return false;
-    if( (*ppObject)->isDone() == false) return false;
-
-    int money, cash, exp, index;
-    ObjectInfo info = GetObjectInfo((*ppObject));
-    money   = info.GetExp();
-    cash    = info.GetReward();
-    exp     = info.GetCash();
-    index   = (*ppObject)->GetIndex();
-
-    if( _updateObject(index, NULL) == false) return false;
-            
-    if( type == OBJECT_TYPE_BUILDING )
-    {
-        Building *pBuilding = dynamic_cast<Building*>((*ppObject));
-        if( pBuilding->isFriend() )
-        {
-            if(_friendProduct(pBuilding) == false)
-                return false;
-            else return true;
-        }
-        else
-        {
-            if( _singleProduct(pBuilding) == false) return false;
-            else return true;
-        }        
-    }
-    else
-    {
-        _cropFailCheck(index);
-        if(_cropComplete(index) == false)
-            return false;
-        else
-        {
-            Field *pField = dynamic_cast<Field*>((*ppObject));
-            pField->removeCrop();
-        }
-    }
-    
-    return true;
+    ThreadFunc func(&work, &fail, &complete);
+    addWork(func);
 }
 
 bool GameSystem::_buildingProductComplete(int index)
@@ -365,10 +287,6 @@ bool GameSystem::_buildingProductComplete(int index)
 
 bool GameSystem::init()
 {
-    //아마 여기에 슬슬 서버연동이나 이런 선 작업들이 들어갈거야.
-    
-    m_qServer.push( (bool (ThreadUse::*)())(&GameSystem::test) );
-    
     if( SetUpVillageList() == false)
         return false;
     
@@ -425,125 +343,6 @@ bool GameSystem::_cropComplete(int fieldIndex)
     return _networkNormalResult(&data);
 }
 
-bool GameSystem::addObject(ObjectInMap *pObj, int time, int index)
-{
-    if(pObj->GetType() == OBJECT_TYPE_CROP)
-        return false;
-    
-    if(index == -1)
-    {
-        ObjectInMap *pCreatedObject = NULL;
-
-        int idx;
-        
-        if(pObj->GetType() == OBJECT_TYPE_BUILDING)
-             idx = m_pIndexMgr->buildingIndex();
-        else idx = m_pIndexMgr->fieldIndex();
-        
-        if(idx == -1)
-        {
-            printf("%s <- Index Full\n", __FUNCTION__);
-            return false;
-        }
-        
-        pObj->SetIndex(idx);
-        
-        if( (pCreatedObject = m_pMap->addObject(pObj, m_pInfoMgr, 0)) )
-        {
-            if(pObj->GetType() == OBJECT_TYPE_BUILDING)
-                 m_pIndexMgr->addBuildingIndex(idx);
-            else m_pIndexMgr->addFieldIndex(idx);
-        }
-        else return false;
-        
-        if(_newObject(pObj->GetID(), pObj->GetIndex(), pObj->GetPosition(), pObj->GetDirection()) == false)
-        {
-            //서버에서 실패한거니까, 서버 통해서 재거하지 말고 클라 자체에서 제거하면되.
-            m_pMap->removeObject(pObj->GetIndex());
-            
-            if(pObj->GetType() == OBJECT_TYPE_BUILDING)
-                 m_pIndexMgr->removeBuildIndex(idx);
-            else m_pIndexMgr->removeFieldIndex(idx);
-
-            return false;
-        }
-        
-        return true;
-    }
-    
-    pObj->SetIndex(index);
-    
-    if(m_pMap->addObject(pObj, m_pInfoMgr, time) == false)
-    {
-        if(pObj->GetType() == OBJECT_TYPE_BUILDING)
-             m_pIndexMgr->removeBuildIndex(index);
-        else m_pIndexMgr->removeFieldIndex(index);
-
-        return false;
-    }
-    
-    return true;
-}
-
-bool GameSystem::changeObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir)
-{
-    if( obj2->GetType() == OBJECT_TYPE_CROP ) return false;
-    
-    POINT<int> tmpPos = obj2->GetPosition();
-    OBJECT_DIRECTION tmpDir = obj2->GetDirection();
-    
-    if(m_pMap->moveObject(pos, obj2, dir) == false)
-        return false;
-    
-    const char *baseURL = "http://swmaestros-sng.appspot.com/buildinglchange?id=%s&index=%d&location=%d&direction=%s";
-    char url[256];
-    string direction;
-    
-    if(dir == OBJECT_DIRECTION_LEFT)
-        direction = "false";
-    else direction = "true";
-    
-    int makePos = MAKEWORD(obj2->GetPosition().x, obj2->GetPosition().y);
-    
-    sprintf(url, baseURL, m_pPlayer->GetUserID(), obj2->GetIndex(), makePos, direction.data());
-    
-    CURL_DATA data;
-    if(m_pNetwork->connectHttp(url, &data) != CURLE_OK)
-    {
-        printf("%s <- Error Moveojet\n", __FUNCTION__);
-        m_pMap->moveObject(tmpPos, obj2, tmpDir);
-        
-        return false;
-    }
-    
-    if(_networkNormalResult(&data) == false)
-    {
-        m_pMap->moveObject(tmpPos, obj2, tmpDir);
-        return false;
-    }
-    
-    return true;
-}
-
-bool GameSystem::addCrop(Field *pField, int id, int time, bool isAdd)
-{
-    int fieldIndex = pField->GetIndex();
-    
-    if( pField->addCrop(id, time, m_pInfoMgr) == NULL )
-        return false;
-    
-    if(isAdd)
-    {
-        if(_newCrop(fieldIndex, id) == false)
-        {
-            pField->removeCrop();
-            return false;
-        }
-    }
-    
-    return true;
-}
-
 bool GameSystem::_removeNetworkObject(ObjectInMap *pObject)
 {
     const char *baseURL = "http://swmaestros-sng.appspot.com/vbdelete?id=%s&index=%d";
@@ -582,67 +381,143 @@ std::vector<ObjectInMap*> GameSystem::FindObjects(POINT<int> pos, SIZE<int> size
 
 bool GameSystem::SetUpVillageList(bool isUpdate)
 {
-    const char *baseURL;
+    //애는 딱히 돌릴필요는 없을거 같다.
+    return _SetUpVillageList(this, &isUpdate);
+}
+
+void GameSystem::addObject(ObjectInMap *pObj, int time, int index, bool isThread)
+{
+    ThreadObject work(this), fail(this);
+    work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_addObject);
+    work.parameter  = new ADDOBJECT(pObj, time, index);
     
-    if(isUpdate)baseURL = "http://swmaestros-sng.appspot.com/vbstateupdate?id=%s";
-    else        baseURL = "http://swmaestros-sng.appspot.com/vbinfolist?id=%s";
+    fail.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_Fail);
+    fail.parameter  = (void*)("오브젝트 추가 오류");
     
-    char url[256];
-    
-    sprintf(url, baseURL, m_pPlayer->GetUserID());
-    
-    CURL_DATA buildingData;
-    if(m_pNetwork->connectHttp(url, &buildingData) != CURLE_OK)
+    if(isThread)
     {
-        printf("%s <- Error\n", __FUNCTION__);
-        return false;
+        ThreadFunc func(&work, &fail, NULL);
+        addWork(func);
     }
+    else
+    {
+        if(_addObject(this, work.parameter) == false)
+            _Fail(this, fail.parameter);
+    }
+}
+
+void GameSystem::changeObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir, bool isThread)
+{
+    ThreadObject work(this), fail(this);
+    work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_changeObject);
+    work.parameter  = new CHANGEOBJECT(pos, obj2, dir);
+    fail.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_Fail);
+    fail.parameter  = (void*)("오브젝트 이동, 방향 변경 오류");
     
-    baseURL = "http://swmaestros-sng.appspot.com/crop_rlist?id=%s";
-    sprintf(url, baseURL, m_pPlayer->GetUserID());
+    if(isThread)
+    {
+        ThreadFunc func(&work, &fail, NULL);
+        addWork(func);
+    }
+    else
+    {
+        if(_changeObject(this, work.parameter) == false)
+            _Fail(this, fail.parameter);
+    }
+}
+
+void GameSystem::addCrop(Field *pField, int id, int time, bool isAdd, bool isThread)
+{
+    ThreadObject work(this), fail(this);
+    work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_addCrop);
+    work.parameter  = new ADDCROP(pField, id, time, isAdd);
+    fail.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_Fail);
+    fail.parameter  = (void*)("농작물 추가 오류");
     
-    CURL_DATA cropData;
-    if(m_pNetwork->connectHttp(url, &cropData) != CURLE_OK)
+    if(isThread)
+    {
+        ThreadFunc func(&work, &fail, NULL);
+        addWork(func);
+    }
+    else
+    {
+        if(_addCrop(this, work.parameter) == false)
+            _Fail(this, fail.parameter);
+    }
+}
+
+void GameSystem::buildingConstructCheck(int index)
+{
+    ThreadObject work(this);
+    work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_buildingConstructCheck);
+    work.parameter  = new int(index);
+    
+    ThreadFunc func(&work, NULL, NULL);
+    
+    addWork(func);
+}
+
+void GameSystem::SellObject(ObjectInMap *pObj, bool isThread)
+{
+    ThreadObject work(this);
+    work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_buildingConstructCheck);
+    work.parameter  = pObj;
+    
+    if(isThread)
+    {
+        ThreadFunc func(&work, NULL, NULL);
+        addWork(func);
+    }
+    else _SellObject(this, work.parameter);
+}
+
+bool GameSystem::_Harvest(Thread* t, void *parameter)
+{
+    GameSystem *thisClass = static_cast<GameSystem*>(t);
+    ObjectInMap *pObject = static_cast<ObjectInMap*>(parameter);
+    
+    if( pObject == NULL )
         return false;
     
-    vector< pair<ObjectInMap, long long int> > vBuild = _parseBuildingInVillage(buildingData.pContent);
-    vector< pair<int, int> > vCrop = _parseCropInVillage(cropData.pContent);
-    vector< pair<int, int> > vFieldTime;
+    OBJECT_TYPE type = pObject->GetType();
     
-    for(vector< pair<ObjectInMap, long long int> >::iterator
-        iter = vBuild.begin(); iter != vBuild.end(); ++iter)
+    if( type == OBJECT_TYPE_ORNAMENT )  return false;
+    if( pObject->isDone() == false) return false;
+    
+    int money, cash, exp, index;
+    ObjectInfo info = thisClass->GetObjectInfo(pObject);
+    money   = info.GetExp();
+    cash    = info.GetReward();
+    exp     = info.GetCash();
+    index   = pObject->GetIndex();
+    
+    if( thisClass->_updateObject(index, NULL) == false) return false;
+    
+    if( type == OBJECT_TYPE_BUILDING )
     {
-        //밭과 건물을 비교하는 방법. index비교.
-        ObjectInMap *pObject = &(*iter).first;
-        long long int time = (*iter).second;
-        
-        addObject(pObject, time, pObject->GetIndex());
-                
-        if(pObject->GetType() == OBJECT_TYPE_FIELD)
+        Building *pBuilding = dynamic_cast<Building*>(pObject);
+        if( pBuilding->isFriend() )
         {
-            pair<int, int> value(pObject->GetIndex(), time);
-            vFieldTime.push_back(value);
+            if(thisClass->_friendProduct(pBuilding) == false)
+                return false;
+            else return true;
         }
         else
         {
-            int state = pObject->GetState();
-           
-            if( state == BUILDING_STATE_COMPLETE_CONSTRUCTION)
-                if(_updateObject(pObject->GetIndex(), NULL) == false)
-                {
-                    int a = 5;
-                    a=3;
-                }
+            if(thisClass-> _singleProduct(pBuilding) == false) return false;
+            else return true;
         }
     }
-    
-    for(vector< pair<int, int> >::iterator iter = vCrop.begin(); iter != vCrop.end(); ++iter)
+    else
     {
-        int fieldIndex  = (*iter).first;
-        int cropID      = (*iter).second;
-        
-        Field *pField = dynamic_cast<Field*>(m_pMap->FindObject(fieldIndex));
-        addCrop(pField, cropID, _findFieldTime(pField->GetIndex()));
+        thisClass->_cropFailCheck(index);
+        if(thisClass->_cropComplete(index) == false)
+            return false;
+        else
+        {
+            Field *pField = dynamic_cast<Field*>(pObject);
+            pField->removeCrop();
+        }
     }
     
     return true;
@@ -668,4 +543,275 @@ bool GameSystem::_removeObject(ObjectInMap *pObj)
 bool GameSystem::_removeObject(POINT<int> &pos)
 {
     return _removeObject(m_pMap->FindObject(pos));
+}
+
+bool GameSystem::_addObject(Thread* t, void *parameter)
+{
+    GameSystem *pThisClass = static_cast<GameSystem*>(t);
+    ADDOBJECT *pAddObject = static_cast<ADDOBJECT*>(parameter);
+    
+    ObjectInMap *pObj = pAddObject->pObj;
+    int time = pAddObject->time;
+    int index = pAddObject->index;
+    
+    delete pAddObject;
+    
+    if(pObj->GetType() == OBJECT_TYPE_CROP)
+        return false;
+    
+    if(index == -1)
+    {
+        ObjectInMap *pCreatedObject = NULL;
+        
+        int idx;
+        
+        if(pObj->GetType() == OBJECT_TYPE_BUILDING)
+            idx = pThisClass->m_pIndexMgr->buildingIndex();
+        else idx = pThisClass->m_pIndexMgr->fieldIndex();
+        
+        if(idx == -1)
+        {
+            printf("%s <- Index Full\n", __FUNCTION__);
+            return false;
+        }
+        
+        pObj->SetIndex(idx);
+        
+        if( (pCreatedObject = pThisClass->m_pMap->addObject(pObj, pThisClass->m_pInfoMgr, 0)) )
+        {
+            if(pObj->GetType() == OBJECT_TYPE_BUILDING)
+                pThisClass->m_pIndexMgr->addBuildingIndex(idx);
+            else pThisClass->m_pIndexMgr->addFieldIndex(idx);
+        }
+        else return false;
+        if(pThisClass->_newObject(pObj->GetID(), pObj->GetIndex(), pObj->GetPosition(), pObj->GetDirection()) == false)
+        {
+            //서버에서 실패한거니까, 서버 통해서 재거하지 말고 클라 자체에서 제거하면되.
+            pThisClass->m_pMap->removeObject(pObj->GetIndex());
+            
+            if(pObj->GetType() == OBJECT_TYPE_BUILDING)
+                pThisClass->m_pIndexMgr->removeBuildIndex(idx);
+            else pThisClass->m_pIndexMgr->removeFieldIndex(idx);
+            
+            return false;
+        }
+        
+        return true;
+    }
+    
+    pObj->SetIndex(index);
+    
+    if(pThisClass->m_pMap->addObject(pObj, pThisClass->m_pInfoMgr, time) == false)
+    {
+        if(pObj->GetType() == OBJECT_TYPE_BUILDING)
+            pThisClass->m_pIndexMgr->removeBuildIndex(index);
+        else pThisClass->m_pIndexMgr->removeFieldIndex(index);
+        
+        return false;
+    }
+    
+    return true;
+}
+
+bool GameSystem::_changeObject(Thread* t, void *parameter)
+{
+    GameSystem *pThisClass = static_cast<GameSystem*>(t);
+    CHANGEOBJECT *pChangeObject = static_cast<CHANGEOBJECT*>(parameter);
+    
+    POINT<int> pos = pChangeObject->pos;
+    ObjectInMap *obj2 = pChangeObject->pObj;
+    OBJECT_DIRECTION dir = pChangeObject->dir;
+    
+    delete pChangeObject;
+    
+    if( obj2->GetType() == OBJECT_TYPE_CROP ) return false;
+    
+    POINT<int> tmpPos = obj2->GetPosition();
+    OBJECT_DIRECTION tmpDir = obj2->GetDirection();
+    
+    if(pThisClass->m_pMap->moveObject(pos, obj2, dir) == false)
+        return false;
+    
+    const char *baseURL = "http://swmaestros-sng.appspot.com/buildinglchange?id=%s&index=%d&location=%d&direction=%s";
+    char url[256];
+    string direction;
+    
+    if(dir == OBJECT_DIRECTION_LEFT)
+        direction = "false";
+    else direction = "true";
+    
+    int makePos = MAKEWORD(obj2->GetPosition().x, obj2->GetPosition().y);
+    
+    sprintf(url, baseURL, pThisClass->m_pPlayer->GetUserID(), obj2->GetIndex(), makePos, direction.data());
+    
+    CURL_DATA data;
+    if(pThisClass->m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+    {
+        printf("%s <- Error Moveojet\n", __FUNCTION__);
+        pThisClass->m_pMap->moveObject(tmpPos, obj2, tmpDir);
+        
+        return false;
+    }
+    
+    if(pThisClass->_networkNormalResult(&data) == false)
+    {
+        pThisClass->m_pMap->moveObject(tmpPos, obj2, tmpDir);
+        return false;
+    }
+    
+    return true;
+}
+
+bool GameSystem::_addCrop(Thread* t, void *parameter)
+{
+    GameSystem *pThisClass = static_cast<GameSystem*>(t);
+    ADDCROP *pAddCrop = static_cast<ADDCROP*>(parameter);
+    
+    Field *pField = pAddCrop->pField;
+    int id = pAddCrop->id;
+    int time = pAddCrop->time;
+    bool isAdd = pAddCrop->isAdd;
+    
+    delete pAddCrop;
+    
+    int fieldIndex = pField->GetIndex();
+    
+    if( pField->addCrop(id, time, pThisClass->m_pInfoMgr) == NULL )
+        return false;
+    
+    if(isAdd)
+    {
+        if(pThisClass->_newCrop(fieldIndex, id) == false)
+        {
+            pField->removeCrop();
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+bool GameSystem::_buildingConstructCheck(Thread* t, void *parameter)
+{
+    GameSystem *pThisClass = static_cast<GameSystem*>(t);
+    int *pIndex = static_cast<int*>(parameter);
+    int index = *pIndex;
+    delete pIndex;
+    
+    const char *baseURL = "http://swmaestros-sng.appspot.com/build_check?id=%s&index=%d";
+    char url[256];
+    
+    sprintf(url, baseURL, pThisClass->m_pPlayer->GetUserID(), index);
+    
+    CURL_DATA data;
+    if( pThisClass->m_pNetwork->connectHttp(url, &data) != CURLE_OK)
+        return false;
+    
+    return pThisClass->_networkNormalResult(&data);
+}
+
+bool GameSystem::_SetUpVillageList(Thread* t, void *parameter)
+{
+    GameSystem *pThisClass = static_cast<GameSystem*>(t);
+    bool isUpdate = *static_cast<bool*>(parameter);
+    
+    const char *baseURL;
+    
+    if(isUpdate)baseURL = "http://swmaestros-sng.appspot.com/vbstateupdate?id=%s";
+    else        baseURL = "http://swmaestros-sng.appspot.com/vbinfolist?id=%s";
+    
+    char url[256];
+    
+    sprintf(url, baseURL, pThisClass->m_pPlayer->GetUserID());
+    
+    CURL_DATA buildingData;
+    if(pThisClass->m_pNetwork->connectHttp(url, &buildingData) != CURLE_OK)
+    {
+        printf("%s <- Error\n", __FUNCTION__);
+        return false;
+    }
+    
+    baseURL = "http://swmaestros-sng.appspot.com/crop_rlist?id=%s";
+    sprintf(url, baseURL, pThisClass->m_pPlayer->GetUserID());
+    
+    CURL_DATA cropData;
+    if(pThisClass->m_pNetwork->connectHttp(url, &cropData) != CURLE_OK)
+        return false;
+    
+    vector< pair<ObjectInMap, long long int> > vBuild = pThisClass->_parseBuildingInVillage(buildingData.pContent);
+    vector< pair<int, int> > vCrop = pThisClass->_parseCropInVillage(cropData.pContent);
+    vector< pair<int, int> > vFieldTime;
+    
+    for(vector< pair<ObjectInMap, long long int> >::iterator
+        iter = vBuild.begin(); iter != vBuild.end(); ++iter)
+    {
+        //밭과 건물을 비교하는 방법. index비교.
+        ObjectInMap *pObject = &(*iter).first;
+        long long int time = (*iter).second;
+        
+        pThisClass->addObject(pObject, time, pObject->GetIndex());
+        
+        if(pObject->GetType() == OBJECT_TYPE_FIELD)
+        {
+            pair<int, int> value(pObject->GetIndex(), time);
+            vFieldTime.push_back(value);
+        }
+        else
+        {
+            int state = pObject->GetState();
+            
+            if( state == BUILDING_STATE_COMPLETE_CONSTRUCTION)
+                if(pThisClass->_updateObject(pObject->GetIndex(), NULL) == false)
+                {
+                    int a = 5;
+                    a=3;
+                }
+        }
+    }
+    
+    for(vector< pair<int, int> >::iterator iter = vCrop.begin(); iter != vCrop.end(); ++iter)
+    {
+        int fieldIndex  = (*iter).first;
+        int cropID      = (*iter).second;
+        
+        Field *pField = dynamic_cast<Field*>(pThisClass->m_pMap->FindObject(fieldIndex));
+        pThisClass->addCrop(pField, cropID, pThisClass->_findFieldTime(pField->GetIndex()));
+    }
+    
+    return true;
+}
+
+bool GameSystem::_SellObject(Thread* t, void *parameter)
+{
+    GameSystem *pThisClass = static_cast<GameSystem*>(t);
+    ObjectInMap *pObj = static_cast<ObjectInMap*>(parameter);
+    
+    OBJECT_TYPE type = pObj->GetType();
+    
+    if( type == OBJECT_TYPE_BUILDING )
+    {
+        if(dynamic_cast<Building*>(pObj)->isFriend())
+            return false;
+    }
+    
+    else if( type == OBJECT_TYPE_FIELD )
+    {
+        if(dynamic_cast<Field*>(pObj)->GetCrop())
+            return false;
+    }
+    
+    CommonInfo *cominfo = pThisClass->GetCommonInfo(pObj);
+    int price = cominfo->GetPrice();
+    
+    if( pThisClass->_removeObject(pObj) == false)
+        return false;
+    
+    pThisClass->m_pPlayer->AddMoney(price/3);
+    
+    return true;
+}
+
+bool GameSystem::_Fail(Thread* t, void *parameter)
+{
+    
 }

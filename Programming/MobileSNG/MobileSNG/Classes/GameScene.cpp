@@ -183,6 +183,8 @@ bool GameScene::_initShop()
                          infoBuilding[i]->GetPrice(), 0, infoBuilding[i]->GetObjInfo().GetTime(), 0, infoBuilding[i]->GetObjInfo().GetReward());
     }
     
+//    CCMessageBox(<#const char *pszMsg#>, <#const char *pszTitle#>)
+    
     return true;
 }
 

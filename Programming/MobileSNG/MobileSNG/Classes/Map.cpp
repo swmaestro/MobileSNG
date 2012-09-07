@@ -77,15 +77,16 @@ void Map::update(float dt)
             if( (*i)->isConstruct() )
                 m_pSystem->buildingConstructCheck(index);
             
-            SyncPos(*i);
+            SyncPos(this, *i);
         }
 }
 
-void Map::SyncPos(ObjectInMap *oim)
+bool Map::SyncPos(Thread *t, ObjectInMap *oim)
 {
-    ObjectInfoMgr * infoMgr = m_pSystem->GetInfoMgr();
+    Map *pThisClass = static_cast<Map*>(t);
+    ObjectInfoMgr * infoMgr = pThisClass->m_pSystem->GetInfoMgr();
 
-    CCNode * tile = m_pTile->getChildByTag(MAKEWORD(oim->m_position.x, oim->m_position.y));
+    CCNode * tile = pThisClass->m_pTile->getChildByTag(MAKEWORD(oim->m_position.x, oim->m_position.y));
     std::string filename;
     
     if (oim->GetType() == OBJECT_TYPE_BUILDING)
@@ -130,7 +131,7 @@ void Map::SyncPos(ObjectInMap *oim)
         if (!c)
         {
             tile->removeChildByTag(TILE_CROP, true);
-            return;
+            return true;
         }
         
         CropInfo * info;
@@ -162,6 +163,8 @@ void Map::SyncPos(ObjectInMap *oim)
         spr->setAnchorPoint(ccp(0.5, 0.3));
         tile->addChild(spr, TILE_CROP, TILE_CROP);
     }
+    
+    return true;
 }
 
 void Map::StartProcess(int i, int j)
@@ -210,7 +213,7 @@ void Map::_initTile()
                     tile->addChild(spr, TILE_FARM, TILE_FARM);
                 }
                 
-                SyncPos(oim);
+                SyncPos(this, oim);
                 StartProcess(i, j);
             }
         }
@@ -407,33 +410,12 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                 
                 ObjectInMap *pObj = NULL;
                 
-                if(m_pSystem->Harvest(pos, &pObj))
-                {
-                    SyncPos(pObj);
-                }
-                else if (pObj && pObj->GetType() != OBJECT_TYPE_NONE)
-                {
-                    char strBuf[100];
-                    
-                    switch (pObj->GetType())
-                    {
-                        case OBJECT_TYPE_BUILDING:
-                            sprintf(strBuf, "Buuuuuilding");
-                            break;
-                            
-                        case OBJECT_TYPE_FIELD:
-                            sprintf(strBuf, "Faaaaaaaaarm");
-                            break;
-                            
-                        default:
-                            sprintf(strBuf, "Error : I don't know\nwhat is this");
-                            break;
-                    }
-                    
-                    m_pTalkbox->setPosition(ccp((x - y) * tileWidth / 2, (x + y) * tileHeight / 2));
-                    m_pTalkbox->SetContent(ccp(x, y), strBuf);
-                    m_pTalkbox->setVisible(true);
-                }
+                ThreadObject fail(this), complete(this);
+                complete.pFunc      = THREAD_FUNC(Map::SyncPos);
+                fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
+                fail.parameter      = new TALKBOX(NULL, x, y);
+                
+                m_pSystem->Harvest(pos, &pObj, complete, fail);                
             }
         }
     }
@@ -503,4 +485,50 @@ void Map::endEdit(bool apply)
             
         }
     }
+}
+
+//bool Map::_SyncPos(Thread *t, void *p)
+//{
+//    Map *pThisClass = static_cast<Map*>(t);
+//    ObjectInMap *pObj = static_cast<ObjectInMap*>(p);
+//    pThisClass->SyncPos(pObj);
+//    return true;
+//}
+
+bool Map::_ShowTalkBox(Thread *t, void *p)
+{
+    Map *pThisClass = static_cast<Map*>(t);
+    TALKBOX *pTalk = static_cast<TALKBOX*>(p);
+    
+    ObjectInMap *pObj = pTalk->pObj;
+    
+    int x = pTalk->x;
+    int y = pTalk->y;
+
+    delete pTalk;
+    
+    if((pObj && pObj->GetType() != OBJECT_TYPE_NONE) == false) return false;
+    
+    char strBuf[100];
+    
+    switch (pObj->GetType())
+    {
+        case OBJECT_TYPE_BUILDING:
+            sprintf(strBuf, "Buuuuuilding");
+            break;
+            
+        case OBJECT_TYPE_FIELD:
+            sprintf(strBuf, "Faaaaaaaaarm");
+            break;
+            
+        default:
+            sprintf(strBuf, "Error : I don't know\nwhat is this");
+            break;
+    }
+    
+    pThisClass->m_pTalkbox->setPosition(ccp((x - y) * tileWidth / 2, (x + y) * tileHeight / 2));
+    pThisClass->m_pTalkbox->SetContent(ccp(x, y), strBuf);
+    pThisClass->m_pTalkbox->setVisible(true);
+
+    return true;
 }

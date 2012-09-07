@@ -87,7 +87,7 @@ void Allocator::Apply()
             case OBJ_CROP:
                 {
                     Field * f = dynamic_cast<Field *>(m_pSystem->FindObject(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]))));
-                    m_pSystem->addCrop(f, m_id, 0, true);
+                    m_pSystem->addCrop(f, m_id, 0, true, true);
                 }
                 
                 spr->setAnchorPoint(ccp(0.5, 0.3));
@@ -104,7 +104,7 @@ void Allocator::Apply()
                                       info->GetSize(), OBJECT_DIRECTION_LEFT, m_id);
                     
                     Building b(&oim, 0, m_pSystem->GetInfoMgr());
-                    m_pSystem->addObject(&b, 0);
+                    m_pSystem->addObject(&b, 0, true);
                 }
                 
                 tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);
@@ -115,7 +115,7 @@ void Allocator::Apply()
             
                 {
                     Field f(&oim);
-                    m_pSystem->addObject(&f, 0);
+                    m_pSystem->addObject(&f, 0, true);
                 }
                 
                 spr->setAnchorPoint(ccp(0.5, 0.3));
