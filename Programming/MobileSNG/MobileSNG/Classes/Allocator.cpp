@@ -101,7 +101,7 @@ void Allocator::Apply()
                     spr->setAnchorPoint(ccp(0.5, 0.3 / ((info->GetSize().width + info->GetSize().height) / 2)));
                     
                     oim = ObjectInMap(0, POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i])),
-                                      info->GetSize(), OBJECT_DIRECTION_LEFT, m_id);
+                                      info->GetSize(), OBJECT_DIRECTION_LEFT, m_id, 0);
                     
                     Building b(&oim, 0, m_pSystem->GetInfoMgr());
                     m_pSystem->addObject(&b, 0, true);
@@ -111,7 +111,7 @@ void Allocator::Apply()
                 break;
                 
             case OBJ_FARM:
-                oim = ObjectInMap(0, POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i])), SIZE<int>(1, 1), OBJECT_DIRECTION_LEFT, m_id);
+                oim = ObjectInMap(0, POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i])), SIZE<int>(1, 1), OBJECT_DIRECTION_LEFT, m_id, 0);
             
                 {
                     Field f(&oim);

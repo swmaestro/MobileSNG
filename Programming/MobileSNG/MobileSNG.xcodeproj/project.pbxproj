@@ -30,14 +30,11 @@
 		3C9364C315B0FF6300860E6A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C9364C215B0FF6300860E6A /* CoreGraphics.framework */; };
 		3C9364C715B0FF6300860E6A /* CloseNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9364C615B0FF6300860E6A /* CloseNormal.png */; };
 		3C9364C915B0FF6300860E6A /* CloseSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9364C815B0FF6300860E6A /* CloseSelected.png */; };
-		3C9364CB15B0FF6300860E6A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9364CA15B0FF6300860E6A /* Default.png */; };
 		3C9364CD15B0FF6300860E6A /* HelloWorld.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9364CC15B0FF6300860E6A /* HelloWorld.png */; };
 		3C9364CF15B0FF6300860E6A /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9364CE15B0FF6300860E6A /* Icon-72.png */; };
 		3C9364D115B0FF6300860E6A /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9364D015B0FF6300860E6A /* Icon-Small-50.png */; };
 		3C9364D315B0FF6300860E6A /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9364D215B0FF6300860E6A /* Icon-Small.png */; };
 		3C9364D515B0FF6300860E6A /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9364D415B0FF6300860E6A /* Icon-Small@2x.png */; };
-		3C9364D715B0FF6300860E6A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9364D615B0FF6300860E6A /* Icon.png */; };
-		3C9364D915B0FF6300860E6A /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9364D815B0FF6300860E6A /* Icon@2x.png */; };
 		3C9364DC15B0FF6300860E6A /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 3C9364DB15B0FF6300860E6A /* iTunesArtwork */; };
 		3C9364DE15B0FF6300860E6A /* fps_images.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9364DD15B0FF6300860E6A /* fps_images.png */; };
 		3C9364E315B0FF6300860E6A /* CCAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C9364E215B0FF6300860E6A /* CCAction.cpp */; };
@@ -224,13 +221,16 @@
 		3CAFE22915F8D9D100220947 /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFE22715F8D9D000220947 /* Thread.cpp */; };
 		3CC2A28015E32D3D00E4DB01 /* LoginUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC2A27E15E32D3D00E4DB01 /* LoginUI.cpp */; };
 		3CC2A28415E33A3D00E4DB01 /* Login.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC2A28215E33A3D00E4DB01 /* Login.cpp */; };
-		3CC2A28A15E34C1000E4DB01 /* TestUI.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC2A28915E34C0F00E4DB01 /* TestUI.png */; };
 		3CC2A29615E3831800E4DB01 /* System.info in Resources */ = {isa = PBXBuildFile; fileRef = 3CC2A29515E3831700E4DB01 /* System.info */; };
 		3CC4DA9E15E88376007574F5 /* Social.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC4DA9C15E88376007574F5 /* Social.cpp */; };
 		3CC4DAA115E88B11007574F5 /* UserInfo.h in Sources */ = {isa = PBXBuildFile; fileRef = 3CC4DA9F15E88B11007574F5 /* UserInfo.h */; };
 		3CC4DAA915E93BD5007574F5 /* User.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC4DAA715E93BD4007574F5 /* User.cpp */; };
 		3CC7890215D393D000C19F95 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC7890015D393D000C19F95 /* GameSystem.cpp */; };
 		3CDA257E15D8EFE100193717 /* JoinUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CDA257C15D8EFE100193717 /* JoinUI.cpp */; };
+		C50AD84415F978AC00CAFFD5 /* Icon-2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50AD84315F978AC00CAFFD5 /* Icon-2x.png */; };
+		C50AD84615F978AE00CAFFD5 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = C50AD84515F978AE00CAFFD5 /* Default.png */; };
+		C50AD84815F978EC00CAFFD5 /* Icon-1x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50AD84715F978EC00CAFFD5 /* Icon-1x.png */; };
+		C50AD84A15F97A3100CAFFD5 /* Login-Background.png in Resources */ = {isa = PBXBuildFile; fileRef = C50AD84915F97A3100CAFFD5 /* Login-Background.png */; };
 		C512E61215E6673200625D55 /* Loading.png in Resources */ = {isa = PBXBuildFile; fileRef = C512E61115E6673200625D55 /* Loading.png */; };
 		C51AD0C815F4E29C005B6587 /* Button in Resources */ = {isa = PBXBuildFile; fileRef = C51AD0C715F4E29C005B6587 /* Button */; };
 		C51B140315BED2C6008491C2 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C51B140215BED2C6008491C2 /* Map.cpp */; };
@@ -745,7 +745,6 @@
 		3CC2A27F15E32D3D00E4DB01 /* LoginUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginUI.h; path = Classes/LoginUI.h; sourceTree = "<group>"; };
 		3CC2A28215E33A3D00E4DB01 /* Login.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Login.cpp; path = Classes/Login.cpp; sourceTree = "<group>"; };
 		3CC2A28315E33A3D00E4DB01 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Login.h; path = Classes/Login.h; sourceTree = "<group>"; };
-		3CC2A28915E34C0F00E4DB01 /* TestUI.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TestUI.png; path = Resources/TestUI.png; sourceTree = "<group>"; };
 		3CC2A29515E3831700E4DB01 /* System.info */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = System.info; path = Resources/System.info; sourceTree = "<group>"; };
 		3CC4DA9C15E88376007574F5 /* Social.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Social.cpp; path = Classes/Social.cpp; sourceTree = "<group>"; };
 		3CC4DA9D15E88376007574F5 /* Social.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Social.h; path = Classes/Social.h; sourceTree = "<group>"; };
@@ -758,6 +757,10 @@
 		3CC7890115D393D000C19F95 /* GameSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameSystem.h; path = Classes/GameSystem.h; sourceTree = "<group>"; };
 		3CDA257C15D8EFE100193717 /* JoinUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JoinUI.cpp; path = Classes/JoinUI.cpp; sourceTree = "<group>"; };
 		3CDA257D15D8EFE100193717 /* JoinUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JoinUI.h; path = Classes/JoinUI.h; sourceTree = "<group>"; };
+		C50AD84315F978AC00CAFFD5 /* Icon-2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-2x.png"; sourceTree = "<group>"; };
+		C50AD84515F978AE00CAFFD5 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		C50AD84715F978EC00CAFFD5 /* Icon-1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1x.png"; sourceTree = "<group>"; };
+		C50AD84915F97A3100CAFFD5 /* Login-Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Login-Background.png"; path = "Resources/Login-Background.png"; sourceTree = "<group>"; };
 		C512E61115E6673200625D55 /* Loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Loading.png; path = Resources/Loading.png; sourceTree = "<group>"; };
 		C51AD0C715F4E29C005B6587 /* Button */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Button; path = Resources/Button; sourceTree = "<group>"; };
 		C51B13FF15BED292008491C2 /* Map.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Map.h; path = Classes/Map.h; sourceTree = "<group>"; };
@@ -1024,6 +1027,9 @@
 		3C9364A515B0FF6300860E6A = {
 			isa = PBXGroup;
 			children = (
+				C50AD84715F978EC00CAFFD5 /* Icon-1x.png */,
+				C50AD84515F978AE00CAFFD5 /* Default.png */,
+				C50AD84315F978AC00CAFFD5 /* Icon-2x.png */,
 				3C5C1AFF15D2393C006E7C0B /* RapidXML */,
 				3C5C1AEF15D23932006E7C0B /* curl */,
 				3C93672115B0FF6600860E6A /* Supporting Files */,
@@ -1087,6 +1093,7 @@
 		3C9364C515B0FF6300860E6A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C50AD84915F97A3100CAFFD5 /* Login-Background.png */,
 				C51AD0C715F4E29C005B6587 /* Button */,
 				C5A77A5E15F2330C002DEB9B /* Process.png */,
 				C5A77A5C15F220F5002DEB9B /* Friends-Background.png */,
@@ -1095,7 +1102,6 @@
 				C533CA9815E538830000CC98 /* Talkbox.png */,
 				C594CB0215E46F7000052769 /* Status.png */,
 				3CC2A29515E3831700E4DB01 /* System.info */,
-				3CC2A28915E34C0F00E4DB01 /* TestUI.png */,
 				3C9CF91B15DE177900890B36 /* User.info */,
 				C5F67F9E15D7B80E00F83D58 /* ObjectDB.sqlite */,
 				C5652BDD15D7B14C002348F2 /* CookieHouse */,
@@ -2160,14 +2166,11 @@
 			files = (
 				3C9364C715B0FF6300860E6A /* CloseNormal.png in Resources */,
 				3C9364C915B0FF6300860E6A /* CloseSelected.png in Resources */,
-				3C9364CB15B0FF6300860E6A /* Default.png in Resources */,
 				3C9364CD15B0FF6300860E6A /* HelloWorld.png in Resources */,
 				3C9364CF15B0FF6300860E6A /* Icon-72.png in Resources */,
 				3C9364D115B0FF6300860E6A /* Icon-Small-50.png in Resources */,
 				3C9364D315B0FF6300860E6A /* Icon-Small.png in Resources */,
 				3C9364D515B0FF6300860E6A /* Icon-Small@2x.png in Resources */,
-				3C9364D715B0FF6300860E6A /* Icon.png in Resources */,
-				3C9364D915B0FF6300860E6A /* Icon@2x.png in Resources */,
 				3C9364DC15B0FF6300860E6A /* iTunesArtwork in Resources */,
 				3C9364DE15B0FF6300860E6A /* fps_images.png in Resources */,
 				3C9365D915B0FF6400860E6A /* ChangeLog in Resources */,
@@ -2200,7 +2203,6 @@
 				C550315815D8DAD5008CD033 /* sqlite in Resources */,
 				3C9CF91C15DE177900890B36 /* User.info in Resources */,
 				C594CB0315E46F7000052769 /* Status.png in Resources */,
-				3CC2A28A15E34C1000E4DB01 /* TestUI.png in Resources */,
 				3CC2A29615E3831800E4DB01 /* System.info in Resources */,
 				C533CA9915E538830000CC98 /* Talkbox.png in Resources */,
 				C512E61215E6673200625D55 /* Loading.png in Resources */,
@@ -2208,6 +2210,10 @@
 				C5A77A5D15F220F5002DEB9B /* Friends-Background.png in Resources */,
 				C5A77A5F15F2330C002DEB9B /* Process.png in Resources */,
 				C51AD0C815F4E29C005B6587 /* Button in Resources */,
+				C50AD84415F978AC00CAFFD5 /* Icon-2x.png in Resources */,
+				C50AD84615F978AE00CAFFD5 /* Default.png in Resources */,
+				C50AD84815F978EC00CAFFD5 /* Icon-1x.png in Resources */,
+				C50AD84A15F97A3100CAFFD5 /* Login-Background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

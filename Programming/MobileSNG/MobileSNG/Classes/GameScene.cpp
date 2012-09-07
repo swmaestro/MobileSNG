@@ -126,8 +126,8 @@ bool GameScene::_initUIMgr()
     
     //////////////////UI_EDIT
     
-    m_pUIMgr->AppendUI(UI_EDIT, ccp(200, -120), "Icon-72.png", "Icon-72.png", UI_FUNC(_editApplyFunc));
-    m_pUIMgr->AppendUI(UI_EDIT, ccp(145, -130), "Icon-Small-50.png", "Icon-Small-50.png", UI_FUNC(_editCancelFunc));
+    m_pUIMgr->AppendUI(UI_EDIT, ccp(200, -120), "Button/Edit-OK.png", "Button/Edit-OK.png", UI_FUNC(_editApplyFunc));
+    m_pUIMgr->AppendUI(UI_EDIT, ccp(135, -130), "Button/Edit-Cancel.png", "Button/Edit-Cancel.png", UI_FUNC(_editCancelFunc));
 
     //////////////////UI_SHOP
     

@@ -14,9 +14,9 @@ using namespace cocos2d;
 LoginUI::LoginUI(SEL_MenuHandler loginSelector, SEL_MenuHandler joinSelector, CCObject *pTarget, int fontSize)
 {
     m_pBackGround = new CCSprite;
-    m_pBackGround->initWithFile("TestUI.png");
-    m_pBackGround->setAnchorPoint(ccp(0,0));
-    m_pBackGround->setPosition(ccp(0,0));
+    m_pBackGround->initWithFile("Login-Background.png");
+    m_pBackGround->setPosition(ccp(-10, -10));
+    m_pBackGround->setAnchorPoint(ccp(0, 0));
     
     addChild(m_pBackGround);
     
@@ -55,7 +55,7 @@ LoginUI::LoginUI(SEL_MenuHandler loginSelector, SEL_MenuHandler joinSelector, CC
     
     CCMenuItemImage *pBtJoin = CCMenuItemImage::create("Button/Login-SignUp.png", "Button/Login-SignUp.png", pTarget, joinSelector);
     
-    pBtJoin->setPosition(ccp(220,10));
+    pBtJoin->setPosition(ccp(230,10));
     pBtJoin->setAnchorPoint(ccp(0,0));
         
     m_pMenu = CCMenu::create(pBtLogin, pBtJoin, NULL);
