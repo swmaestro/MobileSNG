@@ -15,9 +15,9 @@ using namespace cocos2d;
 JoinUI::JoinUI(CCNode *pTarget, cocos2d::SEL_MenuHandler JoinSelector, cocos2d::SEL_MenuHandler CancelSelector, SEL_MenuHandler RepetitionSelector, int fontSize)
 {
     m_pBackGround = new CCSprite;
-    m_pBackGround->initWithFile("TestUI.png");
-    m_pBackGround->setPosition(ccp(0,0));
-    m_pBackGround->setAnchorPoint(ccp(0,0));
+    m_pBackGround->initWithFile("Login-Background.png");
+    m_pBackGround->setPosition(ccp(-10, -10));
+    m_pBackGround->setAnchorPoint(ccp(0, 0));
     
     addChild(m_pBackGround);
     
@@ -55,18 +55,20 @@ JoinUI::JoinUI(CCNode *pTarget, cocos2d::SEL_MenuHandler JoinSelector, cocos2d::
     m_pTextField[JOIN_UI_ENUM_PHONE]->setPosition(ccp(100,55));
         
     CCMenuItemImage *pJoinButton = CCMenuItemImage::create("Button/SignUp-SignUp.png", "Button/SignUp-SignUp.png", pTarget, JoinSelector);
-    pJoinButton->setPosition(ccp(110,0));
+    //pJoinButton->setPosition(ccp(110,0));
+    pJoinButton->setPosition(ccp(150,10));
     pJoinButton->setAnchorPoint(ccp(0,0));
     
     CCMenuItemImage *pCancelButton = CCMenuItemImage::create("Button/SignUp-Cancel.png", "Button/SignUp-Cancel.png", pTarget, CancelSelector);
-    pCancelButton->setPosition(ccp(170,0));
+    //pCancelButton->setPosition(ccp(170,0));
+    pCancelButton->setPosition(ccp(230,10));
     pCancelButton->setAnchorPoint(ccp(0,0));
-    
+    /*
     CCMenuItemImage *pRepetitionIDButton = CCMenuItemImage::create("Icon.png", "Icon.png", pTarget, RepetitionSelector);
     pRepetitionIDButton->setPosition(ccp(230,0));
     pRepetitionIDButton->setAnchorPoint(ccp(0,0));
-    
-    m_pMenu = CCMenu::create(pJoinButton, pCancelButton, pRepetitionIDButton, NULL);
+    */
+    m_pMenu = CCMenu::create(pJoinButton, pCancelButton, NULL);
     m_pMenu->setAnchorPoint(ccp(0,0));
     m_pMenu->setPosition(ccp(0,0));
 
