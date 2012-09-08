@@ -227,6 +227,7 @@
 		3CC4DAA915E93BD5007574F5 /* User.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC4DAA715E93BD4007574F5 /* User.cpp */; };
 		3CC7890215D393D000C19F95 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CC7890015D393D000C19F95 /* GameSystem.cpp */; };
 		3CDA257E15D8EFE100193717 /* JoinUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CDA257C15D8EFE100193717 /* JoinUI.cpp */; };
+		3CEA3D0215FB7C0A00C64286 /* Friends-List.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CEA3D0115FB7C0A00C64286 /* Friends-List.png */; };
 		C50AD84415F978AC00CAFFD5 /* Icon-2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50AD84315F978AC00CAFFD5 /* Icon-2x.png */; };
 		C50AD84615F978AE00CAFFD5 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = C50AD84515F978AE00CAFFD5 /* Default.png */; };
 		C50AD84815F978EC00CAFFD5 /* Icon-1x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50AD84715F978EC00CAFFD5 /* Icon-1x.png */; };
@@ -757,6 +758,7 @@
 		3CC7890115D393D000C19F95 /* GameSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameSystem.h; path = Classes/GameSystem.h; sourceTree = "<group>"; };
 		3CDA257C15D8EFE100193717 /* JoinUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JoinUI.cpp; path = Classes/JoinUI.cpp; sourceTree = "<group>"; };
 		3CDA257D15D8EFE100193717 /* JoinUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JoinUI.h; path = Classes/JoinUI.h; sourceTree = "<group>"; };
+		3CEA3D0115FB7C0A00C64286 /* Friends-List.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Friends-List.png"; path = "Resources/Friends-List.png"; sourceTree = "<group>"; };
 		C50AD84315F978AC00CAFFD5 /* Icon-2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-2x.png"; sourceTree = "<group>"; };
 		C50AD84515F978AE00CAFFD5 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		C50AD84715F978EC00CAFFD5 /* Icon-1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1x.png"; sourceTree = "<group>"; };
@@ -1093,6 +1095,7 @@
 		3C9364C515B0FF6300860E6A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3CEA3D0115FB7C0A00C64286 /* Friends-List.png */,
 				C50AD84915F97A3100CAFFD5 /* Login-Background.png */,
 				C51AD0C715F4E29C005B6587 /* Button */,
 				C5A77A5E15F2330C002DEB9B /* Process.png */,
@@ -2214,6 +2217,7 @@
 				C50AD84615F978AE00CAFFD5 /* Default.png in Resources */,
 				C50AD84815F978EC00CAFFD5 /* Icon-1x.png in Resources */,
 				C50AD84A15F97A3100CAFFD5 /* Login-Background.png in Resources */,
+				3CEA3D0215FB7C0A00C64286 /* Friends-List.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

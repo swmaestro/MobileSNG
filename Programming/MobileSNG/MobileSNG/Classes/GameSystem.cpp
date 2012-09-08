@@ -785,9 +785,9 @@ bool GameSystem::_SellObject(Thread* t, void *parameter)
 {
     GameSystem *pThisClass = static_cast<GameSystem*>(t);
     ObjectInMap *pObj = static_cast<ObjectInMap*>(parameter);
-    
+
     OBJECT_TYPE type = pObj->GetType();
-    
+
     if( type == OBJECT_TYPE_BUILDING )
     {
         if(dynamic_cast<Building*>(pObj)->isFriend())
@@ -811,7 +811,14 @@ bool GameSystem::_SellObject(Thread* t, void *parameter)
     return true;
 }
 
+bool GameSystem::_updateUserInfo(bool isThread)
+{
+
+    return true;
+}
+
 bool GameSystem::_Fail(Thread* t, void *parameter)
 {
-    
+    cocos2d::CCMessageBox((const char*)parameter, "Error");
+    return true;
 }

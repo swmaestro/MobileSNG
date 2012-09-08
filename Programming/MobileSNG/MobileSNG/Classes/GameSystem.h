@@ -88,6 +88,8 @@ private:
 
     bool            _updateObject(int index, NetworkObject *pOut);
     
+    bool            _updateUserInfo(bool isThread = false);
+    
 private:
     bool            _addObject(Thread* t, void *parameter);
     bool            _changeObject(Thread* t, void *parameter);

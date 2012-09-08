@@ -7,42 +7,77 @@
 //
 
 #include "Talkbox.h"
+#include "Utility.h"
 
 using namespace cocos2d;
+
+Talkbox::Talkbox() : m_pScale(NULL), m_pTalkbox(NULL), m_pRemove(NULL)
+{
+    memset(m_pText, 0, sizeof(CCLabelTTF*) * 3);
+}
+
+Talkbox::~Talkbox()
+{
+    m_pScale->removeAllChildrenWithCleanup(true);
+    removeAllChildrenWithCleanup(true);
+    
+    SAFE_DELETE(m_pScale);
+    SAFE_DELETE(m_pTalkbox);
+    SAFE_DELETE(m_pRemove);
+    
+    for(int i=0; i<3; i++)
+        SAFE_DELETE(m_pText[i]);
+}
 
 bool Talkbox::init()
 {
     if (!CCLayer::init())
         return false;
     
-    m_pScale = CCLayer::create();
+    m_pScale = new CCLayer;
+    m_pScale->init();
     m_pScale->setAnchorPoint(ccp(0, 0));
     m_pScale->setPosition(0, 30);
     addChild(m_pScale);
     
-    m_pTalkbox = CCSprite::create("Talkbox.png");
+    m_pTalkbox = new CCSprite;//CCSprite::create("Talkbox.png");
+    m_pTalkbox->initWithFile("Talkbox.png");
     m_pTalkbox->setAnchorPoint(ccp(0.5, 0));
     m_pScale->addChild(m_pTalkbox, 0);
     
-    m_pRemove = CCSprite::create("Remove.png");
+    m_pRemove = new CCSprite;//CCSprite::create("Remove.png");
+    m_pRemove->initWithFile("Remove.png");
     m_pRemove->setPosition(ccp(40, 60));
     m_pScale->addChild(m_pRemove, 1);
     
-    m_pText = CCLabelTTF::create("SuperJail!", "Ariel", 12);
-    m_pText->setPosition(ccp(0, 50));
-    m_pScale->addChild(m_pText, 1);
+    for(int i=0; i<3; ++i)
+    {
+        m_pText[i] = new CCLabelTTF;
+        m_pText[i]->initWithString("SuperJail!", "MarkerFelt", 12);
+        m_pText[i]->setPosition(ccp(0, 50));
+        m_pText[i]->setVisible(false);
+        m_pScale->addChild(m_pText[i], 1);
+    }
     
+    m_pText[TALKBOX_TYPE_FARM]->setString("Faaaaaaaaarm");
+    m_pText[TALKBOX_TYPE_BUILDING]->setString("Buuuuuilding");
+    m_pText[TALKBOX_TYPE_UNKNOWN]->setString("Error : I don't know\nwhat is this");
+    
+    this->setVisible(false);
     m_pos = ccp(0, 0);
     
     return true;
 }
 
-void Talkbox::SetContent(CCPoint pos, std::string content)
+void Talkbox::SetContent(CCPoint pos, TALKBOX_TYPE type)
 {
     m_pos = pos;
-    m_content = content;
     
-    m_pText->setString(m_content.c_str());
+    for(int i=0; i<3; i++)
+        m_pText[i]->setVisible(false);
+    
+    m_pText[type]->setVisible(true);
+    this->setVisible(true);
     
     m_pScale->setScale(0);
     CCScaleTo * scale = CCScaleTo::create(0.1, 1);

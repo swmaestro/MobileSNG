@@ -33,6 +33,7 @@ Map::~Map()
 {
     removeAllChildrenWithCleanup(true);
     
+    SAFE_DELETE(m_pTalkbox);
     delete m_pAllocator;
 }
 
@@ -54,9 +55,12 @@ bool Map::init(GameSystem * system)
     
     m_pAllocator = new Allocator(m_pTile, m_width);
     
-    m_pTalkbox = Talkbox::create();
-    m_pTalkbox->setAnchorPoint(ccp(0, 0));
-    m_pTalkbox->setVisible(false);
+//    m_pTalkbox = Talkbox::create();
+//    m_pTalkbox->setAnchorPoint(ccp(0, 0));
+//    m_pTalkbox->setVisible(false);
+    m_pTalkbox = new Talkbox;
+    if(m_pTalkbox->init() == false)
+        return false;
     addChild(m_pTalkbox, 2);
     
     scheduleUpdate();
@@ -508,26 +512,15 @@ bool Map::_ShowTalkBox(Thread *t, void *p)
     delete pTalk;
     
     if((pObj && pObj->GetType() != OBJECT_TYPE_NONE) == false) return false;
+
+    TALKBOX_TYPE type;
     
-    char strBuf[100];
-    
-    switch (pObj->GetType())
-    {
-        case OBJECT_TYPE_BUILDING:
-            sprintf(strBuf, "Buuuuuilding");
-            break;
-            
-        case OBJECT_TYPE_FIELD:
-            sprintf(strBuf, "Faaaaaaaaarm");
-            break;
-            
-        default:
-            sprintf(strBuf, "Error : I don't know\nwhat is this");
-            break;
-    }
+    if(pObj->GetType() == OBJECT_TYPE_BUILDING) type = TALKBOX_TYPE_BUILDING;
+    else if(pObj->GetType() == OBJECT_TYPE_FIELD) type = TALKBOX_TYPE_FARM;
+    else type = TALKBOX_TYPE_UNKNOWN;
     
     pThisClass->m_pTalkbox->setPosition(ccp((x - y) * tileWidth / 2, (x + y) * tileHeight / 2));
-    pThisClass->m_pTalkbox->SetContent(ccp(x, y), strBuf);
+    pThisClass->m_pTalkbox->SetContent(ccp(x, y), type);
     pThisClass->m_pTalkbox->setVisible(true);
     
     printf("talk box view\n");
