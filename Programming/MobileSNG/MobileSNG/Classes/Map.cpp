@@ -529,6 +529,8 @@ bool Map::_ShowTalkBox(Thread *t, void *p)
     pThisClass->m_pTalkbox->setPosition(ccp((x - y) * tileWidth / 2, (x + y) * tileHeight / 2));
     pThisClass->m_pTalkbox->SetContent(ccp(x, y), strBuf);
     pThisClass->m_pTalkbox->setVisible(true);
+    
+    printf("talk box view\n");
 
     return true;
 }

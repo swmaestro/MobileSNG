@@ -37,6 +37,7 @@ User::~User()
 
 std::vector<VillageInfo*> User::_GetFriend(Network *pNet, int page, const char *userID,FRIEND_GET_ENUM type)
 {
+    page += 1;
     std::vector<VillageInfo*> vFriend;
 
     if(pNet == NULL)                    return vFriend;
@@ -84,14 +85,12 @@ std::vector<VillageInfo*> User::_GetFriend(Network *pNet, int page, const char *
  
 std::vector<VillageInfo*> User::GetFollowing(Network *pNet, int page, const char *userID)
 {
-    if(m_vFollowing.size() != 0) return m_vFollowing;
     if(userID == NULL) userID = m_pUserInfo->userID.data();
     return _GetFriend(pNet, page, userID, FRIEND_ENUM_FOLLOWING);
 }
 
 std::vector<VillageInfo*> User::GetFollowers(Network *pNet, int page, const char *userID)
 {
-    if(m_vFollowers.size() != 0) return m_vFollowers;
     if(userID == NULL) userID = m_pUserInfo->userID.data();
     return _GetFriend(pNet, page, userID, FRIEND_ENUM_FOLLOWERS);
 }

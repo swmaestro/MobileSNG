@@ -254,19 +254,6 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/Map.cpp"
-         timestampString = "368709806.55625"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "500"
-         endingLineNumber = "500"
-         landmarkName = "Map::_ShowTalkBox(Thread *t, void *p)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/Thread.cpp"
          timestampString = "368709842.976285"
          startingColumnNumber = "9223372036854775807"
@@ -274,6 +261,19 @@
          startingLineNumber = "37"
          endingLineNumber = "37"
          landmarkName = "Thread::threadUpdate()"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/Talkbox.cpp"
+         timestampString = "368747105.447257"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "42"
+         endingLineNumber = "42"
+         landmarkName = "Talkbox::SetContent(CCPoint pos, std::string content)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
