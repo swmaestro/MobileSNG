@@ -550,13 +550,13 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
     GameSystem *pThisClass = static_cast<GameSystem*>(t);
     ADDOBJECT *pAddObject = static_cast<ADDOBJECT*>(parameter);
     
-    ObjectInMap *pObj = pAddObject->pObj;
+    ObjectInMap obj = pAddObject->obj;
     int time = pAddObject->time;
     int index = pAddObject->index;
     
     delete pAddObject;
     
-    if(pObj->GetType() == OBJECT_TYPE_CROP)
+    if(obj.GetType() == OBJECT_TYPE_CROP)
         return false;
     
     if(index == -1)
@@ -565,7 +565,7 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
         
         int idx;
         
-        if(pObj->GetType() == OBJECT_TYPE_BUILDING)
+        if(obj.GetType() == OBJECT_TYPE_BUILDING)
             idx = pThisClass->m_pIndexMgr->buildingIndex();
         else idx = pThisClass->m_pIndexMgr->fieldIndex();
         
@@ -575,21 +575,22 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
             return false;
         }
         
-        pObj->SetIndex(idx);
-        
-        if( (pCreatedObject = pThisClass->m_pMap->addObject(pObj, pThisClass->m_pInfoMgr, 0)) )
+        obj.SetIndex(idx);
+        pCreatedObject = pThisClass->m_pMap->addObject(&obj, pThisClass->m_pInfoMgr, 0);
+        if( pCreatedObject != NULL )
         {
-            if(pObj->GetType() == OBJECT_TYPE_BUILDING)
+            if(obj.GetType() == OBJECT_TYPE_BUILDING)
                 pThisClass->m_pIndexMgr->addBuildingIndex(idx);
             else pThisClass->m_pIndexMgr->addFieldIndex(idx);
         }
-        else return false;
-        if(pThisClass->_newObject(pObj->GetID(), pObj->GetIndex(), pObj->GetPosition(), pObj->GetDirection()) == false)
+        else
+            return false;
+        if(pThisClass->_newObject(obj.GetID(), obj.GetIndex(), obj.GetPosition(), obj.GetDirection()) == false)
         {
             //서버에서 실패한거니까, 서버 통해서 재거하지 말고 클라 자체에서 제거하면되.
-            pThisClass->m_pMap->removeObject(pObj->GetIndex());
+            pThisClass->m_pMap->removeObject(obj.GetIndex());
             
-            if(pObj->GetType() == OBJECT_TYPE_BUILDING)
+            if(obj.GetType() == OBJECT_TYPE_BUILDING)
                 pThisClass->m_pIndexMgr->removeBuildIndex(idx);
             else pThisClass->m_pIndexMgr->removeFieldIndex(idx);
             
@@ -599,11 +600,15 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
         return true;
     }
     
-    pObj->SetIndex(index);
+    obj.SetIndex(index);
+
+    if(obj.GetType() == OBJECT_TYPE_BUILDING)
+        pThisClass->m_pIndexMgr->addBuildingIndex(index);
+    else pThisClass->m_pIndexMgr->addFieldIndex(index);
     
-    if(pThisClass->m_pMap->addObject(pObj, pThisClass->m_pInfoMgr, time) == false)
+    if(pThisClass->m_pMap->addObject(&obj, pThisClass->m_pInfoMgr, time) == false)
     {
-        if(pObj->GetType() == OBJECT_TYPE_BUILDING)
+        if(obj.GetType() == OBJECT_TYPE_BUILDING)
             pThisClass->m_pIndexMgr->removeBuildIndex(index);
         else pThisClass->m_pIndexMgr->removeFieldIndex(index);
         
@@ -748,8 +753,10 @@ bool GameSystem::_SetUpVillageList(Thread* t, void *parameter)
         //밭과 건물을 비교하는 방법. index비교.
         ObjectInMap *pObject = &(*iter).first;
         long long int time = (*iter).second;
-        
-        pThisClass->addObject(pObject, time, pObject->GetIndex());
+
+        int index = pObject->GetIndex();
+    
+        pThisClass->addObject(pObject, time, index, false);
         
         if(pObject->GetType() == OBJECT_TYPE_FIELD)
         {
@@ -761,11 +768,7 @@ bool GameSystem::_SetUpVillageList(Thread* t, void *parameter)
             int state = pObject->GetState();
             
             if( state == BUILDING_STATE_COMPLETE_CONSTRUCTION)
-                if(pThisClass->_updateObject(pObject->GetIndex(), NULL) == false)
-                {
-                    int a = 5;
-                    a=3;
-                }
+                pThisClass->_updateObject(pObject->GetIndex(), NULL);
         }
     }
     

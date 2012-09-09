@@ -23,13 +23,15 @@
 
 struct ADDOBJECT
 {
-    ObjectInMap *pObj;
+    ObjectInMap obj;
     int time;
     int index;
     
-    ADDOBJECT() : pObj(NULL), time(0), index(-1) {}
+    ADDOBJECT() : time(0), index(-1) {}
+    ADDOBJECT(ObjectInMap obj, int time, int index)
+    { this->obj = obj; this->time = time; this->index = index; }
     ADDOBJECT(ObjectInMap *pObj, int time, int index)
-    { this->pObj = pObj; this->time = time; this->index = index; }
+    { this->obj = *pObj; this->time = time; this->index = index; }
 };
 
 struct CHANGEOBJECT
