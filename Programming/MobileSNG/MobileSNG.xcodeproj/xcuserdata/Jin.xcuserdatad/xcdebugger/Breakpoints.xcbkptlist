@@ -150,21 +150,8 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/GameScene.cpp"
-         timestampString = "368693459.224917"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "56"
-         endingLineNumber = "56"
-         landmarkName = "GameScene::init()"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368708783.683379"
+         timestampString = "368866361.907735"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "697"
@@ -177,25 +164,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368708783.683379"
+         timestampString = "368866361.907735"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "668"
          endingLineNumber = "668"
          landmarkName = "GameSystem::_addCrop(Thread* t, void *parameter)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368708783.683379"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "619"
-         endingLineNumber = "619"
-         landmarkName = "GameSystem::_changeObject(Thread* t, void *parameter)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -219,8 +193,8 @@
          timestampString = "368708783.683379"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "431"
-         endingLineNumber = "431"
+         startingLineNumber = "444"
+         endingLineNumber = "444"
          landmarkName = "GameSystem::addCrop(Field *pField, int id, int time, bool isAdd, bool isThread)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -229,12 +203,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368708783.683379"
+         timestampString = "368866982.642395"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "444"
-         endingLineNumber = "444"
-         landmarkName = "GameSystem::addCrop(Field *pField, int id, int time, bool isAdd, bool isThread)"
+         startingLineNumber = "820"
+         endingLineNumber = "820"
+         landmarkName = "GameSystem::_Fail(Thread* t, void *parameter)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

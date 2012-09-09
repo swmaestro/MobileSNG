@@ -53,7 +53,7 @@ bool Talkbox::init()
     for(int i=0; i<3; ++i)
     {
         m_pText[i] = new CCLabelTTF;
-        m_pText[i]->initWithString("SuperJail!", "MarkerFelt", 12);
+        m_pText[i]->initWithString("SuperJail!", "MarkerFelt", 14);
         m_pText[i]->setPosition(ccp(0, 50));
         m_pText[i]->setVisible(false);
         m_pScale->addChild(m_pText[i], 1);

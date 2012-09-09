@@ -11,8 +11,11 @@
 #include <string>
 #include "UserInfo.h"
 
-struct VillageInfo
+class Network;
+
+class VillageInfo
 {
+public:
     std::string     userID;
     int             level;
     int             money;
@@ -20,21 +23,14 @@ struct VillageInfo
     int             exp;
     
 public:
-    VillageInfo() : level(0), money(0), cash(0), exp(0) {}
-    VillageInfo(const char *userID, int level, int money, int cash, int exp)
-    {
-        this->userID = userID;
-        this->level = level;
-        this->money = money;
-        this->cash = cash;
-        this->exp = exp;
-    }
+    VillageInfo();
+    VillageInfo(const char *userID, int level, int money, int cash, int exp);
+    ~VillageInfo();
     
-    ~VillageInfo(){}
+public:
+    bool UpdateVillageInfo(Network *pNetwork);
     
-    int GetMaximumExp()
-    {
-        return level * 200;
-    }
+public:
+    int GetMaximumExp();
 };
 

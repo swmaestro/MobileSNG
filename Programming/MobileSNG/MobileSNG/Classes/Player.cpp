@@ -43,31 +43,7 @@ Player::Player(Network *pNetwork)
     fclose(pFile);
     
     m_pVillageInfo->userID = id;
-    
-    
-    const char *baseURL = "http://swmaestros-sng.appspot.com/villageinfo?id=%s";
-    char url[256];
-    sprintf(url, baseURL, m_pUserInfo->userID.data());
-    
-    CURL_DATA data;
-    if(pNetwork->connectHttp(url, &data) != CURLE_OK )
-    {
-        printf("%s <- Player Update Error", __FUNCTION__);
-        return;
-    }
-    
-    xml_document<char> xmlDoc;
-    xmlDoc.parse<0>(data.pContent);
-    
-    xml_node<char> *pNode = xmlDoc.first_node()->first_node()->next_sibling()->first_node()->next_sibling();
-    
-    m_pVillageInfo->money = atoi(pNode->value());
-    pNode = pNode->next_sibling();
-    m_pVillageInfo->cash  = atoi(pNode->value());
-    pNode = pNode->next_sibling();
-    m_pVillageInfo->level = atoi(pNode->value());
-    pNode = pNode->next_sibling();
-    m_pVillageInfo->exp = (int)atof(pNode->value());
+    m_pVillageInfo->UpdateVillageInfo(pNetwork);
 }
 
 Player::~Player()
@@ -164,6 +140,7 @@ bool Player::removeFollowing(User *pPlayer, Network *pNet)
 
 std::vector<REQUEST> Player::viewRequestList(Network *pNet, int page, bool isMeRequest)
 {
+    page += 1;
     const char* baseURL = "http://swmaestros-sng.appspot.com/brequest_list?id=%s&state=3&ord=true&usertype=%s&page=%d";
     char url[256];
     
@@ -244,4 +221,9 @@ void Player::GetInfo(char *pOutID, char *pOutPW, char *pOutPhone, char *pOutDate
     if(pOutDate)    fscanf(pFile, "%s", pOutDate);
 
     fclose(pFile);
+}
+
+bool Player::UpdateVillageInfo(Network *pNet)
+{
+    return m_pVillageInfo->UpdateVillageInfo(pNet);
 }

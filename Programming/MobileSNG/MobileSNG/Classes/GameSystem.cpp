@@ -811,14 +811,12 @@ bool GameSystem::_SellObject(Thread* t, void *parameter)
     return true;
 }
 
-bool GameSystem::_updateUserInfo(bool isThread)
+bool GameSystem::_updateUserInfo(Thread *t, void *parameter)
 {
-
     return true;
 }
 
 bool GameSystem::_Fail(Thread* t, void *parameter)
 {
-    cocos2d::CCMessageBox((const char*)parameter, "Error");
     return true;
 }

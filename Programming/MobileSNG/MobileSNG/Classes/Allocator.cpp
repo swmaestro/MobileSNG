@@ -115,7 +115,7 @@ void Allocator::Apply()
             
                 {
                     Field f(&oim);
-                    m_pSystem->addObject(&f, 0, true);
+                    m_pSystem->addObject(&f, 0, -1, true);
                 }
                 
                 spr->setAnchorPoint(ccp(0.5, 0.3));
