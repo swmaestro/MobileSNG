@@ -10,22 +10,28 @@
 #include "CCCommon.h"
 
 using namespace cocos2d;
+using namespace std;
 
-Thread::Thread(bool isAlarm)
+Thread::Thread(bool isAlarm) : m_pqThread(NULL)
 {
     m_isAlarm = isAlarm;
+    m_pqThread = new queue<ThreadFunc>;
 }
 
 Thread::~Thread()
 {
-    
+    if(m_pqThread)
+    {
+        delete m_pqThread;
+        m_pqThread = NULL;
+    }
 }
 
 void Thread::threadUpdate()
 {
-    while ((m_qThread.empty() == false))
+    while ((m_pqThread->empty() == false))
     {
-        ThreadFunc func = m_qThread.front();
+        ThreadFunc func = m_pqThread->front();
 
         bool (Thread::*pFunc)(Thread*,void *)   = func.work.pFunc;
         void *parameter                         = func.work.parameter;
@@ -55,22 +61,22 @@ void Thread::threadUpdate()
             (this->*pFunc)(thisClass, parameter);
         
         
-        m_qThread.pop();
+        m_pqThread->pop();
     }
 }
 
 void Thread::addWork(ThreadFunc &thread)
 {
-    m_qThread.push(thread);
+    m_pqThread->push(thread);
 }
 
 void Thread::popWork()
 {
-    m_qThread.pop();
+    m_pqThread->pop();
 }
 
 void Thread::AllClear()
 {
-    while (!m_qThread.empty())
-        m_qThread.pop();
+    while (!m_pqThread->empty())
+        m_pqThread->pop();
 }
