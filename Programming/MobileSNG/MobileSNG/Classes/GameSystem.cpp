@@ -460,7 +460,7 @@ void GameSystem::buildingConstructCheck(int index)
 void GameSystem::SellObject(ObjectInMap *pObj, bool isThread)
 {
     ThreadObject work(this);
-    work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_buildingConstructCheck);
+    work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_SellObject);
     work.parameter  = pObj;
     
     if(isThread)
@@ -469,6 +469,7 @@ void GameSystem::SellObject(ObjectInMap *pObj, bool isThread)
         addWork(func);
     }
     else _SellObject(this, work.parameter);
+//    _SellObject(this, work.parameter);
 }
 
 bool GameSystem::_Harvest(Thread* t, void *parameter)

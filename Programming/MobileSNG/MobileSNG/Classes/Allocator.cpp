@@ -104,7 +104,7 @@ void Allocator::Apply()
                                       info->GetSize(), OBJECT_DIRECTION_LEFT, m_id, 0);
                     
                     Building b(&oim, 0, m_pSystem->GetInfoMgr());
-                    m_pSystem->addObject(&b, 0, true);
+                    m_pSystem->addObject(&b, 0, -1, true);
                 }
                 
                 tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);

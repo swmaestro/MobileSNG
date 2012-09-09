@@ -151,19 +151,6 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368874567.14001"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "702"
-         endingLineNumber = "702"
-         landmarkName = "GameSystem::_buildingConstructCheck(Thread* t, void *parameter)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/GameSystem.cpp"
          timestampString = "368708783.683379"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
@@ -177,25 +164,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368874567.14001"
+         timestampString = "368901158.344148"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "823"
-         endingLineNumber = "823"
+         startingLineNumber = "824"
+         endingLineNumber = "824"
          landmarkName = "GameSystem::_Fail(Thread* t, void *parameter)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/Allocator.cpp"
-         timestampString = "368872148.480825"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "107"
-         endingLineNumber = "107"
-         landmarkName = "Allocator::Apply()"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -209,32 +183,6 @@
          startingLineNumber = "90"
          endingLineNumber = "90"
          landmarkName = "Allocator::Apply()"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368874702.410943"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "553"
-         endingLineNumber = "553"
-         landmarkName = "GameSystem::_addObject(Thread* t, void *parameter)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368874757.477847"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "392"
-         endingLineNumber = "392"
-         landmarkName = "GameSystem::addObject(ObjectInMap *pObj, int time, int index, bool isThread)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
