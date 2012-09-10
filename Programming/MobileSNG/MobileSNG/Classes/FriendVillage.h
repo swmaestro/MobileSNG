@@ -36,7 +36,7 @@ private:
     
 public:
     bool init();
-    bool Harvest(POINT<int> &pos, ObjectInMap **ppOut);
+    bool Request(POINT<int> &pos, ObjectInMap **ppOut);
     
 public:
     std::vector<ObjectInMap*>& GetAllObject();

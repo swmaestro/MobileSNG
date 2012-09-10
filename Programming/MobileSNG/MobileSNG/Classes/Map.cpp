@@ -60,7 +60,7 @@ bool Map::init(GameSystem * system, FriendVillage * village)
         return false;
     
     addChild(m_pTalkbox, 2);
-    
+
     scheduleUpdate();
     
     return true;

@@ -176,13 +176,13 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/Allocator.cpp"
-         timestampString = "368872170.222298"
+         filePath = "MobileSNG/Classes/GameSystem.cpp"
+         timestampString = "368901661.604278"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "90"
-         endingLineNumber = "90"
-         landmarkName = "Allocator::Apply()"
+         startingLineNumber = "790"
+         endingLineNumber = "790"
+         landmarkName = "GameSystem::_SellObject(Thread* t, void *parameter)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
