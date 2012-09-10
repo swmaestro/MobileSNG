@@ -231,7 +231,7 @@ bool GameScene::_initLabel()
 
 void GameScene::ccTouchesBegan(CCSet * pTouches, CCEvent * pEvent)
 {
-    if (!m_pCurrentUI && !(m_pCurrentUI = m_pMap))
+    if (!m_pCurrentUI)
         return;
     
     static_cast<CCLayer *>(m_pCurrentUI->getChildByTag(UILAYER_TOUCH_RECIEVER))->ccTouchesBegan(pTouches, pEvent);
@@ -239,7 +239,7 @@ void GameScene::ccTouchesBegan(CCSet * pTouches, CCEvent * pEvent)
 
 void GameScene::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
 {
-    if (!m_pCurrentUI && !(m_pCurrentUI = m_pMap))
+    if (!m_pCurrentUI)
         return;
     
     static_cast<CCLayer *>(m_pCurrentUI->getChildByTag(UILAYER_TOUCH_RECIEVER))->ccTouchesMoved(pTouches, pEvent);
@@ -247,7 +247,7 @@ void GameScene::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
 
 void GameScene::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
 {
-    if (!m_pCurrentUI && !(m_pCurrentUI = m_pMap))
+    if (!m_pCurrentUI)
         return;
     
     static_cast<CCLayer *>(m_pCurrentUI->getChildByTag(UILAYER_TOUCH_RECIEVER))->ccTouchesEnded(pTouches, pEvent);
@@ -334,8 +334,14 @@ void GameScene::alloc(int type, int id)
 void GameScene::Visit(Map *map)
 {
     m_pFriendMapUI->removeChildByTag(UILAYER_TOUCH_RECIEVER, true);
+    
+    CCSize wsize = CCDirector::sharedDirector()->getWinSize();
     m_pMap = map;
-    m_pFriendMapUI->addChild(map, UILAYER_TOUCH_RECIEVER);
+    m_pMap->setAnchorPoint(ccp(0.5, 0.5));
+    m_pMap->filtScale(1);
+    m_pMap->filtPosition(ccp(wsize.width / 2, wsize.height / 2));
+    
+    m_pFriendMapUI->addChild(m_pMap, UILAYER_TOUCH_RECIEVER, UILAYER_TOUCH_RECIEVER);
     m_pUIMgr->ChangeUI(UI_FRIEND_MAP);
     _changeUI(m_pFriendMapUI);
 }

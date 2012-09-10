@@ -111,13 +111,14 @@ void Friends::refreshBySearch(std::string name)
     VillageInfo info;
     if (m_pSocial->FindVillageInfo(name.c_str(), &info))
     {
-        addFriendList(info.userID);
-        m_pSearch->removeContent(info.userID.data(), true);
-        m_pSearch->pushContent(info.userID.data(), _createUserInfo(m_pNetwork, info.userID.data()));
+        UserInfo * uinfo = _createUserInfo(m_pNetwork, info.userID.c_str());
         
-        UserInfo uinfo;
-        m_pSocial->FindUser(name.c_str(), &uinfo, USER_SEARCH_ENUM_ID);
-        EnterFriendVillage(&uinfo);
+        addFriendList(info.userID);
+        m_pSearch->removeContent(info.userID.c_str(), true);
+        m_pSearch->pushContent(info.userID.c_str(), uinfo);
+        
+        m_pSocial->FindUser(name.c_str(), uinfo, USER_SEARCH_ENUM_ID);
+        EnterFriendVillage(uinfo);
     }
 }
 
@@ -177,9 +178,11 @@ bool Friends::EnterFriendVillage(UserInfo *pUserInfo)
     SAFE_DELETE(m_pFriendVillage);
     m_pFriendVillage = new FriendVillage(1, pUserInfo, m_pNetwork, m_pSystem->GetPlayer()->GetUserID());
     
-    if(m_pFriendVillage->init() == false) return false;
+    if(m_pFriendVillage->init() == false)
+        return false;
     
     Map * map = new Map(7);
+    
     if (!map->init(m_pSystem, m_pFriendVillage))
         return false;
     

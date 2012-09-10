@@ -16,7 +16,7 @@
 
 using namespace cocos2d;
 
-PlayerMap::PlayerMap(int width) : Map(width)
+PlayerMap::PlayerMap(int width) : Map(width), m_pAllocator(NULL), m_isAllocating(false), m_isEditing(false)
 {
     
 }
