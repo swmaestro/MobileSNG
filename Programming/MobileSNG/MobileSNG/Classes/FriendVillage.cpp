@@ -13,6 +13,7 @@ using namespace rapidxml;
 
 FriendVillage::FriendVillage(int mapLevel, UserInfo *pUser, Network *pNetwork, const char* playerName) : CommonVillage(pNetwork), m_isWork(false)
 {
+    m_pInfoMgr->loadData("ObjectDB.sqlite");
     m_pMap  = new MapMgr(mapLevel);
     m_pUserInfo = new UserInfo(pUser->userID.data(), pUser->userPhone.data(), pUser->userDate.data());
     m_nObjectLoop = 0;
@@ -30,6 +31,7 @@ bool FriendVillage::_initMap()
     const char *baseURL = "http://swmaestros-sng.appspot.com/vbstateupdate?id=%s";
     char url[256];
     sprintf(url, baseURL, m_pUserInfo->userID.data());
+    printf("%s\n", url);
     
     CURL_DATA buildingData;
     if(m_pNetwork->connectHttp(url, &buildingData) != CURLE_OK)
@@ -40,6 +42,7 @@ bool FriendVillage::_initMap()
     
     baseURL = "http://swmaestros-sng.appspot.com/crop_rlist?id=%s";
     sprintf(url, baseURL, m_pUserInfo->userID.data());
+    printf("%s\n", url);
     
     CURL_DATA cropData;
     if(m_pNetwork->connectHttp(url, &cropData) != CURLE_OK)
@@ -71,7 +74,9 @@ bool FriendVillage::_initMap()
         int cropID      = (*iter).second;
         
         Field *pField = dynamic_cast<Field*>(m_pMap->FindObject(fieldIndex));
-        m_pMap->addCrop(pField, cropID, _findFieldTime(pField->GetIndex()), m_pInfoMgr);
+//        addCrop(pField, cropID, _findFieldTime(pField->GetIndex()));
+        
+        m_pMap->addCrop(pField, cropID, 0, m_pInfoMgr);
     }
     
     return true;
