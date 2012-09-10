@@ -7,3 +7,8 @@
 //
 
 #include "FriendMap.h"
+
+FriendMap::FriendMap(int & width, FriendVillage * vill) : Map(width, vill)
+{
+    
+}

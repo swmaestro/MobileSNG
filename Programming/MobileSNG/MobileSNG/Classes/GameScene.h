@@ -6,7 +6,7 @@
 #include "Network.h"
 
 class Shop;
-class Map;
+class PlayerMap;
 class Friends;
 
 class GameSystem;
@@ -19,7 +19,7 @@ private:
     GameSystem          * m_pSystem;
     Network             * m_pNetwork;
     
-    Map                 * m_pMap;
+    PlayerMap           * m_pMap;
     Shop                * m_pShop;
     Friends             * m_pFriends;
     

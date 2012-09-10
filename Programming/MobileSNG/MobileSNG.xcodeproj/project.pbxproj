@@ -236,6 +236,8 @@
 		C51B140315BED2C6008491C2 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C51B140215BED2C6008491C2 /* Map.cpp */; };
 		C5241CB815D3E3D5003820EE /* CandyCane in Resources */ = {isa = PBXBuildFile; fileRef = C5241CB715D3E3D5003820EE /* CandyCane */; };
 		C5241CBA15D3E3E4003820EE /* HauntedHouse in Resources */ = {isa = PBXBuildFile; fileRef = C5241CB915D3E3E4003820EE /* HauntedHouse */; };
+		C529688415FC7A7F00F460DE /* PlayerMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C529688215FC7A7F00F460DE /* PlayerMap.cpp */; };
+		C529688715FC7A8D00F460DE /* FriendMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C529688515FC7A8D00F460DE /* FriendMap.cpp */; };
 		C533CA9715E5272A0000CC98 /* Talkbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C533CA9515E5272A0000CC98 /* Talkbox.cpp */; };
 		C533CA9915E538830000CC98 /* Talkbox.png in Resources */ = {isa = PBXBuildFile; fileRef = C533CA9815E538830000CC98 /* Talkbox.png */; };
 		C546BD9815C8000300277186 /* Friends-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = C546BD9715C8000300277186 /* Friends-Small.png */; };
@@ -767,6 +769,10 @@
 		C51B140215BED2C6008491C2 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Map.cpp; path = Classes/Map.cpp; sourceTree = "<group>"; };
 		C5241CB715D3E3D5003820EE /* CandyCane */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CandyCane; path = Resources/CandyCane; sourceTree = "<group>"; };
 		C5241CB915D3E3E4003820EE /* HauntedHouse */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HauntedHouse; path = Resources/HauntedHouse; sourceTree = "<group>"; };
+		C529688215FC7A7F00F460DE /* PlayerMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlayerMap.cpp; path = Classes/PlayerMap.cpp; sourceTree = "<group>"; };
+		C529688315FC7A7F00F460DE /* PlayerMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerMap.h; path = Classes/PlayerMap.h; sourceTree = "<group>"; };
+		C529688515FC7A8D00F460DE /* FriendMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FriendMap.cpp; path = Classes/FriendMap.cpp; sourceTree = "<group>"; };
+		C529688615FC7A8D00F460DE /* FriendMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendMap.h; path = Classes/FriendMap.h; sourceTree = "<group>"; };
 		C533CA9515E5272A0000CC98 /* Talkbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Talkbox.cpp; path = Classes/Talkbox.cpp; sourceTree = "<group>"; };
 		C533CA9615E5272A0000CC98 /* Talkbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Talkbox.h; path = Classes/Talkbox.h; sourceTree = "<group>"; };
 		C533CA9815E538830000CC98 /* Talkbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Talkbox.png; path = Resources/Talkbox.png; sourceTree = "<group>"; };
@@ -2059,6 +2065,8 @@
 		C51B140115BED2B4008491C2 /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				C529688115FC7A5D00F460DE /* FriendMap */,
+				C529687F15FC7A5500F460DE /* PlayerMap */,
 				C533CA9315E526EF0000CC98 /* Talkbox */,
 				C5D3E46315E25BFF005D07BE /* Relocator */,
 				C583633115D52490006F4F2A /* Allocator */,
@@ -2066,6 +2074,24 @@
 				C51B13FF15BED292008491C2 /* Map.h */,
 			);
 			name = Map;
+			sourceTree = "<group>";
+		};
+		C529687F15FC7A5500F460DE /* PlayerMap */ = {
+			isa = PBXGroup;
+			children = (
+				C529688215FC7A7F00F460DE /* PlayerMap.cpp */,
+				C529688315FC7A7F00F460DE /* PlayerMap.h */,
+			);
+			name = PlayerMap;
+			sourceTree = "<group>";
+		};
+		C529688115FC7A5D00F460DE /* FriendMap */ = {
+			isa = PBXGroup;
+			children = (
+				C529688515FC7A8D00F460DE /* FriendMap.cpp */,
+				C529688615FC7A8D00F460DE /* FriendMap.h */,
+			);
+			name = FriendMap;
 			sourceTree = "<group>";
 		};
 		C533CA9315E526EF0000CC98 /* Talkbox */ = {
@@ -2423,6 +2449,8 @@
 				C5A77A5B15F1E570002DEB9B /* Friends.cpp in Sources */,
 				3C40F86515F2DD1E00D018E8 /* CommonVillage.cpp in Sources */,
 				3CAFE22915F8D9D100220947 /* Thread.cpp in Sources */,
+				C529688415FC7A7F00F460DE /* PlayerMap.cpp in Sources */,
+				C529688715FC7A8D00F460DE /* FriendMap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

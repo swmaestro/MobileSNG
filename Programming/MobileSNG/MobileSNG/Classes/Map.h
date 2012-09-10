@@ -38,19 +38,20 @@ enum
 
 class Map : public cocos2d::CCLayer, private Thread
 {
-private:
+protected:
+    Map(int & width);
+    ~Map();
+    
     cocos2d::CCPoint    m_touch[2];
     int                 m_touchID[2];
     int                 m_touchCnt;
     
     cocos2d::CCLayer  * m_pTile;
-    Allocator         * m_pAllocator;
     Talkbox           * m_pTalkbox;
     
     int               & m_width;
     
     bool                m_isDragging, m_isScaling;
-    bool                m_isAllocating, m_isEditing;
         
     int _cursorXY(cocos2d::CCPoint cur);
     
@@ -65,9 +66,6 @@ private:
 public:
     static int width, height, tileWidth, tileHeight;
     
-    Map(int & width);
-    ~Map();
-    
     virtual bool init(GameSystem * system);
     
     virtual void ccTouchesBegan(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
@@ -79,10 +77,6 @@ public:
     
     bool SyncPos(Thread *t, ObjectInMap * oim);
     void StartProcess(int i, int j);
-    
-    void beginEdit();
-    void beginEdit(int type, int id);
-    void endEdit(bool apply);
     
     void update(float dt);
     

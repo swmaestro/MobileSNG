@@ -7,7 +7,6 @@
 //
 
 #include "Map.h"
-#include "Allocator.h"
 #include "Talkbox.h"
 
 #include "Shop.h"
@@ -21,10 +20,9 @@ int Map::height = 320 * 4;
 int Map::tileWidth = 100;
 int Map::tileHeight = 60;
 
-Map::Map(int & width) : m_pTile(NULL), m_pAllocator(NULL), m_pTalkbox(NULL),
+Map::Map(int & width) : m_pTile(NULL), m_pTalkbox(NULL),
                 m_width(width), m_touchCnt(-1),
-                m_isDragging(false), m_isScaling(false),
-                m_isAllocating(false), m_isEditing(false)
+                m_isDragging(false), m_isScaling(false)
 {
     
 }
@@ -32,8 +30,6 @@ Map::Map(int & width) : m_pTile(NULL), m_pAllocator(NULL), m_pTalkbox(NULL),
 Map::~Map()
 {
     removeAllChildrenWithCleanup(true);
-    
-    delete m_pAllocator;
 }
 
 
@@ -51,8 +47,6 @@ bool Map::init(GameSystem * system)
     bg->setPosition(ccp(0, 0));
     bg->setScale(4);
     addChild(bg, 0);
-    
-    m_pAllocator = new Allocator(m_pTile, m_width);
     
     m_pTalkbox = Talkbox::create();
     m_pTalkbox->setAnchorPoint(ccp(0, 0));
@@ -247,27 +241,6 @@ void Map::ccTouchesBegan(CCSet * pTouches, CCEvent * pEvent)
     
     while (m_touchCnt < 1 && i != pTouches->end())
         m_touchID[++m_touchCnt] = static_cast<CCTouch *>(*i++)->getID();
-    
-    if (m_isAllocating)
-    {
-        if (m_touchCnt == 0 && pTouches->count() == 1)
-        {
-            CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
-            
-            CCPoint p = pTouch->locationInView();
-            p = CCDirector::sharedDirector()->convertToGL(p);
-        
-            int t = _cursorXY(p);
-            int x = LOWORD(t), y = HIWORD(t);
-            
-            if (x < -m_width / 2 || x > m_width / 2 || y < -m_width / 2 || y > m_width / 2)
-                return;
-            
-            m_pAllocator->TouchesBegin(x, y);
-        }
-        else
-            m_pAllocator->TouchesMove();
-    }
 }
 
 void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
@@ -287,9 +260,6 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
             m_isDragging = true;
             m_isScaling = false;
             m_touch[0] = p;
-            
-            if (m_isAllocating)
-                m_pAllocator->TouchesMove();
         }
         else if (m_isDragging)
         {
@@ -301,9 +271,6 @@ void Map::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
     }
     else if (m_touchCnt == 1 && pTouches->count() == 2)
     {
-        if (m_isAllocating)
-            m_pAllocator->TouchesMove();
-        
         CCSetIterator i = pTouches->begin();
         
         CCTouch * t1 = static_cast<CCTouch *>(*i++);
@@ -374,49 +341,44 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
     
     if (!m_isDragging && !m_isScaling)
     {
-        if (m_isAllocating)
-            m_pAllocator->TouchesEnd();
-        else
+        CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
+            
+        if (m_pTalkbox->Touch(pTouch))
         {
-            CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
+            CCPoint p = m_pTalkbox->GetPos();
+            ObjectInMap * oim = m_pSystem->FindObject(POINT<int>(p.x, p.y));
+            CCNode * tile = m_pTile->getChildByTag(MAKEWORD(((int)p.x), ((int)p.y)));
             
-            if (m_pTalkbox->Touch(pTouch))
-            {
-                CCPoint p = m_pTalkbox->GetPos();
-                ObjectInMap * oim = m_pSystem->FindObject(POINT<int>(p.x, p.y));
-                CCNode * tile = m_pTile->getChildByTag(MAKEWORD(((int)p.x), ((int)p.y)));
-                
-                if (oim->GetType() == OBJECT_TYPE_FIELD && ((Field *)oim)->GetCrop() != NULL)
-                    tile->removeChildByTag(TILE_CROP, true);
-                tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
-                
-                m_pSystem->SellObject(oim);
-                m_pTalkbox->setVisible(false);
-                return;
-            }
+            if (oim->GetType() == OBJECT_TYPE_FIELD && ((Field *)oim)->GetCrop() != NULL)
+                tile->removeChildByTag(TILE_CROP, true);
+            tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
             
-            if (m_pTalkbox->isVisible())
-                m_pTalkbox->setVisible(false);
+            m_pSystem->SellObject(oim);
+            m_pTalkbox->setVisible(false);
+            return;
+        }
+        
+        if (m_pTalkbox->isVisible())
+            m_pTalkbox->setVisible(false);
+        
+        CCPoint p = pTouch->locationInView();
+        p = CCDirector::sharedDirector()->convertToGL(p);
+        
+        int t = _cursorXY(p);
+        int x = LOWORD(t), y = HIWORD(t);
+        
+        if (!(x < -m_width / 2 || x > m_width / 2 || y < -m_width / 2 || y > m_width / 2))
+        {
+            POINT<int> pos(x, y);
             
-            CCPoint p = pTouch->locationInView();
-            p = CCDirector::sharedDirector()->convertToGL(p);
+            ObjectInMap *pObj = NULL;
             
-            int t = _cursorXY(p);
-            int x = LOWORD(t), y = HIWORD(t);
+            ThreadObject fail(this), complete(this);
+            complete.pFunc      = THREAD_FUNC(Map::SyncPos);
+            fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
+            fail.parameter      = new TALKBOX(NULL, x, y);
             
-            if (!(x < -m_width / 2 || x > m_width / 2 || y < -m_width / 2 || y > m_width / 2))
-            {
-                POINT<int> pos(x, y);
-                
-                ObjectInMap *pObj = NULL;
-                
-                ThreadObject fail(this), complete(this);
-                complete.pFunc      = THREAD_FUNC(Map::SyncPos);
-                fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
-                fail.parameter      = new TALKBOX(NULL, x, y);
-                
-                m_pSystem->Harvest(pos, &pObj, complete, fail);                
-            }
+            m_pSystem->Harvest(pos, &pObj, complete, fail);                
         }
     }
     
@@ -452,39 +414,6 @@ CCPoint Map::filtPosition(CCPoint pos)
     setPosition(pos);
     
     return pos;
-}
-
-void Map::beginEdit()
-{
-    
-}
-
-void Map::beginEdit(int type, int id)
-{
-    m_isAllocating = true;
-    
-    m_pAllocator->init(m_pSystem, type, id);
-}
-
-void Map::endEdit(bool apply)
-{
-    if (m_isAllocating)
-    {
-        if (apply)
-            m_pAllocator->Apply();
-        else
-            m_pAllocator->Cancel();
-        
-        m_isAllocating = false;
-        m_pAllocator->Clear();
-    }
-    else if (m_isEditing)
-    {
-        if (apply)
-        {
-            
-        }
-    }
 }
 
 //bool Map::_SyncPos(Thread *t, void *p)

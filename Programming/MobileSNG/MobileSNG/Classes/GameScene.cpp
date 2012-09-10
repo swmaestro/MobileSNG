@@ -1,5 +1,5 @@
 #include "GameScene.h"
-#include "Map.h"
+#include "PlayerMap.h"
 #include "Shop.h"
 #include "Friends.h"
 #include "GameSystem.h"
@@ -148,7 +148,7 @@ bool GameScene::_initMap()
 {
     CCSize wsize = CCDirector::sharedDirector()->getWinSize();
     
-    m_pMap = new Map(m_width);
+    m_pMap = new PlayerMap(m_width);
     m_pMap->init(m_pSystem);
     m_pMap->setAnchorPoint(ccp(0.5, 0.5));
     m_pMap->filtScale(1);
@@ -213,7 +213,7 @@ bool GameScene::_initLabel()
     label = CCLabelTTF::create("hgwoojboo", "Ariel", 13);
     label->setAnchorPoint(ccp(0, 1));
     label->setPosition(ccp(100, 300));
-    m_pShopUI->addChild(label, UILAYER_LABEL, UILAYER_LABEL);
+//    m_pShopUI->addChild(label, UILAYER_LABEL, UILAYER_LABEL);
     
     return true;
 }
