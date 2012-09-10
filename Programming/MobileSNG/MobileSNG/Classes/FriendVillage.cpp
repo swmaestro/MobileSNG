@@ -129,7 +129,7 @@ bool FriendVillage::_ownerCheckRequest(int index)
     return _networkNormalResult(&data);
 }
 
-bool FriendVillage::Harvest(POINT<int> &pos, ObjectInMap **ppOut)
+bool FriendVillage::Request(POINT<int> &pos, ObjectInMap **ppOut)
 {    
     ObjectInMap *pObj = m_pMap->FindObject(pos);
 

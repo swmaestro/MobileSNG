@@ -62,7 +62,7 @@ bool Map::init(GameSystem * system)
     if(m_pTalkbox->init() == false)
         return false;
     addChild(m_pTalkbox, 2);
-    
+
     scheduleUpdate();
     
     return true;

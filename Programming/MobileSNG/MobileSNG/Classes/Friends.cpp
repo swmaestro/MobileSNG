@@ -168,7 +168,6 @@ bool Friends::EnterFriendVillage(UserInfo *pUserInfo)
     
     if(m_pFriendVillage->init() == false) return false;
     
-    
     /*
      여기서 띄우는 작업 해야하거나 할듯..
      */
