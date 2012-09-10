@@ -51,6 +51,7 @@ public:
     int GetMoney();
     int GetExp();
     int GetMinumExp();
+    bool UpdateVillageInfo(Network *pNet);
     
 public:
     bool addFollowing(User *pUser, Network *pNet);

@@ -20,7 +20,7 @@ class Thread
 {
 private:
     bool                             m_isAlarm;
-    std::queue<ThreadFunc>           m_qThread;
+    std::queue<ThreadFunc>           *m_pqThread;
     
 public:
     Thread(bool isAlarm = false);

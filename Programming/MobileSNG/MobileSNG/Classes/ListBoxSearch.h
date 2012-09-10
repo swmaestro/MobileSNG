@@ -53,15 +53,40 @@ public:
         return pushContent(key, content);
     }
     
-    bool removeContent(const char *key)
+    bool removeContent(const char *key, bool isContentPointer = false)
     {
         int i = _findObject(key);
         if( i == -1 )
             return false;
         
-        m_vContents.erease(m_vContents.begin()+i);
+        if(isContentPointer)
+        {
+            TContent t = (*m_vContents.begin()).second;
+            delete t;
+        }
+        
+        m_vContents.erase(m_vContents.begin()+i);
         
         return true;
+    }
+    
+    void removeContent(int index)
+    {
+        m_vContents.erase(m_vContents.begin()+index);
+    }
+    
+    void removeAllContent(bool isContentPointer = false)
+    {
+        while(empty() == false)
+        {
+            if(isContentPointer)
+            {
+                TContent t = (*m_vContents.begin()).second;
+                delete t;
+            }
+            
+            m_vContents.erase(m_vContents.begin());
+        }
     }
     
 public:
