@@ -6,6 +6,7 @@
 #include "Network.h"
 
 class Shop;
+class Map;
 class PlayerMap;
 class Friends;
 
@@ -19,16 +20,15 @@ private:
     GameSystem          * m_pSystem;
     Network             * m_pNetwork;
     
-    PlayerMap           * m_pMap;
+    Map                 * m_pMap;
+    PlayerMap           * m_pPlayerMap;
     Shop                * m_pShop;
     Friends             * m_pFriends;
     
-    cocos2d::CCLayer    * m_pMapUI, * m_pShopUI, * m_pFriendsUI;
+    cocos2d::CCLayer    * m_pMapUI, * m_pFriendMapUI, * m_pShopUI, * m_pFriendsUI;
     cocos2d::CCLayer    * m_pCurrentUI;
     
     UIMgr               * m_pUIMgr;
-    
-    int                   m_width;
     
     pthread_t             m_threadHandle;
     int                   m_threadID;
@@ -66,6 +66,7 @@ private:
     void _editApplyFunc(CCObject *pSender);
     void _editCancelFunc(CCObject *pSender);
     
+    void _friendMapCloseFunc(CCObject *pSender);
     void _shopCloseFunc(CCObject *pSender);
     void _friendsCloseFunc(CCObject *pSender);
     
@@ -73,6 +74,8 @@ private:
     
 public:
     void alloc(int type, int id);
+    
+    void Visit(Map * map);
     
 private:
     static void* serverUpdate(void *p);

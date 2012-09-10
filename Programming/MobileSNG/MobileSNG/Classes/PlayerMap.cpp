@@ -9,10 +9,14 @@
 #include "PlayerMap.h"
 #include "Allocator.h"
 #include "Utility.h"
+#include "GameSystem.h"
+#include "Player.h"
+#include "Talkbox.h"
+#include "Thread.h"
 
 using namespace cocos2d;
 
-PlayerMap::PlayerMap(int & width) : Map(width)
+PlayerMap::PlayerMap(int width) : Map(width)
 {
     
 }
@@ -22,9 +26,12 @@ PlayerMap::~PlayerMap()
     delete m_pAllocator;
 }
 
-bool PlayerMap::init(GameSystem * system)
+bool PlayerMap::init(GameSystem * system, Network * network)
 {
-    if (!Map::init(system))
+    FriendVillage * vill = new FriendVillage(m_width, system->GetPlayer()->GetUserInfo(), network, system->GetPlayer()->GetUserID());
+    vill->init();
+    
+    if (!Map::init(system, vill))
         return false;
     
     m_pAllocator = new Allocator(m_pTile, m_width);
@@ -145,6 +152,75 @@ void PlayerMap::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
         m_isScaling = false;
     }
 }
+
+void PlayerMap::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
+{
+    CCSetIterator i = pTouches->begin();
+    
+    while (i != pTouches->end() && m_touchCnt >= 0)
+    {
+        if (m_touchCnt >= 1 && m_touchID[1] == static_cast<CCTouch *>(*i)->getID())
+        {
+            m_touch[0] = m_touch[1];
+            m_touchID[0] = m_touchID[1];
+        }
+        
+        --m_touchCnt;
+        ++i;
+    }
+    
+    if (!m_isDragging && !m_isScaling)
+    {
+        if(m_isAllocating)
+            m_pAllocator->TouchesEnd();
+        else
+        {
+            CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
+            
+            if (m_pTalkbox->Touch(pTouch))
+            {
+                CCPoint p = m_pTalkbox->GetPos();
+                ObjectInMap * oim = m_pSystem->FindObject(POINT<int>(p.x, p.y));
+                CCNode * tile = m_pTile->getChildByTag(MAKEWORD(((int)p.x), ((int)p.y)));
+                
+                if (oim->GetType() == OBJECT_TYPE_FIELD && ((Field *)oim)->GetCrop() != NULL)
+                    tile->removeChildByTag(TILE_CROP, true);
+                tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
+                
+                m_pSystem->SellObject(oim);
+                m_pTalkbox->setVisible(false);
+                return;
+            }
+            
+            if (m_pTalkbox->isVisible())
+                m_pTalkbox->setVisible(false);
+            
+            CCPoint p = pTouch->locationInView();
+            p = CCDirector::sharedDirector()->convertToGL(p);
+            
+            int t = _cursorXY(p);
+            int x = LOWORD(t), y = HIWORD(t);
+            
+            if (!(x < -m_width / 2 || x > m_width / 2 || y < -m_width / 2 || y > m_width / 2))
+            {
+                POINT<int> pos(x, y);
+                
+                ObjectInMap *pObj = NULL;
+                
+                ThreadObject fail(this), complete(this);
+                complete.pFunc      = THREAD_FUNC(Map::SyncPos);
+                fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
+                fail.parameter      = new TALKBOX(NULL, x, y);
+                
+                m_pSystem->Harvest(pos, &pObj, complete, fail);
+            }
+        }
+    }
+    
+    m_isDragging = false;
+    m_isScaling = false;
+}
+
 
 void PlayerMap::beginEdit()
 {

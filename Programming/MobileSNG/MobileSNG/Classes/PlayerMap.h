@@ -19,10 +19,10 @@ private:
     bool                m_isAllocating, m_isEditing;
     
 public:
-    PlayerMap(int & width);
+    PlayerMap(int width);
     ~PlayerMap();
     
-    virtual bool init(GameSystem * system);
+    virtual bool init(GameSystem * system, Network * network);
     
     void beginEdit();
     void beginEdit(int type, int id);
@@ -30,6 +30,7 @@ public:
     
     virtual void ccTouchesBegan(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
     virtual void ccTouchesMoved(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
+    virtual void ccTouchesEnded(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
 };
 
 #endif /* defined(__MobileSNG__PlayerMap__) */

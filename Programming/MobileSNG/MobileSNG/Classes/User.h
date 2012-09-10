@@ -42,4 +42,5 @@ public:
 
 public:
     const char* GetUserID();
+    inline UserInfo * GetUserInfo() { return m_pUserInfo; }
 };

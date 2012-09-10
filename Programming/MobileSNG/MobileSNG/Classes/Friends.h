@@ -10,6 +10,7 @@
 #define __MobileSNG__Friends__
 
 #include "cocos2d.h"
+#include "GameScene.h"
 #include "GameSystem.h"
 #include "Social.h"
 #include "ListBoxSearch.h"
@@ -18,6 +19,7 @@
 class Friends : public cocos2d::CCLayer, public cocos2d::CCTextFieldDelegate
 {
 private:
+    GameScene * m_pScene;
     GameSystem * m_pSystem;
     Social * m_pSocial;
     Network * m_pNetwork;
@@ -29,7 +31,7 @@ private:
     cocos2d::CCTextFieldTTF * m_pTextField;
     
 public:
-    Friends(GameSystem * system, Network *pNetwork);
+    Friends(GameScene * scene, GameSystem * system, Network *pNetwork);
     ~Friends();
     
 private:

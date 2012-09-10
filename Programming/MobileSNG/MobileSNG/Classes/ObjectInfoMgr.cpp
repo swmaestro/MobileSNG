@@ -164,7 +164,7 @@ int ObjectInfoMgr::_getTime(int timeValue)
 
 bool ObjectInfoMgr::searchInfo(int id, BuildingInfo **ppInfo)
 {
-    if( (id+1) > m_vBuildingInfo.size() ) return false;
+    if( (id+1) >= m_vBuildingInfo.size() ) return false;
     *ppInfo = m_vBuildingInfo[id+1];
     return true;
 }

@@ -20,9 +20,9 @@ int Map::height = 320 * 4;
 int Map::tileWidth = 100;
 int Map::tileHeight = 60;
 
-Map::Map(int & width) : m_pTile(NULL), m_pTalkbox(NULL),
+Map::Map(int width) : m_pTile(NULL), m_pTalkbox(NULL),
                 m_width(width), m_touchCnt(-1),
-                m_isDragging(false), m_isScaling(false)
+                m_isDragging(false), m_isScaling(false), m_pVillage(NULL)
 {
     
 }
@@ -30,21 +30,18 @@ Map::Map(int & width) : m_pTile(NULL), m_pTalkbox(NULL),
 Map::~Map()
 {
     removeAllChildrenWithCleanup(true);
-<<<<<<< HEAD
-=======
     
     SAFE_DELETE(m_pTalkbox);
-    delete m_pAllocator;
->>>>>>> ce937306dec5b2c0a899278f8d6b5926340aca3a
+    SAFE_DELETE(m_pVillage);
 }
 
-
-bool Map::init(GameSystem * system)
+bool Map::init(GameSystem * system, FriendVillage * village)
 {
     if (!CCLayer::init())
         return false;
     
     m_pSystem = system;
+    m_pVillage = village;
     
     _initTile();
     
@@ -54,20 +51,14 @@ bool Map::init(GameSystem * system)
     bg->setScale(4);
     addChild(bg, 0);
     
-<<<<<<< HEAD
-    m_pTalkbox = Talkbox::create();
-    m_pTalkbox->setAnchorPoint(ccp(0, 0));
-    m_pTalkbox->setVisible(false);
-=======
-    m_pAllocator = new Allocator(m_pTile, m_width);
-    
 //    m_pTalkbox = Talkbox::create();
 //    m_pTalkbox->setAnchorPoint(ccp(0, 0));
 //    m_pTalkbox->setVisible(false);
+    
     m_pTalkbox = new Talkbox;
     if(m_pTalkbox->init() == false)
         return false;
->>>>>>> ce937306dec5b2c0a899278f8d6b5926340aca3a
+    
     addChild(m_pTalkbox, 2);
     
     scheduleUpdate();
@@ -77,7 +68,7 @@ bool Map::init(GameSystem * system)
 
 void Map::update(float dt)
 {
-    std::vector<ObjectInMap *> &object = m_pSystem->GetAllObject();
+    std::vector<ObjectInMap *> object = m_pVillage->GetAllObject();
     std::vector<ObjectInMap *>::iterator i;
     
     for (i = object.begin(); i != object.end(); ++i)

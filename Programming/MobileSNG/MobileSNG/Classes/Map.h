@@ -11,6 +11,7 @@
 
 #include "cocos2d.h"
 #include "Thread.h"
+#include "FriendVillage.h"
 
 class MapTile;
 class MapMgr;
@@ -36,12 +37,9 @@ enum
     TILE_NONE, TILE_EDIT, TILE_FARM, TILE_BUILDING = TILE_FARM, TILE_CROP, TILE_PREVIEW, TILE_PROCESS,
 };
 
-class Map : public cocos2d::CCLayer, private Thread
+class Map : public cocos2d::CCLayer, public Thread
 {
 protected:
-    Map(int & width);
-    ~Map();
-    
     cocos2d::CCPoint    m_touch[2];
     int                 m_touchID[2];
     int                 m_touchCnt;
@@ -49,7 +47,7 @@ protected:
     cocos2d::CCLayer  * m_pTile;
     Talkbox           * m_pTalkbox;
     
-    int               & m_width;
+    int                 m_width;
     
     bool                m_isDragging, m_isScaling;
         
@@ -57,16 +55,21 @@ protected:
     
     void _initTile();
     
+    FriendVillage * m_pVillage;
+    
     GameSystem * m_pSystem;
     
-private:
+public:
 //    bool _SyncPos(Thread *t, void *p);
     bool _ShowTalkBox(Thread *t,void *p);
     
 public:
+    Map(int width);
+    virtual ~Map();
+    
     static int width, height, tileWidth, tileHeight;
     
-    virtual bool init(GameSystem * system);
+    virtual bool init(GameSystem * system, FriendVillage * village);
     
     virtual void ccTouchesBegan(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
     virtual void ccTouchesMoved(cocos2d::CCSet * pTouches, cocos2d::CCEvent * pEvent);
@@ -79,6 +82,8 @@ public:
     void StartProcess(int i, int j);
     
     void update(float dt);
+    
+    inline int & getMapWidth() { return m_width; }
     
     //void expand();
 };

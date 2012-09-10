@@ -17,7 +17,7 @@
 
 enum
 {
-    UI_MAP, UI_EDIT, UI_SHOP, UI_FRIENDS, UI_MAX
+    UI_MAP, UI_FRIEND_MAP, UI_EDIT, UI_SHOP, UI_FRIENDS, UI_MAX
 };
 
 class GameScene;

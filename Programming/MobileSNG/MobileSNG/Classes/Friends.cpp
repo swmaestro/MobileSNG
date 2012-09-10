@@ -7,14 +7,16 @@
 //
 
 #include "Friends.h"
+#include "Map.h"
 #include "rapidxml.hpp"
 
 using namespace cocos2d;
 using namespace rapidxml;
 
-Friends::Friends(GameSystem * system, Network *pNetwork)
+Friends::Friends(GameScene * scene, GameSystem * system, Network *pNetwork)
 {
     m_pNetwork = pNetwork;
+    m_pScene = scene;
     m_pSystem = system;
     m_pSocial = NULL;
     m_pTextField = NULL;
@@ -112,12 +114,21 @@ void Friends::refreshBySearch(std::string name)
         addFriendList(info.userID);
         m_pSearch->removeContent(info.userID.data(), true);
         m_pSearch->pushContent(info.userID.data(), _createUserInfo(m_pNetwork, info.userID.data()));
+        
+        UserInfo uinfo;
+        m_pSocial->FindUser(name.c_str(), &uinfo, USER_SEARCH_ENUM_ID);
+        EnterFriendVillage(&uinfo);
     }
 }
 
 void Friends::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
     TextFieldKeyBoardOn(this, pTouches, &m_pTextField);
+    /*
+    CCTouch * touch = static_cast<CCTouch *>(*pTouches->begin());
+    CCPoint p = touch->locationInView();
+    p = CCDirector::sharedDirector()->convertToGL(p);
+    */
 }
 
 bool Friends::onTextFieldInsertText(cocos2d::CCTextFieldTTF * sender, const char * text, int nLen)
@@ -168,7 +179,11 @@ bool Friends::EnterFriendVillage(UserInfo *pUserInfo)
     
     if(m_pFriendVillage->init() == false) return false;
     
+    Map * map = new Map(7);
+    if (!map->init(m_pSystem, m_pFriendVillage))
+        return false;
     
+    m_pScene->Visit(map);
     /*
      여기서 띄우는 작업 해야하거나 할듯..
      */

@@ -12,7 +12,7 @@
 using namespace cocos2d;
 
 GameScene::GameScene() : m_pSystem(NULL), m_pMap(NULL), m_pShop(NULL), 
-            m_pMapUI(NULL), m_pShopUI(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL), m_width(7), m_threadHandle(NULL), m_threadID(0), m_isGameServer(true)
+            m_pMapUI(NULL), m_pShopUI(NULL), m_pCurrentUI(NULL), m_pUIMgr(NULL), m_threadHandle(NULL), m_threadID(0), m_isGameServer(true)
 {
 }
 
@@ -44,7 +44,7 @@ bool GameScene::init()
         return false;
 
     m_pNetwork = new Network;
-    m_pSystem = new GameSystem("ObjectDB.sqlite", m_width, m_pNetwork);
+    m_pSystem = new GameSystem("ObjectDB.sqlite", m_pPlayerMap->getMapWidth(), m_pNetwork);
         
     m_threadID = pthread_create(&m_threadHandle, NULL, GameScene::serverUpdate, (void*)this);
     
@@ -72,9 +72,13 @@ bool GameScene::init()
   //  CCMessageBox(<#const char *pszMsg#>, <#const char *pszTitle#>)
     
     m_pMapUI = CCLayer::create();
-    m_pMapUI->addChild(m_pMap, UILAYER_TOUCH_RECIEVER, UILAYER_TOUCH_RECIEVER);
+    m_pMapUI->addChild(m_pPlayerMap, UILAYER_TOUCH_RECIEVER, UILAYER_TOUCH_RECIEVER);
     m_pMapUI->setVisible(false);
     addChild(m_pMapUI, 0);
+    
+    m_pFriendMapUI = CCLayer::create();
+    m_pFriendMapUI->setVisible(false);
+    addChild(m_pFriendMapUI, 0);
     
     m_pShopUI = CCLayer::create();
     m_pShopUI->addChild(m_pShop, UILAYER_TOUCH_RECIEVER, UILAYER_TOUCH_RECIEVER);
@@ -124,6 +128,11 @@ bool GameScene::_initUIMgr()
     m_pUIMgr->AppendUI(UI_MAP, ccp(-200, -120), "Friends.png", "Friends.png", UI_FUNC(_friendsFunc));
     m_pUIMgr->AppendUI(UI_MAP, ccp(200, -120), "Shop.png", "Shop.png", UI_FUNC(_shopFunc));
     
+    //////////////////UI_FRIEND_MAP
+    
+    m_pUIMgr->AppendUI(UI_FRIEND_MAP, ccp(-200, -120), "Friends.png", "Friends.png", UI_FUNC(_friendsFunc));
+    m_pUIMgr->AppendUI(UI_FRIEND_MAP, ccp(210, 130), "Shop-Close.png", "Shop-Close.png", UI_FUNC(_friendMapCloseFunc));
+    
     //////////////////UI_EDIT
     
     m_pUIMgr->AppendUI(UI_EDIT, ccp(200, -120), "Button/Edit-OK.png", "Button/Edit-OK.png", UI_FUNC(_editApplyFunc));
@@ -148,11 +157,13 @@ bool GameScene::_initMap()
 {
     CCSize wsize = CCDirector::sharedDirector()->getWinSize();
     
-    m_pMap = new PlayerMap(m_width);
-    m_pMap->init(m_pSystem);
-    m_pMap->setAnchorPoint(ccp(0.5, 0.5));
-    m_pMap->filtScale(1);
-    m_pMap->filtPosition(ccp(wsize.width / 2, wsize.height / 2));
+    m_pPlayerMap = new PlayerMap(7);
+    m_pPlayerMap->init(m_pSystem, m_pNetwork);
+    m_pPlayerMap->setAnchorPoint(ccp(0.5, 0.5));
+    m_pPlayerMap->filtScale(1);
+    m_pPlayerMap->filtPosition(ccp(wsize.width / 2, wsize.height / 2));
+    
+    m_pMap = m_pPlayerMap;
  
     return true;
 }
@@ -190,7 +201,7 @@ bool GameScene::_initShop()
 
 bool GameScene::_initFriends()
 {
-    m_pFriends = new Friends(m_pSystem, m_pNetwork);
+    m_pFriends = new Friends(this, m_pSystem, m_pNetwork);
     m_pFriends->init();
     
     return true;
@@ -270,14 +281,22 @@ void GameScene::_flatFunc(CCObject *pSender)
 
 void GameScene::_editApplyFunc(CCObject *pSender)
 {
-    m_pMap->endEdit(true);
+    m_pPlayerMap->endEdit(true);
     m_pUIMgr->ChangeUI(UI_MAP);
     _changeUI(m_pMapUI);
 }
 
 void GameScene::_editCancelFunc(CCObject *pSender)
 {
-    m_pMap->endEdit(false);
+    m_pPlayerMap->endEdit(false);
+    m_pUIMgr->ChangeUI(UI_MAP);
+    _changeUI(m_pMapUI);
+}
+
+void GameScene::_friendMapCloseFunc(CCObject *pSender)
+{
+    m_pFriendMapUI->removeChildByTag(UILAYER_TOUCH_RECIEVER, true);
+    m_pMap = m_pPlayerMap;
     m_pUIMgr->ChangeUI(UI_MAP);
     _changeUI(m_pMapUI);
 }
@@ -290,6 +309,7 @@ void GameScene::_shopCloseFunc(CCObject *pSender)
 
 void GameScene::_friendsCloseFunc(CCObject *pSender)
 {
+    m_pMap = m_pPlayerMap;
     m_pUIMgr->ChangeUI(UI_MAP);
     _changeUI(m_pMapUI);
 }
@@ -306,9 +326,18 @@ void GameScene::_changeUI(cocos2d::CCLayer * ui)
 
 void GameScene::alloc(int type, int id)
 {
-    m_pMap->beginEdit(type, id);
+    m_pPlayerMap->beginEdit(type, id);
     m_pUIMgr->ChangeUI(UI_EDIT);
     _changeUI(m_pMapUI);
+}
+
+void GameScene::Visit(Map *map)
+{
+    m_pFriendMapUI->removeChildByTag(UILAYER_TOUCH_RECIEVER, true);
+    m_pMap = map;
+    m_pFriendMapUI->addChild(map, UILAYER_TOUCH_RECIEVER);
+    m_pUIMgr->ChangeUI(UI_FRIEND_MAP);
+    _changeUI(m_pFriendMapUI);
 }
 
 void* GameScene::serverUpdate(void *p)
