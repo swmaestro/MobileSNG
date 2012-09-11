@@ -75,15 +75,15 @@ void Friends::addFriendList(std::string name, int num)
     layer->addChild(bg);
     
     CCLabelTTF * lb = CCLabelTTF::create(name.c_str(), "Ariel", 20);
-    lb->setPosition(ccp(20, 30));
+    lb->setPosition(ccp(50, 30));
     lb->setHorizontalAlignment(kCCTextAlignmentLeft);
     layer->addChild(lb, 0, 0);
     
-    layer->setPosition(ccp(0, 320 - 90 - num * 45));
+    layer->setPosition(ccp(0, 320 - 90 - num * 60));
     m_pMovable->addChild(layer, 0, num);
     
-    UserInfo *pUserInfo = _createUserInfo(m_pNetwork, name.data());
-    m_pSearch->pushContent(pUserInfo->userID.data(), pUserInfo);
+    //UserInfo *pUserInfo = _createUserInfo(m_pNetwork, name.data());
+    //m_pSearch->pushContent(pUserInfo->userID.data(), pUserInfo);
 }
 
 void Friends::refresh()
@@ -94,14 +94,14 @@ void Friends::refresh()
     std::vector<VillageInfo *>::iterator i;
     int c = 0;
 
-    m_pSearch->removeAllContent(true);
+//    m_pSearch->removeAllContent(true);
     
     for (i = v.begin(); i != v.end(); ++i, ++c)
     {
         addFriendList((*i)->userID, c);
     
-        UserInfo *pUserInfo = _createUserInfo(m_pNetwork, (*i)->userID.data());
-        m_pSearch->pushContent(pUserInfo->userID.data(), pUserInfo);
+//        UserInfo *pUserInfo = _createUserInfo(m_pNetwork, (*i)->userID.data());
+//        m_pSearch->pushContent(pUserInfo->userID.data(), pUserInfo);
     }
 }
 
@@ -118,11 +118,12 @@ void Friends::refreshBySearch(std::string name)
     VillageInfo info;
     if (m_pSocial->FindVillageInfo(name.c_str(), &info))
     {
-        UserInfo * uinfo = _createUserInfo(m_pNetwork, info.userID.c_str());
         
         addFriendList(info.userID);
-        m_pSearch->removeContent(info.userID.c_str(), true);
-        m_pSearch->pushContent(info.userID.c_str(), uinfo);
+        
+//      UserInfo * uinfo = _createUserInfo(m_pNetwork, info.userID.c_str());
+//      m_pSearch->removeContent(info.userID.c_str(), true);
+//      m_pSearch->pushContent(info.userID.c_str(), uinfo);
     }
 }
 
@@ -134,9 +135,10 @@ void Friends::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
     CCPoint p = touch->locationInView();
     p = CCDirector::sharedDirector()->convertToGL(p);
     
-    int n = (230 - p.y) / 45;
-    if (n < 0)
+    if (290 - p.y < 0)
         return;
+    
+    int n = (290 - p.y) / 60;
     
     CCNode * t = m_pMovable->getChildByTag(n);
     if (!t)
@@ -145,8 +147,11 @@ void Friends::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
     CCLabelTTF * l = static_cast<CCLabelTTF *>(t->getChildByTag(0));
     const char * name = l->getString();
 
-    //if (!m_pSystem->GetPlayer()->addFollowing(name, m_pNetwork))
-    //    return;
+    if (m_pSystem->GetPlayer()->addFollowing(name, m_pNetwork))
+    {
+        CCMessageBox("Add Friend Success!", "Add Friend");
+        return;
+    }
     
     UserInfo uInfo;
     m_pSocial->FindUser(name, &uInfo, USER_SEARCH_ENUM_ID);
