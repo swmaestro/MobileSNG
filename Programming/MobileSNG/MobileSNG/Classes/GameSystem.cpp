@@ -462,38 +462,47 @@ void GameSystem::SellObject(ObjectInMap *pObj, bool isThread)
     ThreadObject work(this);
     work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_SellObject);
     work.parameter  = pObj;
+//    complete.parameter = pObj;
     
     if(isThread)
     {
+//        ThreadFunc(<#ThreadObject *work#>, <#ThreadObject *fail#>, <#ThreadObject *complete#>)
         ThreadFunc func(&work, NULL, NULL);
         addWork(func);
     }
     else _SellObject(this, work.parameter);
-//    _SellObject(this, work.parameter);
 }
 
 bool GameSystem::_Harvest(Thread* t, void *parameter)
 {
     GameSystem *thisClass = static_cast<GameSystem*>(t);
     ObjectInMap *pObject = static_cast<ObjectInMap*>(parameter);
-    
+
     if( pObject == NULL )
         return false;
-    
+
     OBJECT_TYPE type = pObject->GetType();
-    
+
     if( type == OBJECT_TYPE_ORNAMENT )  return false;
-    if( pObject->isDone() == false) return false;
-    
+    if( pObject->isDone() == false)
+    {
+        if (type == OBJECT_TYPE_FIELD)
+        {
+            if( dynamic_cast<Field*>(pObject)->isFail() == false)
+                return false;
+        }
+        else return false;
+    }
+
     int money, cash, exp, index;
     ObjectInfo info = thisClass->GetObjectInfo(pObject);
     money   = info.GetExp();
     cash    = info.GetReward();
     exp     = info.GetCash();
     index   = pObject->GetIndex();
-    
+
     if( thisClass->_updateObject(index, NULL) == false) return false;
-    
+
     if( type == OBJECT_TYPE_BUILDING )
     {
         Building *pBuilding = dynamic_cast<Building*>(pObject);
@@ -750,16 +759,16 @@ bool GameSystem::_SetUpVillageList(Thread* t, void *parameter)
     if(pThisClass->m_pNetwork->connectHttp(url, &cropData) != CURLE_OK)
         return false;
     
-    vector< pair<ObjectInMap, long long int> > vBuild = pThisClass->_parseBuildingInVillage(buildingData.pContent);
+    vector< pair<ObjectInMap, double> > vBuild = pThisClass->_parseBuildingInVillage(buildingData.pContent);
     vector< pair<int, int> > vCrop = pThisClass->_parseCropInVillage(cropData.pContent);
     vector< pair<int, int> > vFieldTime;
     
-    for(vector< pair<ObjectInMap, long long int> >::iterator
+    for(vector< pair<ObjectInMap, double> >::iterator
         iter = vBuild.begin(); iter != vBuild.end(); ++iter)
     {
         //밭과 건물을 비교하는 방법. index비교.
         ObjectInMap *pObject = &(*iter).first;
-        long long int time = (*iter).second;
+        double time = (*iter).second;
 
         int index = pObject->GetIndex();
     
@@ -796,20 +805,20 @@ bool GameSystem::_SellObject(Thread* t, void *parameter)
     GameSystem *pThisClass = static_cast<GameSystem*>(t);
     ObjectInMap *pObj = static_cast<ObjectInMap*>(parameter);
 
-//    OBJECT_TYPE type = pObj->GetType();
-//
-//    if( type == OBJECT_TYPE_BUILDING )
-//    {
-//        if(dynamic_cast<Building*>(pObj)->isFriend())
-//            return false;
-//    }
-//    
-//    else if( type == OBJECT_TYPE_FIELD )
-//    {
-//        if(dynamic_cast<Field*>(pObj)->GetCrop())
-//            return false;
-//    }
-//    
+    OBJECT_TYPE type = pObj->GetType();
+
+    if( type == OBJECT_TYPE_BUILDING )
+    {
+        if(dynamic_cast<Building*>(pObj)->isFriend())
+            return false;
+    }
+    
+    else if( type == OBJECT_TYPE_FIELD )
+    {
+        if(dynamic_cast<Field*>(pObj)->GetCrop())
+            return false;
+    }
+    
     CommonInfo *cominfo = pThisClass->GetCommonInfo(pObj);
     int price = cominfo->GetPrice();
     

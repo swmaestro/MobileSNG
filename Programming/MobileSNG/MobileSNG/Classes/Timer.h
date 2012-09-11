@@ -13,21 +13,21 @@
 class Timer
 {    
 private:
-    long long int                     m_innerTimer;
-    long long int                     m_saveTime;
+    double                     m_innerTimer;
+    double                     m_saveTime;
     bool                              m_isUse;
-    long long int                     m_nowTime;
+    double                     m_nowTime;
     
 public:
-    Timer(long long int nowTime);
+    Timer(double nowTime);
     virtual ~Timer();
 
 public:
-    bool CheckTimer(long long int completeTime);
+    bool CheckTimer(double completeTime);
     
 public:
-    long long int     GetTime();
+    double     GetTime();
     void    StartTimer();
     bool    GetisUse();
-    void    SetTime(long long int t);
+    void    SetTime(double t);
 };

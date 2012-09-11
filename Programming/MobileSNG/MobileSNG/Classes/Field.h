@@ -34,6 +34,7 @@ public:
 public:
     bool hasCrop();
     bool isDone();
+    bool isFail();
     bool isConstruct();
     
 public:

@@ -154,6 +154,7 @@ bool Map::SyncPos(Thread *t, ObjectInMap *oim)
                 filename += "/03.png";
                 break;
                 
+            case CROP_STATE_FAIL:
             case CROP_STATE_DONE:
                 filename += "/Complete.png";
                 break;

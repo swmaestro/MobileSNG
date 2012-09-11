@@ -44,7 +44,7 @@ void CommonVillage::_getCropState(objectState *pState)
     switch (*pState)
     {
         case NETWORK_OBJECT_WAITTING: *pState = CROP_STATE_INVAILD; break;
-        case NETWORK_OBJECT_FAIL:     *pState = CROP_STATE_DONE;    break;
+        case NETWORK_OBJECT_FAIL:     *pState = CROP_STATE_FAIL;    break;
         case NETWORK_OBJECT_WORKING:  *pState = CROP_STATE_GROW_1;  break;
         case NETWORK_OBJECT_DONE:     *pState = CROP_STATE_DONE;    break;
     }
@@ -72,9 +72,9 @@ void CommonVillage::_getObjectState(objectState *pState)
     }
 }
 
-std::vector< std::pair<ObjectInMap, long long int> > CommonVillage::_parseBuildingInVillage(const char* pContent)
+std::vector< std::pair<ObjectInMap, double> > CommonVillage::_parseBuildingInVillage(const char* pContent)
 {
-    vector< pair<ObjectInMap, long long int> > v;
+    vector< pair<ObjectInMap, double> > v;
     
     xml_document<char> xmlDoc;
     xmlDoc.parse<0>(const_cast<char*>(pContent));
@@ -136,12 +136,12 @@ std::vector< std::pair<ObjectInMap, long long int> > CommonVillage::_parseBuildi
         DateInfo date;
         date.UpdateDate(pDate);
         
-        long long int deltaTime = date.GetTimeValue(serverDate);
+        double deltaTime = date.GetTimeValue(serverDate);
         
         ObjectInMap obj = ObjectInMap(state, pos, size, dir, id, index);
         obj.SetType(type);
         
-        pair<ObjectInMap, long long int> value(obj, deltaTime);
+        pair<ObjectInMap, double> value(obj, deltaTime);
         v.push_back(value);
     }
     

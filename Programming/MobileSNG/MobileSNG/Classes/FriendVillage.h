@@ -39,6 +39,10 @@ public:
     bool Request(POINT<int> &pos, ObjectInMap **ppOut);
     
 public:
+    ObjectInMap*                FindObject(POINT<int> pos);
+    std::vector<ObjectInMap*>   FindObjects(POINT<int> pos, SIZE<int> size);
+    
+public:
     std::vector<ObjectInMap*>& GetAllObject();
     inline bool GetisPossibleWork() { return m_isWork; }
 };
