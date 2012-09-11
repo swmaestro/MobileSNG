@@ -181,14 +181,18 @@ void PlayerMap::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             {
                 CCPoint p = m_pTalkbox->GetPos();
                 ObjectInMap * oim = m_pSystem->FindObject(POINT<int>(p.x, p.y));
-                CCNode * tile = m_pTile->getChildByTag(MAKEWORD(((int)p.x), ((int)p.y)));
+//                CCNode * tile = m_pTile->getChildByTag(MAKEWORD(((int)p.x), ((int)p.y)));
+//                
+//                if (oim->GetType() == OBJECT_TYPE_FIELD && ((Field *)oim)->GetCrop() != NULL)
+//                    tile->removeChildByTag(TILE_CROP, true);
+//                tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
+//                
+//                m_pTalkbox->setVisible(false);
+                //m_pSystem->SellObject(oim);
                 
-                if (oim->GetType() == OBJECT_TYPE_FIELD && ((Field *)oim)->GetCrop() != NULL)
-                    tile->removeChildByTag(TILE_CROP, true);
-                tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
-                
-                m_pSystem->SellObject(oim);
-                m_pTalkbox->setVisible(false);
+                ThreadObject complete(this);
+                complete.pFunc = THREAD_FUNC(Map::_removeObjectSprite);
+                m_pSystem->SellObject(oim, complete, true);
                 return;
             }
             

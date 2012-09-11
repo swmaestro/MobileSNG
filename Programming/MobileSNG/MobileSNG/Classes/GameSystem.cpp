@@ -457,17 +457,17 @@ void GameSystem::buildingConstructCheck(int index)
     addWork(func);
 }
 
-void GameSystem::SellObject(ObjectInMap *pObj, bool isThread)
+void GameSystem::SellObject(ObjectInMap *pObj, ThreadObject complete, bool isThread)
 {
     ThreadObject work(this);
     work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_SellObject);
     work.parameter  = pObj;
-//    complete.parameter = pObj;
+    complete.parameter = pObj;
     
     if(isThread)
     {
 //        ThreadFunc(<#ThreadObject *work#>, <#ThreadObject *fail#>, <#ThreadObject *complete#>)
-        ThreadFunc func(&work, NULL, NULL);
+        ThreadFunc func(&work, NULL, &complete);
         addWork(func);
     }
     else _SellObject(this, work.parameter);
