@@ -111,19 +111,6 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/ObjectInfoMgr.cpp"
-         timestampString = "368283741.477182"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "192"
-         endingLineNumber = "192"
-         landmarkName = "ObjectInfoMgr::searchInfo(const char * name, CropInfo **ppInfo)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/Friend.h"
          timestampString = "367648257.730168"
          startingColumnNumber = "9223372036854775807"
@@ -138,25 +125,116 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "368708783.683379"
+         timestampString = "369025835.30435"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "412"
-         endingLineNumber = "412"
-         landmarkName = "GameSystem::changeObject(POINT&lt;int&gt; &amp;pos, ObjectInMap *obj2, OBJECT_DIRECTION dir, bool isThread)"
+         startingLineNumber = "524"
+         endingLineNumber = "524"
+         landmarkName = "GameSystem::_Harvest(Thread* t, void *parameter)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/Building.cpp"
-         timestampString = "368948935.276887"
+         filePath = "MobileSNG/Classes/GameSystem.cpp"
+         timestampString = "369025835.30435"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "27"
-         endingLineNumber = "27"
-         landmarkName = "Building::Building(ObjectInMap *pObject, int nowTime, ObjectInfoMgr *pInfoMgr)"
+         startingLineNumber = "479"
+         endingLineNumber = "479"
+         landmarkName = "GameSystem::_Harvest(Thread* t, void *parameter)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/GameSystem.cpp"
+         timestampString = "369025835.30435"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "505"
+         endingLineNumber = "505"
+         landmarkName = "GameSystem::_Harvest(Thread* t, void *parameter)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/GameSystem.cpp"
+         timestampString = "369025835.30435"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "489"
+         endingLineNumber = "489"
+         landmarkName = "GameSystem::_Harvest(Thread* t, void *parameter)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/GameSystem.cpp"
+         timestampString = "369025835.30435"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "493"
+         endingLineNumber = "493"
+         landmarkName = "GameSystem::_Harvest(Thread* t, void *parameter)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/GameSystem.cpp"
+         timestampString = "369025835.30435"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "541"
+         endingLineNumber = "541"
+         landmarkName = "GameSystem::_removeObject(ObjectInMap *pObj)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/GameSystem.cpp"
+         timestampString = "369025835.30435"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "543"
+         endingLineNumber = "543"
+         landmarkName = "GameSystem::_removeObject(ObjectInMap *pObj)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/GameSystem.cpp"
+         timestampString = "369025835.30435"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "548"
+         endingLineNumber = "548"
+         landmarkName = "GameSystem::_removeObject(ObjectInMap *pObj)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MobileSNG/Classes/FriendVillage.cpp"
+         timestampString = "369025832.111163"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "103"
+         endingLineNumber = "103"
+         landmarkName = "FriendVillage::init()"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

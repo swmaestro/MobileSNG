@@ -83,6 +83,12 @@ bool Field::isDone()
     return m_state == CROP_STATE_DONE;
 }
 
+bool Field::isFail()
+{
+    if(m_pCrop == NULL) return false;
+    return m_state == CROP_STATE_FAIL;
+}
+
 bool Field::isConstruct()
 {
     return (m_beforeState < CROP_STATE_DONE) && (m_state == CROP_STATE_DONE);

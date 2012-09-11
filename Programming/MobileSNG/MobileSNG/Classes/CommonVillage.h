@@ -30,7 +30,7 @@ protected:
     int _findFieldTime(int index, std::vector< std::pair<int, int> > *pvData = NULL);
     bool _networkNormalResult(CURL_DATA *pData);
 
-    std::vector< std::pair<ObjectInMap, long long int> > _parseBuildingInVillage(const char* pContent);
+    std::vector< std::pair<ObjectInMap, double> > _parseBuildingInVillage(const char* pContent);
     std::vector< std::pair<int, int> > _parseCropInVillage(const char* pContent);
     
     

@@ -65,7 +65,7 @@ public:
         return true;
     }
     
-    long long int GetTimeValue(DateInfo &otherDate)
+    double GetTimeValue(DateInfo &otherDate)
     {
         tm other;
         tm date;
@@ -96,7 +96,7 @@ public:
         
         t2 = mktime(&date);
                 
-        return (long long int)difftime(t1, t2);
+        return (double)difftime(t1, t2);
     }
     
     

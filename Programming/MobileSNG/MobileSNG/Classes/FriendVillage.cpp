@@ -48,16 +48,16 @@ bool FriendVillage::_initMap()
     if(m_pNetwork->connectHttp(url, &cropData) != CURLE_OK)
         return false;
     
-    vector< pair<ObjectInMap, long long int> > vBuild = _parseBuildingInVillage(buildingData.pContent);
+    vector< pair<ObjectInMap, double> > vBuild = _parseBuildingInVillage(buildingData.pContent);
     vector< pair<int, int> > vCrop = _parseCropInVillage(cropData.pContent);
     vector< pair<int, int> > vFieldTime;
     
-    for(vector< pair<ObjectInMap, long long int> >::iterator
+    for(vector< pair<ObjectInMap, double> >::iterator
         iter = vBuild.begin(); iter != vBuild.end(); ++iter)
     {
         //밭과 건물을 비교하는 방법. index비교.
         ObjectInMap *pObject = &(*iter).first;
-        long long int time = (*iter).second;
+        double time = (*iter).second;
         
         m_pMap->addObject(pObject, m_pInfoMgr, time);
         
@@ -148,6 +148,16 @@ bool FriendVillage::Request(POINT<int> &pos, ObjectInMap **ppOut)
     if(_ownerCheckRequest(index) == false)  return false;
     
     return true;
+}
+
+ObjectInMap* FriendVillage::FindObject(POINT<int> pos)
+{
+    return m_pMap->FindObject(pos);
+}
+
+std::vector<ObjectInMap*> FriendVillage::FindObjects(POINT<int> pos, SIZE<int> size)
+{
+    return m_pMap->FindObjects(pos, size);
 }
 
 std::vector<ObjectInMap*>& FriendVillage::GetAllObject()

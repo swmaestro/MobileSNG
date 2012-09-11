@@ -74,6 +74,7 @@ private:
     bool            _newCrop(int fieldIndex, int cropID);
 
     bool            _removeNetworkObject(ObjectInMap *pObject);
+    bool            _removeNetworkObject(int index);
     bool            _removeObject(POINT<int> &pos);
     bool            _removeObject(ObjectInMap *pObj);    
 

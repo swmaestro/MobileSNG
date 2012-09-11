@@ -9,7 +9,7 @@
 #include "Timer.h"
 #include <ctime>
 
-Timer::Timer(long long int nowTime)
+Timer::Timer(double nowTime)
 {
     m_innerTimer = 0;
     m_saveTime   = nowTime;
@@ -22,7 +22,7 @@ Timer::~Timer()
     
 }
 
-bool Timer::CheckTimer(long long int completeTime)
+bool Timer::CheckTimer(double completeTime)
 {
     if( m_isUse == false )      
         return false;
@@ -52,7 +52,7 @@ void Timer::StartTimer()
     m_isUse         = true;
 }
 
-long long int Timer::GetTime()
+double Timer::GetTime()
 {
     return m_nowTime;
 }
@@ -62,7 +62,7 @@ bool Timer::GetisUse()
     return m_isUse;
 }
 
-void Timer::SetTime(long long int t)
+void Timer::SetTime(double t)
 {
     m_nowTime = t;
 }
