@@ -117,7 +117,7 @@ public:
     void            buildingConstructCheck(int index);
 
     bool            BuyObject(ObjectInMap *pObj);
-    void            SellObject(ObjectInMap *pObj, bool isThread = true);
+    void            SellObject(ObjectInMap *pObj, ThreadObject complete, bool isThread = true);
     
     bool            VillageUpdate();
 

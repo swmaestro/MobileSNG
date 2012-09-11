@@ -86,6 +86,9 @@ public:
     inline int & getMapWidth() { return m_width; }
     
     //void expand();
+    
+protected:
+    bool _removeObjectSprite(Thread *t, void *parameter);
 };
 
 #endif

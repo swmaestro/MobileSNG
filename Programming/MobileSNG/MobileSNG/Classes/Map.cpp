@@ -154,7 +154,6 @@ bool Map::SyncPos(Thread *t, ObjectInMap *oim)
                 filename += "/03.png";
                 break;
                 
-            case CROP_STATE_FAIL:
             case CROP_STATE_DONE:
                 filename += "/Complete.png";
                 break;
@@ -361,14 +360,16 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
         {
             CCPoint p = m_pTalkbox->GetPos();
             ObjectInMap * oim = m_pSystem->FindObject(POINT<int>(p.x, p.y));
-            CCNode * tile = m_pTile->getChildByTag(MAKEWORD(((int)p.x), ((int)p.y)));
-            
-            if (oim->GetType() == OBJECT_TYPE_FIELD && ((Field *)oim)->GetCrop() != NULL)
-                tile->removeChildByTag(TILE_CROP, true);
-            tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
-            
-            m_pSystem->SellObject(oim);
-            m_pTalkbox->setVisible(false);
+//            CCNode * tile = m_pTile->getChildByTag(MAKEWORD(((int)p.x), ((int)p.y)));
+//            
+//            if (oim->GetType() == OBJECT_TYPE_FIELD && ((Field *)oim)->GetCrop() != NULL)
+//                tile->removeChildByTag(TILE_CROP, true);
+//            tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
+//            
+//            m_pTalkbox->setVisible(false);
+            ThreadObject complete(this);
+            complete.pFunc = THREAD_FUNC(Map::_removeObjectSprite);
+            m_pSystem->SellObject(oim, complete, true);
             return;
         }
         
@@ -464,5 +465,23 @@ bool Map::_ShowTalkBox(Thread *t, void *p)
     
     printf("talk box view\n");
 
+    return true;
+}
+
+bool Map::_removeObjectSprite(Thread *t, void *parameter)
+{
+    Map *pThisClass = static_cast<Map*>(t);
+    
+    CCPoint p = pThisClass->m_pTalkbox->GetPos();
+    ObjectInMap * oim = static_cast<ObjectInMap*>(parameter);
+
+    CCNode * tile = pThisClass->m_pTile->getChildByTag(MAKEWORD(((int)p.x), ((int)p.y)));
+    
+    if (oim->GetType() == OBJECT_TYPE_FIELD && ((Field *)oim)->GetCrop() != NULL)
+        tile->removeChildByTag(TILE_CROP, true);
+    tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
+    
+    pThisClass->m_pTalkbox->setVisible(false);
+    
     return true;
 }
