@@ -174,7 +174,7 @@ bool Map::SyncPos(Thread *t, ObjectInMap *oim)
 }
 
 void Map::StartProcess(int i, int j)
-{/*
+{
     CCProgressTo * prg = CCProgressTo::create(1, 100);
     CCSprite * spr = CCSprite::create("Process.png");
     
@@ -186,7 +186,12 @@ void Map::StartProcess(int i, int j)
     CCNode * tile = m_pTile->getChildByTag(MAKEWORD(i, j));
     tile->removeChildByTag(TILE_PROCESS, true);
     tile->addChild(timer, TILE_PROCESS, TILE_PROCESS);
-  */
+}
+
+void Map::EndProcess(int i, int j)
+{
+    CCNode * tile = m_pTile->getChildByTag(MAKEWORD(i, j));
+    tile->removeChildByTag(TILE_PROCESS, true);
 }
 
 void Map::_initTile()
@@ -393,7 +398,7 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
             fail.parameter      = new TALKBOX(NULL, x, y);
             
-            m_pSystem->Harvest(pos, &pObj, complete, fail);                
+            m_pSystem->Harvest(pos, &pObj, complete, fail);
         }
     }
     

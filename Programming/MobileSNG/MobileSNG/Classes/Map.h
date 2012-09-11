@@ -80,6 +80,7 @@ public:
     
     bool SyncPos(Thread *t, ObjectInMap * oim);
     void StartProcess(int i, int j);
+    void EndProcess(int i, int j);
     
     void update(float dt);
     
