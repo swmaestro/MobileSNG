@@ -192,7 +192,13 @@ void PlayerMap::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                 
                 ThreadObject complete(this);
                 complete.pFunc = THREAD_FUNC(Map::_removeObjectSprite);
-                m_pSystem->SellObject(oim, this, complete, true);
+                complete.parameter = oim;
+                
+                ThreadObject fail(this);
+                fail.pFunc = THREAD_FUNC(Map::_removeObjectSprite);
+                fail.parameter = oim;
+                
+                m_pSystem->SellObject(oim, this, complete, fail, true);
                 return;
             }
             
