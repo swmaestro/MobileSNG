@@ -381,7 +381,7 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             complete.pFunc = THREAD_FUNC(Map::_removeObjectSprite);
             complete.parameter = oim;
             
-            m_pSystem->SellObject(oim, complete, fail, true);
+            m_pSystem->SellObject(oim, this, complete, fail, true);
             return;
         }
         

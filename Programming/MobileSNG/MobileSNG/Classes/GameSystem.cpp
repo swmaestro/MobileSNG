@@ -461,11 +461,11 @@ void GameSystem::buildingConstructCheck(int index)
     addWork(func);
 }
 
-void GameSystem::SellObject(ObjectInMap *pObj, ThreadObject complete, ThreadObject fail, bool isThread)
+void GameSystem::SellObject(ObjectInMap *pObj, Map *pMap, ThreadObject complete, ThreadObject fail, bool isThread)
 {
     ThreadObject work(this);
     work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_SellObject);
-    work.parameter  = pObj;
+    work.parameter  = new SELLOBJECT(pMap, pObj);
     
     if(isThread)
     {
@@ -814,8 +814,15 @@ bool GameSystem::_SetUpVillageList(Thread* t, void *parameter)
 bool GameSystem::_SellObject(Thread* t, void *parameter)
 {
     GameSystem *pThisClass = static_cast<GameSystem*>(t);
-    ObjectInMap *pObj = static_cast<ObjectInMap*>(parameter);
+    
+    SELLOBJECT *pSell = static_cast<SELLOBJECT*>(parameter);
+    
+    ObjectInMap *pObj = pSell->pObj;
+    Map *pMap = pSell->pMap;
 
+    delete pSell;
+    
+    pMap->StartProcess(pObj->GetPosition().x, pObj->GetPosition().y);
     OBJECT_TYPE type = pObj->GetType();
 
     if( type == OBJECT_TYPE_BUILDING )
@@ -837,6 +844,8 @@ bool GameSystem::_SellObject(Thread* t, void *parameter)
         return false;
     
     pThisClass->m_pPlayer->AddMoney(-price/3);
+    
+    
     
     return true;
 }
@@ -877,4 +886,18 @@ bool GameSystem::_FailCrop(Thread* t, void *parameter)
 bool GameSystem::VillageUpdate()
 {
     return m_pPlayer->UpdateVillageInfo(m_pNetwork);
+}
+
+bool GameSystem::_CompSell(Thread *t, void *parameter)
+{
+    SELLOBJECT *pSell = static_cast<SELLOBJECT*>(parameter);
+    
+    Map *pMap = pSell->pMap;
+    ObjectInMap *pObject = pSell->pObj;
+    
+    delete pSell;
+    
+    pMap->EndProcess(pObject->GetPosition().x, pObject->GetPosition().y);
+    
+    return true;
 }

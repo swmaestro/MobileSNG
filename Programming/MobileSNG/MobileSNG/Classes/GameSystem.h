@@ -48,6 +48,18 @@ struct CHANGEOBJECT
     { this->pos = pos; this->pObj = pObj; this->dir = dir; }
 };
 
+struct SELLOBJECT {
+    Map             *pMap;
+    ObjectInMap     *pObj;
+    
+    SELLOBJECT() : pMap(NULL), pObj(NULL) {}
+    SELLOBJECT(Map *pMap, ObjectInMap *pObj)
+    {
+        this->pMap  = pMap;
+        this->pObj  = pObj;
+    }
+};
+
 struct ADDCROP
 {
     Field *pField;
@@ -111,6 +123,7 @@ private:
     
     bool            _FailObject(Thread* t, void *parameter);
     bool            _FailCrop(Thread* t, void *parameter);
+    bool            _CompSell(Thread *t, void *parameter);
     
 public:
     bool init();
@@ -125,7 +138,7 @@ public:
     void            buildingConstructCheck(int index);
 
     bool            BuyObject(ObjectInMap *pObj);
-    void            SellObject(ObjectInMap *pObj, ThreadObject complete, ThreadObject fail, bool isThread = true);
+    void            SellObject(ObjectInMap *pObj, Map *pMap, ThreadObject complete, ThreadObject fail, bool isThread = true);
     
     bool            VillageUpdate();
 
