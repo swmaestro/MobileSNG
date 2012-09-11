@@ -95,6 +95,8 @@ bool Map::SyncPos(Thread *t, ObjectInMap *oim)
     CCNode * tile = pThisClass->m_pTile->getChildByTag(MAKEWORD(oim->m_position.x, oim->m_position.y));
     std::string filename;
     
+    tile->removeChildByTag(TILE_PREVIEW, true);
+    
     if (oim->GetType() == OBJECT_TYPE_BUILDING)
     {
         Building * b = dynamic_cast<Building *>(oim);
@@ -134,6 +136,13 @@ bool Map::SyncPos(Thread *t, ObjectInMap *oim)
         Field * f = dynamic_cast<Field *>(oim);
         Crop * c = f->GetCrop();
         
+        if (!tile->getChildByTag(TILE_FARM))
+        {
+            CCSprite * spr = CCSprite::create("Farm/Complete.png");
+            spr->setAnchorPoint(ccp(0.5, 0.3));
+            tile->addChild(spr, TILE_FARM, TILE_FARM);
+        }
+            
         if (!c)
             tile->removeChildByTag(TILE_CROP, true);
         else

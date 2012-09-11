@@ -434,8 +434,10 @@ void GameSystem::addCrop(Field *pField, Map *pMap, int id, int time, bool isAdd,
     ThreadObject work(this), fail(this), comp(this);
     work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_addCrop);
     work.parameter  = new ADDCROP(pField, id, time, isAdd, pMap);
+    
     fail.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_FailCrop);
     fail.parameter  = new ADDCROP(pField, id, time, isAdd, pMap);
+    
     comp.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_FailCrop);
     comp.parameter  = new ADDCROP(pField, id, time, isAdd, pMap);
     
@@ -606,6 +608,7 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
         }
         else
             return false;
+        
         if(pThisClass->_newObject(obj.GetID(), obj.GetIndex(), obj.GetPosition(), obj.GetDirection()) == false)
         {
             //서버에서 실패한거니까, 서버 통해서 재거하지 말고 클라 자체에서 제거하면되.
@@ -619,7 +622,7 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
         }
         
         pThisClass->m_pPlayer->AddMoney(-price);
-        
+        obj.NeedSync();
         return true;
     }
     
@@ -638,6 +641,7 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
         return false;
     }
     
+    obj.NeedSync();
     return true;
 }
 
@@ -722,6 +726,7 @@ bool GameSystem::_addCrop(Thread* t, void *parameter)
     }
     
     m_pPlayer->AddMoney(-price);
+    pField->NeedSync();
     return true;
 }
 
