@@ -46,7 +46,7 @@ bool Building::UpdateSystem()
     if(m_pTimer->CheckTimer(time))
     {
         if (m_state < BUILDING_STATE_COMPLETE_CONSTRUCTION)
-            m_state = BUILDING_STATE_WORKING;
+            m_state = BUILDING_STATE_COMPLETE_CONSTRUCTION;
         
         if(m_state == BUILDING_STATE_WORKING)
         {

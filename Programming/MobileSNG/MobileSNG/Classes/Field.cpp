@@ -49,7 +49,6 @@ bool Field::UpdateSystem()
     
     if(m_state < CROP_STATE_DONE && m_pTimer->CheckTimer(info.GetTime()) == false)
         m_state = static_cast<float>(m_pTimer->GetTime()) / info.GetTime() * CROP_STATE_DONE;
-    else    m_state = CROP_STATE_DONE;
     
     if (m_beforeState != m_state)
         return true;
