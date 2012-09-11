@@ -99,6 +99,7 @@ bool GameScene::init()
         return false;
     
     scheduleUpdate();
+    
 
     return true;
 }
@@ -349,11 +350,14 @@ void GameScene::Visit(Map *map)
 void* GameScene::serverUpdate(void *p)
 {
     GameScene *pScene = static_cast<GameScene*>(p);
+    pScene->schedule(schedule_selector(GameScene::villageUpdate), 10);
 
     while (1)
     {
         if(pScene->m_isGameServer)
+        {
             pScene->m_pSystem->threadUpdate();
+        }
         else
         {
             
@@ -361,4 +365,9 @@ void* GameScene::serverUpdate(void *p)
     }
     
     return p;
+}
+
+void GameScene::villageUpdate(float t)
+{
+    m_pSystem->VillageUpdate();
 }

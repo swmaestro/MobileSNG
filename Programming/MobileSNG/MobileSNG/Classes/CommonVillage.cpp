@@ -28,6 +28,9 @@ bool CommonVillage::_networkNormalResult(CURL_DATA *pData)
 {
     xml_document<char> xmlDoc;
     xmlDoc.parse<0>(pData->pContent);
+    
+    if(xmlDoc.first_node() == NULL) return false;
+    
     const char *value = xmlDoc.first_node()->first_node()->value();
     
     if(strcmp(value, "false") == 0)
@@ -41,7 +44,7 @@ void CommonVillage::_getCropState(objectState *pState)
     switch (*pState)
     {
         case NETWORK_OBJECT_WAITTING: *pState = CROP_STATE_INVAILD; break;
-        case NETWORK_OBJECT_FAIL:     *pState = CROP_STATE_FAIL;    break;
+        case NETWORK_OBJECT_FAIL:     *pState = CROP_STATE_DONE;    break;
         case NETWORK_OBJECT_WORKING:  *pState = CROP_STATE_GROW_1;  break;
         case NETWORK_OBJECT_DONE:     *pState = CROP_STATE_DONE;    break;
     }

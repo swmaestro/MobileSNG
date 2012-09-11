@@ -52,7 +52,15 @@ bool VillageInfo::UpdateVillageInfo(Network *pNetwork)
     xml_document<char> xmlDoc;
     xmlDoc.parse<0>(data.pContent);
     
-    xml_node<char> *pNode = xmlDoc.first_node()->first_node()->next_sibling()->first_node()->next_sibling();
+    xml_node<char> *pNode = xmlDoc.first_node();
+    if(pNode == NULL) return false;
+    pNode = pNode->first_node();
+
+    int count = atoi(pNode->value());
+
+    if( count == 0 ) return false;
+
+    pNode = pNode->next_sibling()->first_node()->next_sibling();
     
     money = atoi(pNode->value());
     pNode = pNode->next_sibling();

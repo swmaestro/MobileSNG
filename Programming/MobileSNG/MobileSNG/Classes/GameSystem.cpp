@@ -96,8 +96,8 @@ ObjectInfo GameSystem::GetObjectInfo(int type, int id)
 
 bool GameSystem::BuyObject(ObjectInMap *pObj)
 {
-    if(m_pPlayer->AddMoney(-GetCommonInfo(pObj)->GetPrice()/3) == false)
-        return false;
+//    if(m_pPlayer->AddMoney(-GetCommonInfo(pObj)->GetPrice()/3) == false)
+//        return false;
     return true;
 }
 
@@ -560,6 +560,8 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
     if(obj.GetType() == OBJECT_TYPE_CROP)
         return false;
     
+    int price = pThisClass->GetCommonInfo(&obj)->GetPrice();
+    
     if(index == -1)
     {
         ObjectInMap *pCreatedObject = NULL;
@@ -597,6 +599,8 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
             
             return false;
         }
+        
+        pThisClass->m_pPlayer->AddMoney(-price);
         
         return true;
     }
@@ -680,6 +684,7 @@ bool GameSystem::_addCrop(Thread* t, void *parameter)
     
     delete pAddCrop;
     
+    int price = GetCommonInfo(pField)->GetPrice();
     int fieldIndex = pField->GetIndex();
     
     if( pField->addCrop(id, time, pThisClass->m_pInfoMgr) == NULL )
@@ -694,6 +699,7 @@ bool GameSystem::_addCrop(Thread* t, void *parameter)
         }
     }
     
+    m_pPlayer->AddMoney(-price);
     return true;
 }
 
@@ -790,27 +796,27 @@ bool GameSystem::_SellObject(Thread* t, void *parameter)
     GameSystem *pThisClass = static_cast<GameSystem*>(t);
     ObjectInMap *pObj = static_cast<ObjectInMap*>(parameter);
 
-    OBJECT_TYPE type = pObj->GetType();
-
-    if( type == OBJECT_TYPE_BUILDING )
-    {
-        if(dynamic_cast<Building*>(pObj)->isFriend())
-            return false;
-    }
-    
-    else if( type == OBJECT_TYPE_FIELD )
-    {
-        if(dynamic_cast<Field*>(pObj)->GetCrop())
-            return false;
-    }
-    
+//    OBJECT_TYPE type = pObj->GetType();
+//
+//    if( type == OBJECT_TYPE_BUILDING )
+//    {
+//        if(dynamic_cast<Building*>(pObj)->isFriend())
+//            return false;
+//    }
+//    
+//    else if( type == OBJECT_TYPE_FIELD )
+//    {
+//        if(dynamic_cast<Field*>(pObj)->GetCrop())
+//            return false;
+//    }
+//    
     CommonInfo *cominfo = pThisClass->GetCommonInfo(pObj);
     int price = cominfo->GetPrice();
     
     if( pThisClass->_removeObject(pObj) == false)
         return false;
     
-    pThisClass->m_pPlayer->AddMoney(price/3);
+    pThisClass->m_pPlayer->AddMoney(-price/3);
     
     return true;
 }
@@ -823,4 +829,9 @@ bool GameSystem::_updateUserInfo(Thread *t, void *parameter)
 bool GameSystem::_Fail(Thread* t, void *parameter)
 {
     return true;
+}
+
+bool GameSystem::VillageUpdate()
+{
+    return m_pPlayer->UpdateVillageInfo(m_pNetwork);
 }

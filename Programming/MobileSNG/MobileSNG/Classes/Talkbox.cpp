@@ -58,7 +58,7 @@ bool Talkbox::init()
         m_pText[i]->setVisible(false);
         m_pScale->addChild(m_pText[i], 1);
     }
-    
+
     m_pText[TALKBOX_TYPE_FARM]->setString("Faaaaaaaaarm");
     m_pText[TALKBOX_TYPE_BUILDING]->setString("Buuuuuilding");
     m_pText[TALKBOX_TYPE_UNKNOWN]->setString("Error : I don't know\nwhat is this");

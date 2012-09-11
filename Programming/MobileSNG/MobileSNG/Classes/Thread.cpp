@@ -29,7 +29,7 @@ Thread::~Thread()
 
 void Thread::threadUpdate()
 {
-    while ((m_pqThread->empty() == false))
+    while ((m_pqThread->size()))
     {
         ThreadFunc func = m_pqThread->front();
 

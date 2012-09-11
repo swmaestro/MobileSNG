@@ -72,6 +72,8 @@ private:
     
     void update(float dt);
     
+    void villageUpdate(float t);
+    
 public:
     void alloc(int type, int id);
     

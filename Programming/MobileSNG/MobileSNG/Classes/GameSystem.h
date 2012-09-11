@@ -117,6 +117,8 @@ public:
 
     bool            BuyObject(ObjectInMap *pObj);
     void            SellObject(ObjectInMap *pObj, bool isThread = true);
+    
+    bool            VillageUpdate();
 
 public:
     void Harvest(POINT<int> &pos, ObjectInMap **ppOut, ThreadObject complete, ThreadObject fail);

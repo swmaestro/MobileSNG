@@ -50,7 +50,7 @@ private:
     bool         m_isMsgBoxOn;
     
 public:
-    Network(bool isMsgBoxOn = true);
+    Network(bool isMsgBoxOn = false);
     ~Network();
 
 private:
