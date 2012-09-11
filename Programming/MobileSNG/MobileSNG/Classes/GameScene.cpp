@@ -57,6 +57,8 @@ bool GameScene::init()
         return false;
     }
     
+    m_pSystem->m_isInit = false;
+    
     if (!_initUIMgr())
         return false;
 
