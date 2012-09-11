@@ -42,7 +42,7 @@ bool GameScene::init()
 {
     if (!CCLayer::init())     
         return false;
-
+    
     m_pNetwork = new Network;
     m_pSystem = new GameSystem("ObjectDB.sqlite", m_pPlayerMap->getMapWidth(), m_pNetwork);
         
@@ -100,7 +100,6 @@ bool GameScene::init()
     
     scheduleUpdate();
     
-
     return true;
 }
 

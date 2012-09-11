@@ -85,6 +85,8 @@ void Map::update(float dt)
 
 bool Map::SyncPos(Thread *t, ObjectInMap *oim)
 {
+    EndProcess(oim->GetPosition().x, oim->GetPosition().y);
+    
     Map *pThisClass = static_cast<Map*>(t);
     ObjectInfoMgr * infoMgr = pThisClass->m_pSystem->GetInfoMgr();
 
@@ -226,7 +228,6 @@ void Map::_initTile()
                 }
                 
                 SyncPos(this, oim);
-                StartProcess(i, j);
             }
         }
     
@@ -393,6 +394,7 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             
             ObjectInMap *pObj = NULL;
             
+            StartProcess(x, y);
             ThreadObject fail(this), complete(this);
             complete.pFunc      = THREAD_FUNC(Map::SyncPos);
             fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
@@ -455,6 +457,8 @@ bool Map::_ShowTalkBox(Thread *t, void *p)
     int y = pTalk->y;
 
     delete pTalk;
+    
+    EndProcess(x, y);
     
     if((pObj && pObj->GetType() != OBJECT_TYPE_NONE) == false) return false;
 
