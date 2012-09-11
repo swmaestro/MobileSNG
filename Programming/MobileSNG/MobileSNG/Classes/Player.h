@@ -54,7 +54,7 @@ public:
     bool UpdateVillageInfo(Network *pNet);
     
 public:
-    bool addFollowing(User *pUser, Network *pNet);
+    bool addFollowing(const char * userID, Network *pNet);
     bool removeFollowing(User *pUser, Network *pNet);
     std::vector<REQUEST> viewRequestList(Network *pNet, int page, bool isMeRequest);
     

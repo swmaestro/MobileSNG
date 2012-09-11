@@ -254,6 +254,7 @@
 		C57F18FC15BF92530055C208 /* Tile.png in Resources */ = {isa = PBXBuildFile; fileRef = C57F18FB15BF92530055C208 /* Tile.png */; };
 		C583633415D52560006F4F2A /* Allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C583633315D52560006F4F2A /* Allocator.cpp */; };
 		C583633615D5273C006F4F2A /* EditTile.png in Resources */ = {isa = PBXBuildFile; fileRef = C583633515D5273C006F4F2A /* EditTile.png */; };
+		C585FEBE15FEC57C0075AFB6 /* FailCrop.png in Resources */ = {isa = PBXBuildFile; fileRef = C585FEBD15FEC57C0075AFB6 /* FailCrop.png */; };
 		C594CB0315E46F7000052769 /* Status.png in Resources */ = {isa = PBXBuildFile; fileRef = C594CB0215E46F7000052769 /* Status.png */; };
 		C5A77A5B15F1E570002DEB9B /* Friends.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5A77A5A15F1E570002DEB9B /* Friends.cpp */; };
 		C5A77A5D15F220F5002DEB9B /* Friends-Background.png in Resources */ = {isa = PBXBuildFile; fileRef = C5A77A5C15F220F5002DEB9B /* Friends-Background.png */; };
@@ -793,6 +794,7 @@
 		C583633215D52552006F4F2A /* Allocator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Allocator.h; path = Classes/Allocator.h; sourceTree = "<group>"; };
 		C583633315D52560006F4F2A /* Allocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; name = Allocator.cpp; path = Classes/Allocator.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		C583633515D5273C006F4F2A /* EditTile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EditTile.png; path = Resources/EditTile.png; sourceTree = "<group>"; };
+		C585FEBD15FEC57C0075AFB6 /* FailCrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FailCrop.png; path = Resources/FailCrop.png; sourceTree = "<group>"; };
 		C594CB0215E46F7000052769 /* Status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Status.png; path = Resources/Status.png; sourceTree = "<group>"; };
 		C5A77A5A15F1E570002DEB9B /* Friends.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Friends.cpp; path = Classes/Friends.cpp; sourceTree = "<group>"; };
 		C5A77A5C15F220F5002DEB9B /* Friends-Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Friends-Background.png"; path = "Resources/Friends-Background.png"; sourceTree = "<group>"; };
@@ -940,9 +942,9 @@
 		3C5C1B2A15D2471C006E7C0B /* Field */ = {
 			isa = PBXGroup;
 			children = (
+				3C5C1B2D15D2472C006E7C0B /* Crop */,
 				3C5C1B3315D2478E006E7C0B /* Field.cpp */,
 				3C5C1B3415D2478E006E7C0B /* Field.h */,
-				3C5C1B2D15D2472C006E7C0B /* Crop */,
 			);
 			name = Field;
 			sourceTree = "<group>";
@@ -1109,6 +1111,7 @@
 		3C9364C515B0FF6300860E6A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C585FEBD15FEC57C0075AFB6 /* FailCrop.png */,
 				3CEA3D0115FB7C0A00C64286 /* Friends-List.png */,
 				C50AD84915F97A3100CAFFD5 /* Login-Background.png */,
 				C51AD0C715F4E29C005B6587 /* Button */,
@@ -2242,6 +2245,7 @@
 				C50AD84815F978EC00CAFFD5 /* Icon-1x.png in Resources */,
 				C50AD84A15F97A3100CAFFD5 /* Login-Background.png in Resources */,
 				3CEA3D0215FB7C0A00C64286 /* Friends-List.png in Resources */,
+				C585FEBE15FEC57C0075AFB6 /* FailCrop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

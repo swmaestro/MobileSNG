@@ -58,7 +58,7 @@ bool Map::init(GameSystem * system, FriendVillage * village)
     m_pTalkbox = new Talkbox;
     if(m_pTalkbox->init() == false)
         return false;
-    
+    m_pTalkbox->setAnchorPoint(ccp(0, 0));
     addChild(m_pTalkbox, 2);
 
     scheduleUpdate();
@@ -109,7 +109,7 @@ bool Map::SyncPos(Thread *t, ObjectInMap *oim)
                 filename += "/02.png";
                 break;
                 
-//            case BUILDING_STATE_COMPLETE_CONSTRUCTION:
+            case BUILDING_STATE_COMPLETE_CONSTRUCTION:
             case BUILDING_STATE_WORKING:
                 filename += "/03.png";
                 break;
@@ -157,6 +157,10 @@ bool Map::SyncPos(Thread *t, ObjectInMap *oim)
             case CROP_STATE_FAIL:
             case CROP_STATE_DONE:
                 filename += "/Complete.png";
+                break;
+                
+            case CROP_STATE_FAIL:
+                filename = "FailCrop.png";
                 break;
         }
         

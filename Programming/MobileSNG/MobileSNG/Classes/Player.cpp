@@ -90,11 +90,11 @@ void Player::AddExp(int n)
     }
 }
 
-bool Player::addFollowing(User *pPlayer, Network *pNet)
+bool Player::addFollowing(const char * userID, Network *pNet)
 {
     const char *baseURL = "http://swmaestros-sng.appspot.com/friendadder?id=%s&friend=%s";
     char url[256];
-    sprintf(url, baseURL, m_pVillageInfo->userID.data(), pPlayer->GetUserID());
+    sprintf(url, baseURL, m_pVillageInfo->userID.data(), userID);
 
     CURL_DATA data;
     if(pNet->connectHttp(url, &data) != CURLE_OK)

@@ -76,10 +76,11 @@ void Friends::addFriendList(std::string name, int num)
     
     CCLabelTTF * lb = CCLabelTTF::create(name.c_str(), "Ariel", 20);
     lb->setPosition(ccp(20, 30));
-    layer->addChild(lb);
+    lb->setHorizontalAlignment(kCCTextAlignmentLeft);
+    layer->addChild(lb, 0, 0);
     
     layer->setPosition(ccp(0, 320 - 90 - num * 45));
-    m_pMovable->addChild(layer);
+    m_pMovable->addChild(layer, 0, num);
     
     UserInfo *pUserInfo = _createUserInfo(m_pNetwork, name.data());
     m_pSearch->pushContent(pUserInfo->userID.data(), pUserInfo);
@@ -106,6 +107,12 @@ void Friends::refresh()
 
 void Friends::refreshBySearch(std::string name)
 {
+    if (name.length() == 0)
+    {
+        refresh();
+        return;
+    }
+    
     m_pMovable->removeAllChildrenWithCleanup(true);
     
     VillageInfo info;
@@ -116,20 +123,34 @@ void Friends::refreshBySearch(std::string name)
         addFriendList(info.userID);
         m_pSearch->removeContent(info.userID.c_str(), true);
         m_pSearch->pushContent(info.userID.c_str(), uinfo);
-        
-        m_pSocial->FindUser(name.c_str(), uinfo, USER_SEARCH_ENUM_ID);
-        EnterFriendVillage(uinfo);
     }
 }
 
 void Friends::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
     TextFieldKeyBoardOn(this, pTouches, &m_pTextField);
-    /*
+    
     CCTouch * touch = static_cast<CCTouch *>(*pTouches->begin());
     CCPoint p = touch->locationInView();
     p = CCDirector::sharedDirector()->convertToGL(p);
-    */
+    
+    int n = (230 - p.y) / 45;
+    if (n < 0)
+        return;
+    
+    CCNode * t = m_pMovable->getChildByTag(n);
+    if (!t)
+        return;
+    
+    CCLabelTTF * l = static_cast<CCLabelTTF *>(t->getChildByTag(0));
+    const char * name = l->getString();
+
+//    if (m_pSystem->GetPlayer()->addFollowing(name, m_pNetwork))
+    {
+        UserInfo uInfo;
+        m_pSocial->FindUser(name, &uInfo, USER_SEARCH_ENUM_ID);
+        EnterFriendVillage(&uInfo);
+    }
 }
 
 bool Friends::onTextFieldInsertText(cocos2d::CCTextFieldTTF * sender, const char * text, int nLen)
