@@ -21,17 +21,20 @@
 #include <queue>
 #include "Thread.h"
 
+class Map;
+
 struct ADDOBJECT
 {
     ObjectInMap obj;
     int time;
     int index;
+    Map *pMap;
     
-    ADDOBJECT() : time(0), index(-1) {}
-    ADDOBJECT(ObjectInMap obj, int time, int index)
-    { this->obj = obj; this->time = time; this->index = index; }
-    ADDOBJECT(ObjectInMap *pObj, int time, int index)
-    { this->obj = *pObj; this->time = time; this->index = index; }
+    ADDOBJECT() : time(0), index(-1), pMap(NULL) {}
+    ADDOBJECT(ObjectInMap obj, int time, int index, Map *pMap)
+    { this->obj = obj; this->time = time; this->index = index; this->pMap = pMap; }
+    ADDOBJECT(ObjectInMap *pObj, int time, int index, Map *pMap)
+    { this->obj = *pObj; this->time = time; this->index = index; this->pMap = pMap; }
 };
 
 struct CHANGEOBJECT
@@ -51,10 +54,11 @@ struct ADDCROP
     int id;
     int time;
     bool isAdd;
+    Map *pMap;
     
-    ADDCROP() : pField(NULL), id(-2), time(0), isAdd(false){}
-    ADDCROP(Field *pField, int id, int time, bool isAdd)
-    {this->pField = pField; this->id = id; this->time = time; this->isAdd = isAdd;}
+    ADDCROP() : pField(NULL), id(-2), time(0), isAdd(false), pMap(NULL){}
+    ADDCROP(Field *pField, int id, int time, bool isAdd, Map *pMap)
+    {this->pField = pField; this->id = id; this->time = time; this->isAdd = isAdd; this->pMap = pMap;}
 };
 
 class GameSystem :private CommonVillage, public Thread
@@ -64,6 +68,9 @@ private:
     Network                             *m_pNetwork;
     Player                              *m_pPlayer;
     ObjectIndexMgr                      *m_pIndexMgr;
+    
+public:
+    bool                                 m_isInit;
     
 public:
     GameSystem(const char* strDBFile, int & mapLevel, Network *pNetwork);
@@ -102,7 +109,8 @@ private:
     bool            _SellObject(Thread* t, void *parameter);
     bool            _Harvest(Thread* t, void *parameter);
     
-    bool            _Fail(Thread* t, void *parameter);
+    bool            _FailObject(Thread* t, void *parameter);
+    bool            _FailCrop(Thread* t, void *parameter);
     
 public:
     bool init();
@@ -111,13 +119,13 @@ public:
     bool            SetUpVillageList(bool isUpdate = true);
     
 public:
-    void            addObject(ObjectInMap *pObj, int time, int index = -1, bool isThread = false);
+    void            addObject(ObjectInMap *pObj, Map *pMap, int time, int index = -1, bool isThread = false);
     void            changeObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTION dir = OBJECT_DIRECTION_LEFT, bool isThread = true);
-    void            addCrop(Field *pField, int id, int time, bool isAdd = false, bool isThread = false);
+    void            addCrop(Field *pField, Map *pMap, int id, int time, bool isAdd = false, bool isThread = false);
     void            buildingConstructCheck(int index);
 
     bool            BuyObject(ObjectInMap *pObj);
-    void            SellObject(ObjectInMap *pObj, ThreadObject complete, bool isThread = true);
+    void            SellObject(ObjectInMap *pObj, ThreadObject complete, ThreadObject fail, bool isThread = true);
     
     bool            VillageUpdate();
 

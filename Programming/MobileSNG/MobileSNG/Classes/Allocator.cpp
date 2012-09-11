@@ -18,11 +18,13 @@
 
 #include "Utility.h"
 
+#include "Map.h"
+
 using namespace cocos2d;
 
-Allocator::Allocator(CCLayer *& tile, int & width) : m_tile(tile), m_width(width)
+Allocator::Allocator(CCLayer *& tile, int & width, Map *pMap) : m_tile(tile), m_width(width)
 {
-    
+    m_pMap = pMap;
 }
 
 void Allocator::init(GameSystem * system, int type, int id)
@@ -87,7 +89,7 @@ void Allocator::Apply()
             case OBJ_CROP:
                 {
                     Field * f = dynamic_cast<Field *>(m_pSystem->FindObject(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]))));
-                    m_pSystem->addCrop(f, m_id, 0, true, true);
+                    m_pSystem->addCrop(f, m_pMap, m_id, 0, true, true);
                 }
                 
                 spr->setAnchorPoint(ccp(0.5, 0.3));
@@ -104,7 +106,7 @@ void Allocator::Apply()
                                       info->GetSize(), OBJECT_DIRECTION_LEFT, m_id, 0);
                     
                     Building b(&oim, 0, m_pSystem->GetInfoMgr());
-                    m_pSystem->addObject(&b, 0, -1, true);
+                    m_pSystem->addObject(&b, m_pMap, 0, -1, true);
                 }
                 
                 tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);
@@ -115,7 +117,7 @@ void Allocator::Apply()
             
                 {
                     Field f(&oim);
-                    m_pSystem->addObject(&f, 0, -1, true);
+                    m_pSystem->addObject(&f, m_pMap, 0, -1, true);
                 }
                 
                 spr->setAnchorPoint(ccp(0.5, 0.3));

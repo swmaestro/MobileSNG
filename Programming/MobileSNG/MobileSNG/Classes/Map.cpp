@@ -373,8 +373,15 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
 //            
 //            m_pTalkbox->setVisible(false);
             ThreadObject complete(this);
+            ThreadObject fail(this);
+            
+            fail.pFunc = THREAD_FUNC(Map::_failFunc);
+            fail.parameter = oim;
+            
             complete.pFunc = THREAD_FUNC(Map::_removeObjectSprite);
-            m_pSystem->SellObject(oim, complete, true);
+            complete.parameter = oim;
+            
+            m_pSystem->SellObject(oim, complete, fail, true);
             return;
         }
         
@@ -469,6 +476,7 @@ bool Map::_ShowTalkBox(Thread *t, void *p)
     pThisClass->m_pTalkbox->setVisible(true);
     
     printf("talk box view\n");
+    pThisClass->EndProcess(x, y);
 
     return true;
 }
@@ -487,6 +495,19 @@ bool Map::_removeObjectSprite(Thread *t, void *parameter)
     tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
     
     pThisClass->m_pTalkbox->setVisible(false);
+    pThisClass->EndProcess(p.x, p.y);
+    
+    return true;
+}
+
+bool Map::_failFunc(Thread *t, void *parameter)
+{
+    Map *pThisClass = static_cast<Map*>(t);
+    ObjectInMap *pObj = static_cast<ObjectInMap*>(parameter);
+    int x = pObj->GetPosition().x;
+    int y = pObj->GetPosition().y;
+    
+    pThisClass->EndProcess(x, y);
     
     return true;
 }

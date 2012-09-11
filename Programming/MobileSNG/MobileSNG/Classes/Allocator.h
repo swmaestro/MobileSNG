@@ -13,6 +13,7 @@
 #include <vector>
 
 class GameSystem;
+class Map;
 
 class Allocator
 {
@@ -30,8 +31,10 @@ private:
     cocos2d::CCSprite * m_touch;
     cocos2d::CCLayer *& m_tile;
     
+    Map *m_pMap;
+    
 public:
-    Allocator(cocos2d::CCLayer *& tile, int & width);
+    Allocator(cocos2d::CCLayer *& tile, int & width, Map *pMap);
     
     void init(GameSystem * system, int type, int id);
     

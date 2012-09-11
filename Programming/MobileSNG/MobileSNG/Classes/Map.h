@@ -90,6 +90,7 @@ public:
     
 protected:
     bool _removeObjectSprite(Thread *t, void *parameter);
+    bool _failFunc(Thread *t, void *parameter);
 };
 
 #endif

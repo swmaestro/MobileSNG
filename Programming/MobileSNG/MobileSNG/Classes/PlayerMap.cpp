@@ -34,7 +34,7 @@ bool PlayerMap::init(GameSystem * system, Network * network)
     if (!Map::init(system, vill))
         return false;
     
-    m_pAllocator = new Allocator(m_pTile, m_width);
+    m_pAllocator = new Allocator(m_pTile, m_width, this);
     return true;
 }
 
@@ -192,7 +192,7 @@ void PlayerMap::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                 
                 ThreadObject complete(this);
                 complete.pFunc = THREAD_FUNC(Map::_removeObjectSprite);
-                m_pSystem->SellObject(oim, complete, true);
+                m_pSystem->SellObject(oim, this, complete, true);
                 return;
             }
             

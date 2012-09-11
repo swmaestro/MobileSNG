@@ -20,6 +20,7 @@ GameSystem::GameSystem(const char* strDBFile, int & mapLevel, Network *pNetwork)
     m_pIndexMgr   = new ObjectIndexMgr;
     m_pMap      = new MapMgr(mapLevel);
     m_pPlayer     = new Player(m_pNetwork);
+    m_isInit = true;
 }
 
 GameSystem::~GameSystem()
@@ -385,24 +386,28 @@ bool GameSystem::SetUpVillageList(bool isUpdate)
     return _SetUpVillageList(this, &isUpdate);
 }
 
-void GameSystem::addObject(ObjectInMap *pObj, int time, int index, bool isThread)
+void GameSystem::addObject(ObjectInMap *pObj, Map *pMap, int time, int index, bool isThread)
 {
-    ThreadObject work(this), fail(this);
+    ThreadObject work(this), fail(this), comp(this);
     work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_addObject);
-    work.parameter  = new ADDOBJECT(pObj, time, index);
+    work.parameter  = new ADDOBJECT(pObj, time, index, pMap);
     
-    fail.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_Fail);
-    fail.parameter  = (void*)("오브젝트 추가 오류");
+    fail.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_FailObject);
+    fail.parameter  = new ADDOBJECT(pObj, time, index, pMap);
+    
+    comp.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_FailObject);
+    comp.parameter  = new ADDOBJECT(pObj, time, index, pMap);
+    
     
     if(isThread)
     {
-        ThreadFunc func(&work, &fail, NULL);
+        ThreadFunc func(&work, &fail, &comp);
         addWork(func);
     }
     else
     {
         if(_addObject(this, work.parameter) == false)
-            _Fail(this, fail.parameter);
+            _FailObject(this, fail.parameter);
     }
 }
 
@@ -411,38 +416,37 @@ void GameSystem::changeObject(POINT<int> &pos, ObjectInMap *obj2, OBJECT_DIRECTI
     ThreadObject work(this), fail(this);
     work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_changeObject);
     work.parameter  = new CHANGEOBJECT(pos, obj2, dir);
-    fail.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_Fail);
-    fail.parameter  = (void*)("오브젝트 이동, 방향 변경 오류");
     
     if(isThread)
     {
-        ThreadFunc func(&work, &fail, NULL);
+        ThreadFunc func(&work, NULL, NULL);
         addWork(func);
     }
     else
     {
-        if(_changeObject(this, work.parameter) == false)
-            _Fail(this, fail.parameter);
+        _changeObject(this, work.parameter);
     }
 }
 
-void GameSystem::addCrop(Field *pField, int id, int time, bool isAdd, bool isThread)
+void GameSystem::addCrop(Field *pField, Map *pMap, int id, int time, bool isAdd, bool isThread)
 {
-    ThreadObject work(this), fail(this);
+    ThreadObject work(this), fail(this), comp(this);
     work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_addCrop);
-    work.parameter  = new ADDCROP(pField, id, time, isAdd);
-    fail.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_Fail);
-    fail.parameter  = (void*)("농작물 추가 오류");
+    work.parameter  = new ADDCROP(pField, id, time, isAdd, pMap);
+    fail.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_FailCrop);
+    fail.parameter  = new ADDCROP(pField, id, time, isAdd, pMap);
+    comp.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_FailCrop);
+    comp.parameter  = new ADDCROP(pField, id, time, isAdd, pMap);
     
     if(isThread)
     {
-        ThreadFunc func(&work, &fail, NULL);
+        ThreadFunc func(&work, &fail, &comp);
         addWork(func);
     }
     else
     {
         if(_addCrop(this, work.parameter) == false)
-            _Fail(this, fail.parameter);
+            _FailCrop(this, fail.parameter);
     }
 }
 
@@ -457,17 +461,15 @@ void GameSystem::buildingConstructCheck(int index)
     addWork(func);
 }
 
-void GameSystem::SellObject(ObjectInMap *pObj, ThreadObject complete, bool isThread)
+void GameSystem::SellObject(ObjectInMap *pObj, ThreadObject complete, ThreadObject fail, bool isThread)
 {
     ThreadObject work(this);
     work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_SellObject);
     work.parameter  = pObj;
-    complete.parameter = pObj;
     
     if(isThread)
     {
-//        ThreadFunc(<#ThreadObject *work#>, <#ThreadObject *fail#>, <#ThreadObject *complete#>)
-        ThreadFunc func(&work, NULL, &complete);
+        ThreadFunc func(&work, &fail, &complete);
         addWork(func);
     }
     else _SellObject(this, work.parameter);
@@ -563,8 +565,13 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
     ObjectInMap obj = pAddObject->obj;
     int time = pAddObject->time;
     int index = pAddObject->index;
+    Map *pMap = pAddObject->pMap;
     
     delete pAddObject;
+    
+    
+    if(m_isInit == false)
+        pMap->StartProcess(obj.GetPosition().x, obj.GetPosition().y);
     
     if(obj.GetType() == OBJECT_TYPE_CROP)
         return false;
@@ -690,8 +697,12 @@ bool GameSystem::_addCrop(Thread* t, void *parameter)
     int id = pAddCrop->id;
     int time = pAddCrop->time;
     bool isAdd = pAddCrop->isAdd;
+    Map *pMap = pAddCrop->pMap;
     
     delete pAddCrop;
+    
+    if(m_isInit == false)
+        pMap->StartProcess(pField->GetPosition().x, pField->GetPosition().y);
     
     int price = GetCommonInfo(pField)->GetPrice();
     int fieldIndex = pField->GetIndex();
@@ -772,7 +783,7 @@ bool GameSystem::_SetUpVillageList(Thread* t, void *parameter)
 
         int index = pObject->GetIndex();
     
-        pThisClass->addObject(pObject, time, index, false);
+        pThisClass->addObject(pObject, NULL, time, index, false);
         
         if(pObject->GetType() == OBJECT_TYPE_FIELD)
         {
@@ -794,7 +805,7 @@ bool GameSystem::_SetUpVillageList(Thread* t, void *parameter)
         int cropID      = (*iter).second;
         
         Field *pField = dynamic_cast<Field*>(pThisClass->m_pMap->FindObject(fieldIndex));
-        pThisClass->addCrop(pField, cropID, pThisClass->_findFieldTime(pField->GetIndex()));
+        pThisClass->addCrop(pField, NULL, cropID, pThisClass->_findFieldTime(pField->GetIndex()));
     }
     
     return true;
@@ -835,8 +846,31 @@ bool GameSystem::_updateUserInfo(Thread *t, void *parameter)
     return true;
 }
 
-bool GameSystem::_Fail(Thread* t, void *parameter)
+bool GameSystem::_FailObject(Thread *t, void *parameter)
 {
+    ADDOBJECT *pObject = static_cast<ADDOBJECT*>(parameter);
+    
+    Map *pMap = pObject->pMap;
+    ObjectInMap obj = pObject->obj;
+    
+    delete pObject;
+    
+    pMap->EndProcess(obj.GetPosition().x, obj.GetPosition().y);
+    
+    return true;
+}
+
+bool GameSystem::_FailCrop(Thread* t, void *parameter)
+{
+    ADDCROP *pObject = static_cast<ADDCROP*>(parameter);
+    
+    Map *pMap = pObject->pMap;
+    Field *pField = pObject->pField;
+    
+    delete pObject;
+    
+    pMap->EndProcess(pField->GetPosition().x, pField->GetPosition().y);
+    
     return true;
 }
 
