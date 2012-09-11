@@ -26,12 +26,27 @@ PlayerMap::~PlayerMap()
     delete m_pAllocator;
 }
 
-bool PlayerMap::init(GameSystem * system, Network * network)
+void PlayerMap::update(float dt)
 {
-    FriendVillage * vill = new FriendVillage(m_width, system->GetPlayer()->GetUserInfo(), network, system->GetPlayer()->GetUserID());
-    vill->init();
+    std::vector<ObjectInMap *> object = m_pSystem->GetAllObject();
+    std::vector<ObjectInMap *>::iterator i;
     
-    if (!Map::init(system, vill))
+    for (i = object.begin(); i != object.end(); ++i)
+        if ((*i)->UpdateSystem())
+        {
+            int index = (*i)->GetIndex();
+            
+            if( (*i)->isConstruct() )
+                m_pSystem->buildingConstructCheck(index);
+            
+            SyncPos(this, *i);
+        }
+}
+
+
+bool PlayerMap::init(GameSystem * system)
+{
+    if (!Map::init(system, NULL))
         return false;
     
     m_pAllocator = new Allocator(m_pTile, m_width, this);
@@ -215,7 +230,7 @@ void PlayerMap::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             {
                 POINT<int> pos(x, y);
                 
-                ObjectInMap *pObj = m_pVillage->FindObject(pos);
+                ObjectInMap *pObj = m_pSystem->FindObject(pos);
                 
                 if (pObj)
                 {
@@ -223,8 +238,7 @@ void PlayerMap::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                     
                     ThreadObject fail(this), complete(this);
                     
-                    complete.pFunc      = THREAD_FUNC(Map::_AddSyncPos);
-                    complete.parameter  = (void *)MAKEWORD(x, y);
+                    complete.pFunc      = THREAD_FUNC(Map::_SyncPos);
                     
                     fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
                     fail.parameter      = new TALKBOX(NULL, x, y);

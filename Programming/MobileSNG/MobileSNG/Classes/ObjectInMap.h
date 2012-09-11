@@ -39,6 +39,8 @@ protected:
     int                     m_index;
     objectState             m_beforeState;
     
+    bool                    m_needSync;
+    
 public:
     objectState             m_state;
     POINT<int>              m_position;
@@ -70,6 +72,8 @@ public:
 public:
     void                    SetIndex(int i);
     int                     GetIndex();
+    
+    void                    NeedSync() { m_needSync = true; }
 
     inline void SetPosition(POINT<int> pos) { m_position = pos; }
     inline POINT<int>              GetPosition() { return m_position; }

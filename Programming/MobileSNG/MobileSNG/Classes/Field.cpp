@@ -41,6 +41,12 @@ Crop* Field::addCrop(int id, int time, ObjectInfoMgr *pInfoMgr)
 
 bool Field::UpdateSystem()
 {
+    if (m_needSync)
+    {
+        m_needSync = false;
+        return true;
+    }
+    
     if(m_pCrop == NULL) return false;
     
     m_beforeState = m_state;

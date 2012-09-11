@@ -22,7 +22,8 @@ public:
     PlayerMap(int width);
     ~PlayerMap();
     
-    virtual bool init(GameSystem * system, Network * network);
+    virtual bool init(GameSystem * system);
+    virtual void update(float dt);
     
     void beginEdit();
     void beginEdit(int type, int id);

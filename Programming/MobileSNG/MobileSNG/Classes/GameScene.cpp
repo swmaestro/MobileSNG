@@ -160,7 +160,7 @@ bool GameScene::_initMap()
     CCSize wsize = CCDirector::sharedDirector()->getWinSize();
     
     m_pPlayerMap = new PlayerMap(7);
-    m_pPlayerMap->init(m_pSystem, m_pNetwork);
+    m_pPlayerMap->init(m_pSystem);
     m_pPlayerMap->setAnchorPoint(ccp(0.5, 0.5));
     m_pPlayerMap->filtScale(1);
     m_pPlayerMap->filtPosition(ccp(wsize.width / 2, wsize.height / 2));

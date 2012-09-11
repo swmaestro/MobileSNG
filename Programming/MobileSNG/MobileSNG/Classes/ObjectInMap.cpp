@@ -17,6 +17,8 @@ ObjectInMap::ObjectInMap()
     m_id            = -1;
     m_index         = -1;
     m_beforeState   = -1;
+    
+    m_needSync      = false;
 }
 
 ObjectInMap::ObjectInMap(objectState state, POINT<int> position, SIZE<int> size, OBJECT_DIRECTION dir, int id, int index)
@@ -28,6 +30,8 @@ ObjectInMap::ObjectInMap(objectState state, POINT<int> position, SIZE<int> size,
     m_id            = id;
     m_index         = index;
     m_beforeState   = -1;
+    
+    m_needSync      = false;
 }
 
 ObjectInMap::ObjectInMap(const ObjectInMap *pObject)
@@ -39,6 +43,8 @@ ObjectInMap::ObjectInMap(const ObjectInMap *pObject)
     m_id            = pObject->m_id;
     m_index         = pObject->m_index;
     m_beforeState   = pObject->m_beforeState;
+    
+    m_needSync      = pObject->m_needSync;
 }
 
 ObjectInMap::~ObjectInMap()
