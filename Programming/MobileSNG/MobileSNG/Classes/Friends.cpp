@@ -145,12 +145,12 @@ void Friends::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
     CCLabelTTF * l = static_cast<CCLabelTTF *>(t->getChildByTag(0));
     const char * name = l->getString();
 
-//    if (m_pSystem->GetPlayer()->addFollowing(name, m_pNetwork))
-    {
-        UserInfo uInfo;
-        m_pSocial->FindUser(name, &uInfo, USER_SEARCH_ENUM_ID);
-        EnterFriendVillage(&uInfo);
-    }
+    //if (!m_pSystem->GetPlayer()->addFollowing(name, m_pNetwork))
+    //    return;
+    
+    UserInfo uInfo;
+    m_pSocial->FindUser(name, &uInfo, USER_SEARCH_ENUM_ID);
+    EnterFriendVillage(&uInfo);
 }
 
 bool Friends::onTextFieldInsertText(cocos2d::CCTextFieldTTF * sender, const char * text, int nLen)

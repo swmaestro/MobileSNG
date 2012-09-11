@@ -209,7 +209,7 @@ void Map::_initTile()
             tile->addChild(spr, TILE_NONE, TILE_NONE);
             m_pTile->addChild(tile, m_width - i - j, MAKEWORD(i, j));
             
-            ObjectInMap * oim = m_pSystem->FindObject(POINT<int>(i, j));
+            ObjectInMap * oim = m_pVillage->FindObject(POINT<int>(i, j));
             
             if (oim)
             {
