@@ -369,5 +369,5 @@ void* GameScene::serverUpdate(void *p)
 
 void GameScene::villageUpdate(float t)
 {
-    m_pSystem->VillageUpdate();
+//    m_pSystem->VillageUpdate();
 }
