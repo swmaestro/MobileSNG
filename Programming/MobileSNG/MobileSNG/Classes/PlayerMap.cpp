@@ -209,14 +209,22 @@ void PlayerMap::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
             {
                 POINT<int> pos(x, y);
                 
-                ObjectInMap *pObj = NULL;
+                ObjectInMap *pObj = m_pVillage->FindObject(pos);
                 
-                ThreadObject fail(this), complete(this);
-                complete.pFunc      = THREAD_FUNC(Map::SyncPos);
-                fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
-                fail.parameter      = new TALKBOX(NULL, x, y);
-                
-                m_pSystem->Harvest(pos, &pObj, complete, fail);
+                if (pObj)
+                {
+                    StartProcess(x, y);
+                    
+                    ThreadObject fail(this), complete(this);
+                    
+                    complete.pFunc      = THREAD_FUNC(Map::_AddSyncPos);
+                    complete.parameter  = (void *)MAKEWORD(x, y);
+                    
+                    fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
+                    fail.parameter      = new TALKBOX(NULL, x, y);
+                    
+                    m_pSystem->Harvest(pos, &pObj, complete, fail);
+                }
             }
         }
     }

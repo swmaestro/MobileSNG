@@ -256,7 +256,8 @@ void GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut, ThreadObject comp
 {
     ObjectInMap *pObject = m_pMap->FindObject(pos);
     
-    if(pObject == NULL) return;
+    if(pObject == NULL)
+        return;
     
     *ppOut = pObject;
     
@@ -265,7 +266,7 @@ void GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut, ThreadObject comp
     work.pFunc = (bool (Thread::*)(Thread*, void*))(&GameSystem::_Harvest);
     work.parameter = pObject;
     
-    complete.parameter  = pObject;
+//    complete.parameter  = pObject;
 //    fail.parameter      = pObject;
     static_cast<TALKBOX*>(fail.parameter)->pObj = pObject;
     

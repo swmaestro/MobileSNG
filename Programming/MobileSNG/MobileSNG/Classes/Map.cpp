@@ -71,6 +71,14 @@ void Map::update(float dt)
     std::vector<ObjectInMap *> object = m_pVillage->GetAllObject();
     std::vector<ObjectInMap *>::iterator i;
     
+    while (!m_needSyncPos.empty())
+    {
+        int n = *m_needSyncPos.rbegin();
+        SyncPos(this, m_pVillage->FindObject(POINT<int>(LOWORD(n), HIWORD(n))));
+        
+        m_needSyncPos.pop_back();
+    }
+    
     for (i = object.begin(); i != object.end(); ++i)
         if ((*i)->UpdateSystem())
         {
@@ -85,8 +93,6 @@ void Map::update(float dt)
 
 bool Map::SyncPos(Thread *t, ObjectInMap *oim)
 {
-    EndProcess(oim->GetPosition().x, oim->GetPosition().y);
-    
     Map *pThisClass = static_cast<Map*>(t);
     ObjectInfoMgr * infoMgr = pThisClass->m_pSystem->GetInfoMgr();
 
@@ -172,28 +178,28 @@ bool Map::SyncPos(Thread *t, ObjectInMap *oim)
         tile->addChild(spr, TILE_CROP, TILE_CROP);
     }
     
+    pThisClass->EndProcess(oim->GetPosition().x, oim->GetPosition().y);
+    
     return true;
 }
 
 void Map::StartProcess(int i, int j)
 {
-    CCProgressTo * prg = CCProgressTo::create(1, 100);
-    CCSprite * spr = CCSprite::create("Process.png");
+    CCNode * tile = m_pTile->getChildByTag(MAKEWORD(i, j));
+    CCProgressTimer * timer = (CCProgressTimer *)tile->getChildByTag(TILE_PROCESS);
     
-    CCProgressTimer * timer = CCProgressTimer::create(spr);
+    CCProgressTo * prg = CCProgressTo::create(1, 100);
+    timer->setVisible(true);
+    timer->stopAllActions();
     timer->setType(kCCProgressTimerTypeRadial);
     timer->setAnchorPoint(ccp(0.5, 0.5));
     timer->runAction(prg);
-    
-    CCNode * tile = m_pTile->getChildByTag(MAKEWORD(i, j));
-    tile->removeChildByTag(TILE_PROCESS, true);
-    tile->addChild(timer, TILE_PROCESS, TILE_PROCESS);
 }
 
 void Map::EndProcess(int i, int j)
 {
     CCNode * tile = m_pTile->getChildByTag(MAKEWORD(i, j));
-    tile->removeChildByTag(TILE_PROCESS, true);
+    tile->getChildByTag(TILE_PROCESS)->setVisible(false);
 }
 
 void Map::_initTile()
@@ -210,10 +216,19 @@ void Map::_initTile()
             tile->setAnchorPoint(ccp(0.5, 0.5));
             tile->setPosition(ccp((i - j) * tileWidth / 2, (i + j) * tileHeight / 2));
             
-            CCSprite * spr = CCSprite::create("Tile.png");
-            spr->setAnchorPoint(ccp(0.5, 0.5));
+            CCSprite * spr;
             
+            spr = CCSprite::create("Tile.png");
+            spr->setAnchorPoint(ccp(0.5, 0.5));
             tile->addChild(spr, TILE_NONE, TILE_NONE);
+            
+            spr = CCSprite::create("Process.png");
+            
+            CCProgressTimer * timer = CCProgressTimer::create(spr);
+            timer->setAnchorPoint(ccp(0.5, 0.5));
+            timer->setVisible(false);
+            tile->addChild(timer, TILE_PROCESS, TILE_PROCESS);
+            
             m_pTile->addChild(tile, m_width - i - j, MAKEWORD(i, j));
             
             ObjectInMap * oim = m_pVillage->FindObject(POINT<int>(i, j));
@@ -373,6 +388,7 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
 //            tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
 //            
 //            m_pTalkbox->setVisible(false);
+            
             ThreadObject complete(this);
             ThreadObject fail(this);
             
@@ -399,15 +415,22 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
         {
             POINT<int> pos(x, y);
             
-            ObjectInMap *pObj = NULL;
+            ObjectInMap *pObj = m_pVillage->FindObject(pos);
             
-            StartProcess(x, y);
-            ThreadObject fail(this), complete(this);
-            complete.pFunc      = THREAD_FUNC(Map::SyncPos);
-            fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
-            fail.parameter      = new TALKBOX(NULL, x, y);
-            
-            m_pSystem->Harvest(pos, &pObj, complete, fail);
+            if (pObj)
+            {
+                StartProcess(x, y);
+                
+                ThreadObject fail(this), complete(this);
+                
+                complete.pFunc      = THREAD_FUNC(Map::_AddSyncPos);
+                complete.parameter  = (void *)MAKEWORD(x, y);
+                
+                fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
+                fail.parameter      = new TALKBOX(NULL, x, y);
+                
+                m_pSystem->Harvest(pos, &pObj, complete, fail);
+            }
         }
     }
     
@@ -465,7 +488,7 @@ bool Map::_ShowTalkBox(Thread *t, void *p)
 
     delete pTalk;
     
-    EndProcess(x, y);
+    pThisClass->EndProcess(x, y);
     
     if((pObj && pObj->GetType() != OBJECT_TYPE_NONE) == false) return false;
 
@@ -482,6 +505,15 @@ bool Map::_ShowTalkBox(Thread *t, void *p)
     printf("talk box view\n");
     pThisClass->EndProcess(x, y);
 
+    return true;
+}
+
+bool Map::_AddSyncPos(Thread *t, void *p)
+{
+    Map *pThisClass = static_cast<Map*>(t);
+    
+    pThisClass->m_needSyncPos.push_back((int)p);
+    
     return true;
 }
 

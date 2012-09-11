@@ -50,6 +50,7 @@ protected:
     int                 m_width;
     
     bool                m_isDragging, m_isScaling;
+    std::vector<int>    m_needSyncPos;
         
     int _cursorXY(cocos2d::CCPoint cur);
     
@@ -62,6 +63,7 @@ protected:
 public:
 //    bool _SyncPos(Thread *t, void *p);
     bool _ShowTalkBox(Thread *t,void *p);
+    bool _AddSyncPos(Thread *t, void *p);
     
 public:
     Map(int width);
