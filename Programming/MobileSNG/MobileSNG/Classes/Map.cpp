@@ -68,7 +68,11 @@ bool Map::init(GameSystem * system, FriendVillage * village)
 
 void Map::update(float dt)
 {
-    std::vector<ObjectInMap *> object = m_pVillage->GetAllObject();
+    std::vector<ObjectInMap *> object;
+    
+    if (m_pVillage) object = m_pVillage->GetAllObject();
+    else            object = m_pSystem->GetAllObject();
+    
     std::vector<ObjectInMap *>::iterator i;
     
     for (i = object.begin(); i != object.end(); ++i)
@@ -90,6 +94,8 @@ bool Map::SyncPos(Thread *t, ObjectInMap *oim)
 
     CCNode * tile = pThisClass->m_pTile->getChildByTag(MAKEWORD(oim->m_position.x, oim->m_position.y));
     std::string filename;
+    
+    tile->removeChildByTag(TILE_PREVIEW, true);
     
     if (oim->GetType() == OBJECT_TYPE_BUILDING)
     {
@@ -117,6 +123,9 @@ bool Map::SyncPos(Thread *t, ObjectInMap *oim)
             case BUILDING_STATE_DONE:
                 filename += "/Complete.png";
                 break;
+                
+            default:
+                return false;
         }
         
         tile->removeChildByTag(TILE_BUILDING, true);
@@ -130,68 +139,77 @@ bool Map::SyncPos(Thread *t, ObjectInMap *oim)
         Field * f = dynamic_cast<Field *>(oim);
         Crop * c = f->GetCrop();
         
+        if (!tile->getChildByTag(TILE_FARM))
+        {
+            CCSprite * spr = CCSprite::create("Farm/Complete.png");
+            spr->setAnchorPoint(ccp(0.5, 0.3));
+            tile->addChild(spr, TILE_FARM, TILE_FARM);
+        }
+            
         if (!c)
-        {
             tile->removeChildByTag(TILE_CROP, true);
-            return true;
-        }
-        
-        CropInfo * info;
-        infoMgr->searchInfo(c->GetID(), &info);
-        filename = info->GetName();
-        
-        switch (f->GetState())
+        else
         {
-            case CROP_STATE_GROW_1:
-                filename += "/01.png";
-                break;
-                
-            case CROP_STATE_GROW_2:
-                filename += "/02.png";
-                break;
-                
-            case CROP_STATE_GROW_3:
-                filename += "/03.png";
-                break;
-                
-            case CROP_STATE_DONE:
-                filename += "/Complete.png";
-                break;
-                
-            case CROP_STATE_FAIL:
-                filename = "FailCrop.png";
-                break;
+            CropInfo * info;
+            infoMgr->searchInfo(c->GetID(), &info);
+            filename = info->GetName();
+            
+            switch (f->GetState())
+            {
+                case CROP_STATE_GROW_1:
+                    filename += "/01.png";
+                    break;
+                    
+                case CROP_STATE_GROW_2:
+                    filename += "/02.png";
+                    break;
+                    
+                case CROP_STATE_GROW_3:
+                    filename += "/03.png";
+                    break;
+                    
+                case CROP_STATE_DONE:
+                    filename += "/Complete.png";
+                    break;
+                    
+                case CROP_STATE_FAIL:
+                    filename = "FailCrop.png";
+                    break;
+                    
+                default:
+                    return false;
+            }
+            
+            tile->removeChildByTag(TILE_CROP, true);
+            
+            CCSprite * spr = CCSprite::create(filename.c_str());
+            spr->setAnchorPoint(ccp(0.5, 0.3));
+            tile->addChild(spr, TILE_CROP, TILE_CROP);
         }
-        
-        tile->removeChildByTag(TILE_CROP, true);
-        
-        CCSprite * spr = CCSprite::create(filename.c_str());
-        spr->setAnchorPoint(ccp(0.5, 0.3));
-        tile->addChild(spr, TILE_CROP, TILE_CROP);
     }
+    
+    pThisClass->EndProcess(oim->GetPosition().x, oim->GetPosition().y);
     
     return true;
 }
 
 void Map::StartProcess(int i, int j)
 {
-    CCProgressTo * prg = CCProgressTo::create(1, 100);
-    CCSprite * spr = CCSprite::create("Process.png");
+    CCNode * tile = m_pTile->getChildByTag(MAKEWORD(i, j));
+    CCProgressTimer * timer = (CCProgressTimer *)tile->getChildByTag(TILE_PROCESS);
     
-    CCProgressTimer * timer = CCProgressTimer::create(spr);
+    CCProgressTo * prg = CCProgressTo::create(1, 100);
+    timer->setVisible(true);
+    timer->stopAllActions();
     timer->setType(kCCProgressTimerTypeRadial);
     timer->setAnchorPoint(ccp(0.5, 0.5));
     timer->runAction(prg);
-    
-    CCNode * tile = m_pTile->getChildByTag(MAKEWORD(i, j));
-    tile->removeChildByTag(TILE_PROCESS, true);
-    tile->addChild(timer, TILE_PROCESS, TILE_PROCESS);
 }
 
 void Map::EndProcess(int i, int j)
 {
     CCNode * tile = m_pTile->getChildByTag(MAKEWORD(i, j));
-    tile->removeChildByTag(TILE_PROCESS, true);
+    tile->getChildByTag(TILE_PROCESS)->setVisible(false);
 }
 
 void Map::_initTile()
@@ -208,14 +226,25 @@ void Map::_initTile()
             tile->setAnchorPoint(ccp(0.5, 0.5));
             tile->setPosition(ccp((i - j) * tileWidth / 2, (i + j) * tileHeight / 2));
             
-            CCSprite * spr = CCSprite::create("Tile.png");
-            spr->setAnchorPoint(ccp(0.5, 0.5));
+            CCSprite * spr;
             
+            spr = CCSprite::create("Tile.png");
+            spr->setAnchorPoint(ccp(0.5, 0.5));
             tile->addChild(spr, TILE_NONE, TILE_NONE);
+            
+            spr = CCSprite::create("Process.png");
+            
+            CCProgressTimer * timer = CCProgressTimer::create(spr);
+            timer->setAnchorPoint(ccp(0.5, 0.5));
+            timer->setVisible(false);
+            tile->addChild(timer, TILE_PROCESS, TILE_PROCESS);
+            
             m_pTile->addChild(tile, m_width - i - j, MAKEWORD(i, j));
             
-            ObjectInMap * oim = m_pVillage->FindObject(POINT<int>(i, j));
-            
+            ObjectInMap * oim;
+            if (m_pVillage) oim = m_pVillage->FindObject(POINT<int>(i, j));
+            else            oim = m_pSystem->FindObject(POINT<int>(i, j));
+                
             if (oim)
             {
                 if (oim->GetType() == OBJECT_TYPE_FIELD)
@@ -226,7 +255,6 @@ void Map::_initTile()
                 }
                 
                 SyncPos(this, oim);
-                StartProcess(i, j);
             }
         }
     
@@ -357,58 +385,6 @@ void Map::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
         ++i;
     }
     
-    if (!m_isDragging && !m_isScaling)
-    {
-        CCTouch * pTouch = static_cast<CCTouch *>(*(pTouches->begin()));
-            
-        if (m_pTalkbox->Touch(pTouch))
-        {
-            CCPoint p = m_pTalkbox->GetPos();
-            ObjectInMap * oim = m_pSystem->FindObject(POINT<int>(p.x, p.y));
-//            CCNode * tile = m_pTile->getChildByTag(MAKEWORD(((int)p.x), ((int)p.y)));
-//            
-//            if (oim->GetType() == OBJECT_TYPE_FIELD && ((Field *)oim)->GetCrop() != NULL)
-//                tile->removeChildByTag(TILE_CROP, true);
-//            tile->removeChildByTag(TILE_BUILDING, true); //TILE_BUILDING == TILE_FARM
-//            
-//            m_pTalkbox->setVisible(false);
-            ThreadObject complete(this);
-            ThreadObject fail(this);
-            
-            fail.pFunc = THREAD_FUNC(Map::_failFunc);
-            fail.parameter = oim;
-            
-            complete.pFunc = THREAD_FUNC(Map::_removeObjectSprite);
-            complete.parameter = oim;
-            
-            m_pSystem->SellObject(oim, this, complete, fail, true);
-            return;
-        }
-        
-        if (m_pTalkbox->isVisible())
-            m_pTalkbox->setVisible(false);
-        
-        CCPoint p = pTouch->locationInView();
-        p = CCDirector::sharedDirector()->convertToGL(p);
-        
-        int t = _cursorXY(p);
-        int x = LOWORD(t), y = HIWORD(t);
-        
-        if (!(x < -m_width / 2 || x > m_width / 2 || y < -m_width / 2 || y > m_width / 2))
-        {
-            POINT<int> pos(x, y);
-            
-            ObjectInMap *pObj = NULL;
-            
-            ThreadObject fail(this), complete(this);
-            complete.pFunc      = THREAD_FUNC(Map::SyncPos);
-            fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
-            fail.parameter      = new TALKBOX(NULL, x, y);
-            
-            m_pSystem->Harvest(pos, &pObj, complete, fail);
-        }
-    }
-    
     m_isDragging = false;
     m_isScaling = false;
 }
@@ -443,13 +419,13 @@ CCPoint Map::filtPosition(CCPoint pos)
     return pos;
 }
 
-//bool Map::_SyncPos(Thread *t, void *p)
-//{
-//    Map *pThisClass = static_cast<Map*>(t);
-//    ObjectInMap *pObj = static_cast<ObjectInMap*>(p);
-//    pThisClass->SyncPos(pObj);
-//    return true;
-//}
+bool Map::_SyncPos(Thread *t, void *p)
+{
+    ObjectInMap *pObj = static_cast<ObjectInMap*>(p);
+    pObj->NeedSync();
+    
+    return true;
+}
 
 bool Map::_ShowTalkBox(Thread *t, void *p)
 {
@@ -462,6 +438,8 @@ bool Map::_ShowTalkBox(Thread *t, void *p)
     int y = pTalk->y;
 
     delete pTalk;
+    
+    pThisClass->EndProcess(x, y);
     
     if((pObj && pObj->GetType() != OBJECT_TYPE_NONE) == false) return false;
 

@@ -26,12 +26,27 @@ PlayerMap::~PlayerMap()
     delete m_pAllocator;
 }
 
-bool PlayerMap::init(GameSystem * system, Network * network)
+void PlayerMap::update(float dt)
 {
-    FriendVillage * vill = new FriendVillage(m_width, system->GetPlayer()->GetUserInfo(), network, system->GetPlayer()->GetUserID());
-    vill->init();
+    std::vector<ObjectInMap *> object = m_pSystem->GetAllObject();
+    std::vector<ObjectInMap *>::iterator i;
     
-    if (!Map::init(system, vill))
+    for (i = object.begin(); i != object.end(); ++i)
+        if ((*i)->UpdateSystem())
+        {
+            int index = (*i)->GetIndex();
+            
+            if( (*i)->isConstruct() )
+                m_pSystem->buildingConstructCheck(index);
+            
+            SyncPos(this, *i);
+        }
+}
+
+
+bool PlayerMap::init(GameSystem * system)
+{
+    if (!Map::init(system, NULL))
         return false;
     
     m_pAllocator = new Allocator(m_pTile, m_width, this);
@@ -43,7 +58,11 @@ void PlayerMap::ccTouchesBegan(CCSet * pTouches, CCEvent * pEvent)
     CCSetIterator i = pTouches->begin();
     
     while (m_touchCnt < 1 && i != pTouches->end())
-        m_touchID[++m_touchCnt] = static_cast<CCTouch *>(*i++)->getID();
+    {
+        m_touchID[++m_touchCnt] = static_cast<CCTouch *>(*i)->getID();
+        m_touch[m_touchCnt] = ((CCTouch *)*i++)->locationInView();
+        m_touch[m_touchCnt] = CCDirector::sharedDirector()->convertToGL(m_touch[m_touchCnt]);
+    }
     
     if (m_isAllocating)
     {
@@ -155,21 +174,7 @@ void PlayerMap::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
 
 void PlayerMap::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
 {
-    CCSetIterator i = pTouches->begin();
-    
-    while (i != pTouches->end() && m_touchCnt >= 0)
-    {
-        if (m_touchCnt >= 1 && m_touchID[1] == static_cast<CCTouch *>(*i)->getID())
-        {
-            m_touch[0] = m_touch[1];
-            m_touchID[0] = m_touchID[1];
-        }
-        
-        --m_touchCnt;
-        ++i;
-    }
-    
-    if (!m_isDragging && !m_isScaling)
+    if (m_touchCnt == 0 && pTouches->count() == 1 && !m_isDragging && !m_isScaling)
     {
         if(m_isAllocating)
             m_pAllocator->TouchesEnd();
@@ -199,32 +204,58 @@ void PlayerMap::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
                 fail.parameter = oim;
                 
                 m_pSystem->SellObject(oim, this, complete, fail, true);
-                return;
             }
-            
-            if (m_pTalkbox->isVisible())
-                m_pTalkbox->setVisible(false);
-            
-            CCPoint p = pTouch->locationInView();
-            p = CCDirector::sharedDirector()->convertToGL(p);
-            
-            int t = _cursorXY(p);
-            int x = LOWORD(t), y = HIWORD(t);
-            
-            if (!(x < -m_width / 2 || x > m_width / 2 || y < -m_width / 2 || y > m_width / 2))
+            else
             {
-                POINT<int> pos(x, y);
+                if (m_pTalkbox->isVisible())
+                    m_pTalkbox->setVisible(false);
                 
-                ObjectInMap *pObj = NULL;
+                CCPoint p = pTouch->locationInView();
+                p = CCDirector::sharedDirector()->convertToGL(p);
                 
-                ThreadObject fail(this), complete(this);
-                complete.pFunc      = THREAD_FUNC(Map::SyncPos);
-                fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
-                fail.parameter      = new TALKBOX(NULL, x, y);
+                int t = _cursorXY(p);
+                int x = LOWORD(t), y = HIWORD(t);
                 
-                m_pSystem->Harvest(pos, &pObj, complete, fail);
+                int prev = _cursorXY(m_touch[0]);
+                
+                if (prev == t)
+                    if (!(x < -m_width / 2 || x > m_width / 2 || y < -m_width / 2 || y > m_width / 2))
+                    {
+                        POINT<int> pos(x, y);
+                        
+                        ObjectInMap *pObj = m_pSystem->FindObject(pos);
+                        
+                        if (pObj)
+                        {
+                            StartProcess(x, y);
+                            
+                            ThreadObject fail(this), complete(this);
+                            
+                            complete.pFunc      = THREAD_FUNC(Map::_SyncPos);
+                            
+                            fail.pFunc          = THREAD_FUNC(Map::_ShowTalkBox);
+                            fail.parameter      = new TALKBOX(NULL, x, y);
+                            
+                            m_pSystem->Harvest(pos, &pObj, complete, fail);
+                        }
+                    }
             }
         }
+    }
+    
+    
+    CCSetIterator i = pTouches->begin();
+    
+    while (i != pTouches->end() && m_touchCnt >= 0)
+    {
+        if (m_touchCnt >= 1 && m_touchID[1] == static_cast<CCTouch *>(*i)->getID())
+        {
+            m_touch[0] = m_touch[1];
+            m_touchID[0] = m_touchID[1];
+        }
+        
+        --m_touchCnt;
+        ++i;
     }
     
     m_isDragging = false;

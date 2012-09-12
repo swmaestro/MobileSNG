@@ -257,6 +257,8 @@
 		C583633415D52560006F4F2A /* Allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C583633315D52560006F4F2A /* Allocator.cpp */; };
 		C583633615D5273C006F4F2A /* EditTile.png in Resources */ = {isa = PBXBuildFile; fileRef = C583633515D5273C006F4F2A /* EditTile.png */; };
 		C585FEBE15FEC57C0075AFB6 /* FailCrop.png in Resources */ = {isa = PBXBuildFile; fileRef = C585FEBD15FEC57C0075AFB6 /* FailCrop.png */; };
+		C585FECF15FF64E60075AFB6 /* InitScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C585FECD15FF64E60075AFB6 /* InitScene.cpp */; };
+		C585FED115FF69260075AFB6 /* Logo-Background.png in Resources */ = {isa = PBXBuildFile; fileRef = C585FED015FF69260075AFB6 /* Logo-Background.png */; };
 		C594CB0315E46F7000052769 /* Status.png in Resources */ = {isa = PBXBuildFile; fileRef = C594CB0215E46F7000052769 /* Status.png */; };
 		C5A77A5B15F1E570002DEB9B /* Friends.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5A77A5A15F1E570002DEB9B /* Friends.cpp */; };
 		C5A77A5D15F220F5002DEB9B /* Friends-Background.png in Resources */ = {isa = PBXBuildFile; fileRef = C5A77A5C15F220F5002DEB9B /* Friends-Background.png */; };
@@ -332,7 +334,6 @@
 		3C9364C215B0FF6300860E6A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		3C9364C615B0FF6300860E6A /* CloseNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CloseNormal.png; path = Resources/CloseNormal.png; sourceTree = "<group>"; };
 		3C9364C815B0FF6300860E6A /* CloseSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CloseSelected.png; path = Resources/CloseSelected.png; sourceTree = "<group>"; };
-		3C9364CA15B0FF6300860E6A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		3C9364CC15B0FF6300860E6A /* HelloWorld.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HelloWorld.png; path = Resources/HelloWorld.png; sourceTree = "<group>"; };
 		3C9364CE15B0FF6300860E6A /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
 		3C9364D015B0FF6300860E6A /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small-50.png"; path = "Resources/Icon-Small-50.png"; sourceTree = "<group>"; };
@@ -800,6 +801,9 @@
 		C583633315D52560006F4F2A /* Allocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; name = Allocator.cpp; path = Classes/Allocator.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		C583633515D5273C006F4F2A /* EditTile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EditTile.png; path = Resources/EditTile.png; sourceTree = "<group>"; };
 		C585FEBD15FEC57C0075AFB6 /* FailCrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FailCrop.png; path = Resources/FailCrop.png; sourceTree = "<group>"; };
+		C585FECD15FF64E60075AFB6 /* InitScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InitScene.cpp; path = Classes/InitScene.cpp; sourceTree = "<group>"; };
+		C585FECE15FF64E60075AFB6 /* InitScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InitScene.h; path = Classes/InitScene.h; sourceTree = "<group>"; };
+		C585FED015FF69260075AFB6 /* Logo-Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Logo-Background.png"; path = "Resources/Logo-Background.png"; sourceTree = "<group>"; };
 		C594CB0215E46F7000052769 /* Status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Status.png; path = Resources/Status.png; sourceTree = "<group>"; };
 		C5A77A5A15F1E570002DEB9B /* Friends.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Friends.cpp; path = Classes/Friends.cpp; sourceTree = "<group>"; };
 		C5A77A5C15F220F5002DEB9B /* Friends-Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Friends-Background.png"; path = "Resources/Friends-Background.png"; sourceTree = "<group>"; };
@@ -1127,6 +1131,7 @@
 			isa = PBXGroup;
 			children = (
 				3C117AF7160033490035A251 /* OK.png */,
+				C585FED015FF69260075AFB6 /* Logo-Background.png */,
 				C585FEBD15FEC57C0075AFB6 /* FailCrop.png */,
 				3CEA3D0115FB7C0A00C64286 /* Friends-List.png */,
 				C50AD84915F97A3100CAFFD5 /* Login-Background.png */,
@@ -1167,7 +1172,6 @@
 				3CAB287E15BD0E3D0003DDE2 /* Friends.png */,
 				3CAB287F15BD0E3D0003DDE2 /* Shop.png */,
 				3C9364C815B0FF6300860E6A /* CloseSelected.png */,
-				3C9364CA15B0FF6300860E6A /* Default.png */,
 				3C9364CC15B0FF6300860E6A /* HelloWorld.png */,
 				3C9364CE15B0FF6300860E6A /* Icon-72.png */,
 				3C9364D015B0FF6300860E6A /* Icon-Small-50.png */,
@@ -1977,6 +1981,7 @@
 		3CAB259215B7A9730003DDE2 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				C585FECC15FF64D50075AFB6 /* Init */,
 				3C9CF8C215DA91CC00890B36 /* Login */,
 				3CAB259415B7A9860003DDE2 /* Menu */,
 				3CAB259315B7A9780003DDE2 /* Game */,
@@ -2151,6 +2156,15 @@
 			name = Allocator;
 			sourceTree = "<group>";
 		};
+		C585FECC15FF64D50075AFB6 /* Init */ = {
+			isa = PBXGroup;
+			children = (
+				C585FECD15FF64E60075AFB6 /* InitScene.cpp */,
+				C585FECE15FF64E60075AFB6 /* InitScene.h */,
+			);
+			name = Init;
+			sourceTree = "<group>";
+		};
 		C5D3E46315E25BFF005D07BE /* Relocator */ = {
 			isa = PBXGroup;
 			children = (
@@ -2263,6 +2277,8 @@
 				3CEA3D0215FB7C0A00C64286 /* Friends-List.png in Resources */,
 				C585FEBE15FEC57C0075AFB6 /* FailCrop.png in Resources */,
 				3C117AF81600334A0035A251 /* OK.png in Resources */,
+				C585FED115FF69260075AFB6 /* Logo-Background.png in Resources */,
+>>>>>>> 565838c0090e24e65129377666d66dab2278bd93
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2475,6 +2491,7 @@
 				C529688415FC7A7F00F460DE /* PlayerMap.cpp in Sources */,
 				3C83956515FC68BE00CBC718 /* VillageInfo.cpp in Sources */,
 				3C117AF41600249F0035A251 /* GameMessageBox.cpp in Sources */,
+				C585FECF15FF64E60075AFB6 /* InitScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

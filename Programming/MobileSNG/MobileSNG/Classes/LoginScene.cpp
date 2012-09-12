@@ -48,6 +48,9 @@ CCScene* LoginScene::scene()
 
 bool LoginScene::init()
 {
+    if (!CCLayer::init())
+        return false;
+    
     m_pNet      = new Network;
     SystemInfo *pSystem = new SystemInfo(m_pNet);
     

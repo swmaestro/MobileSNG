@@ -60,7 +60,7 @@ protected:
     GameSystem * m_pSystem;
     
 public:
-//    bool _SyncPos(Thread *t, void *p);
+    bool _SyncPos(Thread *t, void *p);
     bool _ShowTalkBox(Thread *t,void *p);
     
 public:

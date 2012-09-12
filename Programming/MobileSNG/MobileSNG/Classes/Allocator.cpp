@@ -78,11 +78,13 @@ void Allocator::Apply()
         if (tile == NULL)
             continue;
         
-        std::string filename = m_name + "/01.png";
+        //std::string filename = m_name + "/01.png";
         
-        CCSprite * spr = CCSprite::create(filename.c_str());
+        //CCSprite * spr = CCSprite::create(filename.c_str());
         
         ObjectInMap oim;
+        
+        m_pMap->StartProcess(LOWORD(m_vec[i]), HIWORD(m_vec[i]));
         
         switch (m_type)
         {
@@ -92,15 +94,15 @@ void Allocator::Apply()
                     m_pSystem->addCrop(f, m_pMap, m_id, 0, true, true);
                 }
                 
-                spr->setAnchorPoint(ccp(0.5, 0.3));
-                tile->addChild(spr, TILE_CROP, TILE_CROP);
+                //spr->setAnchorPoint(ccp(0.5, 0.3));
+                //tile->addChild(spr, TILE_CROP, TILE_CROP);
                 break;
                 
             case OBJ_BUILDING:
                 {
                     BuildingInfo * info;
                     m_pSystem->GetInfoMgr()->searchInfo(m_id, &info);
-                    spr->setAnchorPoint(ccp(0.5, 0.3 / ((info->GetSize().width + info->GetSize().height) / 2)));
+                    //spr->setAnchorPoint(ccp(0.5, 0.3 / ((info->GetSize().width + info->GetSize().height) / 2)));
                     
                     oim = ObjectInMap(0, POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i])),
                                       info->GetSize(), OBJECT_DIRECTION_LEFT, m_id, 0);
@@ -109,7 +111,7 @@ void Allocator::Apply()
                     m_pSystem->addObject(&b, m_pMap, 0, -1, true);
                 }
                 
-                tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);
+                //tile->addChild(spr, TILE_BUILDING, TILE_BUILDING);
                 break;
                 
             case OBJ_FARM:
@@ -120,8 +122,8 @@ void Allocator::Apply()
                     m_pSystem->addObject(&f, m_pMap, 0, -1, true);
                 }
                 
-                spr->setAnchorPoint(ccp(0.5, 0.3));
-                tile->addChild(spr, TILE_FARM, TILE_FARM);
+                //spr->setAnchorPoint(ccp(0.5, 0.3));
+                //tile->addChild(spr, TILE_FARM, TILE_FARM);
                 break;
         }
     }
@@ -129,7 +131,11 @@ void Allocator::Apply()
 
 void Allocator::Cancel()
 {
-    
+    for (int i = 0; i < m_vec.size(); ++i)
+    {
+        CCNode * tile = m_tile->getChildByTag(m_vec[i]);
+        tile->removeChildByTag(TILE_PREVIEW, true);
+    }
 }
 
 void Allocator::Clear()
@@ -138,15 +144,8 @@ void Allocator::Clear()
         for (int j = -m_width / 2; j <= m_width / 2; ++j)
         {
             CCNode * tile = m_tile->getChildByTag(MAKEWORD(i, j));
-            tile->removeChildByTag(TILE_EDIT, true);
+            tile->removeChildByTag(TILE_EDIT, false);
         }
-            
-    
-    for (int i = 0; i < m_vec.size(); ++i)
-    {
-        CCNode * tile = m_tile->getChildByTag(m_vec[i]);
-        tile->removeChildByTag(TILE_PREVIEW, true);
-    }
 }
 
 void Allocator::TouchesBegin(int i, int j)

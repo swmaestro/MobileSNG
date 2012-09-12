@@ -256,7 +256,8 @@ void GameSystem::Harvest(POINT<int> &pos, ObjectInMap **ppOut, ThreadObject comp
 {
     ObjectInMap *pObject = m_pMap->FindObject(pos);
     
-    if(pObject == NULL) return;
+    if(pObject == NULL)
+        return;
     
     *ppOut = pObject;
     
@@ -433,9 +434,14 @@ void GameSystem::addCrop(Field *pField, Map *pMap, int id, int time, bool isAdd,
     ThreadObject work(this), fail(this), comp(this);
     work.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_addCrop);
     work.parameter  = new ADDCROP(pField, id, time, isAdd, pMap);
+    
     fail.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_FailCrop);
     fail.parameter  = new ADDCROP(pField, id, time, isAdd, pMap);
+
+    
     comp.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_CompCrop);
+    comp.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_FailCrop);
+>>>>>>> 565838c0090e24e65129377666d66dab2278bd93
     comp.parameter  = new ADDCROP(pField, id, time, isAdd, pMap);
     
     if(isThread)
@@ -516,7 +522,8 @@ bool GameSystem::_Harvest(Thread* t, void *parameter)
         }
         else
         {
-            if(thisClass-> _singleProduct(pBuilding) == false) return false;
+            if(thisClass-> _singleProduct(pBuilding) == false)
+                return false;
             else return true;
         }
     }
@@ -565,13 +572,12 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
     ObjectInMap obj = pAddObject->obj;
     int time = pAddObject->time;
     int index = pAddObject->index;
-    Map *pMap = pAddObject->pMap;
+//    Map *pMap = pAddObject->pMap;
     
     delete pAddObject;
     
-    
-    if(m_isInit == false)
-        pMap->StartProcess(obj.GetPosition().x, obj.GetPosition().y);
+//    if(m_isInit == false)
+//        pMap->StartProcess(obj.GetPosition().x, obj.GetPosition().y);
     
     if(obj.GetType() == OBJECT_TYPE_CROP)
         return false;
@@ -595,6 +601,8 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
         }
         
         obj.SetIndex(idx);
+        obj.NeedSync();
+
         pCreatedObject = pThisClass->m_pMap->addObject(&obj, pThisClass->m_pInfoMgr, 0);
         if( pCreatedObject != NULL )
         {
@@ -604,6 +612,7 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
         }
         else
             return false;
+        
         if(pThisClass->_newObject(obj.GetID(), obj.GetIndex(), obj.GetPosition(), obj.GetDirection()) == false)
         {
             //서버에서 실패한거니까, 서버 통해서 재거하지 말고 클라 자체에서 제거하면되.
@@ -617,7 +626,6 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
         }
         
         pThisClass->m_pPlayer->AddMoney(-price);
-        
         return true;
     }
     
@@ -636,6 +644,7 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
         return false;
     }
     
+    obj.NeedSync();
     return true;
 }
 
@@ -697,12 +706,12 @@ bool GameSystem::_addCrop(Thread* t, void *parameter)
     int id = pAddCrop->id;
     int time = pAddCrop->time;
     bool isAdd = pAddCrop->isAdd;
-    Map *pMap = pAddCrop->pMap;
+//    Map *pMap = pAddCrop->pMap;
     
     delete pAddCrop;
     
-    if(m_isInit == false)
-        pMap->StartProcess(pField->GetPosition().x, pField->GetPosition().y);
+//    if(m_isInit == false)
+//        pMap->StartProcess(pField->GetPosition().x, pField->GetPosition().y);
     
     int price = GetCommonInfo(pField)->GetPrice();
     int fieldIndex = pField->GetIndex();
