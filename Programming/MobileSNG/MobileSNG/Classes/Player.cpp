@@ -68,9 +68,6 @@ bool Player::hasFile()
 
 bool Player::AddMoney(int n)
 {
-    if( (m_pVillageInfo->money + n) < 0 )
-        return false;
-
     m_pVillageInfo->money += n;
     return true;
 }

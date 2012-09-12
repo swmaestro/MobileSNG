@@ -41,7 +41,8 @@ bool GameMessageBox::init(CCTexture2D *pTex, CCTexture2D *pOK)
     m_pBackGround->setAnchorPoint(ccp(0.5f,0.5f));
     m_pBackGround->setPosition(ccp(240, 160));
 
-    this->setContentSize(m_pBackGround->getContentSize());
+    CCSize size = CCDirector::sharedDirector()->getWinSize();
+    this->setContentSize(size);
     
     addChild(m_pBackGround);
 
@@ -59,9 +60,9 @@ bool GameMessageBox::init(CCTexture2D *pTex, CCTexture2D *pOK)
     
     const char *gameMsg[3];
     
-    gameMsg[GAMEMSGBOX_TAG_ADD_OBJECT_ERROR]    = "건물/밭 생성에 실패하였습니다.";
-    gameMsg[GAMEMSGBOX_TAG_ADD_CROP_ERROR]      = "작물 심기에 실패하였습니다";
-    gameMsg[GAMEMSGBOX_TAG_SELL_ERROR]          = "판매에 실패하였습니다";
+    gameMsg[GAMEMSGBOX_ENUM_ADD_OBJECT_ERROR]    = "건물/밭 생성에 실패하였습니다.";
+    gameMsg[GAMEMSGBOX_ENUM_ADD_CROP_ERROR]      = "작물 심기에 실패하였습니다";
+    gameMsg[GAMEMSGBOX_ENUM_SELL_ERROR]          = "판매에 실패하였습니다";
     
     for(int i=0; i<3; ++i)
     {
@@ -69,7 +70,7 @@ bool GameMessageBox::init(CCTexture2D *pTex, CCTexture2D *pOK)
         m_pGameMsg[i]->initWithString(gameMsg[i], "MarkerFelt", 14);
         m_pGameMsg[i]->setPosition(ccp(0, 50));
         m_pGameMsg[i]->setVisible(false);
-        m_pBackGround->addChild(m_pGameMsg[i], GAMEMSGBOX_TAG_NONE + i);
+        m_pBackGround->addChild(m_pGameMsg[i], GAMEMSGBOX_ENUM_NONE + i);
     }
         
     return true;

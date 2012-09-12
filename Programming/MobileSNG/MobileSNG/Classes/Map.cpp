@@ -489,3 +489,8 @@ bool Map::_failFunc(Thread *t, void *parameter)
     
     return true;
 }
+
+void Map::MsgBoxShow(GAMEMSGBOX_ENUM e)
+{
+    
+}

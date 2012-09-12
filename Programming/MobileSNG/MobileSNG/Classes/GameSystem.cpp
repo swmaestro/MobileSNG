@@ -440,8 +440,6 @@ void GameSystem::addCrop(Field *pField, Map *pMap, int id, int time, bool isAdd,
 
     
     comp.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_CompCrop);
-    comp.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_FailCrop);
->>>>>>> 565838c0090e24e65129377666d66dab2278bd93
     comp.parameter  = new ADDCROP(pField, id, time, isAdd, pMap);
     
     if(isThread)
@@ -518,13 +516,21 @@ bool GameSystem::_Harvest(Thread* t, void *parameter)
         {
             if(thisClass->_friendProduct(pBuilding) == false)
                 return false;
-            else return true;
+            else
+            {
+                m_pPlayer->AddMoney(money);
+                return true;
+            }
         }
         else
         {
             if(thisClass-> _singleProduct(pBuilding) == false)
                 return false;
-            else return true;
+            else
+            {
+                m_pPlayer->AddMoney(money);
+                return true;
+            }
         }
     }
     else
@@ -536,6 +542,7 @@ bool GameSystem::_Harvest(Thread* t, void *parameter)
         {
             Field *pField = dynamic_cast<Field*>(pObject);
             pField->removeCrop();
+            m_pPlayer->AddMoney(money);
         }
     }
     

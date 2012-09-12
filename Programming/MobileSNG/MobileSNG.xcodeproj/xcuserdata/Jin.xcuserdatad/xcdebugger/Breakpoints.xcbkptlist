@@ -120,18 +120,5 @@
          landmarkName = "class Friend"
          landmarkType = "3">
       </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MobileSNG/Classes/GameSystem.cpp"
-         timestampString = "369059592.40236"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "525"
-         endingLineNumber = "525"
-         landmarkName = "GameSystem::_Harvest(Thread* t, void *parameter)"
-         landmarkType = "5">
-      </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

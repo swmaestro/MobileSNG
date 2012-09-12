@@ -91,6 +91,7 @@ void Allocator::Apply()
             case OBJ_CROP:
                 {
                     Field * f = dynamic_cast<Field *>(m_pSystem->FindObject(POINT<int>(LOWORD(m_vec[i]), HIWORD(m_vec[i]))));
+                    
                     m_pSystem->addCrop(f, m_pMap, m_id, 0, true, true);
                 }
                 
@@ -108,6 +109,7 @@ void Allocator::Apply()
                                       info->GetSize(), OBJECT_DIRECTION_LEFT, m_id, 0);
                     
                     Building b(&oim, 0, m_pSystem->GetInfoMgr());
+                    
                     m_pSystem->addObject(&b, m_pMap, 0, -1, true);
                 }
                 
@@ -240,7 +242,7 @@ void Allocator::TouchesEnd()
         else
             info = m_pSystem->GetCommonInfo(OBJECT_TYPE_BUILDING, m_id);
         
-        m_pSystem->GetPlayer()->AddMoney(-info->GetPrice());
+//        m_pSystem->GetPlayer()->AddMoney(-info->GetPrice());
         
         m_touch = NULL;
     }

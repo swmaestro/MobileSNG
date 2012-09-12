@@ -2278,7 +2278,6 @@
 				C585FEBE15FEC57C0075AFB6 /* FailCrop.png in Resources */,
 				3C117AF81600334A0035A251 /* OK.png in Resources */,
 				C585FED115FF69260075AFB6 /* Logo-Background.png in Resources */,
->>>>>>> 565838c0090e24e65129377666d66dab2278bd93
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
