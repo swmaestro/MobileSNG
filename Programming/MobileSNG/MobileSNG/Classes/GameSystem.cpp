@@ -395,7 +395,7 @@ void GameSystem::addObject(ObjectInMap *pObj, Map *pMap, int time, int index, bo
     fail.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_FailObject);
     fail.parameter  = new ADDOBJECT(pObj, time, index, pMap);
     
-    comp.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_FailObject);
+    comp.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_CompObject);
     comp.parameter  = new ADDOBJECT(pObj, time, index, pMap);
     
     
@@ -435,7 +435,7 @@ void GameSystem::addCrop(Field *pField, Map *pMap, int id, int time, bool isAdd,
     work.parameter  = new ADDCROP(pField, id, time, isAdd, pMap);
     fail.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_FailCrop);
     fail.parameter  = new ADDCROP(pField, id, time, isAdd, pMap);
-    comp.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_FailCrop);
+    comp.pFunc      = (bool (Thread::*)(Thread*, void*))(&GameSystem::_CompCrop);
     comp.parameter  = new ADDCROP(pField, id, time, isAdd, pMap);
     
     if(isThread)
@@ -719,7 +719,9 @@ bool GameSystem::_addCrop(Thread* t, void *parameter)
         }
     }
     
-    m_pPlayer->AddMoney(-price);
+    if(m_isInit == false)
+        m_pPlayer->AddMoney(-price);
+    
     return true;
 }
 
@@ -898,6 +900,34 @@ bool GameSystem::_CompSell(Thread *t, void *parameter)
     delete pSell;
     
     pMap->EndProcess(pObject->GetPosition().x, pObject->GetPosition().y);
+    
+    return true;
+}
+
+bool GameSystem::_CompCrop(Thread *t, void *parameter)
+{
+    ADDCROP *pObject = static_cast<ADDCROP*>(parameter);
+    
+    Map *pMap = pObject->pMap;
+    Field *pField = pObject->pField;
+    
+    delete pObject;
+    
+    pMap->EndProcess(pField->GetPosition().x, pField->GetPosition().y);
+    
+    return true;
+}
+
+bool GameSystem::_CompObject(Thread *t, void *parameter)
+{
+    ADDOBJECT *pObject = static_cast<ADDOBJECT*>(parameter);
+    
+    Map *pMap = pObject->pMap;
+    ObjectInMap obj = pObject->obj;
+    
+    delete pObject;
+    
+    pMap->EndProcess(obj.GetPosition().x, obj.GetPosition().y);
     
     return true;
 }

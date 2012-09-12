@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C117AF41600249F0035A251 /* GameMessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C117AF21600249F0035A251 /* GameMessageBox.cpp */; };
+		3C117AF81600334A0035A251 /* OK.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C117AF7160033490035A251 /* OK.png */; };
 		3C12F6CD15D823E900295503 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C12F6CB15D823E900295503 /* Player.cpp */; };
 		3C40F86515F2DD1E00D018E8 /* CommonVillage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C40F86315F2DD1C00D018E8 /* CommonVillage.cpp */; };
 		3C5C1AFD15D23932006E7C0B /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C5C1AFC15D23932006E7C0B /* libcurl.a */; };
@@ -273,6 +275,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3C117AF21600249F0035A251 /* GameMessageBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameMessageBox.cpp; path = Classes/GameMessageBox.cpp; sourceTree = "<group>"; };
+		3C117AF31600249F0035A251 /* GameMessageBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameMessageBox.h; path = Classes/GameMessageBox.h; sourceTree = "<group>"; };
+		3C117AF7160033490035A251 /* OK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OK.png; path = Resources/OK.png; sourceTree = "<group>"; };
 		3C12F6CB15D823E900295503 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = Classes/Player.cpp; sourceTree = "<group>"; };
 		3C12F6CC15D823E900295503 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = Classes/Player.h; sourceTree = "<group>"; };
 		3C40F86315F2DD1C00D018E8 /* CommonVillage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CommonVillage.cpp; path = Classes/CommonVillage.cpp; sourceTree = "<group>"; };
@@ -834,9 +839,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3C117AF0160024900035A251 /* MessageBox */ = {
+			isa = PBXGroup;
+			children = (
+				3C117AF21600249F0035A251 /* GameMessageBox.cpp */,
+				3C117AF31600249F0035A251 /* GameMessageBox.h */,
+			);
+			name = MessageBox;
+			sourceTree = "<group>";
+		};
 		3C12F6C715D7EA7200295503 /* GameSystem */ = {
 			isa = PBXGroup;
 			children = (
+				3C117AF0160024900035A251 /* MessageBox */,
 				3C40F86D15F383CD00D018E8 /* CommVillage */,
 				3C72E20D15EC7B7C0039D769 /* ObjIdx */,
 				3CC7890015D393D000C19F95 /* GameSystem.cpp */,
@@ -1111,6 +1126,7 @@
 		3C9364C515B0FF6300860E6A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3C117AF7160033490035A251 /* OK.png */,
 				C585FEBD15FEC57C0075AFB6 /* FailCrop.png */,
 				3CEA3D0115FB7C0A00C64286 /* Friends-List.png */,
 				C50AD84915F97A3100CAFFD5 /* Login-Background.png */,
@@ -2246,6 +2262,7 @@
 				C50AD84A15F97A3100CAFFD5 /* Login-Background.png in Resources */,
 				3CEA3D0215FB7C0A00C64286 /* Friends-List.png in Resources */,
 				C585FEBE15FEC57C0075AFB6 /* FailCrop.png in Resources */,
+				3C117AF81600334A0035A251 /* OK.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2457,6 +2474,7 @@
 				3CAFE22915F8D9D100220947 /* Thread.cpp in Sources */,
 				C529688415FC7A7F00F460DE /* PlayerMap.cpp in Sources */,
 				3C83956515FC68BE00CBC718 /* VillageInfo.cpp in Sources */,
+				3C117AF41600249F0035A251 /* GameMessageBox.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

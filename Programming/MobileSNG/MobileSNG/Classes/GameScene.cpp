@@ -28,6 +28,8 @@ GameScene::~GameScene()
     
     m_pCurrentUI = NULL;
     
+    CCTextureCache::sharedTextureCache()->removeAllTextures();
+    
     SAFE_DELETE(m_pNetwork);
 }
 
@@ -101,7 +103,11 @@ bool GameScene::init()
         return false;
     
     scheduleUpdate();
-
+    
+//    CCTexture2D *pBack =  CCTextureCache::sharedTextureCache()->addImage("Login-Background.png");
+//    
+//    CCTexture2D *pOK = CCTextureCache::sharedTextureCache()->addImage("OK.png");
+    
     return true;
 }
 

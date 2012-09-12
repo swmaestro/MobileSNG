@@ -85,7 +85,7 @@ public:
     void update(float dt);
     
     inline int & getMapWidth() { return m_width; }
-    
+        
     //void expand();
     
 protected:
