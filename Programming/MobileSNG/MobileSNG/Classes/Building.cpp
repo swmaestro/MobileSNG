@@ -38,7 +38,7 @@ bool Building::UpdateSystem()
     
     m_beforeState = m_state;
     
-    if( m_state < BUILDING_STATE_COMPLETE_CONSTRUCTION )
+    if( m_state < BUILDING_STATE_WORKING)
         time = static_cast<float>(m_pInfo->GetBuildTime());
     else if( m_state == BUILDING_STATE_WORKING )
         time = static_cast<float>(m_pInfo->GetObjInfo().GetTime());

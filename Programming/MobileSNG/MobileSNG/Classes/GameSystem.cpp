@@ -569,13 +569,12 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
     ObjectInMap obj = pAddObject->obj;
     int time = pAddObject->time;
     int index = pAddObject->index;
-    Map *pMap = pAddObject->pMap;
+//    Map *pMap = pAddObject->pMap;
     
     delete pAddObject;
     
-    
-    if(m_isInit == false)
-        pMap->StartProcess(obj.GetPosition().x, obj.GetPosition().y);
+//    if(m_isInit == false)
+//        pMap->StartProcess(obj.GetPosition().x, obj.GetPosition().y);
     
     if(obj.GetType() == OBJECT_TYPE_CROP)
         return false;
@@ -599,6 +598,8 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
         }
         
         obj.SetIndex(idx);
+        obj.NeedSync();
+
         pCreatedObject = pThisClass->m_pMap->addObject(&obj, pThisClass->m_pInfoMgr, 0);
         if( pCreatedObject != NULL )
         {
@@ -622,7 +623,6 @@ bool GameSystem::_addObject(Thread* t, void *parameter)
         }
         
         pThisClass->m_pPlayer->AddMoney(-price);
-        obj.NeedSync();
         return true;
     }
     
@@ -703,12 +703,12 @@ bool GameSystem::_addCrop(Thread* t, void *parameter)
     int id = pAddCrop->id;
     int time = pAddCrop->time;
     bool isAdd = pAddCrop->isAdd;
-    Map *pMap = pAddCrop->pMap;
+//    Map *pMap = pAddCrop->pMap;
     
     delete pAddCrop;
     
-    if(m_isInit == false)
-        pMap->StartProcess(pField->GetPosition().x, pField->GetPosition().y);
+//    if(m_isInit == false)
+//        pMap->StartProcess(pField->GetPosition().x, pField->GetPosition().y);
     
     int price = GetCommonInfo(pField)->GetPrice();
     int fieldIndex = pField->GetIndex();
@@ -726,7 +726,6 @@ bool GameSystem::_addCrop(Thread* t, void *parameter)
     }
     
     m_pPlayer->AddMoney(-price);
-    pField->NeedSync();
     return true;
 }
 

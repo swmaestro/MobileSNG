@@ -84,6 +84,8 @@ void Allocator::Apply()
         
         ObjectInMap oim;
         
+        m_pMap->StartProcess(LOWORD(m_vec[i]), HIWORD(m_vec[i]));
+        
         switch (m_type)
         {
             case OBJ_CROP:

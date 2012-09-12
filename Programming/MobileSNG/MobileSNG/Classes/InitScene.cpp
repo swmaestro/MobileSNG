@@ -33,7 +33,9 @@ bool InitScene::init()
 
 void InitScene::onEnter()
 {
+    CCLayer::onEnter();
+    
     CCScene * scene = LoginScene::scene();
+    //CCDirector::sharedDirector()->popScene();
     CCDirector::sharedDirector()->pushScene(scene);
-    CCDirector::sharedDirector()->popScene();
 }

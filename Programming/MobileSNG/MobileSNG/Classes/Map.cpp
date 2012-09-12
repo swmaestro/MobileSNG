@@ -123,6 +123,9 @@ bool Map::SyncPos(Thread *t, ObjectInMap *oim)
             case BUILDING_STATE_DONE:
                 filename += "/Complete.png";
                 break;
+                
+            default:
+                return false;
         }
         
         tile->removeChildByTag(TILE_BUILDING, true);
@@ -172,6 +175,9 @@ bool Map::SyncPos(Thread *t, ObjectInMap *oim)
                 case CROP_STATE_FAIL:
                     filename = "FailCrop.png";
                     break;
+                    
+                default:
+                    return false;
             }
             
             tile->removeChildByTag(TILE_CROP, true);

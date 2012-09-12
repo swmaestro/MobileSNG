@@ -36,6 +36,8 @@ Crop* Field::addCrop(int id, int time, ObjectInfoMgr *pInfoMgr)
     
     m_pTimer->StartTimer();
     
+    NeedSync();
+    
     return m_pCrop;
 }
 
