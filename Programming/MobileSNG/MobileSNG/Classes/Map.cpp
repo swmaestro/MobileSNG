@@ -80,8 +80,8 @@ void Map::update(float dt)
         {
             int index = (*i)->GetIndex();
             
-            if( (*i)->isConstruct() )
-                m_pSystem->buildingConstructCheck(index);
+//            if( (*i)->isConstruct() )
+//                m_pSystem->buildingConstructCheck(index);
             
             SyncPos(this, *i);
         }

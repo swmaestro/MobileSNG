@@ -256,10 +256,17 @@ void PlayerMap::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
         
         --m_touchCnt;
         ++i;
+        
+        if (m_isDragging)
+            m_isDragging = false;
+        
+        if (m_isScaling)
+        {
+            
+            m_isDragging = true;
+            m_isScaling = false;
+        }
     }
-    
-    m_isDragging = false;
-    m_isScaling = false;
 }
 
 
