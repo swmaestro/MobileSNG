@@ -28,6 +28,8 @@ GameScene::~GameScene()
     
     m_pCurrentUI = NULL;
     
+    CCTextureCache::sharedTextureCache()->removeAllTextures();
+    
     SAFE_DELETE(m_pNetwork);
 }
 

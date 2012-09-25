@@ -13,6 +13,10 @@
 #include "Thread.h"
 #include "FriendVillage.h"
 
+#include <stack>
+
+#include "GameMessageBox.h"
+
 class MapTile;
 class MapMgr;
 class Allocator;
@@ -85,12 +89,18 @@ public:
     void update(float dt);
     
     inline int & getMapWidth() { return m_width; }
-    
+        
     //void expand();
     
 protected:
     bool _removeObjectSprite(Thread *t, void *parameter);
     bool _failFunc(Thread *t, void *parameter);
+    
+private:
+    std::stack<GameMessageBox*> m_msgBoxStack;
+
+public:
+    void MsgBoxShow(GAMEMSGBOX_ENUM e);
 };
 
 #endif

@@ -47,6 +47,7 @@ void CCLog(const char * pszFormat, ...)
 // ios no MessageBox, use CCLog instead
 void CCMessageBox(const char * pszMsg, const char * pszTitle)
 {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSString * title = (pszTitle) ? [NSString stringWithUTF8String : pszTitle] : nil;
     NSString * msg = (pszMsg) ? [NSString stringWithUTF8String : pszMsg] : nil;
     UIAlertView * messageBox = [[UIAlertView alloc] initWithTitle: title
@@ -56,6 +57,8 @@ void CCMessageBox(const char * pszMsg, const char * pszTitle)
                                                 otherButtonTitles: nil];
     [messageBox autorelease];
     [messageBox show];
+    
+    [pool release];
 }
 
 void CCLuaLog(const char * pszFormat)

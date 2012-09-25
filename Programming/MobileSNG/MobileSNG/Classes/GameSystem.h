@@ -122,7 +122,11 @@ private:
     bool            _Harvest(Thread* t, void *parameter);
     
     bool            _FailObject(Thread* t, void *parameter);
-    bool            _FailCrop(Thread* t, void *parameter);
+    bool            _CompObject(Thread *t, void *parameter);
+
+    bool            _CompCrop(Thread *t, void *parameter);
+    bool            _FailCrop(Thread *t, void *parameter);
+    
     bool            _CompSell(Thread *t, void *parameter);
     
 public:
