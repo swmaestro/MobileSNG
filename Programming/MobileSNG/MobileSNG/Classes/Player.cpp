@@ -50,7 +50,6 @@ Player::~Player()
 {
     FILE *pFile = fopen(m_strFilePath.data(), "wb");
     
-    
     fprintf(pFile, "%s\n",m_pUserInfo->userID.data());
     fprintf(pFile, "%s\n",m_strPassWord.data());
     fprintf(pFile, "%s\n",m_pUserInfo->userPhone.data());

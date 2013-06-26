@@ -12,8 +12,6 @@
 
 #define THREAD_FUNC(X) (bool (Thread::*)(Thread*, void*))(&X)
 
-//(bool (Thread::*)(void*))
-
 struct ThreadFunc;
 
 class Thread

@@ -92,7 +92,7 @@ public:
         
     //void expand();
     
-protected:
+public:
     bool _removeObjectSprite(Thread *t, void *parameter);
     bool _failFunc(Thread *t, void *parameter);
     

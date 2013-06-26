@@ -12,6 +12,7 @@
 #include "rapidxml.hpp"
 #include "SystemInfo.h"
 #include "Utility.h"
+#include "CCApplication.h"
 
 using namespace cocos2d;
 
@@ -50,9 +51,11 @@ bool LoginScene::init()
 {
     if (!CCLayer::init())
         return false;
-    
+
     m_pNet      = new Network;
     SystemInfo *pSystem = new SystemInfo(m_pNet);
+
+//    CCApplication::sharedApplication().setOrientation(CCApplication::kOrientationPortrait);
     
     if(pSystem->isUpdatedVersion() == false)
     {
