@@ -35,15 +35,15 @@
  
 */
 // Override to allow orientations other than the default landscape orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return UIInterfaceOrientationMaskLandscapeLeft;
-    // switch to this line if you want to set portrait view
-    // return UIInterfaceOrientationIsPortrait( interfaceOrientation );
-}
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+//    return UIInterfaceOrientationMaskLandscapeLeft;
+//    // switch to this line if you want to set portrait view
+//    // return UIInterfaceOrientationIsPortrait( interfaceOrientation );
+//}
 
--(NSUInteger)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskLandscapeLeft;
-}
+//-(NSUInteger)supportedInterfaceOrientations{
+//    return UIInterfaceOrientationMaskLandscapeLeft;
+//}
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
@@ -59,6 +59,20 @@
 }
 
 
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskLandscape;
+}
+
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return UIInterfaceOrientationIsLandscape( interfaceOrientation );
+}
+
+-(BOOL)shouldAutorotate
+{
+    return YES;
+}
 - (void)dealloc {
     [super dealloc];
 }

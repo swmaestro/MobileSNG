@@ -44,6 +44,15 @@ static AppDelegate s_sharedApplication;
     viewController.view = __glView;
 
     // Set RootViewController to window
+    if ( [[UIDevice currentDevice].systemVersion floatValue] < 6.0)
+    {
+        [window addSubview: viewController.view];
+    }
+    else
+    {
+        [window setRootViewController:viewController];
+    }
+    
     [window addSubview: viewController.view];
     [window makeKeyAndVisible];
 
